@@ -1,4 +1,5 @@
 import { DbAddSector } from '@/data/usecases'
+import { AddSector } from '@/domain/usecases'
 import { AddSectorRepositorySpy } from '@/tests/data/mocks'
 import faker from 'faker'
 
@@ -16,13 +17,21 @@ const makeSut = (): SutTypes => {
   }
 }
 
+const mockAddSectorParams = (): AddSector.Params => ({
+  name: faker.random.word()
+})
+
 describe('DbAddSector', () => {
   test('Should call AddSectorRepository with correct values', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
-    const sector = {
-      name: faker.random.word()
-    }
-    await sut.add(sector)
-    expect(addSectorRepositorySpy.params).toEqual(sector)
+    const addSectorParams = mockAddSectorParams()
+    await sut.add(addSectorParams)
+    expect(addSectorRepositorySpy.params).toEqual(addSectorParams)
+  })
+
+  test('Should return true if AddSectorRepository return true', async () => {
+    const { sut } = makeSut()
+    const isValid = await sut.add(mockAddSectorParams())
+    expect(isValid).toBe(true)
   })
 })

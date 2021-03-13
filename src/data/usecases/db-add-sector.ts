@@ -9,7 +9,7 @@ export class DbAddSector implements AddSector {
   }
 
   async add (sector: AddSector.Params): Promise<AddSector.Result> {
-    await this.addSectorRepository.addSector(sector)
-    return Promise.resolve(true)
+    const isValid = await this.addSectorRepository.addSector(sector)
+    return Promise.resolve(isValid)
   }
 }
