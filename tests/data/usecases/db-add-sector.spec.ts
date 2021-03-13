@@ -1,6 +1,6 @@
 import { DbAddSector } from '@/data/usecases'
 import { AddSectorRepositorySpy } from '@/tests/data/mocks'
-import { mockAddSectorParams } from '@/tests/domain/mocks'
+import { mockAddSectorParams, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddSector
@@ -35,5 +35,12 @@ describe('DbAddSector', () => {
     addSectorRepositorySpy.result = false
     const isValid = await sut.add(mockAddSectorParams())
     expect(isValid).toBe(false)
+  })
+
+  test('Should throw if AddSectorRepository throw', async () => {
+    const { sut, addSectorRepositorySpy } = makeSut()
+    jest.spyOn(addSectorRepositorySpy, 'addSector').mockImplementationOnce(throwError)
+    const promise = sut.add(mockAddSectorParams())
+    await expect(promise).rejects.toThrow()
   })
 })
