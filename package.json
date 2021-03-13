@@ -6,7 +6,9 @@
   "author": "vineboneto <vineboneto@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand"
+    "husky": " husky init & husky install .config/husky && husky add .config/pre-commit 'yarn lint-staged'",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/faker": "^5.1.7",
