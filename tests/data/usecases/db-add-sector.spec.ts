@@ -1,7 +1,6 @@
 import { DbAddSector } from '@/data/usecases'
-import { AddSector } from '@/domain/usecases'
 import { AddSectorRepositorySpy } from '@/tests/data/mocks'
-import faker from 'faker'
+import { mockAddSectorParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddSector
@@ -16,10 +15,6 @@ const makeSut = (): SutTypes => {
     addSectorRepositorySpy
   }
 }
-
-const mockAddSectorParams = (): AddSector.Params => ({
-  name: faker.random.word()
-})
 
 describe('DbAddSector', () => {
   test('Should call AddSectorRepository with correct values', async () => {
