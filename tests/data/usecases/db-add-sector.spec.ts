@@ -1,5 +1,6 @@
 import { DbAddSector } from '@/data/usecases'
 import { AddSectorRepositorySpy } from '@/tests/data/mocks'
+import faker from 'faker'
 
 type SutTypes = {
   sut: DbAddSector
@@ -19,7 +20,7 @@ describe('DbAddSector', () => {
   test('Should call AddSectorRepository with correct values', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
     const sector = {
-      name: 'any_name'
+      name: faker.random.word()
     }
     await sut.add(sector)
     expect(addSectorRepositorySpy.params).toEqual(sector)
