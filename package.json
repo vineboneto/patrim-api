@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://github.com/vineboneto/patrim-api.git",
   "author": "vineboneto <vineboneto@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.0.0"
+  }
 }
