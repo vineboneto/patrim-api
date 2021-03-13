@@ -6,9 +6,10 @@
   "author": "vineboneto <vineboneto@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "husky": "husky install .config/husky && husky add .config/husky/pre-commit \"yarn lint-staged && yarn test:staged\"",
+    "husky": "husky install .config/husky && husky add .config/husky/pre-commit \"yarn lint-staged && yarn test:staged\" && husky add .config/husky/pre-push \"yarn test:ci\" ",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:staged": "yarn test - --findRelatedTests"
+    "test:staged": "yarn test - --findRelatedTests",
+    "test:ci": "yarn test - --coverage"
   },
   "devDependencies": {
     "@types/faker": "^5.1.7",
