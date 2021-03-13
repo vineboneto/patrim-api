@@ -1,5 +1,5 @@
-import { AddSector, Params, Result } from '../../domain/usecases/add-sector'
-import { AddSectorRepository } from '../protocols/add-sector-repository'
+import { AddSector } from '@/domain/usecases'
+import { AddSectorRepository } from '@/data/protocols'
 
 export class DbAddSector implements AddSector {
   private readonly addSectorRepository: AddSectorRepository
@@ -8,7 +8,7 @@ export class DbAddSector implements AddSector {
     this.addSectorRepository = addSectorRepository
   }
 
-  async add (sector: Params): Promise<Result> {
+  async add (sector: AddSector.Params): Promise<AddSector.Result> {
     await this.addSectorRepository.addSector(sector)
     return Promise.resolve(true)
   }

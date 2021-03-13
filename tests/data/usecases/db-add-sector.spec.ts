@@ -1,20 +1,23 @@
-import { DbAddSector } from '../../../src/data/usecases/db-add-sector'
-import { AddSectorRepository, Result, Params } from '../../../src/data/protocols/add-sector-repository'
+import { DbAddSector } from '@/data/usecases'
+import { AddSectorRepositorySpy } from '@/tests/data/mocks'
+
+type SutTypes = {
+  sut: DbAddSector
+  addSectorRepositorySpy: AddSectorRepositorySpy
+}
+
+const makeSut = (): SutTypes => {
+  const addSectorRepositorySpy = new AddSectorRepositorySpy()
+  const sut = new DbAddSector(addSectorRepositorySpy)
+  return {
+    sut,
+    addSectorRepositorySpy
+  }
+}
 
 describe('DbAddSector', () => {
   test('Should call AddSectorRepository with correct values', async () => {
-    class AddSectorRepositorySpy implements AddSectorRepository {
-      params: Params
-      result = true
-
-      async addSector (params: Params): Promise<Result> {
-        this.params = params
-        return Promise.resolve(this.result)
-      }
-    }
-
-    const addSectorRepositorySpy = new AddSectorRepositorySpy()
-    const sut = new DbAddSector(addSectorRepositorySpy)
+    const { sut, addSectorRepositorySpy } = makeSut()
     const sector = {
       name: 'any_name'
     }

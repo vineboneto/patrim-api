@@ -1,9 +1,10 @@
-import { Params as ParamsDomain, Result as ResultDomain } from '../../domain/usecases/add-sector'
+import { AddSector } from '@/domain/usecases'
 
 export interface AddSectorRepository {
-  addSector: (sector: Params) => Promise<Result>
+  addSector: (sector: AddSectorRepository.Params) => Promise<AddSectorRepository.Result>
 }
 
-export type Params = ParamsDomain
-
-export type Result = ResultDomain
+export namespace AddSectorRepository {
+  export type Params = AddSector.Params
+  export type Result = AddSector.Result
+}
