@@ -34,4 +34,11 @@ describe('DbAddSector', () => {
     const isValid = await sut.add(mockAddSectorParams())
     expect(isValid).toBe(true)
   })
+
+  test('Should return false if AddSectorRepository return false', async () => {
+    const { sut, addSectorRepositorySpy } = makeSut()
+    addSectorRepositorySpy.result = false
+    const isValid = await sut.add(mockAddSectorParams())
+    expect(isValid).toBe(false)
+  })
 })
