@@ -6,7 +6,7 @@
   "author": "vineboneto <vineboneto@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "husky": "rimraf husky install .config/husky && husky add .config/husky/pre-commit \"yarn lint-staged && yarn test:staged\" && husky add .config/husky/pre-push \"yarn test:ci\" ",
+    "husky": "rimraf .config husky install .config/husky && husky add .config/husky/pre-commit \"yarn lint-staged && yarn test:staged\" && husky add .config/husky/pre-push \"yarn test:ci\" ",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:staged": "yarn test - --findRelatedTests",
     "test:ci": "yarn test - --coverage"
