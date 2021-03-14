@@ -8,7 +8,7 @@
   "scripts": {
     "husky": "husky install .config/husky && husky add .config/husky/pre-commit \"yarn lint-staged && yarn test:staged\" && husky add .config/husky/pre-push \"yarn test:ci\" ",
     "husky:clean": "rimraf .config",
-    "husky:install": "concurrently \"yarn husky:clean\" \"yarn husky\"",
+    "husky:install": "(yarn husky:clean) & yarn husky",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:staged": "yarn test - --findRelatedTests",
     "test:ci": "yarn test - --coverage"
