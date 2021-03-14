@@ -6,9 +6,12 @@
   "author": "vineboneto <vineboneto@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "husky": "husky install .config/husky && husky add .config/husky/pre-commit \"yarn lint-staged && yarn test:staged\" && husky add .config/husky/pre-push \"yarn test:ci\" ",
     "husky:clean": "rimraf .config",
-    "husky:install": "(yarn husky:clean) & yarn husky",
+    "husky:install":  "husky install .config/husky",
+    "husky:push": "husky add .config/husky/pre-push \"yarn test:ci\"",
+    "husky:commit": "husky add .config/husky/pre-commit \"yarn lint-staged && yarn test:staged\"",
+    "husky:config": "(yarn husky:commit) & (yarn husky:push)",
+    "husky": "(yarn husky:clean) & (yarn husky:install) & yarn husky:config",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:staged": "yarn test - --findRelatedTests",
     "test:ci": "yarn test - --coverage"
