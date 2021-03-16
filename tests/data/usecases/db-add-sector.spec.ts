@@ -24,7 +24,7 @@ describe('DbAddSector', () => {
     expect(addSectorRepositorySpy.params).toEqual(addSectorParams)
   })
 
-  test('Should return true if AddSectorRepository return true', async () => {
+  test('Should  true if AddSectorRepository return true', async () => {
     const { sut } = makeSut()
     const isValid = await sut.add(mockAddSectorParams())
     expect(isValid).toBe(true)
