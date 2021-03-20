@@ -1,6 +1,14 @@
-import { DbAddSector } from '@/data/usecases'
-import { AddSectorRepositorySpy } from '@/tests/data/mocks'
-import { mockAddSectorParams, throwError } from '@/tests/domain/mocks'
+import { DbAddSector } from '@/data/usecases/db-add-sector'
+import { AddSectorRepository } from '@/data/protocols/add-sector-repository'
+
+class AddSectorRepositorySpy implements AddSectorRepository {
+  params: AddSectorRepository.Params
+  result = true
+  async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Result> {
+    this.params = sector
+    return this.result
+  }
+}
 
 type SutTypes = {
   sut: DbAddSector
@@ -19,28 +27,16 @@ const makeSut = (): SutTypes => {
 describe('DbAddSector', () => {
   test('Should call AddSectorRepository with correct values', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
-    const addSectorParams = mockAddSectorParams()
-    await sut.add(addSectorParams)
-    expect(addSectorRepositorySpy.params).toEqual(addSectorParams)
+    const sector = { name: 'any_name' }
+    await sut.add(sector)
+    expect(addSectorRepositorySpy.params).toEqual(sector)
   })
 
-  test('Should  true if AddSectorRepository return true', async () => {
-    const { sut } = makeSut()
-    const isValid = await sut.add(mockAddSectorParams())
-    expect(isValid).toBe(true)
-  })
-
-  test('Should return false if AddSectorRepository return false', async () => {
+  test('Should DbAddSector return false if AddSectorRepository  return false', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
     addSectorRepositorySpy.result = false
-    const isValid = await sut.add(mockAddSectorParams())
+    const sector = { name: 'any_name' }
+    const isValid = await sut.add(sector)
     expect(isValid).toBe(false)
-  })
-
-  test('Should throw if AddSectorRepository throw', async () => {
-    const { sut, addSectorRepositorySpy } = makeSut()
-    jest.spyOn(addSectorRepositorySpy, 'addSector').mockImplementationOnce(throwError)
-    const promise = sut.add(mockAddSectorParams())
-    await expect(promise).rejects.toThrow()
   })
 })
