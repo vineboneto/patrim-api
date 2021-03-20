@@ -16,7 +16,7 @@ describe('SectorPostgresRepository', () => {
 
   test('Should return true on add succeeds', async () => {
     const sut = new SectorPostgresRepository(prismaClient)
-    const isValid = await sut.addSector(mockAddSectorParams)
+    const isValid = await sut.addSector(mockAddSectorParams())
     expect(isValid).toBeTruthy()
   })
 })
