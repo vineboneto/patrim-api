@@ -14,6 +14,7 @@
     "husky:config": "(yarn husky:commit) & (yarn husky:push) & (yarn husky:commit-msg)",
     "husky": "(yarn husky:clean) & (yarn husky:install) & yarn husky:config",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:watch": "yarn test - --watch",
     "test:staged": "yarn test - --findRelatedTests",
     "test:ci": "yarn test - --coverage"
   },

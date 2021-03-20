@@ -1,14 +1,6 @@
 import { DbAddSector } from '@/data/usecases/db-add-sector'
-import { AddSectorRepository } from '@/data/protocols/add-sector-repository'
-
-class AddSectorRepositorySpy implements AddSectorRepository {
-  params: AddSectorRepository.Params
-  result = true
-  async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Result> {
-    this.params = sector
-    return this.result
-  }
-}
+import { AddSectorRepositorySpy } from '@/tests/data/mocks/mock-add-sector-repository'
+import { mockAddSectorParams } from '@/tests/domain/mocks/mock-add-sector'
 
 type SutTypes = {
   sut: DbAddSector
@@ -27,7 +19,7 @@ const makeSut = (): SutTypes => {
 describe('DbAddSector', () => {
   test('Should call AddSectorRepository with correct values', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
-    const sector = { name: 'any_name' }
+    const sector = mockAddSectorParams()
     await sut.add(sector)
     expect(addSectorRepositorySpy.params).toEqual(sector)
   })
@@ -35,8 +27,7 @@ describe('DbAddSector', () => {
   test('Should DbAddSector return false if AddSectorRepository  return false', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
     addSectorRepositorySpy.result = false
-    const sector = { name: 'any_name' }
-    const isValid = await sut.add(sector)
+    const isValid = await sut.add(mockAddSectorParams())
     expect(isValid).toBe(false)
   })
 })
