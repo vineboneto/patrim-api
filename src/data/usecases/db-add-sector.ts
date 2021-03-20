@@ -14,8 +14,11 @@ export class DbAddSector implements AddSector {
   }
 
   async add (sector: AddSector.Params): Promise<AddSector.Result> {
-    const isValid = await this.addSectorRepository.addSector(sector)
-    await this.checkSectorByNameRepository.checkByName(sector.name)
+    const exists = await this.checkSectorByNameRepository.checkByName(sector.name)
+    let isValid = false
+    if (!exists) {
+      isValid = await this.addSectorRepository.addSector(sector)
+    }
     return isValid
   }
 }
