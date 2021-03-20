@@ -1,5 +1,5 @@
-import { AddSector } from '@/domain/usecases'
-import { AddSectorRepository } from '@/data/protocols'
+import { AddSector } from '@/domain/usecases/add-sector'
+import { AddSectorRepository } from '../protocols/add-sector-repository'
 
 export class DbAddSector implements AddSector {
   private readonly addSectorRepository: AddSectorRepository
@@ -10,6 +10,6 @@ export class DbAddSector implements AddSector {
 
   async add (sector: AddSector.Params): Promise<AddSector.Result> {
     const isValid = await this.addSectorRepository.addSector(sector)
-    return Promise.resolve(isValid)
+    return isValid
   }
 }
