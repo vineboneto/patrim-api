@@ -1,7 +1,7 @@
 import { AddSector } from '@/domain/usecases'
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { MissingParamError } from '@/presentation/errors'
-import { badRequest, serverError } from '@/presentation/helper/http-helper'
+import { badRequest, noContent, serverError } from '@/presentation/helper/http-helper'
 
 export class AddSectorController implements Controller {
   constructor (private readonly addSector: AddSector) {}
@@ -10,7 +10,7 @@ export class AddSectorController implements Controller {
     try {
       if (!request.name) return badRequest(new MissingParamError('name'))
       await this.addSector.add(request)
-      return null
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
