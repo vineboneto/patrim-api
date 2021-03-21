@@ -5,8 +5,8 @@
 1. [ ] Recebe uma requisição do tipo **POST** na rota **/api/sectors**
 2. [ ] Valida se a requisição foi feita por um **admin**
 3. [x] Valida dados obrigatórios **name**
-4. [ ] **Cria** um setor com os dados fornecidos
-5. [ ] Retorna **204**, sem dados
+4. [x] **Cria** um setor com os dados fornecidos
+5. [x] Retorna **204**, sem dados
 
 > ## Exceções
 
