@@ -1,5 +1,5 @@
 import { SectorPostgresRepository } from '@/infra/db/postgres-prisma/sector-postgres-repository'
-import { PrismaHelper } from '@/infra/db/postgres-prisma/prima-helper'
+import { PrismaHelper } from '@/infra/db/postgres-prisma/prisma-helper'
 import { mockAddSectorParams } from '@/tests/domain/mocks/mock-add-sector'
 
 describe('SectorPostgresRepository', () => {
@@ -12,7 +12,7 @@ describe('SectorPostgresRepository', () => {
   })
 
   beforeEach(async () => {
-    const prismaClient = await PrismaHelper.getCollection()
+    const prismaClient = await PrismaHelper.getConnection()
     await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
     await prismaClient.$executeRaw('DELETE FROM "Sector";')
   })
