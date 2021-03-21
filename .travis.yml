@@ -1,7 +1,13 @@
 language: node_js
 node_js:
   - 14
+env:
+- DATABASE_URL="postgresql://postgres:768879@localhost:5432/patrim"
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database patrim;' -U postgres
+  - yarn prisma:migrate
 script:
   - eslint 'src/**'
-  - yarn prisma:generate
   - yarn test:coveralls
