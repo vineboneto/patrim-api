@@ -1,21 +1,30 @@
 import { AddSectorController } from '@/presentation/controllers'
-import { AddSector } from '@/domain/usecases'
+import { AddSectorSpy } from '@/tests/presentation/mocks'
+
+import faker from 'faker'
+
+const mockRequest = (): AddSectorController.Request => ({
+  name: faker.internet.url()
+})
+
+type SutTypes = {
+  sut: AddSectorController
+  addSectorSpy: AddSectorSpy
+}
+
+const makeSut = (): SutTypes => {
+  const addSectorSpy = new AddSectorSpy()
+  const sut = new AddSectorController(addSectorSpy)
+  return {
+    sut,
+    addSectorSpy
+  }
+}
 
 describe('AddSectorController', () => {
   test('Should call AddSector with correct values', async () => {
-    class AddSectorSpy implements AddSector {
-      params: AddSector.Params
-      result = true
-      async add (sector: AddSector.Params): Promise<AddSector.Result> {
-        this.params = sector
-        return this.result
-      }
-    }
-    const addSectorSpy = new AddSectorSpy()
-    const sut = new AddSectorController(addSectorSpy)
-    const request = {
-      name: 'any_sector_name'
-    }
+    const { sut, addSectorSpy } = makeSut()
+    const request = mockRequest()
     await sut.handle(request)
     expect(addSectorSpy.params).toEqual(request)
   })
