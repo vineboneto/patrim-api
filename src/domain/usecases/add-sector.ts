@@ -1,5 +1,5 @@
 export interface AddSector {
-  add: (sector: AddSector.Params) => Promise<AddSector.Result>
+  add (sector: AddSector.Params): Promise<AddSector.Result>
 }
 
 export namespace AddSector {
