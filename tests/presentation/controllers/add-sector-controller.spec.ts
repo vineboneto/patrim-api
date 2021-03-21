@@ -1,7 +1,7 @@
 import { AddSectorController } from '@/presentation/controllers'
 import { AddSectorSpy } from '@/tests/presentation/mocks'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
-import { badRequest } from '@/presentation/helper/http-helper'
+import { badRequest, serverError } from '@/presentation/helper/http-helper'
 
 import faker from 'faker'
 
@@ -35,5 +35,12 @@ describe('AddSectorController', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
+  })
+
+  test('Should return 500 if AddSector throws', async () => {
+    const { sut, addSectorSpy } = makeSut()
+    jest.spyOn(addSectorSpy, 'add').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
