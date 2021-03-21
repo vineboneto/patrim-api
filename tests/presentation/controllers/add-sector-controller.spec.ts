@@ -1,7 +1,7 @@
 import { AddSectorController } from '@/presentation/controllers'
 import { AddSectorSpy } from '@/tests/presentation/mocks'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
-import { badRequest, serverError } from '@/presentation/helper/http-helper'
+import { badRequest, noContent, serverError } from '@/presentation/helper/http-helper'
 
 import faker from 'faker'
 
@@ -42,5 +42,11 @@ describe('AddSectorController', () => {
     jest.spyOn(addSectorSpy, 'add').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
