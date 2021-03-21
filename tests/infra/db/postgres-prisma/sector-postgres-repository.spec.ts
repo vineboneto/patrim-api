@@ -39,5 +39,12 @@ describe('SectorPostgresRepository', () => {
       const isValid = await sut.checkByName(name)
       expect(isValid).toBe(true)
     })
+
+    test('Should return false if sector name does not exists', async () => {
+      const sut = new SectorPostgresRepository()
+      const { name } = mockAddSectorParams()
+      const isValid = await sut.checkByName(name)
+      expect(isValid).toBe(false)
+    })
   })
 })
