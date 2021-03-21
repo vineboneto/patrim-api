@@ -4,6 +4,7 @@ export const PrismaHelper = {
   client: (null as unknown) as PrismaClient,
 
   connect (): void {
+    if (this.client) return
     this.client = new PrismaClient()
   },
 
@@ -11,8 +12,7 @@ export const PrismaHelper = {
     this.client.$disconnect()
   },
 
-  async getCollection (): Promise<PrismaClient> {
+  async getConnection (): Promise<PrismaClient> {
     return this.client
   }
-
 }
