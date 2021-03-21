@@ -3,4 +3,5 @@ node_js:
   - 14
 script:
   - eslint 'src/**'
+  - yarn prisma:generate
   - yarn test:coveralls

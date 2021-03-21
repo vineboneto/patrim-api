@@ -34,13 +34,13 @@ Essa API está sendo desenvolvida como objeto de estudo e para utilização em u
 > ### Configuração
 ***
 **Dependências**
- - Abra o arquivo na raíz em seu terminal. Execute
+ - Abra o arquivo na raíz em seu terminal. Execute:
   ```shell
   # Instala as dependências
   $ yarn
   ```
 **Husky**
- - Suporta para ``pre-commit``, ``pre-push`` e ``commit-msg``
+ - Suporte para ``pre-commit``, ``pre-push`` e ``commit-msg``
  - Abra o arquivo na raíz em seu terminal. Execute:
   ```shell
   # Cria uma pasta .config com as configurações do husky
@@ -52,7 +52,7 @@ Essa API está sendo desenvolvida como objeto de estudo e para utilização em u
  - Crie o arquivo .env na raíz do projeto com sua variável ``DATABASE_URL``. Consulte [aqui](https://www.prisma.io/docs/getting-started/quickstart-typescript) para saber mais.
  - Execute no terminal na raiz do projeto
   ```shell
-  # gerar o banco de dados
+  # Gerar o banco de dados
   $ yarn prisma:migrate
   ```
  ***

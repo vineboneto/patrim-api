@@ -16,8 +16,8 @@
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:watch": "yarn test - --watch",
     "test:staged": "yarn test - --findRelatedTests",
-    "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info",
     "test:ci": "yarn test - --coverage",
+    "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info",
     "prisma:introspect": "prisma introspect --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --name init --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma",
     "prisma:generate": "prisma generate --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma"
