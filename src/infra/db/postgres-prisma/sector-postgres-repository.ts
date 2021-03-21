@@ -1,5 +1,5 @@
 import { AddSectorRepository } from '@/data/protocols'
-import { PrismaHelper } from '@/infra/db/postgres-prisma/prisma-helper'
+import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
 export class SectorPostgresRepository implements AddSectorRepository {
   async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Result> {

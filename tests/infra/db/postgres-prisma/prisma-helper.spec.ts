@@ -1,4 +1,4 @@
-import { PrismaHelper } from '@/infra/db/postgres-prisma/prisma-helper'
+import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
 describe('PrismaHelper', () => {
   test('Should return same connection if exists client', async () => {
