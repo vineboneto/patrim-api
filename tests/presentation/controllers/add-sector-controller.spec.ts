@@ -4,7 +4,7 @@ import { AddSectorSpy } from '@/tests/presentation/mocks'
 import faker from 'faker'
 
 const mockRequest = (): AddSectorController.Request => ({
-  name: faker.internet.url()
+  name: faker.name.jobArea()
 })
 
 type SutTypes = {
@@ -27,5 +27,14 @@ describe('AddSectorController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(addSectorSpy.params).toEqual(request)
+  })
+
+  test('Should return 400 if name not provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual({
+      statusCode: 400,
+      body: 'Missing param: name'
+    })
   })
 })
