@@ -1,5 +1,7 @@
 # Patrim
 
+[![Coverage Status](https://coveralls.io/repos/github/vineboneto/patrim-api/badge.svg?branch=master)](https://coveralls.io/github/vineboneto/patrim-api?branch=master) [![Build Status](https://travis-ci.org/vineboneto/patrim-api.svg?branch=master)](https://travis-ci.org/vineboneto/patrim-api)
+
 Essa API está sendo desenvolvida como objeto de estudo e para utilização em uma aplicação de controle de patrimônio juntamente com [Ivo Melo](https://github.com/evil988)
 
 > ### API construidas
