@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - 14
 env:
-- DATABASE_URL="postgresql://postgres:768879@localhost:5432/patrim"
+- DATABASE_URL="postgresql://postgres:randomPassword@localhost:5432/patrim"
 services:
   - postgresql
 before_script:
