@@ -20,4 +20,13 @@ describe('ValidationComposite', () => {
     const error = sut.validate({ field: 'any_value' })
     expect(error).toEqual(validationSpies[0].result)
   })
+
+  test('Should return the first error if more then one validation fails', () => {
+    const validationSpies = [new ValidationSpy(), new ValidationSpy()]
+    const sut = new ValidationComposite(validationSpies)
+    validationSpies[0].result = new MissingParamError('field')
+    validationSpies[1].result = new MissingParamError('otherField')
+    const error = sut.validate({ field: 'any_value' })
+    expect(error).toEqual(validationSpies[0].result)
+  })
 })
