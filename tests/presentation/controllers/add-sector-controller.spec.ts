@@ -1,6 +1,5 @@
 import { AddSectorController } from '@/presentation/controllers'
 import { AddSectorSpy, ValidationSpy } from '@/tests/presentation/mocks'
-import { MissingParamError } from '@/presentation/errors/missing-param-error'
 import { badRequest, noContent, serverError } from '@/presentation/helper/http-helper'
 
 import faker from 'faker'
@@ -34,17 +33,18 @@ describe('AddSectorController', () => {
     expect(validationSpy.input).toEqual(request)
   })
 
+  test('Should return 400 if Validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new Error()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(validationSpy.result))
+  })
+
   test('Should call AddSector with correct values', async () => {
     const { sut, addSectorSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(addSectorSpy.params).toEqual(request)
-  })
-
-  test('Should return 400 if name not provided', async () => {
-    const { sut } = makeSut()
-    const httpResponse = await sut.handle({})
-    expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
   })
 
   test('Should return 500 if AddSector throws', async () => {

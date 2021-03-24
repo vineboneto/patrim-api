@@ -1,6 +1,5 @@
 import { AddSector } from '@/domain/usecases'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { MissingParamError } from '@/presentation/errors'
 import { badRequest, noContent, serverError } from '@/presentation/helper/http-helper'
 
 export class AddSectorController implements Controller {
@@ -11,9 +10,11 @@ export class AddSectorController implements Controller {
 
   async handle (request: AddSectorController.Request): Promise<HttpResponse> {
     try {
-      this.validation.validate(request)
-
-      if (!request.name) return badRequest(new MissingParamError('name'))
+      const error = this.validation.validate(request)
+      console.log(error)
+      if (error) {
+        return badRequest(error)
+      }
       await this.addSector.add(request)
       return noContent()
     } catch (error) {

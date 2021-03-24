@@ -13,7 +13,7 @@
     "husky:commit-msg": "husky add .config/husky/commit-msg \".git/hooks/commit-msg $1 \"",
     "husky:config": "(yarn husky:commit) & (yarn husky:push) & (yarn husky:commit-msg)",
     "husky": "(yarn husky:clean) & (yarn husky:install) & yarn husky:config",
-    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --no-cache",
     "test:watch": "yarn test - --watch",
     "test:staged": "yarn test - --findRelatedTests",
     "test:ci": "yarn test - --coverage",
