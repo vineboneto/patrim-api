@@ -1,5 +1,5 @@
 import { AddSectorController } from '@/presentation/controllers'
-import { AddSectorSpy } from '@/tests/presentation/mocks'
+import { AddSectorSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
 import { badRequest, noContent, serverError } from '@/presentation/helper/http-helper'
 
@@ -12,18 +12,28 @@ const mockRequest = (): AddSectorController.Request => ({
 type SutTypes = {
   sut: AddSectorController
   addSectorSpy: AddSectorSpy
+  validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
+  const validationSpy = new ValidationSpy()
   const addSectorSpy = new AddSectorSpy()
-  const sut = new AddSectorController(addSectorSpy)
+  const sut = new AddSectorController(addSectorSpy, validationSpy)
   return {
     sut,
-    addSectorSpy
+    addSectorSpy,
+    validationSpy
   }
 }
 
 describe('AddSectorController', () => {
+  test('Should call Validation with correct value', async () => {
+    const { sut, validationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(validationSpy.input).toEqual(request)
+  })
+
   test('Should call AddSector with correct values', async () => {
     const { sut, addSectorSpy } = makeSut()
     const request = mockRequest()
