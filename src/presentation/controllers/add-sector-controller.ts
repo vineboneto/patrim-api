@@ -1,6 +1,7 @@
 import { AddSector } from '@/domain/usecases'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, noContent, serverError } from '@/presentation/helper/http-helper'
+import { badRequest, noContent, serverError, forbidden } from '@/presentation/helper/http-helper'
+import { AlreadyExistsError } from '../errors'
 
 export class AddSectorController implements Controller {
   constructor (
@@ -15,7 +16,8 @@ export class AddSectorController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.addSector.add(request)
+      const isValid = await this.addSector.add(request)
+      if (!isValid) return forbidden(new AlreadyExistsError(request.name))
       return noContent()
     } catch (error) {
       return serverError(error)
@@ -24,5 +26,7 @@ export class AddSectorController implements Controller {
 }
 
 export namespace AddSectorController {
-  export type Request = any
+  export type Request = {
+    name: string
+  }
 }
