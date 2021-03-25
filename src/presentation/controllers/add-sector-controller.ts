@@ -12,7 +12,6 @@ export class AddSectorController implements Controller {
   async handle (request: AddSectorController.Request): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
-      console.log(error)
       if (error) {
         return badRequest(error)
       }
