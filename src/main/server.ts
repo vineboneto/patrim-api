@@ -1,3 +1,4 @@
+import 'module-alias/register'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import app from '@/main/config/app'
 

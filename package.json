@@ -49,6 +49,10 @@
   },
   "dependencies": {
     "@prisma/client": "^2.19.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "module-alias": "^2.2.2"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }
