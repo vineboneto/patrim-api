@@ -6,6 +6,8 @@
   "author": "vineboneto <vineboneto@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "node dist/main/server.js",
+    "build": "rimraf dist && tsc -p tsconfig-build.json",
     "husky:clean": "rimraf .config",
     "husky:install": "husky install .config/husky",
     "husky:push": "husky add .config/husky/pre-push \"yarn test:ci\"",

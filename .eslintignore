@@ -2,3 +2,4 @@ node_modules
 *.prisma
 *.sql
 *.toml
+dist
