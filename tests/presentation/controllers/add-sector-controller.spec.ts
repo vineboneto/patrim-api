@@ -1,6 +1,7 @@
 import { AddSectorController } from '@/presentation/controllers'
 import { AddSectorSpy, ValidationSpy } from '@/tests/presentation/mocks'
-import { badRequest, noContent, serverError } from '@/presentation/helper/http-helper'
+import { badRequest, noContent, serverError, forbidden } from '@/presentation/helper/http-helper'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -45,6 +46,14 @@ describe('AddSectorController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(addSectorSpy.params).toEqual(request)
+  })
+
+  test('Should return 403 if AddSector return false', async () => {
+    const { sut, addSectorSpy } = makeSut()
+    addSectorSpy.result = false
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(forbidden(new AlreadyExistsError(request.name)))
   })
 
   test('Should return 500 if AddSector throws', async () => {
