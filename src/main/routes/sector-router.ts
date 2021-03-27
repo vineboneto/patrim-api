@@ -1,5 +1,5 @@
-import { makeAddSectorController } from '@/main/factories/controllers'
 import { adaptRoute } from '@/main/adapters'
+import { makeAddSectorController } from '@/main/factories/controllers'
 
 import { Router } from 'express'
 
