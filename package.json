@@ -9,6 +9,7 @@
     "start": "node dist/main/server.js",
     "dev": "sucrase-node src/main/server.ts",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "prepare": "npx prisma generate --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma",
     "husky:clean": "rimraf .config",
     "husky:install": "husky install .config/husky",
     "husky:push": "husky add .config/husky/pre-push \"yarn test:ci\"",
