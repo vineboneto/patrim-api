@@ -9,7 +9,7 @@
     "start": "node dist/main/server.js",
     "dev": "sucrase-node src/main/server.ts",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
-    "prepare": "npx prisma migrate deploy --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma && npx prisma generate --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma",
+    "prepare": "node prepare-prisma.js",
     "husky": "node husky-config.js",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --no-cache",
     "test:watch": "yarn test - --watch",
