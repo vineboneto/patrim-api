@@ -1,6 +1,6 @@
 {
   "name": "patrim",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "index.js",
   "repository": "https://github.com/vineboneto/patrim-api.git",
   "author": "vineboneto <vineboneto@gmail.com>",
