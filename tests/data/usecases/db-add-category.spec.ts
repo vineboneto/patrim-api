@@ -1,21 +1,27 @@
-import { DbAddCategory } from '@/data/usecases/db-add-category'
-import { AddCategoryRepository } from '@/data/protocols/add-category-repository'
+import { DbAddCategory } from '@/data/usecases/'
+import { AddCategoryRepositorySpy } from '@/tests/data/mocks'
+import { mockAddCategoryParams } from '@/tests/domain/mocks'
 
-class AddCategoryRepositorySpy implements AddCategoryRepository {
-  params: AddCategoryRepository.Params
-  result: boolean
-  async addCategory (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
-    this.params = category
-    return this.result
+type SutTypes = {
+  sut: DbAddCategory
+  addCategoryRepositorySpy: AddCategoryRepositorySpy
+}
+
+const makeSut = (): SutTypes => {
+  const addCategoryRepositorySpy = new AddCategoryRepositorySpy()
+  const sut = new DbAddCategory(addCategoryRepositorySpy)
+  return {
+    sut,
+    addCategoryRepositorySpy
   }
 }
 
 describe('DbAddCategory', () => {
   test('Should call AddCategoryRepository with correct values', async () => {
-    const addCategoryRepositorySpy = new AddCategoryRepositorySpy()
-    const sut = new DbAddCategory(addCategoryRepositorySpy)
-    await sut.add({ name: 'any_name' })
-    expect(addCategoryRepositorySpy.params).toEqual({ name: 'any_name' })
+    const { sut, addCategoryRepositorySpy } = makeSut()
+    const category = mockAddCategoryParams()
+    await sut.add(category)
+    expect(addCategoryRepositorySpy.params).toEqual(category)
   })
 
   // test('DbAddCategory should return true on success', async () => {

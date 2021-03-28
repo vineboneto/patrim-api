@@ -1,4 +1,4 @@
-import { AddSector } from '@/domain/usecases/add-sector'
+import { AddSector } from '@/domain/usecases/'
 import { AddSectorRepository, CheckSectorByNameRepository } from '@/data/protocols'
 
 export class DbAddSector implements AddSector {

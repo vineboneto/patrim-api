@@ -1,5 +1,5 @@
-import { AddCategory } from '@/domain/usecases/add-category'
-import { AddCategoryRepository } from '@/data/protocols/add-category-repository'
+import { AddCategory } from '@/domain/usecases/'
+import { AddCategoryRepository } from '@/data/protocols/'
 
 export class DbAddCategory implements AddCategory {
   constructor (private readonly addCategoryRepository: AddCategoryRepository) {}

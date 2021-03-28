@@ -1,4 +1,4 @@
-import { AddSector } from '@/domain/usecases/add-sector'
+import { AddSector } from '@/domain/usecases/'
 
 export interface AddSectorRepository {
   addSector: (sector: AddSectorRepository.Params) => Promise<AddSectorRepository.Result>

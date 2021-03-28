@@ -1,4 +1,4 @@
-import { AddSectorRepository } from '@/data/protocols/add-sector-repository'
+import { AddSectorRepository } from '@/data/protocols/'
 
 export class AddSectorRepositorySpy implements AddSectorRepository {
   params: AddSectorRepository.Params
