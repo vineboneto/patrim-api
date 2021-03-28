@@ -5,6 +5,10 @@ import { PrismaClient } from '@prisma/client'
 
 let prismaClient: PrismaClient
 
+const makeSut = (): AccountPostgresRepository => {
+  return new AccountPostgresRepository()
+}
+
 describe('AccountPostgresRepository', () => {
   beforeAll(() => {
     PrismaHelper.connect()
@@ -23,7 +27,7 @@ describe('AccountPostgresRepository', () => {
 
   describe('add()', () => {
     test('Should return true on add success', async () => {
-      const sut = new AccountPostgresRepository()
+      const sut = makeSut()
       const addAccountParams = mockAddAccountParams()
       const isValid = await sut.add(addAccountParams)
       expect(isValid).toBe(true)
