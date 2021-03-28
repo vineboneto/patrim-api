@@ -24,6 +24,20 @@ describe('DbAddCategory', () => {
     expect(addCategoryRepositorySpy.params).toEqual(category)
   })
 
+  test('Should return false if AddCategoryRepository return false', async () => {
+    const { sut, addCategoryRepositorySpy } = makeSut()
+    addCategoryRepositorySpy.result = false
+    const isValid = await sut.add(mockAddCategoryParams)
+    expect(isValid).toBeFalsy()
+  })
+
+  test('Should call CheckCategoryByNameRepositories with correct values', () => {
+
+  })
+
+  test('Should return false if CheckCategoryByNameRepository return true', () => {
+
+  })
   // test('DbAddCategory should return true on success', async () => {
   //   const sut = new DbAddCategory()
   //   const isValid = await sut.add({ name: 'any_name' })
