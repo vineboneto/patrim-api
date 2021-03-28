@@ -34,16 +34,20 @@ describe('DbAddCategory', () => {
     expect(isValid).toBeFalsy()
   })
 
-  test('Should call CheckCategoryByNameRepositories with correct value', async () => {
+  test('Should call CheckCategoryByNameRepository with correct value', async () => {
     const { sut, checkCategoryByNameRepositorySpy } = makeSut()
     const sector = mockAddCategoryParams()
     await sut.add(sector)
     expect(checkCategoryByNameRepositorySpy.name).toBe(sector.name)
   })
 
-  test('Should return false if CheckCategoryByNameRepository return true', () => {
-
+  test('Should return false if CheckCategoryByNameRepository return true', async () => {
+    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
+    checkCategoryByNameRepositorySpy.result = true
+    const isValid = await sut.add(mockAddCategoryParams())
+    expect(isValid).toBeFalsy()
   })
+
   // test('DbAddCategory should return true on success', async () => {
   //   const sut = new DbAddCategory()
   //   const isValid = await sut.add({ name: 'any_name' })
