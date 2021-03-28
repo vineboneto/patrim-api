@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, noContent } from '@/presentation/helper'
+import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { EmailInUseError } from '@/presentation/errors'
 import { AddAccount } from '@/domain/usecases'
 
@@ -10,11 +10,15 @@ export class SignUpController implements Controller {
   ) {}
 
   async handle (request: SignUpController.Request): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) return badRequest(error)
-    const isValid = await this.addAccount.add(request)
-    if (!isValid) return forbidden(new EmailInUseError())
-    return noContent()
+    try {
+      const error = this.validation.validate(request)
+      if (error) return badRequest(error)
+      const isValid = await this.addAccount.add(request)
+      if (!isValid) return forbidden(new EmailInUseError())
+      return noContent()
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
 
