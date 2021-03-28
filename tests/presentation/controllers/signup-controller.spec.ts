@@ -13,10 +13,23 @@ const mockRequest = (): SignUpController.Request => {
   }
 }
 
+type SutTypes = {
+  sut: SignUpController
+  validationSpy: ValidationSpy
+}
+
+const makeSut = (): SutTypes => {
+  const validationSpy = new ValidationSpy()
+  const sut = new SignUpController(validationSpy)
+  return {
+    sut,
+    validationSpy
+  }
+}
+
 describe('SignUpController', () => {
   test('Should call Validation with correct values', async () => {
-    const validationSpy = new ValidationSpy()
-    const sut = new SignUpController(validationSpy)
+    const { sut, validationSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
