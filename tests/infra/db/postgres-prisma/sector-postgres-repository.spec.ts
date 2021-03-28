@@ -1,7 +1,9 @@
 import { SectorPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
 import { mockAddSectorParams } from '@/tests/domain/mocks/mock-add-sector'
 
-let prismaClient
+import { PrismaClient } from '@prisma/client'
+
+let prismaClient: PrismaClient
 
 describe('SectorPostgresRepository', () => {
   beforeAll(() => {
