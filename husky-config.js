@@ -11,8 +11,9 @@ const scripts = [
 
 for (script of scripts) {
   try {
+    console.log(script + '👀')
     execSync(script)
-    if (script === scripts[scripts.length - 1] ) console.log('Husky success configured ✔')
+    console.log('✔')
   } catch (error) {
     console.error
   }
