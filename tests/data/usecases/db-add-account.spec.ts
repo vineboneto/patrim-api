@@ -24,10 +24,14 @@ const makeSut = (): SutTypes => {
 
 describe('DbAddAccount', () => {
   test('Should call AddAccountRepository with correct values', async () => {
-    const { sut, addAccountRepositorySpy } = makeSut()
+    const { sut, addAccountRepositorySpy, hasherSpy } = makeSut()
     const account = mockAddAccountParams()
+    const accountWithHashedPassword = {
+      ...account,
+      password: hasherSpy.hashed
+    }
     await sut.add(account)
-    expect(addAccountRepositorySpy.params).toEqual(account)
+    expect(addAccountRepositorySpy.params).toEqual(accountWithHashedPassword)
   })
 
   test('Should DbAddAccount return false if AddAccountRepository returns false', async () => {
