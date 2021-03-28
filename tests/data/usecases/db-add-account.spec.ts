@@ -30,4 +30,10 @@ describe('DbAddAccount', () => {
     const isValid = await sut.add(mockAddAccountParams())
     expect(isValid).toBe(false)
   })
+
+  test('Should DbAddAccount return true on succeeds', async () => {
+    const { sut } = makeSut()
+    const isValid = await sut.add(mockAddAccountParams())
+    expect(isValid).toBeTruthy()
+  })
 })
