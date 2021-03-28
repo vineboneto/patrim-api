@@ -5,7 +5,7 @@ export class DbAddAccount implements AddAccount {
   constructor (private readonly addAccountRepository: AddAccountRepository) {}
 
   async add (account: AddAccount.Params): Promise<AddAccount.Result> {
-    await this.addAccountRepository.add(account)
-    return null
+    const isValid = await this.addAccountRepository.add(account)
+    return isValid
   }
 }
