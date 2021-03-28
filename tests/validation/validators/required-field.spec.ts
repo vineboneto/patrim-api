@@ -1,11 +1,11 @@
 import { MissingParamError } from '@/presentation/errors'
-import { RequiredField } from '@/validation/validators'
+import { RequiredFieldValidation } from '@/validation/validators'
 
 import faker from 'faker'
 
-const makeSut = (fieldName: string): RequiredField => new RequiredField(fieldName)
+const makeSut = (fieldName: string): RequiredFieldValidation => new RequiredFieldValidation(fieldName)
 
-describe('RequiredField', () => {
+describe('RequiredFieldValidation', () => {
   test('Should not return if field exists', () => {
     const field = faker.database.column()
     const sut = makeSut(field)

@@ -13,7 +13,7 @@ describe('Content Type Middlewares', () => {
       .expect('content-type', /json/)
   })
 
-  test('Should re turn xml content type when forced', async () => {
+  test('Should return xml content type when forced', async () => {
     app.get('/test_content_type_xml', (req, res) => {
       res.type('xml')
       res.send('')
