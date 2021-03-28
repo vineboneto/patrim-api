@@ -18,7 +18,7 @@ Essa API está sendo desenvolvida como objeto de estudo e para utilização em u
 
 > ### Bibliotecas e ferramentas
 
- - yarn
+ - Yarn
  - Typescript
  - Git
  - Jest
@@ -52,11 +52,7 @@ Essa API está sendo desenvolvida como objeto de estudo e para utilização em u
  **Prisma-Postgres**
 
  - Crie o arquivo .env na raíz do projeto com sua variável ``DATABASE_URL``. Consulte [aqui](https://www.prisma.io/docs/getting-started/quickstart-typescript) para saber mais.
- - Execute no terminal na raiz do projeto
-  ```shell
-  # Gerar o banco de dados
-  $ yarn prisma:migrate
-  ```
+  
  ***
   **Tests**
   ```shell
