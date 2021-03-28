@@ -1,4 +1,4 @@
-import { CheckSectorByNameRepository } from '@/data/protocols/check-sector-by-name-repository'
+import { CheckSectorByNameRepository } from '@/data/protocols'
 
 export class CheckSectorByNameRepositorySpy implements CheckSectorByNameRepository {
   name: string

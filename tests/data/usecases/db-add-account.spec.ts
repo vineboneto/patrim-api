@@ -1,18 +1,21 @@
 import { DbAddAccount } from '@/data/usecases'
-import { AddAccountRepositorySpy } from '@/tests/data/mocks'
+import { AddAccountRepositorySpy, CheckAccountByEmailRepositorySpy } from '@/tests/data/mocks'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddAccount
   addAccountRepositorySpy: AddAccountRepositorySpy
+  checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
+  const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
   const addAccountRepositorySpy = new AddAccountRepositorySpy()
-  const sut = new DbAddAccount(addAccountRepositorySpy)
+  const sut = new DbAddAccount(addAccountRepositorySpy, checkAccountByEmailRepositorySpy)
   return {
     sut,
-    addAccountRepositorySpy
+    addAccountRepositorySpy,
+    checkAccountByEmailRepositorySpy
   }
 }
 
@@ -37,10 +40,17 @@ describe('DbAddAccount', () => {
     expect(isValid).toBeTruthy()
   })
 
-  test('Should throws if AddAccountRepository throws', async () => {
+  test('Should throw if AddAccountRepository throws', async () => {
     const { sut, addAccountRepositorySpy } = makeSut()
     jest.spyOn(addAccountRepositorySpy, 'add').mockRejectedValue(new Error())
     const promise = sut.add(mockAddAccountParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CheckAccountByEmailRepository with correct values', async () => {
+    const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+    const account = mockAddAccountParams()
+    await sut.add(account)
+    expect(checkAccountByEmailRepositorySpy.email).toEqual(account.email)
   })
 })
