@@ -4,6 +4,8 @@
 
 Essa API está sendo desenvolvida como objeto de estudo e para utilização em uma aplicação de controle de patrimônio juntamente com [Ivo Melo](https://github.com/evil988)
 
+Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkgve9VvPRpA/view?usp=sharing)
+
 > ### API construidas
 
   1. [Criar Setores (Em desenvolvimento)](./requirements/add-sector.md)
