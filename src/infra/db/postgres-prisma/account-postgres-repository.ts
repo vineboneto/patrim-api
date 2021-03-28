@@ -17,11 +17,12 @@ export class AccountPostgresRepository implements AddAccountRepository, CheckAcc
 
   async checkByEmail (email: string): Promise<boolean> {
     const prismaClient = await PrismaHelper.getConnection()
-    const account = prismaClient.user.findFirst({
+    const account = await prismaClient.user.findFirst({
       where: {
         email
       }
     })
+    console.log(account)
     return account !== null
   }
 }
