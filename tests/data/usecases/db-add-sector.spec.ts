@@ -27,6 +27,13 @@ describe('DbAddSector', () => {
     expect(addSectorRepositorySpy.params).toEqual(sector)
   })
 
+  test('Should throw if AddSectorRepository throws', async () => {
+    const { sut, addSectorRepositorySpy } = makeSut()
+    jest.spyOn(addSectorRepositorySpy, 'addSector').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockAddSectorParams())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should DbAddSector return false if AddSectorRepository return false', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
     addSectorRepositorySpy.result = false
