@@ -1,24 +1,25 @@
 import { DbAddAccount } from '@/data/usecases'
-import { AddAccountRepository } from '@/data/protocols'
+import { AddAccountRepositorySpy } from '@/tests/data/mocks'
+import { mockAddAccountParams } from '@/tests/domain/mocks'
 
-class AddAccountRepositorySpy implements AddAccountRepository {
-  params: AddAccountRepository.Params
-  result = true
-  async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
-    this.params = account
-    return this.result
+type SutTypes = {
+  sut: DbAddAccount
+  addAccountRepositorySpy: AddAccountRepositorySpy
+}
+
+const makeSut = (): SutTypes => {
+  const addAccountRepositorySpy = new AddAccountRepositorySpy()
+  const sut = new DbAddAccount(addAccountRepositorySpy)
+  return {
+    sut,
+    addAccountRepositorySpy
   }
 }
 
 describe('DbAddAccount', () => {
   test('Should call AddAccountRepository with correct values', async () => {
-    const addAccountRepositorySpy = new AddAccountRepositorySpy()
-    const sut = new DbAddAccount(addAccountRepositorySpy)
-    const account = {
-      name: 'any_name',
-      email: 'any_email',
-      password: 'any_password'
-    }
+    const { sut, addAccountRepositorySpy } = makeSut()
+    const account = mockAddAccountParams()
     await sut.add(account)
     expect(addAccountRepositorySpy.params).toEqual(account)
   })
