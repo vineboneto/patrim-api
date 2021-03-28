@@ -1,18 +1,21 @@
 import { DbAddCategory } from '@/data/usecases/'
-import { AddCategoryRepositorySpy } from '@/tests/data/mocks'
+import { AddCategoryRepositorySpy, CheckCategoryByNameRepositorySpy } from '@/tests/data/mocks'
 import { mockAddCategoryParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddCategory
   addCategoryRepositorySpy: AddCategoryRepositorySpy
+  checkCategoryByNameRepositorySpy: CheckCategoryByNameRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const addCategoryRepositorySpy = new AddCategoryRepositorySpy()
-  const sut = new DbAddCategory(addCategoryRepositorySpy)
+  const checkCategoryByNameRepositorySpy = new CheckCategoryByNameRepositorySpy()
+  const sut = new DbAddCategory(addCategoryRepositorySpy, checkCategoryByNameRepositorySpy)
   return {
     sut,
-    addCategoryRepositorySpy
+    addCategoryRepositorySpy,
+    checkCategoryByNameRepositorySpy
   }
 }
 
@@ -31,8 +34,11 @@ describe('DbAddCategory', () => {
     expect(isValid).toBeFalsy()
   })
 
-  test('Should call CheckCategoryByNameRepositories with correct values', () => {
-
+  test('Should call CheckCategoryByNameRepositories with correct value', async () => {
+    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
+    const sector = mockAddCategoryParams()
+    await sut.add(sector)
+    expect(checkCategoryByNameRepositorySpy.name).toBe(sector.name)
   })
 
   test('Should return false if CheckCategoryByNameRepository return true', () => {
