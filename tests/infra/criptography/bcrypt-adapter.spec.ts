@@ -4,7 +4,7 @@ import { BcryptAdapter } from '@/infra/criptography'
 
 jest.mock('bcrypt', () => ({
   async hash (): Promise<string> {
-    return Promise.resolve('hash')
+    return Promise.resolve('any_value_hashed')
   }
 }))
 
@@ -21,6 +21,12 @@ describe('BcryptAdapter', () => {
       const hashSpy = jest.spyOn(bcrypt, 'hash')
       await sut.hash(password)
       expect(hashSpy).toHaveBeenCalledWith(password, salt)
+    })
+
+    test('Should return a valid on hash success', async () => {
+      const sut = makeSut()
+      const hash = await sut.hash(faker.internet.password())
+      expect(hash).toBe('any_value_hashed')
     })
   })
 })
