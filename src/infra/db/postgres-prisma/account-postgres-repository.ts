@@ -22,7 +22,6 @@ export class AccountPostgresRepository implements AddAccountRepository, CheckAcc
         email
       }
     })
-    console.log(account)
     return account !== null
   }
 }
