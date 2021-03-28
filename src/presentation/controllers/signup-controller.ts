@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, noContent } from '@/presentation/helper'
 import { EmailInUseError } from '@/presentation/errors'
 import { AddAccount } from '@/domain/usecases'
 
@@ -14,7 +14,7 @@ export class SignUpController implements Controller {
     if (error) return badRequest(error)
     const isValid = await this.addAccount.add(request)
     if (!isValid) return forbidden(new EmailInUseError())
-    return null
+    return noContent()
   }
 }
 
