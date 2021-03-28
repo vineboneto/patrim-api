@@ -19,6 +19,7 @@
     "prisma:introspect": "prisma introspect --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/express": "^4.17.11",
     "@types/faker": "^5.1.7",
     "@types/jest": "^26.0.20",
@@ -46,6 +47,7 @@
   },
   "dependencies": {
     "@prisma/client": "^2.19.0",
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "module-alias": "^2.2.2"
   },
