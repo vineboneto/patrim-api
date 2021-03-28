@@ -55,6 +55,13 @@ describe('DbAddAccount', () => {
     expect(isValid).toBe(false)
   })
 
+  test('Should throw if CheckAccountByEmailRepository throws', async () => {
+    const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+    jest.spyOn(checkAccountByEmailRepositorySpy, 'checkByEmail').mockRejectedValue(new Error())
+    const promise = sut.add(mockAddAccountParams())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should DbAddAccount return true on succeeds', async () => {
     const { sut } = makeSut()
     const isValid = await sut.add(mockAddAccountParams())
