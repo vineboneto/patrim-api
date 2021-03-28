@@ -2,6 +2,7 @@ import { AccountPostgresRepository, PrismaHelper } from '@/infra/db/postgres-pri
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 
 import { PrismaClient } from '@prisma/client'
+import faker from 'faker'
 
 let prismaClient: PrismaClient
 
@@ -31,6 +32,28 @@ describe('AccountPostgresRepository', () => {
       const addAccountParams = mockAddAccountParams()
       const isValid = await sut.add(addAccountParams)
       expect(isValid).toBe(true)
+    })
+  })
+
+  describe('checkByEmail()', () => {
+    test('Should return an true if email exists', async () => {
+      const sut = makeSut()
+      const { name, password, email } = mockAddAccountParams()
+      await prismaClient.user.create({
+        data: {
+          name,
+          email,
+          password
+        }
+      })
+      const exists = await sut.checkByEmail(email)
+      expect(exists).toBe(true)
+    })
+
+    test('Should return an false if email not exists', async () => {
+      const sut = makeSut()
+      const exists = await sut.checkByEmail(faker.internet.email())
+      expect(exists).toBe(false)
     })
   })
 })
