@@ -48,8 +48,10 @@
   },
   "dependencies": {
     "@prisma/client": "^2.19.0",
+    "@types/jsonwebtoken": "^8.5.1",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "validator": "^13.5.2"
   },
