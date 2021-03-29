@@ -23,4 +23,11 @@ describe('DbAuthentication', () => {
     await sut.auth(authenticationParams)
     expect(loadAccountByEmailRepositorySpy.email).toBe(authenticationParams.email)
   })
+
+  test('Should return null if LoadAccountEmailRepository returns null', async () => {
+    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
+    loadAccountByEmailRepositorySpy.account = null
+    const account = await sut.auth(mockAuthenticationParams())
+    expect(account).toBe(null)
+  })
 })
