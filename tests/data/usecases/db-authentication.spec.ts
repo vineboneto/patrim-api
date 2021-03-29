@@ -62,4 +62,11 @@ describe('DbAuthentication', () => {
     await sut.auth(authenticationParams)
     expect(encrypterSpy.value).toBe(loadAccountByEmailRepositorySpy.account.id.toString())
   })
+
+  test('Should not call Encrypter if HashComparer is invalid', async () => {
+    const { sut, encrypterSpy, hashComparerSpy } = makeSut()
+    hashComparerSpy.valid = false
+    await sut.auth(mockAuthenticationParams())
+    expect(encrypterSpy.callsCount).toBe(0)
+  })
 })
