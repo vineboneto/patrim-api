@@ -26,10 +26,8 @@ export class HashComparerSpy implements HashComparer {
 export class EncrypterSpy implements Encrypter {
   value: string
   token = faker.random.uuid()
-  callsCount = 0
 
   async encrypt (value: string): Promise<string> {
-    this.callsCount++
     this.value = value
     return this.token
   }
