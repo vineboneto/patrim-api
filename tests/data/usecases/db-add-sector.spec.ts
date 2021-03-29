@@ -27,18 +27,18 @@ describe('DbAddSector', () => {
     expect(addSectorRepositorySpy.params).toEqual(sector)
   })
 
+  test('Should return false if AddSectorRepository return false', async () => {
+    const { sut, addSectorRepositorySpy } = makeSut()
+    addSectorRepositorySpy.result = false
+    const isValid = await sut.add(mockAddSectorParams())
+    expect(isValid).toBe(false)
+  })
+
   test('Should throw if AddSectorRepository throws', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
     jest.spyOn(addSectorRepositorySpy, 'addSector').mockRejectedValueOnce(new Error())
     const promise = sut.add(mockAddSectorParams())
     await expect(promise).rejects.toThrow()
-  })
-
-  test('Should DbAddSector return false if AddSectorRepository return false', async () => {
-    const { sut, addSectorRepositorySpy } = makeSut()
-    addSectorRepositorySpy.result = false
-    const isValid = await sut.add(mockAddSectorParams())
-    expect(isValid).toBe(false)
   })
 
   test('Should call CheckSectorByNameRepository with correct values', async () => {
@@ -48,11 +48,18 @@ describe('DbAddSector', () => {
     expect(checkSectorByNameRepositorySpy.name).toBe(sector.name)
   })
 
-  test('Should DbAddSector returns false if CheckSectorByNameRepository returns true', async () => {
+  test('Should returns false if CheckSectorByNameRepository returns true', async () => {
     const { sut, checkSectorByNameRepositorySpy } = makeSut()
     checkSectorByNameRepositorySpy.result = true
     const isValid = await sut.add(mockAddSectorParams())
     expect(isValid).toBe(false)
+  })
+
+  test('Should throw if CheckSectorByNameRepository throws', async () => {
+    const { sut, checkSectorByNameRepositorySpy } = makeSut()
+    jest.spyOn(checkSectorByNameRepositorySpy, 'checkByName').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockAddSectorParams())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should return true on success ', async () => {
