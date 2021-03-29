@@ -27,12 +27,12 @@ describe('DbAddCategory', () => {
     expect(addCategoryRepositorySpy.params).toEqual(category)
   })
 
-  // test('Should return false if AddCategoryRepository return false', async () => {
-  //   const { sut, addCategoryRepositorySpy } = makeSut()
-  //   addCategoryRepositorySpy.result = false
-  //   const isValid = await sut.add(mockAddCategoryParams)
-  //   expect(isValid).toBeFalsy()
-  // })
+  test('Should return false if AddCategoryRepository return false', async () => {
+    const { sut, addCategoryRepositorySpy } = makeSut()
+    addCategoryRepositorySpy.result = false
+    const isValid = await sut.add(mockAddCategoryParams)
+    expect(isValid).toBeFalsy()
+  })
 
   test('Should throw if AddCategoryRepository throws', async () => {
     const { sut, addCategoryRepositorySpy } = makeSut()
