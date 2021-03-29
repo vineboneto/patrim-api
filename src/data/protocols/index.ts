@@ -1,6 +1,7 @@
 export * from './check-sector-by-name-repository'
 export * from './check-account-by-email-repository'
 export * from './hasher'
+export * from './hash-comparer'
 export * from './add-sector-repository'
 export * from './add-account-repository'
 export * from './load-account-by-email-repository'
