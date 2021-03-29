@@ -27,11 +27,18 @@ describe('DbAddCategory', () => {
     expect(addCategoryRepositorySpy.params).toEqual(category)
   })
 
-  test('Should return false if AddCategoryRepository return false', async () => {
+  // test('Should return false if AddCategoryRepository return false', async () => {
+  //   const { sut, addCategoryRepositorySpy } = makeSut()
+  //   addCategoryRepositorySpy.result = false
+  //   const isValid = await sut.add(mockAddCategoryParams)
+  //   expect(isValid).toBeFalsy()
+  // })
+
+  test('Should throw if AddCategoryRepository throws', async () => {
     const { sut, addCategoryRepositorySpy } = makeSut()
-    addCategoryRepositorySpy.result = false
-    const isValid = await sut.add(mockAddCategoryParams)
-    expect(isValid).toBeFalsy()
+    jest.spyOn(addCategoryRepositorySpy, 'addCategory').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockAddCategoryParams())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call CheckCategoryByNameRepository with correct value', async () => {
@@ -48,9 +55,16 @@ describe('DbAddCategory', () => {
     expect(isValid).toBeFalsy()
   })
 
-  // test('DbAddCategory should return true on success', async () => {
-  //   const sut = new DbAddCategory()
-  //   const isValid = await sut.add({ name: 'any_name' })
-  //   expect(isValid).toBeTruthy()
-  // })
+  test('Should throw if checkCategoryRepository throws', async () => {
+    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
+    jest.spyOn(checkCategoryByNameRepositorySpy, 'checkByName').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockAddCategoryParams())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('DbAddCategory should return true on success', async () => {
+    const { sut } = makeSut()
+    const isValid = await sut.add(mockAddCategoryParams())
+    expect(isValid).toBeTruthy()
+  })
 })
