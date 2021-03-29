@@ -9,9 +9,11 @@ jest.mock('validator', () => ({
   }
 }))
 
+const makeSut = (): EmailValidatorAdapter => new EmailValidatorAdapter()
+
 describe('EmailValidatorAdapter', () => {
   test('Should call validator with correct value', () => {
-    const sut = new EmailValidatorAdapter()
+    const sut = makeSut()
     const email = faker.internet.email()
     const validatorSpy = jest.spyOn(validator, 'isEmail')
     sut.isValid(email)
