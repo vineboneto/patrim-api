@@ -42,19 +42,22 @@ describe('BcryptAdapter', () => {
   })
 
   describe('compare()', () => {
+    let value: string
+    let hashedValue: string
+    beforeEach(() => {
+      value = faker.random.word()
+      hashedValue = faker.random.uuid()
+    })
+
     test('Should call compare with correct values', async () => {
       const sut = makeSut()
       const compareSpy = jest.spyOn(bcrypt, 'compare')
-      const value = faker.internet.password()
-      const hashedValue = faker.random.uuid()
       await sut.comparer(value, hashedValue)
       expect(compareSpy).toHaveBeenCalledWith(value, hashedValue)
     })
 
     test('Should return trues if bcrypt compare returns true', async () => {
       const sut = makeSut()
-      const value = faker.internet.password()
-      const hashedValue = faker.random.uuid()
       const isValid = await sut.comparer(value, hashedValue)
       expect(isValid).toBe(true)
     })
