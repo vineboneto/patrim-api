@@ -30,8 +30,8 @@ describe('DbAuthentication', () => {
   test('Should return null if LoadAccountEmailRepository returns null', async () => {
     const { sut, loadAccountByEmailRepositorySpy } = makeSut()
     loadAccountByEmailRepositorySpy.account = null
-    const account = await sut.auth(mockAuthenticationParams())
-    expect(account).toBe(null)
+    const authentication = await sut.auth(mockAuthenticationParams())
+    expect(authentication).toBe(null)
   })
 
   test('Should return call HashComparer with correct values', async () => {
@@ -40,5 +40,12 @@ describe('DbAuthentication', () => {
     await sut.auth(authenticationParams)
     expect(hashComparerSpy.value).toBe(authenticationParams.password)
     expect(hashComparerSpy.hash).toBe(loadAccountByEmailRepositorySpy.account.password)
+  })
+
+  test('Should return null if HashComparer returns false', async () => {
+    const { sut, hashComparerSpy } = makeSut()
+    hashComparerSpy.valid = false
+    const authentication = await sut.auth(mockAuthenticationParams())
+    expect(authentication).toBe(null)
   })
 })
