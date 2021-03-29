@@ -85,4 +85,13 @@ describe('DbAuthentication', () => {
     expect(updateAccessTokenRepositorySpy.id).toBe(loadAccountByEmailRepositorySpy.account.id)
     expect(updateAccessTokenRepositorySpy.token).toBe(encrypterSpy.token)
   })
+
+  test('Should return AuthenticationModel on success', async () => {
+    const { sut, encrypterSpy, loadAccountByEmailRepositorySpy } = makeSut()
+    const authentication = await sut.auth(mockAuthenticationParams())
+    expect(authentication).toEqual({
+      accessToken: encrypterSpy.token,
+      name: loadAccountByEmailRepositorySpy.account.name
+    })
+  })
 })
