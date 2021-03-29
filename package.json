@@ -16,7 +16,8 @@
     "test:staged": "yarn test - --findRelatedTests",
     "test:ci": "yarn test - --coverage",
     "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info",
-    "prisma:introspect": "prisma introspect --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma"
+    "prisma:introspect": "prisma introspect --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma",
+    "prisma:migrations": "prisma migrate dev --name init --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
