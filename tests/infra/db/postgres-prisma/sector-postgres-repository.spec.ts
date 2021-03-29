@@ -1,5 +1,5 @@
 import { SectorPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
-import { mockAddSectorParams } from '@/tests/domain/mocks/mock-add-sector'
+import { mockAddSectorParams } from '@/tests/domain/mocks/mock-sector'
 
 import { PrismaClient } from '@prisma/client'
 

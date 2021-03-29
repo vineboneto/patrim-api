@@ -1,30 +1,25 @@
 import { DbAuthentication } from '@/data/usecases'
-import { LoadAccountByEmailRepository } from '@/data/protocols'
+import { LoadAccountByEmailRepositorySpy } from '@/tests/data/mocks'
+import { mockAuthenticationParams } from '@/tests/domain/mocks'
 
-import faker from 'faker'
+type SutTypes = {
+  sut: DbAuthentication
+  loadAccountByEmailRepositorySpy: LoadAccountByEmailRepositorySpy
+}
 
-class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailRepository {
-  email: string
-  account = {
-    id: faker.random.number(10),
-    name: faker.name.findName(),
-    password: faker.internet.password()
-  }
-
-  async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
-    this.email = email
-    return this.account
+const makeSut = (): SutTypes => {
+  const loadAccountByEmailRepositorySpy = new LoadAccountByEmailRepositorySpy()
+  const sut = new DbAuthentication(loadAccountByEmailRepositorySpy)
+  return {
+    sut,
+    loadAccountByEmailRepositorySpy
   }
 }
 
 describe('DbAuthentication', () => {
   test('Should calls LoadAccountByEmailRepository with correct value', async () => {
-    const loadAccountByEmailRepositorySpy = new LoadAccountByEmailRepositorySpy()
-    const sut = new DbAuthentication(loadAccountByEmailRepositorySpy)
-    const authenticationParams = {
-      email: faker.internet.email(),
-      password: faker.internet.password()
-    }
+    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
+    const authenticationParams = mockAuthenticationParams()
     await sut.auth(authenticationParams)
     expect(loadAccountByEmailRepositorySpy.email).toBe(authenticationParams.email)
   })
