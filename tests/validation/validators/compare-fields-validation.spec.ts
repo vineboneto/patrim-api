@@ -10,4 +10,13 @@ describe('CompareFieldValidation', () => {
     })
     expect(isValid).toEqual(new InvalidParamError('fieldToCompare'))
   })
+
+  test('Should return null if validation on success', () => {
+    const sut = new CompareFieldsValidation('field', 'fieldToCompare')
+    const isValid = sut.validate({
+      field: 'any_value',
+      fieldToCompare: 'any_value'
+    })
+    expect(isValid).toBeNull()
+  })
 })
