@@ -1,4 +1,5 @@
 import { AccountPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
+import { AddAccount } from '@/domain/usecases'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 
 import { PrismaClient } from '@prisma/client'
@@ -8,6 +9,16 @@ let prismaClient: PrismaClient
 
 const makeSut = (): AccountPostgresRepository => {
   return new AccountPostgresRepository()
+}
+
+const insertAccount = async (account: AddAccount.Params): Promise<void> => {
+  await prismaClient.user.create({
+    data: {
+      name: account.name,
+      email: account.email,
+      password: account.name
+    }
+  })
 }
 
 describe('AccountPostgresRepository', () => {
@@ -45,15 +56,9 @@ describe('AccountPostgresRepository', () => {
   describe('checkByEmail()', () => {
     test('Should return an true if email exists', async () => {
       const sut = makeSut()
-      const { name, password, email } = mockAddAccountParams()
-      await prismaClient.user.create({
-        data: {
-          name,
-          email,
-          password
-        }
-      })
-      const exists = await sut.checkByEmail(email)
+      const accountParams = mockAddAccountParams()
+      await insertAccount(accountParams)
+      const exists = await sut.checkByEmail(accountParams.email)
       expect(exists).toBe(true)
     })
 
@@ -67,15 +72,9 @@ describe('AccountPostgresRepository', () => {
   describe('loadByEmail', () => {
     test('Should returns account on loadByEmail success', async () => {
       const sut = makeSut()
-      const { name, password, email } = mockAddAccountParams()
-      await prismaClient.user.create({
-        data: {
-          name,
-          email,
-          password
-        }
-      })
-      const account = await sut.loadByEmail(email)
+      const accountParams = mockAddAccountParams()
+      await insertAccount(accountParams)
+      const account = await sut.loadByEmail(accountParams.email)
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
       expect(account.name).toBeTruthy()
