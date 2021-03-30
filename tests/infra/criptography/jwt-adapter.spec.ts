@@ -15,4 +15,10 @@ describe('JwtAdapter', () => {
     await sut.encrypt('any_id')
     expect(signSpy).toHaveBeenCalledWith({ id: 'any_id' }, 'secret_key')
   })
+
+  test('Should return accessToken on sign success', async () => {
+    const sut = new JwtAdapter('secret_key')
+    const accessToken = await sut.encrypt('any_id')
+    expect(accessToken).toBe('any_token')
+  })
 })
