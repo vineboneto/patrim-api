@@ -16,3 +16,12 @@ model Category {
   id    Int    @id @default(autoincrement())
   name  String
 }
+
+model User {
+  id          Int     @id @default(autoincrement())
+  name        String
+  password    String
+  accessToken String?
+  role        String?
+  email       String
+}
