@@ -1,5 +1,5 @@
 import { AccountPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
-import { AddAccount } from '@/domain/usecases'
+import { AddAccountRepository } from '@/data/protocols'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 
 import { PrismaClient } from '@prisma/client'
@@ -11,7 +11,7 @@ const makeSut = (): AccountPostgresRepository => {
   return new AccountPostgresRepository()
 }
 
-const insertAccount = async (account: AddAccount.Params): Promise<void> => {
+const insertAccount = async (account: AddAccountRepository.Params): Promise<void> => {
   await prismaClient.user.create({
     data: {
       name: account.name,
@@ -79,6 +79,13 @@ describe('AccountPostgresRepository', () => {
       expect(account.id).toBeTruthy()
       expect(account.name).toBeTruthy()
       expect(account.password).toBeTruthy()
+    })
+
+    test('Should returns null if loadByEmail fails', async () => {
+      const sut = makeSut()
+      const { email } = mockAddAccountParams()
+      const account = await sut.loadByEmail(email)
+      expect(account).toBeNull()
     })
   })
 })
