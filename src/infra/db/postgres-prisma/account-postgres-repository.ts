@@ -1,14 +1,16 @@
 import {
   AddAccountRepository,
   CheckAccountByEmailRepository,
-  LoadAccountByEmailRepository
+  LoadAccountByEmailRepository,
+  UpdateAccessTokenRepository
 } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
 export class AccountPostgresRepository implements
   AddAccountRepository,
   CheckAccountByEmailRepository,
-  LoadAccountByEmailRepository {
+  LoadAccountByEmailRepository,
+  UpdateAccessTokenRepository {
   async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const { name, email, password } = account
     const prismaClient = await PrismaHelper.getConnection()
@@ -45,5 +47,17 @@ export class AccountPostgresRepository implements
       }
     })
     return account
+  }
+
+  async updateAccessToken (id: number, token: string): Promise<void> {
+    const prismaClient = await PrismaHelper.getConnection()
+    await prismaClient.user.update({
+      where: {
+        id: id
+      },
+      data: {
+        accessToken: token
+      }
+    })
   }
 }
