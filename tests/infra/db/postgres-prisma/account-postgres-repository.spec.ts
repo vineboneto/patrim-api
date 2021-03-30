@@ -33,6 +33,13 @@ describe('AccountPostgresRepository', () => {
       const isValid = await sut.add(addAccountParams)
       expect(isValid).toBe(true)
     })
+
+    test('Should return false if add returns false', async () => {
+      const sut = makeSut()
+      jest.spyOn(prismaClient.user, 'create').mockResolvedValueOnce(null)
+      const isValid = await sut.add(mockAddAccountParams())
+      expect(isValid).toBe(false)
+    })
   })
 
   describe('checkByEmail()', () => {
