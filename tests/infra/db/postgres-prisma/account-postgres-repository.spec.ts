@@ -2,7 +2,7 @@ import { AccountPostgresRepository, PrismaHelper } from '@/infra/db/postgres-pri
 import { AddAccountRepository } from '@/data/protocols'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, User } from '@prisma/client'
 import faker from 'faker'
 
 let prismaClient: PrismaClient
@@ -11,14 +11,15 @@ const makeSut = (): AccountPostgresRepository => {
   return new AccountPostgresRepository()
 }
 
-const insertAccount = async (account: AddAccountRepository.Params): Promise<void> => {
-  await prismaClient.user.create({
+const insertAccount = async (account: AddAccountRepository.Params): Promise<User> => {
+  const accountModel = await prismaClient.user.create({
     data: {
       name: account.name,
       email: account.email,
       password: account.name
     }
   })
+  return accountModel
 }
 
 describe('AccountPostgresRepository', () => {
@@ -86,6 +87,22 @@ describe('AccountPostgresRepository', () => {
       const { email } = mockAddAccountParams()
       const account = await sut.loadByEmail(email)
       expect(account).toBeNull()
+    })
+  })
+
+  describe('updateAccessToken()', () => {
+    test('Should update the account accessToken on updateAccessToken success', async () => {
+      const sut = makeSut()
+      const accountParams = mockAddAccountParams()
+      const account = await insertAccount(accountParams)
+      const token = faker.random.uuid()
+      await sut.updateAccessToken(account.id, token)
+      const accountWithAccessTokenUpdated = await prismaClient.user.findFirst({
+        where: {
+          id: account.id
+        }
+      })
+      expect(accountWithAccessTokenUpdated.accessToken).toBe(token)
     })
   })
 })
