@@ -63,4 +63,23 @@ describe('AccountPostgresRepository', () => {
       expect(exists).toBe(false)
     })
   })
+
+  describe('loadByEmail', () => {
+    test('Should returns account on loadByEmail success', async () => {
+      const sut = makeSut()
+      const { name, password, email } = mockAddAccountParams()
+      await prismaClient.user.create({
+        data: {
+          name,
+          email,
+          password
+        }
+      })
+      const account = await sut.loadByEmail(email)
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+      expect(account.name).toBeTruthy()
+      expect(account.password).toBeTruthy()
+    })
+  })
 })
