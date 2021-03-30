@@ -1,6 +1,10 @@
-import { UpdateAccessTokenRepository } from './../protocols/db/update-access-token-repository'
 import { Authentication } from '@/domain/usecases'
-import { Encrypter, HashComparer, LoadAccountByEmailRepository } from '@/data/protocols'
+import {
+  Encrypter,
+  HashComparer,
+  LoadAccountByEmailRepository,
+  UpdateAccessTokenRepository
+} from '@/data/protocols'
 
 export class DbAuthentication implements Authentication {
   constructor (
@@ -16,7 +20,7 @@ export class DbAuthentication implements Authentication {
       const isValid = await this.hashComparer.comparer(authentication.password, account.password)
       if (isValid) {
         const accessToken = await this.encrypter.encrypt(account.id.toString())
-        await this.updateAccessTokenRepository.update(account.id, accessToken)
+        await this.updateAccessTokenRepository.updateAccessToken(account.id, accessToken)
         return {
           accessToken,
           name: account.name

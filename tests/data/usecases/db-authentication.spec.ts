@@ -102,7 +102,8 @@ describe('DbAuthentication', () => {
 
   test('Should throw if UpdateAccessTokenRepository throws', async () => {
     const { sut, updateAccessTokenRepositorySpy } = makeSut()
-    jest.spyOn(updateAccessTokenRepositorySpy, 'update').mockRejectedValueOnce(new Error())
+    jest.spyOn(updateAccessTokenRepositorySpy, 'updateAccessToken')
+      .mockRejectedValueOnce(new Error())
     const promise = sut.auth(mockAuthenticationParams())
     await expect(promise).rejects.toThrow()
   })
