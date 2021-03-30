@@ -9,6 +9,8 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
 > ### API construidas
 
   1. [Criar Setores (Em desenvolvimento)](./requirements/add-sector.md)
+  2. [Criar Conta](./requirements/signup.md)
+  3. [Criar Categoria (Em desenvolvimento)](./requirements/add-category.md)
 
 > ### Metodologia de Design
 
