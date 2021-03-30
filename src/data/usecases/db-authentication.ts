@@ -9,9 +9,9 @@ import {
 export class DbAuthentication implements Authentication {
   constructor (
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
+    private readonly updateAccessTokenRepository: UpdateAccessTokenRepository,
     private readonly hashComparer: HashComparer,
-    private readonly encrypter: Encrypter,
-    private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
+    private readonly encrypter: Encrypter
   ) {}
 
   async auth (authentication: Authentication.Params): Promise<Authentication.Result> {

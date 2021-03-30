@@ -22,9 +22,9 @@ const makeSut = (): SutTypes => {
   const loadAccountByEmailRepositorySpy = new LoadAccountByEmailRepositorySpy()
   const sut = new DbAuthentication(
     loadAccountByEmailRepositorySpy,
+    updateAccessTokenRepositorySpy,
     hashComparerSpy,
-    encrypterSpy,
-    updateAccessTokenRepositorySpy
+    encrypterSpy
   )
   return {
     sut,
