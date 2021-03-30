@@ -1,8 +1,8 @@
 import { EmailValidation } from '@/validation/validators'
 import { EmailValidatorSpy } from '@/tests/validation/mocks'
+import { InvalidParamError } from '@/presentation/errors'
 
 import faker from 'faker'
-import { InvalidParamError } from '@/presentation/errors/invalid-param-error-error'
 
 type SutTypes = {
   sut: EmailValidation
