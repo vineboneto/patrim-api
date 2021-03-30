@@ -1,7 +1,14 @@
-import { AddAccountRepository, CheckAccountByEmailRepository } from '@/data/protocols'
+import {
+  AddAccountRepository,
+  CheckAccountByEmailRepository,
+  LoadAccountByEmailRepository
+} from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
-export class AccountPostgresRepository implements AddAccountRepository, CheckAccountByEmailRepository {
+export class AccountPostgresRepository implements
+  AddAccountRepository,
+  CheckAccountByEmailRepository,
+  LoadAccountByEmailRepository {
   async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const { name, email, password } = account
     const prismaClient = await PrismaHelper.getConnection()
@@ -23,5 +30,20 @@ export class AccountPostgresRepository implements AddAccountRepository, CheckAcc
       }
     })
     return account !== null
+  }
+
+  async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
+    const prismaClient = await PrismaHelper.getConnection()
+    const account = await prismaClient.user.findFirst({
+      where: {
+        email
+      },
+      select: {
+        id: true,
+        name: true,
+        password: true
+      }
+    })
+    return account
   }
 }
