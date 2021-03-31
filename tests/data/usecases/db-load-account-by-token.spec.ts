@@ -33,4 +33,11 @@ describe('DbLoadAccountByToken', () => {
     const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
     expect(accountModel).toBeNull()
   })
+
+  test('Should return throws if LoadAccountByTokenRepository throws', async () => {
+    const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+    jest.spyOn(loadAccountByTokenRepositorySpy, 'loadByToken').mockRejectedValueOnce(new Error())
+    const promise = sut.load(faker.random.uuid(), faker.random.word())
+    await expect(promise).rejects.toThrow()
+  })
 })
