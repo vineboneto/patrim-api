@@ -1,5 +1,5 @@
 import { LoginController } from '@/presentation/controllers'
-import { ValidationSpy } from '@/tests/presentation/mocks'
+import { ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
 import { MissingParamError } from '@/presentation/errors'
 import { badRequest } from '@/presentation/helper'
 
@@ -13,14 +13,17 @@ const mockRequest = (): LoginController.Params => ({
 type SutTypes = {
   sut: LoginController
   validationSpy: ValidationSpy
+  authenticationSpy: AuthenticationSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new LoginController(validationSpy)
+  const authenticationSpy = new AuthenticationSpy()
+  const sut = new LoginController(validationSpy, authenticationSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    authenticationSpy
   }
 }
 
@@ -32,10 +35,17 @@ describe('Login Controller', () => {
     expect(validationSpy.input).toEqual(request)
   })
 
-  test('Should 400 if Validation return an error', async () => {
+  test('Should return 400 if Validation return an error', async () => {
     const { sut, validationSpy } = makeSut()
     validationSpy.result = new MissingParamError('email')
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
+  })
+
+  test('Should call Authentication with correct values ', async () => {
+    const { sut, authenticationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(authenticationSpy.params).toEqual(request)
   })
 })
