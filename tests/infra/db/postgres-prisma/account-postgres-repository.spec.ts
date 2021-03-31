@@ -107,12 +107,20 @@ describe('AccountPostgresRepository', () => {
   })
 
   describe('loadByToken', () => {
+    let name: string
+    let email: string
+    let password: string
+    let accessToken: string
+
+    beforeEach(() => {
+      name = faker.name.findName()
+      email = faker.internet.email()
+      password = faker.internet.password()
+      accessToken = faker.random.uuid()
+    })
+
     test('Should returns an account without role', async () => {
       const sut = makeSut()
-      const name = faker.name.findName()
-      const email = faker.internet.email()
-      const password = faker.internet.password()
-      const accessToken = faker.random.uuid()
       await prismaClient.user.create({
         data: {
           name,
@@ -128,10 +136,6 @@ describe('AccountPostgresRepository', () => {
 
     test('Should return an account on loadByToken with admin role', async () => {
       const sut = makeSut()
-      const name = faker.name.findName()
-      const email = faker.internet.email()
-      const password = faker.internet.password()
-      const accessToken = faker.random.uuid()
       await prismaClient.user.create({
         data: {
           name,
@@ -148,10 +152,6 @@ describe('AccountPostgresRepository', () => {
 
     test('Should return null account on loadByToken with invalid role', async () => {
       const sut = makeSut()
-      const name = faker.name.findName()
-      const email = faker.internet.email()
-      const password = faker.internet.password()
-      const accessToken = faker.random.uuid()
       await prismaClient.user.create({
         data: {
           name,
@@ -166,10 +166,6 @@ describe('AccountPostgresRepository', () => {
 
     test('Should return an account on loadByToken with user is admin', async () => {
       const sut = makeSut()
-      const name = faker.name.findName()
-      const email = faker.internet.email()
-      const password = faker.internet.password()
-      const accessToken = faker.random.uuid()
       await prismaClient.user.create({
         data: {
           name,
