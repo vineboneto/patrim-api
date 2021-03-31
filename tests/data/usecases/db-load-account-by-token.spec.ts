@@ -20,11 +20,17 @@ const makeSut = (): SutTypes => {
   }
 }
 
+let accessToken: string
+let role: string
+
 describe('DbLoadAccountByToken', () => {
+  beforeEach(() => {
+    accessToken = faker.random.uuid()
+    role = faker.random.word()
+  })
+
   test('Should call LoadAccountByTokenRepository with correct values', async () => {
     const { sut, loadAccountByTokenRepositorySpy, decrypterSpy } = makeSut()
-    const accessToken = faker.random.uuid()
-    const role = faker.random.word()
     await sut.load(accessToken, role)
     expect(loadAccountByTokenRepositorySpy.token).toBe(decrypterSpy.tokenDecrypted)
     expect(loadAccountByTokenRepositorySpy.role).toBe(role)
@@ -33,41 +39,40 @@ describe('DbLoadAccountByToken', () => {
   test('Should return null if LoadAccountByTokenRepository returns null', async () => {
     const { sut, loadAccountByTokenRepositorySpy } = makeSut()
     loadAccountByTokenRepositorySpy.result = null
-    const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
+    const accountModel = await sut.load(accessToken, role)
     expect(accountModel).toBeNull()
   })
 
   test('Should return throws if LoadAccountByTokenRepository throws', async () => {
     const { sut, loadAccountByTokenRepositorySpy } = makeSut()
     jest.spyOn(loadAccountByTokenRepositorySpy, 'loadByToken').mockRejectedValueOnce(new Error())
-    const promise = sut.load(faker.random.uuid(), faker.random.word())
+    const promise = sut.load(accessToken, role)
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call Decrypter with correct values', async () => {
     const { sut, decrypterSpy } = makeSut()
-    const accessToken = faker.random.uuid()
-    await sut.load(accessToken, faker.random.word())
+    await sut.load(accessToken, role)
     expect(decrypterSpy.token).toBe(accessToken)
   })
 
   test('Should returns null if Decrypter returns Error', async () => {
     const { sut, decrypterSpy } = makeSut()
     jest.spyOn(decrypterSpy, 'decrypt').mockRejectedValueOnce(new Error())
-    const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
+    const accountModel = await sut.load(accessToken, role)
     expect(accountModel).toBeNull()
   })
 
   test('Should returns null if Decrypter returns null', async () => {
     const { sut, decrypterSpy } = makeSut()
     decrypterSpy.tokenDecrypted = null
-    const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
+    const accountModel = await sut.load(accessToken, role)
     expect(accountModel).toBeNull()
   })
 
-  test('Should returns accountMolde on success', async () => {
+  test('Should returns accountModel on success', async () => {
     const { sut, loadAccountByTokenRepositorySpy } = makeSut()
-    const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
+    const accountModel = await sut.load(accessToken, role)
     expect(accountModel).toBe(loadAccountByTokenRepositorySpy.result)
   })
 })
