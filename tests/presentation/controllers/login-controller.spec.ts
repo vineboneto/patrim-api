@@ -8,10 +8,23 @@ const mockRequest = (): LoginController.Params => ({
   password: faker.internet.password()
 })
 
+type SutTypes = {
+  sut: LoginController
+  validationSpy: ValidationSpy
+}
+
+const makeSut = (): SutTypes => {
+  const validationSpy = new ValidationSpy()
+  const sut = new LoginController(validationSpy)
+  return {
+    sut,
+    validationSpy
+  }
+}
+
 describe('Login Controller', () => {
   test('Should return call Validation with correct values', async () => {
-    const validationSpy = new ValidationSpy()
-    const sut = new LoginController(validationSpy)
+    const { sut, validationSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
