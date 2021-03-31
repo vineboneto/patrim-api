@@ -10,6 +10,7 @@ export class AuthMiddleware implements Middleware {
   async handle (request: AuthMiddleware.Request): Promise<HttpResponse> {
     const { accessToken } = request
     await this.loadAccountByToken.load(accessToken, this.role)
+    return null
   }
 }
 

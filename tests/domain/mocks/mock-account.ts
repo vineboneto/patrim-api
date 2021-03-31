@@ -1,4 +1,4 @@
-import { AddAccount, Authentication } from '@/domain/usecases'
+import { AddAccount, Authentication, LoadAccountByToken } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -16,4 +16,8 @@ export const mockAuthenticationParams = (): Authentication.Params => ({
 export const mockAuthenticationModel = (): Authentication.Result => ({
   accessToken: faker.random.uuid(),
   name: faker.name.findName()
+})
+
+export const mockLoadAccountByTokenRepositoryModel = (): LoadAccountByToken.Result => ({
+  id: faker.random.number()
 })
