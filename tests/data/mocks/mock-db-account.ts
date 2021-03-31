@@ -3,7 +3,8 @@ import {
   LoadAccountByEmailRepository,
   CheckAccountByEmailRepository,
   UpdateAccessTokenRepository,
-  LoadAccountByTokenRepository
+  LoadAccountByTokenRepository,
+  Decrypter
 } from '@/data/protocols'
 
 import faker from 'faker'
@@ -63,5 +64,16 @@ export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenReposi
     this.token = accessToken
     this.role = role
     return this.result
+  }
+}
+
+export class DecrypterSpy implements Decrypter {
+  token: string
+  role: string
+  tokenDecrypted = faker.random.uuid()
+
+  async decrypt (token: string): Promise<string> {
+    this.token = token
+    return this.tokenDecrypted
   }
 }
