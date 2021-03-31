@@ -107,21 +107,43 @@ describe('AccountPostgresRepository', () => {
   })
 
   describe('loadByToken', () => {
-    test('Should returns an account on loadByToken success', async () => {
+    test('Should returns an account without role', async () => {
+      const name = faker.name.findName()
+      const email = faker.internet.email()
+      const password = faker.internet.password()
+      const accessToken = faker.random.uuid()
       const sut = makeSut()
-      const accountParams = mockAddAccountParams()
-      const token = faker.random.uuid()
-      const accountModel = await insertAccount(accountParams)
-      await sut.updateAccessToken(accountModel.id, token)
-      const accountByToken = await sut.loadByToken(token)
-      expect(accountByToken).toEqual({ id: accountModel.id })
+      await prismaClient.user.create({
+        data: {
+          name,
+          email,
+          password,
+          accessToken
+        }
+      })
+      const account = await sut.loadByToken(accessToken)
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
     })
 
-    test('Should returns null on loadByToken fails', async () => {
+    test('Should return an account on loadByToken with admin role', async () => {
+      const name = faker.name.findName()
+      const email = faker.internet.email()
+      const password = faker.internet.password()
+      const accessToken = faker.random.uuid()
       const sut = makeSut()
-      const token = faker.random.uuid()
-      const accountByToken = await sut.loadByToken(token)
-      expect(accountByToken).toBeNull()
+      await prismaClient.user.create({
+        data: {
+          name,
+          email,
+          password,
+          accessToken,
+          role: 'admin'
+        }
+      })
+      const account = await sut.loadByToken(accessToken)
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
     })
   })
 })

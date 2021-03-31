@@ -55,7 +55,8 @@ export class AccountPostgresRepository implements
     const prismaClient = await PrismaHelper.getConnection()
     const account = await prismaClient.user.findFirst({
       where: {
-        accessToken: accessToken
+        accessToken: accessToken,
+        role: role
       },
       select: {
         id: true
