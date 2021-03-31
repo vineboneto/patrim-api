@@ -1,7 +1,7 @@
 import { LoginController } from '@/presentation/controllers'
 import { ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
 import { MissingParamError } from '@/presentation/errors'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, unauthorized } from '@/presentation/helper'
 
 import faker from 'faker'
 
@@ -42,10 +42,17 @@ describe('Login Controller', () => {
     expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
   })
 
-  test('Should call Authentication with correct values ', async () => {
+  test('Should call Authentication with correct values', async () => {
     const { sut, authenticationSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(authenticationSpy.params).toEqual(request)
+  })
+
+  test('Should return 401 if credentials are invalid', async () => {
+    const { sut, authenticationSpy } = makeSut()
+    authenticationSpy.result = null
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
