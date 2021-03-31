@@ -105,4 +105,23 @@ describe('AccountPostgresRepository', () => {
       expect(accountWithAccessTokenUpdated.accessToken).toBe(token)
     })
   })
+
+  describe('loadByToken', () => {
+    test('Should returns an account on loadByToken success', async () => {
+      const sut = makeSut()
+      const accountParams = mockAddAccountParams()
+      const token = faker.random.uuid()
+      const accountModel = await insertAccount(accountParams)
+      await sut.updateAccessToken(accountModel.id, token)
+      const accountByToken = await sut.loadByToken(token)
+      expect(accountByToken).toEqual({ id: accountModel.id })
+    })
+
+    test('Should returns null on loadByToken fails', async () => {
+      const sut = makeSut()
+      const token = faker.random.uuid()
+      const accountByToken = await sut.loadByToken(token)
+      expect(accountByToken).toBeNull()
+    })
+  })
 })
