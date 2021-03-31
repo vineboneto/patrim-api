@@ -1,26 +1,29 @@
-import { LoadAccountByTokenRepository } from '@/data/protocols'
 import { DbLoadAccountByToken } from '@/data/usecases'
+import { LoadAccountByTokenRepositorySpy } from '@/tests/data/mocks'
 
-class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenRepository {
-  token: string
-  role: string
-  result: {
-    id: 0
-  }
+import faker from 'faker'
 
-  async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
-    this.token = accessToken
-    this.role = role
-    return this.result
+type SutTypes = {
+  sut: DbLoadAccountByToken
+  loadAccountByTokenRepositorySpy: LoadAccountByTokenRepositorySpy
+}
+
+const makeSut = (): SutTypes => {
+  const loadAccountByTokenRepositorySpy = new LoadAccountByTokenRepositorySpy()
+  const sut = new DbLoadAccountByToken(loadAccountByTokenRepositorySpy)
+  return {
+    sut,
+    loadAccountByTokenRepositorySpy
   }
 }
 
 describe('DbLoadAccountByToken', () => {
   test('Should call LoadAccountByTokenRepository with correct values', async () => {
-    const loadAccountByTokenRepositorySpy = new LoadAccountByTokenRepositorySpy()
-    const sut = new DbLoadAccountByToken(loadAccountByTokenRepositorySpy)
-    await sut.load('any_access_token', 'any_role')
-    expect(loadAccountByTokenRepositorySpy.token).toBe('any_access_token')
-    expect(loadAccountByTokenRepositorySpy.role).toBe('any_role')
+    const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+    const accessToken = faker.random.uuid()
+    const role = faker.random.word()
+    await sut.load(accessToken, role)
+    expect(loadAccountByTokenRepositorySpy.token).toBe(accessToken)
+    expect(loadAccountByTokenRepositorySpy.role).toBe(role)
   })
 })
