@@ -54,16 +54,20 @@ describe('DbLoadAccountByToken', () => {
   test('Should returns null if Decrypter returns Error', async () => {
     const { sut, decrypterSpy } = makeSut()
     jest.spyOn(decrypterSpy, 'decrypt').mockRejectedValueOnce(new Error())
-    const accessToken = faker.random.uuid()
-    const accountModel = await sut.load(accessToken, faker.random.word())
+    const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
     expect(accountModel).toBeNull()
   })
 
   test('Should returns null if Decrypter returns null', async () => {
     const { sut, decrypterSpy } = makeSut()
     decrypterSpy.tokenDecrypted = null
-    const accessToken = faker.random.uuid()
-    const accountModel = await sut.load(accessToken, faker.random.word())
+    const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
     expect(accountModel).toBeNull()
+  })
+
+  test('Should returns accountMolde on success', async () => {
+    const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+    const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
+    expect(accountModel).toBe(loadAccountByTokenRepositorySpy.result)
   })
 })
