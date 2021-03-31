@@ -3,26 +3,28 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
 import { PrismaClient } from '@prisma/client'
 import request from 'supertest'
+import { hash } from 'bcrypt'
 import faker from 'faker'
 
 let prismaClient: PrismaClient
 
 describe('Login Routes', () => {
+  beforeAll(() => {
+    PrismaHelper.connect()
+  })
+
+  afterAll(async () => {
+    await prismaClient.$executeRaw('DELETE FROM "User";')
+    PrismaHelper.disconnect()
+  })
+
+  beforeEach(async () => {
+    prismaClient = await PrismaHelper.getConnection()
+    await prismaClient.$executeRaw('ALTER SEQUENCE "User_id_seq" RESTART WITH 1;')
+    await prismaClient.$executeRaw('DELETE FROM "User";')
+  })
+
   describe('POST /signup', () => {
-    beforeAll(() => {
-      PrismaHelper.connect()
-    })
-
-    afterAll(async () => {
-      await PrismaHelper.disconnect()
-    })
-
-    beforeEach(async () => {
-      prismaClient = await PrismaHelper.getConnection()
-      await prismaClient.$executeRaw('ALTER SEQUENCE "User_id_seq" RESTART WITH 1;')
-      await prismaClient.$executeRaw('DELETE FROM "User";')
-    })
-
     test('Should return badRequest if same required data not provided', async () => {
       const password = faker.internet.password()
       await request(app)
@@ -44,6 +46,28 @@ describe('Login Routes', () => {
           email: faker.internet.email(),
           password,
           passwordConfirmation: password
+        })
+        .expect(200)
+    })
+  })
+
+  describe('POST /login', () => {
+    test('Should return 200 on login', async () => {
+      const email = faker.internet.email()
+      const password = faker.internet.password()
+      const hashedPassword = await hash(password, 12)
+      await prismaClient.user.create({
+        data: {
+          name: faker.name.findName(),
+          email,
+          password: hashedPassword
+        }
+      })
+      await request(app)
+        .post('/api/login')
+        .send({
+          email,
+          password
         })
         .expect(200)
     })
