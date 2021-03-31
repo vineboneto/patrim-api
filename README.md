@@ -10,7 +10,8 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
 
   1. [Criar Setores (Em desenvolvimento)](./requirements/add-sector.md)
   2. [Criar Conta](./requirements/signup.md)
-  3. [Criar Categoria (Em desenvolvimento)](./requirements/add-category.md)
+  3. [Realizar Login](./requirements/login.md)
+  4. [Criar Categoria (Em desenvolvimento)](./requirements/add-category.md)
 
 > ### Metodologia de Design
 
