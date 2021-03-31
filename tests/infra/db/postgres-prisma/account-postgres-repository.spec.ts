@@ -108,11 +108,11 @@ describe('AccountPostgresRepository', () => {
 
   describe('loadByToken', () => {
     test('Should returns an account without role', async () => {
+      const sut = makeSut()
       const name = faker.name.findName()
       const email = faker.internet.email()
       const password = faker.internet.password()
       const accessToken = faker.random.uuid()
-      const sut = makeSut()
       await prismaClient.user.create({
         data: {
           name,
@@ -127,11 +127,11 @@ describe('AccountPostgresRepository', () => {
     })
 
     test('Should return an account on loadByToken with admin role', async () => {
+      const sut = makeSut()
       const name = faker.name.findName()
       const email = faker.internet.email()
       const password = faker.internet.password()
       const accessToken = faker.random.uuid()
-      const sut = makeSut()
       await prismaClient.user.create({
         data: {
           name,
@@ -144,6 +144,44 @@ describe('AccountPostgresRepository', () => {
       const account = await sut.loadByToken(accessToken)
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
+    })
+
+    test('Should return an account on loadByToken with admin role', async () => {
+      const sut = makeSut()
+      const name = faker.name.findName()
+      const email = faker.internet.email()
+      const password = faker.internet.password()
+      const accessToken = faker.random.uuid()
+      await prismaClient.user.create({
+        data: {
+          name,
+          email,
+          password,
+          accessToken,
+          role: 'admin'
+        }
+      })
+      const account = await sut.loadByToken(accessToken, 'admin')
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+    })
+
+    test('Should return null account on loadByToken with invalid role', async () => {
+      const sut = makeSut()
+      const name = faker.name.findName()
+      const email = faker.internet.email()
+      const password = faker.internet.password()
+      const accessToken = faker.random.uuid()
+      await prismaClient.user.create({
+        data: {
+          name,
+          email,
+          password,
+          accessToken
+        }
+      })
+      const account = await sut.loadByToken(accessToken, 'admin')
+      expect(account).toBeFalsy()
     })
   })
 })
