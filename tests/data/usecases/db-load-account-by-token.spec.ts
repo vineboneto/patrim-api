@@ -26,4 +26,11 @@ describe('DbLoadAccountByToken', () => {
     expect(loadAccountByTokenRepositorySpy.token).toBe(accessToken)
     expect(loadAccountByTokenRepositorySpy.role).toBe(role)
   })
+
+  test('Should return null if LoadAccountByTokenRepository returns null', async () => {
+    const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+    loadAccountByTokenRepositorySpy.result = null
+    const accountModel = await sut.load(faker.random.uuid(), faker.random.word())
+    expect(accountModel).toBeNull()
+  })
 })
