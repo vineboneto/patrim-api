@@ -15,7 +15,7 @@
 
 > ## Exceções
 
-1. [ ] Retorna erro **404** se a API não existir
+1. [x] Retorna erro **404** se a API não existir
 2. [x] Retorna erro **400** se name, email, password ou passwordConfirmation não forem fornecidos pelo client
 3. [x] Retorna erro **400** se password e passwordConfirmation não forem iguais
 4. [x] Retorna erro **400** se o campo email for um e-mail inválido
