@@ -22,11 +22,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbLoadAccountByToken', () => {
   test('Should call LoadAccountByTokenRepository with correct values', async () => {
-    const { sut, loadAccountByTokenRepositorySpy } = makeSut()
+    const { sut, loadAccountByTokenRepositorySpy, decrypterSpy } = makeSut()
     const accessToken = faker.random.uuid()
     const role = faker.random.word()
     await sut.load(accessToken, role)
-    expect(loadAccountByTokenRepositorySpy.token).toBe(accessToken)
+    expect(loadAccountByTokenRepositorySpy.token).toBe(decrypterSpy.tokenDecrypted)
     expect(loadAccountByTokenRepositorySpy.role).toBe(role)
   })
 
@@ -49,5 +49,21 @@ describe('DbLoadAccountByToken', () => {
     const accessToken = faker.random.uuid()
     await sut.load(accessToken, faker.random.word())
     expect(decrypterSpy.token).toBe(accessToken)
+  })
+
+  test('Should returns null if Decrypter returns Error', async () => {
+    const { sut, decrypterSpy } = makeSut()
+    jest.spyOn(decrypterSpy, 'decrypt').mockRejectedValueOnce(new Error())
+    const accessToken = faker.random.uuid()
+    const accountModel = await sut.load(accessToken, faker.random.word())
+    expect(accountModel).toBeNull()
+  })
+
+  test('Should returns null if Decrypter returns null', async () => {
+    const { sut, decrypterSpy } = makeSut()
+    decrypterSpy.tokenDecrypted = null
+    const accessToken = faker.random.uuid()
+    const accountModel = await sut.load(accessToken, faker.random.word())
+    expect(accountModel).toBeNull()
   })
 })
