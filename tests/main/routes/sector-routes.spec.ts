@@ -13,7 +13,8 @@ describe('Sector Routes', () => {
   })
 
   afterAll(async () => {
-    await PrismaHelper.disconnect()
+    await prismaClient.$executeRaw('DELETE FROM "Sector";')
+    PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
