@@ -17,10 +17,23 @@ class ControllerSpy implements Controller {
   }
 }
 
+type SutTypes = {
+  sut: LogControllerDecorator
+  controllerSpy: ControllerSpy
+}
+
+const makeSut = (): SutTypes => {
+  const controllerSpy = new ControllerSpy()
+  const sut = new LogControllerDecorator(controllerSpy)
+  return {
+    sut,
+    controllerSpy
+  }
+}
+
 describe('LogControllerDecorator', () => {
   test('Should call Controller with correct values', async () => {
-    const controllerSpy = new ControllerSpy()
-    const sut = new LogControllerDecorator(controllerSpy)
+    const { sut, controllerSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(controllerSpy.request).toEqual(request)
