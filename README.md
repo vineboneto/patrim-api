@@ -39,6 +39,7 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
  - Rimraf
 
 > ### Configuração
+
 ***
 **Dependências**
  - Abra o arquivo na raíz em seu terminal. Execute:
@@ -46,6 +47,7 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
   # Instala as dependências
   $ yarn
   ```
+***
 **Husky**
  - Suporte para ``pre-commit``, ``pre-push`` e ``commit-msg``
  - Abra o arquivo na raíz em seu terminal. Execute:
