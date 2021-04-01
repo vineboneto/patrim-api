@@ -1,7 +1,7 @@
 import { AddCategoryController } from '@/presentation/controllers/'
 import { AddCategorySpy, ValidationSpy } from '@/tests/presentation/mocks'
 import faker from 'faker'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, noContent } from '@/presentation/helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 
 type SutTypes = {
@@ -49,5 +49,11 @@ describe('AddCategoryController', async () => {
     const param = { name: faker.name.jobArea() }
     const exists = await sut.handle(param)
     expect(exists).toEqual(forbidden(new AlreadyExistsError(param.name)))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle({ name: faker.name.jobArea() })
+    expect(response).toEqual(noContent())
   })
 })
