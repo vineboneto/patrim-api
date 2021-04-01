@@ -35,5 +35,14 @@ describe('Category Routes', () => {
         })
         .expect(204)
     })
+
+    test('Should return 403 on save category without accessToken', async () => {
+      await request(app)
+        .post('/api/categories')
+        .send({
+          name: faker.name.jobArea()
+        })
+        .expect(403)
+    })
   })
 })
