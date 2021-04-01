@@ -3,7 +3,7 @@
 > ## Caso de sucesso
 
 1. [x] Recebe uma requisição do tipo **POST** na rota **/api/sectors**
-2. [ ] Valida se a requisição foi feita por um **admin**
+2. [x] Valida se a requisição foi feita por um **usuário**
 3. [x] Valida dados obrigatórios **name**
 4. [x] **Cria** um setor com os dados fornecidos
 5. [x] Retorna **204**, sem dados
