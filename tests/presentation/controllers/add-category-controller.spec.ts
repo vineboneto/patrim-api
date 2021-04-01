@@ -1,6 +1,8 @@
 import { AddCategoryController } from '@/presentation/controllers/'
 import { AddCategorySpy, ValidationSpy } from '@/tests/presentation/mocks'
 import faker from 'faker'
+import { badRequest, forbidden } from '@/presentation/helper'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 type SutTypes = {
   addCategorySpy: AddCategorySpy
@@ -19,18 +21,33 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('AddCategoryController', () => {
-  test('Should call AddSector with correct values', async () => {
-    const { sut, addCategorySpy } = makeSut()
-    const request = { name: faker.name.jobTitle() }
-    await sut.handle(request)
-    expect(addCategorySpy.params).toEqual(request)
-  })
-
+describe('AddCategoryController', async () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationSpy } = makeSut()
     const request = { name: faker.name.jobTitle() }
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return 400 if validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new Error()
+    const validation = await sut.handle({ name: faker.name.jobArea() })
+    expect(validation).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call AddCategory with correct values', async () => {
+    const { sut, addCategorySpy } = makeSut()
+    const request = { name: faker.name.jobArea() }
+    await sut.handle(request)
+    expect(addCategorySpy.params).toEqual(request)
+  })
+
+  test('Should return AlreadyExists if AddCategory return false', async () => {
+    const { sut, addCategorySpy } = makeSut()
+    addCategorySpy.result = false
+    const param = { name: faker.name.jobArea() }
+    const exists = await sut.handle(param)
+    expect(exists).toEqual(forbidden(new AlreadyExistsError(param.name)))
   })
 })
