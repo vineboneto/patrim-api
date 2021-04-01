@@ -1,6 +1,6 @@
 import { AddCategory } from '@/domain/usecases'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helper/'
+import { badRequest, forbidden, noContent } from '@/presentation/helper/'
 import { AlreadyExistsError } from '@/presentation/errors'
 
 export class AddCategoryController implements Controller {
@@ -13,7 +13,7 @@ export class AddCategoryController implements Controller {
     const error = this.validation.validate(request)
     if (error) return badRequest(error)
     if (!await this.addCategory.add(request)) return forbidden(new AlreadyExistsError(request.name))
-    return null
+    return noContent()
   }
 }
 
