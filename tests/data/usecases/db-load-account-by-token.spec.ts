@@ -30,9 +30,9 @@ describe('DbLoadAccountByToken', () => {
   })
 
   test('Should call LoadAccountByTokenRepository with correct values', async () => {
-    const { sut, loadAccountByTokenRepositorySpy, decrypterSpy } = makeSut()
+    const { sut, loadAccountByTokenRepositorySpy } = makeSut()
     await sut.load(accessToken, role)
-    expect(loadAccountByTokenRepositorySpy.token).toBe(decrypterSpy.tokenDecrypted)
+    expect(loadAccountByTokenRepositorySpy.token).toBe(accessToken)
     expect(loadAccountByTokenRepositorySpy.role).toBe(role)
   })
 
