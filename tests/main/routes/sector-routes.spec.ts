@@ -35,5 +35,14 @@ describe('Sector Routes', () => {
         })
         .expect(204)
     })
+
+    test('Should return 403 on save sector without accessToken', async () => {
+      await request(app)
+        .post('/api/sectors')
+        .send({
+          name: faker.name.jobArea()
+        })
+        .expect(403)
+    })
   })
 })
