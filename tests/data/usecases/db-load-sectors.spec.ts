@@ -1,20 +1,23 @@
 import { DbLoadSectors } from '@/data/usecases'
-import { LoadSectorsRepository } from '@/data/protocols'
-import { mockSectorModels } from '@/tests/domain/mocks'
+import { LoadSectorsRepositorySpy } from '@/tests/data/mocks'
 
-class LoadSectorsRepositorySpy implements LoadSectorsRepository {
-  sectorModels = mockSectorModels()
-  callCount = 0
-  async loadAll (): Promise<LoadSectorsRepository.Result> {
-    this.callCount++
-    return this.sectorModels
+type SutTypes = {
+  sut: DbLoadSectors
+  loadSectorsRepositorySpy: LoadSectorsRepositorySpy
+}
+
+const makeSut = (): SutTypes => {
+  const loadSectorsRepositorySpy = new LoadSectorsRepositorySpy()
+  const sut = new DbLoadSectors(loadSectorsRepositorySpy)
+  return {
+    sut,
+    loadSectorsRepositorySpy
   }
 }
 
 describe('DbLoadSectors', () => {
   test('Should call LoadSectorsRepository', async () => {
-    const loadSectorsRepositorySpy = new LoadSectorsRepositorySpy()
-    const sut = new DbLoadSectors(loadSectorsRepositorySpy)
+    const { sut, loadSectorsRepositorySpy } = makeSut()
     await sut.load()
     expect(loadSectorsRepositorySpy.callCount).toBe(1)
   })

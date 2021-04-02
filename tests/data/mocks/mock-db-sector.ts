@@ -1,4 +1,5 @@
-import { AddSectorRepository, CheckSectorByNameRepository } from '@/data/protocols'
+import { AddSectorRepository, CheckSectorByNameRepository, LoadSectorsRepository } from '@/data/protocols'
+import { mockSectorModels } from '@/tests/domain/mocks'
 
 export class AddSectorRepositorySpy implements AddSectorRepository {
   params: AddSectorRepository.Params
@@ -16,5 +17,14 @@ export class CheckSectorByNameRepositorySpy implements CheckSectorByNameReposito
   async checkByName (name: string): Promise<boolean> {
     this.name = name
     return await this.result
+  }
+}
+
+export class LoadSectorsRepositorySpy implements LoadSectorsRepository {
+  sectorModels = mockSectorModels()
+  callCount = 0
+  async loadAll (): Promise<LoadSectorsRepository.Result> {
+    this.callCount++
+    return this.sectorModels
   }
 }
