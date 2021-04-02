@@ -22,9 +22,16 @@ describe('DbLoadSectors', () => {
     expect(loadSectorsRepositorySpy.callCount).toBe(1)
   })
 
-  test('Should returns sectors on LoadSectorRepository success', async () => {
+  test('Should returns sectors on LoadSectorsRepository success', async () => {
     const { sut, loadSectorsRepositorySpy } = makeSut()
     const httpResponse = await sut.load()
     expect(httpResponse).toBe(loadSectorsRepositorySpy.sectorModels)
+  })
+
+  test('Should throws if LoadSectorsRepository throws', async () => {
+    const { sut, loadSectorsRepositorySpy } = makeSut()
+    jest.spyOn(loadSectorsRepositorySpy, 'loadAll').mockRejectedValueOnce(new Error())
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
   })
 })
