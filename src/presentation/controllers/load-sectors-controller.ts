@@ -1,5 +1,6 @@
 import { LoadSectors } from '@/domain/usecases'
 import { Controller, HttpResponse } from '@/presentation/protocols'
+import { noContent } from '@/presentation/helper'
 
 export class LoadSectorsController implements Controller {
   constructor (
@@ -7,7 +8,9 @@ export class LoadSectorsController implements Controller {
   ) {}
 
   async handle (): Promise<HttpResponse> {
-    await this.loadSectors.load()
-    return null
+    const sectors = await this.loadSectors.load()
+    if (!sectors.length) {
+      return noContent()
+    }
   }
 }
