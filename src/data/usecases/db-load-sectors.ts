@@ -7,7 +7,6 @@ export class DbLoadSectors implements LoadSectors {
   ) {}
 
   async load (): Promise<LoadSectors.Result> {
-    await this.loadSectorsRepository.loadAll()
-    return null
+    return this.loadSectorsRepository.loadAll()
   }
 }
