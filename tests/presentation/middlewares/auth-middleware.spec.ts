@@ -6,7 +6,7 @@ import { AccessDeniedError } from '@/presentation/errors'
 import faker from 'faker'
 
 const mockRequest = (): AuthMiddleware.Request => ({
-  accessToken: faker.random.uuid()
+  accessToken: faker.datatype.uuid()
 })
 
 type SutTypes = {

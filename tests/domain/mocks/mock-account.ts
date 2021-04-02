@@ -14,10 +14,10 @@ export const mockAuthenticationParams = (): Authentication.Params => ({
 })
 
 export const mockAuthenticationModel = (): Authentication.Result => ({
-  accessToken: faker.random.uuid(),
+  accessToken: faker.datatype.uuid(),
   name: faker.name.findName()
 })
 
 export const mockLoadAccountByTokenRepositoryModel = (): LoadAccountByToken.Result => ({
-  id: faker.random.number()
+  id: faker.datatype.number()
 })

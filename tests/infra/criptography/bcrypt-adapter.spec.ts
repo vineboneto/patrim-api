@@ -46,7 +46,7 @@ describe('BcryptAdapter', () => {
     let hashedValue: string
     beforeEach(() => {
       value = faker.random.word()
-      hashedValue = faker.random.uuid()
+      hashedValue = faker.datatype.uuid()
     })
 
     test('Should call compare with correct values', async () => {

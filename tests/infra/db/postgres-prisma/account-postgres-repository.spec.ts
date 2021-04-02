@@ -95,7 +95,7 @@ describe('AccountPostgresRepository', () => {
       const sut = makeSut()
       const accountParams = mockAddAccountParams()
       const account = await insertAccount(accountParams)
-      const token = faker.random.uuid()
+      const token = faker.datatype.uuid()
       await sut.updateAccessToken(account.id, token)
       const accountWithAccessTokenUpdated = await prismaClient.user.findFirst({
         where: {
@@ -116,7 +116,7 @@ describe('AccountPostgresRepository', () => {
       name = faker.name.findName()
       email = faker.internet.email()
       password = faker.internet.password()
-      accessToken = faker.random.uuid()
+      accessToken = faker.datatype.uuid()
     })
 
     test('Should returns an account without role', async () => {
@@ -182,7 +182,7 @@ describe('AccountPostgresRepository', () => {
 
     test('Should return null if loadByToken fails', async () => {
       const sut = makeSut()
-      const account = await sut.loadByToken(faker.random.uuid())
+      const account = await sut.loadByToken(faker.datatype.uuid())
       expect(account).toBeFalsy()
     })
   })
