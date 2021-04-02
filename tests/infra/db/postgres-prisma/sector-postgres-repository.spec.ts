@@ -69,5 +69,11 @@ describe('SectorPostgresRepository', () => {
       expect(sectors).toBeTruthy()
       expect(sectors.length).toBe(3)
     })
+
+    test('Should returns empty array if sectors not exists', async () => {
+      const sut = makeSut()
+      const sectors = await sut.loadAll()
+      expect(sectors).toEqual([])
+    })
   })
 })
