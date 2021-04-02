@@ -8,10 +8,11 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
 
 > ### API construidas
 
-  1. [Criar Setores](./requirements/add-sector.md)
-  2. [Criar Conta](./requirements/signup.md)
-  3. [Realizar Login](./requirements/login.md)
-  4. [Criar Categoria](./requirements/add-category.md)
+  1. [Criar Conta](./requirements/signup.md)
+  2. [Realizar Login](./requirements/login.md)
+  3. [Criar Setores](./requirements/add-sector.md)
+  4. [Listar Setores](./requirements/load-sectors.md)
+  5. [Criar Categoria](./requirements/add-category.md)
 
 > ### Metodologia de Design
 
