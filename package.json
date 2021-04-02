@@ -11,7 +11,7 @@
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "prepare": "node prepare-prisma.js",
     "husky": "node husky-config.js",
-    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --no-cache",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:watch": "yarn test - --watch",
     "test:staged": "yarn test - --findRelatedTests",
     "test:ci": "yarn test - --coverage",

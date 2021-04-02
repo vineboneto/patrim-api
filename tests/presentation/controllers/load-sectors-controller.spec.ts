@@ -1,6 +1,6 @@
 import { LoadSectorsController } from '@/presentation/controllers'
 import { LoadSectorsSpy } from '@/tests/presentation/mocks'
-import { noContent, ok } from '@/presentation/helper'
+import { noContent, ok, serverError } from '@/presentation/helper'
 
 type SutTypes = {
   sut: LoadSectorsController
@@ -34,5 +34,13 @@ describe('LoadSectorsController', () => {
     const { sut, loadSectorsSpy } = makeSut()
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(ok(loadSectorsSpy.surveyModels))
+  })
+
+  test('Should return 500 if sectors LoadSectors throws', async () => {
+    const { sut, loadSectorsSpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(loadSectorsSpy, 'load').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle()
+    expect(httpResponse).toEqual(serverError(error))
   })
 })
