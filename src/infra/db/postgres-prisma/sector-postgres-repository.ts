@@ -1,7 +1,10 @@
-import { AddSectorRepository, CheckSectorByNameRepository } from '@/data/protocols'
+import { AddSectorRepository, CheckSectorByNameRepository, LoadSectorsRepository } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
-export class SectorPostgresRepository implements AddSectorRepository, CheckSectorByNameRepository {
+export class SectorPostgresRepository implements
+  AddSectorRepository,
+  CheckSectorByNameRepository,
+  LoadSectorsRepository {
   async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Result> {
     const { name } = sector
     const prismaClient = await PrismaHelper.getConnection()
@@ -21,5 +24,11 @@ export class SectorPostgresRepository implements AddSectorRepository, CheckSecto
       }
     })
     return sector !== null
+  }
+
+  async loadAll (): Promise<LoadSectorsRepository.Result> {
+    const prismaClient = await PrismaHelper.getConnection()
+    const sectors = await prismaClient.sector.findMany()
+    return sectors
   }
 }
