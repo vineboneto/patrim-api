@@ -1,5 +1,5 @@
 import { SectorPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
-import { mockAddSectorParams } from '@/tests/domain/mocks/mock-sector'
+import { mockAddSectorParams, mockAddSectorsParams } from '@/tests/domain/mocks/mock-sector'
 
 import { PrismaClient } from '@prisma/client'
 
@@ -56,6 +56,18 @@ describe('SectorPostgresRepository', () => {
       const { name } = mockAddSectorParams()
       const isValid = await sut.checkByName(name)
       expect(isValid).toBe(false)
+    })
+  })
+
+  describe('loadAll()', () => {
+    test('Should returns all sectors on success', async () => {
+      const sut = makeSut()
+      await prismaClient.sector.createMany({
+        data: mockAddSectorsParams()
+      })
+      const sectors = await sut.loadAll()
+      expect(sectors).toBeTruthy()
+      expect(sectors.length).toBe(3)
     })
   })
 })

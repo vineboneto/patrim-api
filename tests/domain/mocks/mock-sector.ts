@@ -6,6 +6,18 @@ export const mockAddSectorParams = (): AddSector.Params => ({
   name: faker.name.jobArea()
 })
 
+export const mockAddSectorsParams = (): AddSector.Params[] => ([
+  {
+    name: faker.name.jobArea()
+  },
+  {
+    name: faker.name.jobArea()
+  },
+  {
+    name: faker.name.jobArea()
+  }
+])
+
 export const mockSectorModels = (): LoadSectors.Result => ([
   {
     id: faker.datatype.number(),
