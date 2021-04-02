@@ -1,20 +1,23 @@
-import { LoadSectors } from '@/domain/usecases'
 import { LoadSectorsController } from '@/presentation/controllers'
-import { mockSectorModels } from '@/tests/domain/mocks'
+import { LoadSectorsSpy } from '@/tests/presentation/mocks'
 
-class LoadSectorsSpy implements LoadSectors {
-  surveyModels = mockSectorModels()
-  callsCount = 0
-  async load (): Promise<LoadSectors.Result> {
-    this.callsCount++
-    return this.surveyModels
+type SutTypes = {
+  sut: LoadSectorsController
+  loadSectorsSpy: LoadSectorsSpy
+}
+
+const makeSut = (): SutTypes => {
+  const loadSectorsSpy = new LoadSectorsSpy()
+  const sut = new LoadSectorsController(loadSectorsSpy)
+  return {
+    sut,
+    loadSectorsSpy
   }
 }
 
 describe('LoadSectorsController', () => {
   test('Should call LoadSectors', async () => {
-    const loadSectorsSpy = new LoadSectorsSpy()
-    const sut = new LoadSectorsController(loadSectorsSpy)
+    const { sut, loadSectorsSpy } = makeSut()
     await sut.handle()
     expect(loadSectorsSpy.callsCount).toBe(1)
   })
