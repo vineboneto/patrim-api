@@ -1,6 +1,6 @@
 import { LoadSectorsController } from '@/presentation/controllers'
 import { LoadSectorsSpy } from '@/tests/presentation/mocks'
-import { noContent } from '@/presentation/helper'
+import { noContent, ok } from '@/presentation/helper'
 
 type SutTypes = {
   sut: LoadSectorsController
@@ -28,5 +28,11 @@ describe('LoadSectorsController', () => {
     loadSectorsSpy.surveyModels = []
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(noContent())
+  })
+
+  test('Should return 200 if sectors is not empty', async () => {
+    const { sut, loadSectorsSpy } = makeSut()
+    const httpResponse = await sut.handle()
+    expect(httpResponse).toEqual(ok(loadSectorsSpy.surveyModels))
   })
 })
