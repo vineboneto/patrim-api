@@ -21,4 +21,10 @@ describe('DbLoadSectors', () => {
     await sut.load()
     expect(loadSectorsRepositorySpy.callCount).toBe(1)
   })
+
+  test('Should returns sectors on LoadSectorRepository success', async () => {
+    const { sut, loadSectorsRepositorySpy } = makeSut()
+    const httpResponse = await sut.load()
+    expect(httpResponse).toBe(loadSectorsRepositorySpy.sectorModels)
+  })
 })
