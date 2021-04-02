@@ -5,6 +5,7 @@ import { makeAccessToken } from '@/tests/main/mocks'
 import { PrismaClient } from '@prisma/client'
 import request from 'supertest'
 import faker from 'faker'
+import { mockAddSectorsParams } from '../../domain/mocks'
 
 let prismaClient: PrismaClient
 
@@ -47,12 +48,23 @@ describe('Sector Routes', () => {
   })
 
   describe('GET /sectors', () => {
-    test('Should list return empty array', async () => {
+    test('Should return empty array', async () => {
       const accessToken = await makeAccessToken(prismaClient)
       await request(app)
         .get('/api/sectors')
         .set('x-access-token', accessToken)
         .expect(204)
+    })
+
+    test('Should return all sectors', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await prismaClient.sector.createMany({
+        data: mockAddSectorsParams()
+      })
+      await request(app)
+        .get('/api/sectors')
+        .set('x-access-token', accessToken)
+        .expect(200)
     })
   })
 })
