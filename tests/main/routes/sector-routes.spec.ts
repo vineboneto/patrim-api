@@ -45,4 +45,14 @@ describe('Sector Routes', () => {
         .expect(403)
     })
   })
+
+  describe('GET /sectors', () => {
+    test('Should list return empty array', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await request(app)
+        .get('/api/sectors')
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+  })
 })
