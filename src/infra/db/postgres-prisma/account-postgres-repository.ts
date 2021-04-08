@@ -36,7 +36,7 @@ export class AccountPostgresRepository implements
     return account !== null
   }
 
-  async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
+  async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Model> {
     const prismaClient = await PrismaHelper.getConnection()
     const account = await prismaClient.user.findFirst({
       where: {
@@ -51,7 +51,7 @@ export class AccountPostgresRepository implements
     return account
   }
 
-  async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
+  async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Model> {
     const prismaClient = await PrismaHelper.getConnection()
     const account = await prismaClient.user.findFirst({
       where: {

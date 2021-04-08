@@ -8,3 +8,5 @@ services:
 script:
   - eslint 'src/**'
   - yarn test:coveralls
+notifications:
+  email: false

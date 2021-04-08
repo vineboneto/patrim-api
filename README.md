@@ -1,6 +1,8 @@
 # Patrim
 
-[![Coverage Status](https://coveralls.io/repos/github/vineboneto/patrim-api/badge.svg?branch=master)](https://coveralls.io/github/vineboneto/patrim-api?branch=master) [![Build Status](https://travis-ci.org/vineboneto/patrim-api.svg?branch=master)](https://travis-ci.org/vineboneto/patrim-api)
+[![Coverage Status](https://coveralls.io/repos/github/vineboneto/patrim-api/badge.svg?branch=master)](https://coveralls.io/github/vineboneto/patrim-api?branch=master) [![Build Status](https://travis-ci.org/vineboneto/patrim-api.svg?branch=master)](https://travis-ci.org/vineboneto/patrim-api) [![Known Vulnerabilities](https://snyk.io/test/github/vineboneto/patrim-api/badge.svg)](https://snyk.io/test/github/vineboneto/patrim-api)
+
+
 
 Essa API está sendo desenvolvida como objeto de estudo e para utilização em uma aplicação de controle de patrimônio juntamente com [Ivo Melo](https://github.com/evil988)
 
@@ -10,9 +12,11 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
 
   1. [Criar Conta](./requirements/signup.md)
   2. [Realizar Login](./requirements/login.md)
-  3. [Criar Setores](./requirements/add-sector.md)
-  4. [Listar Setores](./requirements/load-sectors.md)
-  5. [Criar Categoria](./requirements/add-category.md)
+  3. [Autenticar Rotas](./requirements/auth-middleware.md)
+  4. [Criar Setores](./requirements/add-sector.md)
+  5. [Listar Setores](./requirements/load-sectors.md)
+  6. [Criar Categoria](./requirements/add-category.md)
+  7. [Listar Categorias](./requirements/load-categories.md.md)
 
 > ### Metodologia de Design
 

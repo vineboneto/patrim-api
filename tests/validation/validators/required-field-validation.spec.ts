@@ -1,5 +1,5 @@
-import { MissingParamError } from '@/presentation/errors'
 import { RequiredFieldValidation } from '@/validation/validators'
+import { MissingParamError } from '@/presentation/errors'
 
 import faker from 'faker'
 

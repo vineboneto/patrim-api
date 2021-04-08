@@ -1,7 +1,7 @@
 import { AuthMiddleware } from '@/presentation/middlewares'
-import { LoadAccountByTokenSpy } from '@/tests/presentation/mocks'
 import { forbidden, ok, serverError } from '@/presentation/helper'
 import { AccessDeniedError } from '@/presentation/errors'
+import { LoadAccountByTokenSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 

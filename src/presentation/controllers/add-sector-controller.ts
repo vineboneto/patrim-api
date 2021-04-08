@@ -1,7 +1,7 @@
-import { AddSector } from '@/domain/usecases'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, noContent, serverError, forbidden } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
+import { AddSector } from '@/domain/usecases'
 
 export class AddSectorController implements Controller {
   constructor (

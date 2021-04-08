@@ -1,12 +1,12 @@
 export interface LoadSectors {
-  load (): Promise<LoadSectors.Result>
+  load (): Promise<LoadSectors.Model>
 }
 
 export namespace LoadSectors {
-  type SectorModel = {
+  export type SectorModel = {
     id: number
     name: string
   }
 
-  export type Result = SectorModel[]
+  export type Model = SectorModel[]
 }

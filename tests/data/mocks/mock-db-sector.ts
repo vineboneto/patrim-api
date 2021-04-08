@@ -1,10 +1,10 @@
 import { AddSectorRepository, CheckSectorByNameRepository, LoadSectorsRepository } from '@/data/protocols'
-import { mockSectorModels } from '@/tests/domain/mocks'
+import { mockSectorsModel } from '@/tests/domain/mocks'
 
 export class AddSectorRepositorySpy implements AddSectorRepository {
   params: AddSectorRepository.Params
   result = true
-  async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Result> {
+  async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     this.params = sector
     return this.result
   }
@@ -21,9 +21,9 @@ export class CheckSectorByNameRepositorySpy implements CheckSectorByNameReposito
 }
 
 export class LoadSectorsRepositorySpy implements LoadSectorsRepository {
-  sectorModels = mockSectorModels()
+  sectorModels = mockSectorsModel()
   callCount = 0
-  async loadAll (): Promise<LoadSectorsRepository.Result> {
+  async loadAll (): Promise<LoadSectorsRepository.Model> {
     this.callCount++
     return this.sectorModels
   }

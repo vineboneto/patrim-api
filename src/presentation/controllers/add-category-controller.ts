@@ -1,7 +1,7 @@
-import { AddCategory } from '@/domain/usecases'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper/'
 import { AlreadyExistsError } from '@/presentation/errors'
+import { AddCategory } from '@/domain/usecases'
 
 export class AddCategoryController implements Controller {
   constructor (

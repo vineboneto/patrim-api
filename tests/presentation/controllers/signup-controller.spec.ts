@@ -1,7 +1,8 @@
 import { SignUpController } from '@/presentation/controllers'
 import { EmailInUseError, MissingParamError, ServerError } from '@/presentation/errors'
 import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
-import { ValidationSpy, AddAccountSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
+import { ValidationSpy } from '@/tests/presentation/mocks'
+import { AddAccountSpy, AuthenticationSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 

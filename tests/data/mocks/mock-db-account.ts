@@ -26,7 +26,7 @@ export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailReposi
     password: faker.internet.password()
   }
 
-  async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
+  async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Model> {
     this.email = email
     return this.account
   }
@@ -60,7 +60,7 @@ export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenReposi
     id: faker.datatype.number()
   }
 
-  async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
+  async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Model> {
     this.token = accessToken
     this.role = role
     return this.result

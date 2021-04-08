@@ -1,7 +1,7 @@
 import 'module-alias/register'
-import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import env from '@/main/config/env'
 import app from '@/main/config/app'
+import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
 PrismaHelper.connect()
 

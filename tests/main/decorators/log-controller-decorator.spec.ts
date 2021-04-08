@@ -1,7 +1,7 @@
-import { LogErrorRepository } from '@/data/protocols'
 import { LogControllerDecorator } from '@/main/decorators'
 import { ok, serverError } from '@/presentation/helper'
 import { Controller, HttpResponse } from '@/presentation/protocols'
+import { LogErrorRepository } from '@/data/protocols'
 
 import faker from 'faker'
 
