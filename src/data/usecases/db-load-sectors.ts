@@ -1,4 +1,4 @@
-import { LoadSectors } from '@/domain/usecases/load-sectors'
+import { LoadSectors } from '@/domain/usecases/sector/load-sectors'
 import { LoadSectorsRepository } from '../protocols'
 
 export class DbLoadSectors implements LoadSectors {
