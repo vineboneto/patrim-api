@@ -66,5 +66,11 @@ describe('Category Routes', () => {
         .set('x-access-token', accessToken)
         .expect(200)
     })
+
+    test('Should return 403 on load without accessToken', async () => {
+      await request(app)
+        .get('/api/categories')
+        .expect(403)
+    })
   })
 })
