@@ -7,18 +7,12 @@ export const mockAddSectorParams = (): AddSector.Params => ({
 })
 
 export const mockAddSectorsParams = (): AddSector.Params[] => ([
-  {
-    name: faker.name.jobArea()
-  },
-  {
-    name: faker.name.jobArea()
-  },
-  {
-    name: faker.name.jobArea()
-  }
+  mockAddSectorParams(),
+  mockAddSectorParams(),
+  mockAddSectorParams()
 ])
 
-export const mockSectorModels = (): LoadSectors.Model => ([
+export const mockSectorsModel = (): LoadSectors.Model => ([
   {
     id: faker.datatype.number(),
     name: faker.name.findName()

@@ -1,5 +1,5 @@
 import { AddSector, LoadSectors } from '@/domain/usecases'
-import { mockSectorModels } from '@/tests/domain/mocks'
+import { mockSectorsModel } from '@/tests/domain/mocks'
 
 export class AddSectorSpy implements AddSector {
   params: AddSector.Params
@@ -11,7 +11,7 @@ export class AddSectorSpy implements AddSector {
 }
 
 export class LoadSectorsSpy implements LoadSectors {
-  surveyModels = mockSectorModels()
+  surveyModels = mockSectorsModel()
   callsCount = 0
   async load (): Promise<LoadSectors.Model> {
     this.callsCount++

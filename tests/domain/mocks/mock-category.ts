@@ -11,7 +11,7 @@ export const mockAddCategoriesParams = (): AddCategory.Params[] => ([
   mockAddCategoryParams()
 ])
 
-export const mockCategoryModels = (): LoadCategories.Model => ([
+export const mockCategoriesModel = (): LoadCategories.Model => ([
   {
     id: faker.datatype.number(),
     name: faker.name.findName()
