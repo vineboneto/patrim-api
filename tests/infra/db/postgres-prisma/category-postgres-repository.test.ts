@@ -64,5 +64,11 @@ describe('CategoryPostgresRepository', () => {
       expect(categories).toBeTruthy()
       expect(categories.length).toBe(3)
     })
+
+    test('Should return empty array if categories not exists', async () => {
+      const sut = makeSut()
+      const categories = await sut.loadAll()
+      expect(categories).toEqual([])
+    })
   })
 })
