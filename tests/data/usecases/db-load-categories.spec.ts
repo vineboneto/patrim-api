@@ -27,4 +27,11 @@ describe('DbLoadCategories', () => {
     const categories = await sut.load()
     expect(categories).toEqual(loadCategoriesRepositorySpy.categoryModels)
   })
+
+  test('Should throw if LoadCategoriesRepository throws', async () => {
+    const { sut, loadCategoriesRepositorySpy } = makeSut()
+    jest.spyOn(loadCategoriesRepositorySpy, 'loadAll').mockRejectedValueOnce(new Error())
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
+  })
 })
