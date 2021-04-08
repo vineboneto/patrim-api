@@ -45,4 +45,14 @@ describe('Category Routes', () => {
         .expect(403)
     })
   })
+
+  describe('GET /categories', () => {
+    test('Should return empty array', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await request(app)
+        .get('/api/categories')
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+  })
 })
