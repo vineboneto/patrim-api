@@ -1,5 +1,5 @@
 import { LoadCategoriesController } from '@/presentation/controllers'
-import { noContent, serverError } from '@/presentation/helper'
+import { noContent, ok, serverError } from '@/presentation/helper'
 import { LoadCategoriesSpy } from '@/tests/domain/mocks'
 
 type SutTypes = {
@@ -28,6 +28,12 @@ describe('LoadCategoriesController', () => {
     loadCategoriesSpy.categoriesModel = []
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(noContent())
+  })
+
+  test('Should return 200 if LoadCategories returns categories', async () => {
+    const { sut, loadCategoriesSpy } = makeSut()
+    const httpResponse = await sut.handle()
+    expect(httpResponse).toEqual(ok(loadCategoriesSpy.categoriesModel))
   })
 
   test('Should return 500 if LoadCategories throws', async () => {
