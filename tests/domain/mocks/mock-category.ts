@@ -5,6 +5,12 @@ export const mockAddCategoryParams = (): AddCategory.Params => ({
   name: faker.name.jobType()
 })
 
+export const mockAddCategoriesParams = (): AddCategory.Params[] => ([
+  mockAddCategoryParams(),
+  mockAddCategoryParams(),
+  mockAddCategoryParams()
+])
+
 export const mockCategoryModels = (): LoadCategories.Model => ([
   {
     id: faker.datatype.number(),
