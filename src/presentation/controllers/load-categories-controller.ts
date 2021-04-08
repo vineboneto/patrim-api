@@ -1,4 +1,5 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
+import { serverError } from '@/presentation/helper'
 import { LoadCategories } from '@/domain/usecases'
 
 export class LoadCategoriesController implements Controller {
@@ -7,7 +8,11 @@ export class LoadCategoriesController implements Controller {
   ) {}
 
   async handle (): Promise<HttpResponse> {
-    await this.loadCategories.load()
-    return null
+    try {
+      await this.loadCategories.load()
+      return null
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
