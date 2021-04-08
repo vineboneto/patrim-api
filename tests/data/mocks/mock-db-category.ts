@@ -1,4 +1,9 @@
-import { AddCategoryRepository, CheckCategoryByNameRepository } from '@/data/protocols'
+import {
+  AddCategoryRepository,
+  CheckCategoryByNameRepository,
+  LoadCategoriesRepository
+} from '@/data/protocols'
+import { mockCategoryModels } from '@/tests/domain/mocks'
 
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
   params: AddCategoryRepository.Params
@@ -15,5 +20,14 @@ export class CheckCategoryByNameRepositorySpy implements CheckCategoryByNameRepo
   async checkByName (name: string): Promise<boolean> {
     this.name = name
     return this.result
+  }
+}
+
+export class LoadCategoriesRepositorySpy implements LoadCategoriesRepository {
+  callsCount = 0
+  categoryModels = mockCategoryModels()
+  async loadAll (): Promise<LoadCategoriesRepository.Model> {
+    this.callsCount++
+    return this.categoryModels
   }
 }
