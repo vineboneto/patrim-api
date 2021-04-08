@@ -13,7 +13,7 @@ export class AddAccountSpy implements AddAccount {
 export class AuthenticationSpy implements Authentication {
   params: Authentication.Params
   result = mockAuthenticationModel()
-  async auth (authentication: Authentication.Params): Promise<Authentication.Result> {
+  async auth (authentication: Authentication.Params): Promise<Authentication.Model> {
     this.params = authentication
     return this.result
   }
@@ -24,7 +24,7 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
   role: string
   result = mockLoadAccountByTokenRepositoryModel()
 
-  async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
+  async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Model> {
     this.accessToken = accessToken
     this.role = role
     return this.result

@@ -13,11 +13,11 @@ export const mockAuthenticationParams = (): Authentication.Params => ({
   password: faker.internet.password()
 })
 
-export const mockAuthenticationModel = (): Authentication.Result => ({
+export const mockAuthenticationModel = (): Authentication.Model => ({
   accessToken: faker.datatype.uuid(),
   name: faker.name.findName()
 })
 
-export const mockLoadAccountByTokenRepositoryModel = (): LoadAccountByToken.Result => ({
+export const mockLoadAccountByTokenRepositoryModel = (): LoadAccountByToken.Model => ({
   id: faker.datatype.number()
 })

@@ -1,5 +1,5 @@
 export interface LoadSectors {
-  load (): Promise<LoadSectors.Result>
+  load (): Promise<LoadSectors.Model>
 }
 
 export namespace LoadSectors {
@@ -8,5 +8,5 @@ export namespace LoadSectors {
     name: string
   }
 
-  export type Result = SectorModel[]
+  export type Model = SectorModel[]
 }

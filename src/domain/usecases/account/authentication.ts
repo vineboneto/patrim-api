@@ -1,5 +1,5 @@
 export interface Authentication {
-  auth (authentication: Authentication.Params): Promise<Authentication.Result>
+  auth (authentication: Authentication.Params): Promise<Authentication.Model>
 }
 
 export namespace Authentication {
@@ -8,7 +8,7 @@ export namespace Authentication {
     password: string
   }
 
-  export type Result = {
+  export type Model = {
     accessToken: string
     name: string
   }

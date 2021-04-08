@@ -5,15 +5,15 @@ export class SectorPostgresRepository implements
   AddSectorRepository,
   CheckSectorByNameRepository,
   LoadSectorsRepository {
-  async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Result> {
+  async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     const { name } = sector
     const prismaClient = await PrismaHelper.getConnection()
-    const sectorResult = await prismaClient.sector.create({
+    const sectorModel = await prismaClient.sector.create({
       data: {
         name
       }
     })
-    return sectorResult !== null
+    return sectorModel !== null
   }
 
   async checkByName (name: string): Promise<boolean> {
@@ -26,7 +26,7 @@ export class SectorPostgresRepository implements
     return sector !== null
   }
 
-  async loadAll (): Promise<LoadSectorsRepository.Result> {
+  async loadAll (): Promise<LoadSectorsRepository.Model> {
     const prismaClient = await PrismaHelper.getConnection()
     const sectors = await prismaClient.sector.findMany()
     return sectors

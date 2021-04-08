@@ -3,7 +3,7 @@ import { AddCategoryRepository, CheckCategoryByNameRepository } from '@/data/pro
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
   params: AddCategoryRepository.Params
   result = true
-  async addCategory (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
+  async addCategory (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Model> {
     this.params = category
     return this.result
   }

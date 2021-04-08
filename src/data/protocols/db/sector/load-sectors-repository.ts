@@ -1,9 +1,9 @@
 import { LoadSectors } from '@/domain/usecases'
 
 export interface LoadSectorsRepository {
-  loadAll (): Promise<LoadSectorsRepository.Result>
+  loadAll (): Promise<LoadSectorsRepository.Model>
 }
 
 export namespace LoadSectorsRepository {
-  export type Result = LoadSectors.Result
+  export type Model = LoadSectors.Model
 }

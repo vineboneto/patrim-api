@@ -13,7 +13,7 @@ export class AddSectorSpy implements AddSector {
 export class LoadSectorsSpy implements LoadSectors {
   surveyModels = mockSectorModels()
   callsCount = 0
-  async load (): Promise<LoadSectors.Result> {
+  async load (): Promise<LoadSectors.Model> {
     this.callsCount++
     return this.surveyModels
   }
