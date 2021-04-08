@@ -16,7 +16,7 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
   4. [Criar Setores](./requirements/add-sector.md)
   5. [Listar Setores](./requirements/load-sectors.md)
   6. [Criar Categoria](./requirements/add-category.md)
-  7. [Listar Categorias](./requirements/load-categories.md.md)
+  7. [Listar Categorias](./requirements/load-categories.md)
 
 > ### Metodologia de Design
 
@@ -68,11 +68,14 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
  ***
   **Tests**
   ```shell
-  # Executa todos os tests
+  # Executa todos os testes
   $ yarn test
 
-  # Executa todos os tests em modo observação
-  $ yarn test:watch
+  # Executa todos os testes unitários em modo observação
+  $ yarn test:unit
+
+  # Executa todos os testes integração em modo observação
+  $ yarn test:integration
 
   # Exibe o coverage do projeto
   $ yarn test:ci
