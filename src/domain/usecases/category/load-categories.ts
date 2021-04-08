@@ -3,7 +3,7 @@ export interface LoadCategories {
 }
 
 export namespace LoadCategories {
-  type CategoryModel = {
+  export type CategoryModel = {
     id: number
     name: string
   }

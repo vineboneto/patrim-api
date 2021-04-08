@@ -1,8 +1,10 @@
 import { AddCategoryController } from '@/presentation/controllers/'
-import { AddCategorySpy, ValidationSpy } from '@/tests/presentation/mocks'
-import faker from 'faker'
 import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { AlreadyExistsError } from '@/presentation/errors'
+import { ValidationSpy } from '@/tests/presentation/mocks'
+import { AddCategorySpy } from '@/tests/domain/mocks'
+
+import faker from 'faker'
 
 type SutTypes = {
   addCategorySpy: AddCategorySpy

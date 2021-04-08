@@ -3,7 +3,7 @@ export interface LoadSectors {
 }
 
 export namespace LoadSectors {
-  type SectorModel = {
+  export type SectorModel = {
     id: number
     name: string
   }

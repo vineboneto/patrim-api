@@ -1,7 +1,8 @@
 import { AddSectorController } from '@/presentation/controllers'
-import { AddSectorSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { badRequest, noContent, serverError, forbidden } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
+import { ValidationSpy } from '@/tests/presentation/mocks'
+import { AddSectorSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 

@@ -1,6 +1,6 @@
-import { LoadSectors } from '@/domain/usecases'
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { noContent, ok, serverError } from '@/presentation/helper'
+import { LoadSectors } from '@/domain/usecases'
 
 export class LoadSectorsController implements Controller {
   constructor (
