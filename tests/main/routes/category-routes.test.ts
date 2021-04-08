@@ -1,5 +1,6 @@
 import app from '@/main/config/app'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
+import { mockAddCategoriesParams } from '@/tests/domain/mocks'
 import { makeAccessToken } from '@/tests/main/mocks'
 
 import { PrismaClient } from '@prisma/client'
@@ -53,6 +54,17 @@ describe('Category Routes', () => {
         .get('/api/categories')
         .set('x-access-token', accessToken)
         .expect(204)
+    })
+
+    test('Should return all categories', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await prismaClient.category.createMany({
+        data: mockAddCategoriesParams()
+      })
+      await request(app)
+        .get('/api/categories')
+        .set('x-access-token', accessToken)
+        .expect(200)
     })
   })
 })
