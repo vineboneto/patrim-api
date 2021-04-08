@@ -1,5 +1,5 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
-import { noContent, serverError } from '@/presentation/helper'
+import { noContent, ok, serverError } from '@/presentation/helper'
 import { LoadCategories } from '@/domain/usecases'
 
 export class LoadCategoriesController implements Controller {
@@ -10,7 +10,7 @@ export class LoadCategoriesController implements Controller {
   async handle (): Promise<HttpResponse> {
     try {
       const httpResponse = await this.loadCategories.load()
-      return httpResponse.length ? null : noContent()
+      return httpResponse.length ? ok(httpResponse) : noContent()
     } catch (error) {
       return serverError(error)
     }
