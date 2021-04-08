@@ -1,9 +1,15 @@
-import { AddCategoryRepository, CheckCategoryByNameRepository } from '@/data/protocols'
-import { AddCategory } from '@/domain/usecases'
+import {
+  AddCategoryRepository,
+  CheckCategoryByNameRepository,
+  LoadCategoriesRepository
+} from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
-export class CategoryPostgresRepository implements AddCategoryRepository, CheckCategoryByNameRepository {
-  async addCategory (category: AddCategory.Params): Promise<boolean> {
+export class CategoryPostgresRepository implements
+  AddCategoryRepository,
+  CheckCategoryByNameRepository,
+  LoadCategoriesRepository {
+  async addCategory (category: AddCategoryRepository.Params): Promise<boolean> {
     const { name } = category
     const prismaClient = await PrismaHelper.getConnection()
     const categoryResult = await prismaClient.category.create({
@@ -22,5 +28,11 @@ export class CategoryPostgresRepository implements AddCategoryRepository, CheckC
       }
     })
     return category !== null
+  }
+
+  async loadAll (): Promise<LoadCategoriesRepository.Model> {
+    const prismaClient = await PrismaHelper.getConnection()
+    const categories = await prismaClient.category.findMany()
+    return categories
   }
 }
