@@ -45,3 +45,12 @@ export class LoadSectorsSpy implements LoadSectors {
     return this.sectorsModel
   }
 }
+
+export class DeleteSectorSpy implements DeleteSector {
+  params: DeleteSector.Params
+  model = mockSectorModel()
+  async delete (params: DeleteSector.Params): Promise<DeleteSector.Model> {
+    this.params = params
+    return this.model
+  }
+}
