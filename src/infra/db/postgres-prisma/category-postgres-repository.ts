@@ -1,5 +1,6 @@
 import {
   AddCategoryRepository,
+  DeleteCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
   CheckCategoryByIdRepository
@@ -10,7 +11,8 @@ export class CategoryPostgresRepository implements
   AddCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
-  CheckCategoryByIdRepository {
+  CheckCategoryByIdRepository,
+  DeleteCategoryRepository {
   async addCategory (category: AddCategoryRepository.Params): Promise<boolean> {
     const { name } = category
     const prismaClient = await PrismaHelper.getConnection()
@@ -20,6 +22,16 @@ export class CategoryPostgresRepository implements
       }
     })
     return categoryResult !== null
+  }
+
+  async delete (id: number): Promise<DeleteCategoryRepository.Model> {
+    const prismaClient = await PrismaHelper.getConnection()
+    const categoryDeleted = await prismaClient.category.delete({
+      where: {
+        id: id
+      }
+    })
+    return categoryDeleted
   }
 
   async checkByName (name: string): Promise<boolean> {
