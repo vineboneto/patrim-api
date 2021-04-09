@@ -13,6 +13,6 @@
 
 1. [ ] Retorna erro **404** se a API não existir
 2. [ ] Retorna erro **403** se não for um usuário
-3. [ ] Retorna erro **403** se não o id não for valído
-4. [ ] Retorna erro **400** se id não for fornecidos pelo client
+3. [ ] Retorna erro **400** se id não for fornecidos pelo client
+4. [ ] Retorna erro **400** se não o id não for valído
 5. [ ] Retorna erro **500** se der erro ao tentar remover o setor
