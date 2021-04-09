@@ -8,8 +8,10 @@ export class DbDeleteCategory implements DeleteCategory {
   ) {}
 
   async delete (params: DeleteCategory.Params): Promise<DeleteCategory.Model> {
-    await this.checkCategoryByIdRepository.checkById(params.id)
-    await this.deleteCategoryRepository.delete(params.id)
+    const exists = await this.checkCategoryByIdRepository.checkById(params.id)
+    if (exists) {
+      await this.deleteCategoryRepository.delete(params.id)
+    }
     return null
   }
 }
