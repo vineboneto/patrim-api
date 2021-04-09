@@ -34,7 +34,7 @@ describe('DbDeleteSector', () => {
     expect(checkSectorByIdRepositorySpy.id).toBe(id)
   })
 
-  test('Should return false if CheckSectorByIdRepository return false', async () => {
+  test('Should return null if CheckSectorByIdRepository return false', async () => {
     const { sut, checkSectorByIdRepositorySpy } = makeSut()
     checkSectorByIdRepositorySpy.result = false
     const result = await sut.delete(mockDeleteSectorParams())
