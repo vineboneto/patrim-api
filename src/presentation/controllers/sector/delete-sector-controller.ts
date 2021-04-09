@@ -6,12 +6,12 @@ import { InvalidParamError } from '@/presentation/errors'
 export class DeleteSectorController implements Controller {
   constructor (
     private readonly deleteSector: DeleteSector,
-    private readonly validationSpy: Validation
+    private readonly validation: Validation
   ) {}
 
   async handle (request: DeleteSectorController.Request): Promise<HttpResponse> {
     try {
-      const error = await this.validationSpy.validate(request)
+      const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
