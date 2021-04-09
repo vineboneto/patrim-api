@@ -40,4 +40,10 @@ describe('DbDeleteCategory', () => {
     const result = await sut.delete(mockDeleteCategoryParams())
     expect(result).toBeNull()
   })
+
+  test('Should return category deleted on DeleteCategoryRepository succeeds', async () => {
+    const { sut, deleteCategoryRepositorySpy } = makeSut()
+    const result = await sut.delete(mockDeleteCategoryParams())
+    expect(result).toEqual(deleteCategoryRepositorySpy.model)
+  })
 })
