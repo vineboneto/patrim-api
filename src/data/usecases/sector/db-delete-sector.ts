@@ -7,7 +7,6 @@ export class DbDeleteSector implements DeleteSector {
   ) {}
 
   async delete (params: DeleteSector.Params): Promise<DeleteSector.Result> {
-    await this.deleteSectorRepository.delete(params.id)
-    return null
+    return this.deleteSectorRepository.delete(params.id)
   }
 }
