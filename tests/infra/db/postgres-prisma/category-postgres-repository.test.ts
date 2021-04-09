@@ -1,5 +1,5 @@
 import { PrismaHelper, CategoryPostgresRepository } from '@/infra/db/postgres-prisma/'
-import { mockAddCategoriesParams, mockAddCategoryParams } from '@/tests/domain/mocks'
+import { mockAddCategoriesParams, mockAddCategoryParams, mockCategoryModel } from '@/tests/domain/mocks'
 
 import { PrismaClient } from '@prisma/client'
 
@@ -83,6 +83,13 @@ describe('CategoryPostgresRepository', () => {
       })
       const result = await sut.checkById(categoryModel.id)
       expect(result).toBe(true)
+    })
+
+    test('Should return false if category not exists', async () => {
+      const sut = makeSut()
+      const { id } = mockCategoryModel()
+      const result = await sut.checkById(id)
+      expect(result).toBe(false)
     })
   })
 })
