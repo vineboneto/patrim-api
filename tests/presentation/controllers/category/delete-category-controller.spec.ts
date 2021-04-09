@@ -1,5 +1,5 @@
 import { DeleteCategoryController } from '@/presentation/controllers'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { DeleteCategorySpy } from '@/tests/domain/mocks'
@@ -54,5 +54,19 @@ describe('DeleteCategoryController', () => {
     deleteCategorySpy.model = null
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
+  })
+
+  test('Should return 200 with categoryDeleted if DeleteCategory succeeds', async () => {
+    const { sut, deleteCategorySpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(deleteCategorySpy.model))
+  })
+
+  test('Should return 500 if DeleteCategory throws', async () => {
+    const { sut, deleteCategorySpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(deleteCategorySpy, 'delete').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
   })
 })
