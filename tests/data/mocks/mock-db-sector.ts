@@ -2,9 +2,10 @@ import {
   AddSectorRepository,
   CheckSectorByNameRepository,
   LoadSectorsRepository,
-  DeleteSectorRepository
+  DeleteSectorRepository,
+  LoadSectorByIdRepository
 } from '@/data/protocols'
-import { mockSectorsModel } from '@/tests/domain/mocks'
+import { mockSectorModel, mockSectorsModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -23,7 +24,7 @@ export class CheckSectorByNameRepositorySpy implements CheckSectorByNameReposito
 
   async checkByName (name: string): Promise<boolean> {
     this.name = name
-    return await this.result
+    return this.result
   }
 }
 
@@ -37,10 +38,19 @@ export class LoadSectorsRepositorySpy implements LoadSectorsRepository {
 }
 
 export class DeleteSectorRepositorySpy implements DeleteSectorRepository {
-  result = true
+  model = mockSectorModel()
   id = faker.datatype.number()
-  async delete (id: number): Promise<DeleteSectorRepository.Result> {
+  async delete (id: number): Promise<DeleteSectorRepository.Model> {
     this.id = id
-    return this.result
+    return this.model
+  }
+}
+
+export class LoadSectorByIdRepositorySpy implements LoadSectorByIdRepository {
+  model = { id: faker.datatype.number() }
+  id = faker.datatype.number()
+  async loadById (id: number): Promise<LoadSectorByIdRepository.Model> {
+    this.id = id
+    return this.model
   }
 }

@@ -76,22 +76,4 @@ describe('SectorPostgresRepository', () => {
       expect(sectors).toEqual([])
     })
   })
-
-  describe('delete()', () => {
-    test('Should return true on delete succeeds', async () => {
-      const sut = makeSut()
-      const data = mockAddSectorParams()
-      const sectorModel = await prismaClient.sector.create({
-        data
-      })
-      const result = await sut.delete(sectorModel.id)
-      const sectorDeleted = await prismaClient.sector.findFirst({
-        where: {
-          id: sectorModel.id
-        }
-      })
-      expect(result).toBe(true)
-      expect(sectorDeleted).toBeFalsy()
-    })
-  })
 })

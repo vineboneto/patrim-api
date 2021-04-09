@@ -1,40 +1,37 @@
 import { DbDeleteSector } from '@/data/usecases'
-import { DeleteSectorRepositorySpy } from '@/tests/data/mocks'
+import { DeleteSectorRepositorySpy, LoadSectorByIdRepositorySpy } from '@/tests/data/mocks'
 import { mockDeleteSectorParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbDeleteSector
   deleteSectorRepositorySpy: DeleteSectorRepositorySpy
+  loadSectorByIdRepositorySpy: LoadSectorByIdRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const deleteSectorRepositorySpy = new DeleteSectorRepositorySpy()
-  const sut = new DbDeleteSector(deleteSectorRepositorySpy)
+  const loadSectorByIdRepositorySpy = new LoadSectorByIdRepositorySpy()
+  const sut = new DbDeleteSector(deleteSectorRepositorySpy, loadSectorByIdRepositorySpy)
   return {
     sut,
-    deleteSectorRepositorySpy
+    deleteSectorRepositorySpy,
+    loadSectorByIdRepositorySpy
   }
 }
 
 describe('DbDeleteSector', () => {
   test('Should call DeleteSectorRepository with correct value', async () => {
     const { sut, deleteSectorRepositorySpy } = makeSut()
-    const data = mockDeleteSectorParams()
-    await sut.delete(data)
-    expect(deleteSectorRepositorySpy.id).toBe(data.id)
+    const { id } = mockDeleteSectorParams()
+    await sut.delete({ id })
+    expect(deleteSectorRepositorySpy.id).toBe(id)
   })
 
-  test('Should return false if DeleteSectorRepository fails', async () => {
-    const { sut, deleteSectorRepositorySpy } = makeSut()
-    deleteSectorRepositorySpy.result = false
-    const result = await sut.delete(mockDeleteSectorParams())
-    expect(result).toBe(false)
-  })
-
-  test('Should return true on success', async () => {
-    const { sut } = makeSut()
-    const result = await sut.delete(mockDeleteSectorParams())
-    expect(result).toBe(true)
+  test('Should call LoadSectorByIdRepository with correct values', async () => {
+    const { sut, loadSectorByIdRepositorySpy } = makeSut()
+    const { id } = mockDeleteSectorParams()
+    await sut.delete({ id })
+    expect(loadSectorByIdRepositorySpy.id).toBe(id)
   })
 
   test('Should throws if DeleteSectorRepository throws', async () => {
