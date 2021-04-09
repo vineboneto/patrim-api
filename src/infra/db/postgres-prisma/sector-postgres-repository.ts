@@ -1,8 +1,8 @@
 import {
   AddSectorRepository,
+  CheckSectorByIdRepository,
   CheckSectorByNameRepository,
-  LoadSectorsRepository,
-  LoadSectorByIdRepository
+  LoadSectorsRepository
 } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
@@ -10,7 +10,7 @@ export class SectorPostgresRepository implements
   AddSectorRepository,
   CheckSectorByNameRepository,
   LoadSectorsRepository,
-  LoadSectorByIdRepository {
+  CheckSectorByIdRepository {
   async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     const { name } = sector
     const prismaClient = await PrismaHelper.getConnection()
@@ -38,7 +38,7 @@ export class SectorPostgresRepository implements
     return sectors
   }
 
-  async loadById (id: number): Promise<LoadSectorByIdRepository.Model> {
+  async checkById (id: number): Promise<CheckSectorByIdRepository.Result> {
     const prismaClient = await PrismaHelper.getConnection()
     const sectorWithOnlyId = prismaClient.sector.findFirst({
       where: {
@@ -48,6 +48,6 @@ export class SectorPostgresRepository implements
         id: true
       }
     })
-    return sectorWithOnlyId
+    return sectorWithOnlyId !== null
   }
 }

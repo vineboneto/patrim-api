@@ -3,7 +3,7 @@ import {
   CheckSectorByNameRepository,
   LoadSectorsRepository,
   DeleteSectorRepository,
-  LoadSectorByIdRepository
+  CheckSectorByIdRepository
 } from '@/data/protocols'
 import { mockSectorModel, mockSectorsModel } from '@/tests/domain/mocks'
 
@@ -46,11 +46,11 @@ export class DeleteSectorRepositorySpy implements DeleteSectorRepository {
   }
 }
 
-export class LoadSectorByIdRepositorySpy implements LoadSectorByIdRepository {
-  model = { id: faker.datatype.number() }
+export class CheckSectorByIdRepositorySpy implements CheckSectorByIdRepository {
+  result = true
   id = faker.datatype.number()
-  async loadById (id: number): Promise<LoadSectorByIdRepository.Model> {
+  async checkById (id: number): Promise<CheckSectorByIdRepository.Result> {
     this.id = id
-    return this.model
+    return this.result
   }
 }
