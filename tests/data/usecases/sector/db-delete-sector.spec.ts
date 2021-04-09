@@ -1,7 +1,7 @@
 import { DbDeleteSector } from '@/data/usecases'
+import { DeleteSectorRepository } from '@/data/protocols'
 
 import faker from 'faker'
-import { DeleteSectorRepository } from '../protocols'
 
 class DeleteSectorRepositorySpy implements DeleteSectorRepository {
   result = true
