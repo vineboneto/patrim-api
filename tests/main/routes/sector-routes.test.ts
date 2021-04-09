@@ -73,4 +73,19 @@ describe('Sector Routes', () => {
         .expect(403)
     })
   })
+
+  describe('DELETE /sectors/:id', () => {
+    test('Should return sector deleted on delete success', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      const newSector = await prismaClient.sector.create({
+        data: {
+          name: faker.name.jobArea()
+        }
+      })
+      await request(app)
+        .delete(`/api/sectors/${newSector.id}`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+  })
 })
