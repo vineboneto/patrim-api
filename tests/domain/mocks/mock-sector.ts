@@ -1,4 +1,4 @@
-import { AddSector, LoadSectors } from '@/domain/usecases'
+import { AddSector, LoadSectors, DeleteSector } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -22,6 +22,10 @@ export const mockSectorsModel = (): LoadSectors.Model => ([
   mockSectorModel(),
   mockSectorModel()
 ])
+
+export const mockDeleteSectorParams = (): DeleteSector.Params => ({
+  id: faker.datatype.number()
+})
 
 export class AddSectorSpy implements AddSector {
   params: AddSector.Params
