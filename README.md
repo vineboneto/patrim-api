@@ -13,9 +13,9 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
   1. [Criar Conta](./requirements/account/signup.md)
   2. [Realizar Login](./requirements/account/login.md)
   3. [Autenticar Rotas](./requirements/account/auth-middleware.md)
-  4. [Criar Setores](./requirements/sector/add-sector.md)
+  4. [Criar Setor](./requirements/sector/add-sector.md)
   5. [Listar Setores](./requirements/sector/load-sectors.md)
-  6. [Remover Setores](./requirements/sector/delete-sector.md)
+  6. [Remover Setor](./requirements/sector/delete-sector.md)
   7. [Criar Categoria](./requirements/category/add-category.md)
   8. [Listar Categorias](./requirements/category/load-categories.md)
 
