@@ -30,4 +30,10 @@ describe('DbDeleteSector', () => {
     const result = await sut.delete(mockDeleteSectorParams())
     expect(result).toBe(false)
   })
+
+  test('Should return true on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.delete(mockDeleteSectorParams())
+    expect(result).toBe(true)
+  })
 })
