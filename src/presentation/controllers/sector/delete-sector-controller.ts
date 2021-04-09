@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, forbidden } from '@/presentation/helper'
 import { DeleteSector } from '@/domain/usecases'
+import { InvalidParamError } from '@/presentation/errors'
 
 export class DeleteSectorController implements Controller {
   constructor (
@@ -13,8 +14,8 @@ export class DeleteSectorController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    await this.deleteSector.delete({ id: Number(request.id) })
-    return null
+    const sectorDeleted = await this.deleteSector.delete({ id: Number(request.id) })
+    return sectorDeleted ? null : forbidden(new InvalidParamError('id'))
   }
 }
 
