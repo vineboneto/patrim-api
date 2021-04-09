@@ -2,7 +2,8 @@ import {
   AddCategoryRepository,
   CheckCategoryByNameRepository,
   DeleteCategoryRepository,
-  LoadCategoriesRepository
+  LoadCategoriesRepository,
+  CheckCategoryByIdRepository
 } from '@/data/protocols'
 import { mockCategoriesModel, mockCategoryModel } from '@/tests/domain/mocks'
 
@@ -41,5 +42,14 @@ export class DeleteCategoryRepositorySpy implements DeleteCategoryRepository {
   async delete (id: number): Promise<DeleteCategoryRepository.Model> {
     this.id = id
     return this.model
+  }
+}
+
+export class CheckCategoryByIdRepositorySpy implements CheckCategoryByIdRepository {
+  result = true
+  id = faker.datatype.number()
+  async checkById (id: number): Promise<CheckCategoryByIdRepository.Result> {
+    this.id = id
+    return this.result
   }
 }
