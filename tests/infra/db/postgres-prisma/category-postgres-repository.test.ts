@@ -92,4 +92,24 @@ describe('CategoryPostgresRepository', () => {
       expect(result).toBe(false)
     })
   })
+
+  describe('delete()', () => {
+    test('Should return category on delete success', async () => {
+      const sut = makeSut()
+      const { name } = mockAddCategoryParams()
+      const categoryModel = await prismaClient.category.create({
+        data: {
+          name
+        }
+      })
+      const categoryDeleted = await sut.delete(categoryModel.id)
+      const searchCategoryDeleted = await prismaClient.category.findFirst({
+        where: {
+          id: categoryDeleted.id
+        }
+      })
+      expect(categoryDeleted).toEqual(categoryModel)
+      expect(searchCategoryDeleted).toBeFalsy()
+    })
+  })
 })
