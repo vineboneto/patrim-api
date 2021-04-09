@@ -76,4 +76,18 @@ describe('SectorPostgresRepository', () => {
       expect(sectors).toEqual([])
     })
   })
+
+  describe('loadById', () => {
+    test('Should return sector on success', async () => {
+      const sut = makeSut()
+      const data = mockAddSectorParams()
+      const sectorModel = await prismaClient.sector.create({
+        data: data
+      })
+      const result = await sut.loadById(sectorModel.id)
+      expect(result).toEqual({
+        id: sectorModel.id
+      })
+    })
+  })
 })
