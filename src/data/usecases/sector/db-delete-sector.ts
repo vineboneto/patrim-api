@@ -8,7 +8,10 @@ export class DbDeleteSector implements DeleteSector {
   ) {}
 
   async delete (params: DeleteSector.Params): Promise<DeleteSector.Model> {
-    await this.loadSectorByIdRepository.loadById(params.id)
-    return this.deleteSectorRepository.delete(params.id)
+    const exists = await this.loadSectorByIdRepository.loadById(params.id)
+    if (exists) {
+      return this.deleteSectorRepository.delete(params.id)
+    }
+    return null
   }
 }
