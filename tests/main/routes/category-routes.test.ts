@@ -73,4 +73,19 @@ describe('Category Routes', () => {
         .expect(403)
     })
   })
+
+  describe('DELETE /categories/:id', () => {
+    test('Should return category deleted on delete success', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      const newCategory = await prismaClient.category.create({
+        data: {
+          name: faker.name.jobArea()
+        }
+      })
+      await request(app)
+        .delete(`/api/categories/${newCategory.id}`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+  })
 })
