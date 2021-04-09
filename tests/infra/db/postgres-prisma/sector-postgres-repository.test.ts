@@ -1,5 +1,5 @@
 import { SectorPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
-import { mockAddSectorParams, mockAddSectorsParams } from '@/tests/domain/mocks/mock-sector'
+import { mockAddSectorParams, mockAddSectorsParams, mockSectorModel } from '@/tests/domain/mocks/mock-sector'
 
 import { PrismaClient } from '@prisma/client'
 
@@ -88,6 +88,13 @@ describe('SectorPostgresRepository', () => {
       })
       const result = await sut.checkById(sectorModel.id)
       expect(result).toBe(true)
+    })
+
+    test('Should return false if sector not exists', async () => {
+      const sut = makeSut()
+      const { id } = mockSectorModel()
+      const result = await sut.checkById(id)
+      expect(result).toBe(false)
     })
   })
 })
