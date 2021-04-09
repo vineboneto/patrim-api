@@ -36,4 +36,11 @@ describe('DbDeleteSector', () => {
     const result = await sut.delete(mockDeleteSectorParams())
     expect(result).toBe(true)
   })
+
+  test('Should throws if DeleteSectorRepository throws', async () => {
+    const { sut, deleteSectorRepositorySpy } = makeSut()
+    jest.spyOn(deleteSectorRepositorySpy, 'delete').mockRejectedValueOnce(new Error())
+    const promise = sut.delete(mockDeleteSectorParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
