@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { DeleteSector } from '@/domain/usecases'
 import { InvalidParamError } from '@/presentation/errors'
 
@@ -10,12 +10,16 @@ export class DeleteSectorController implements Controller {
   ) {}
 
   async handle (request: DeleteSectorController.Request): Promise<HttpResponse> {
-    const error = await this.validationSpy.validate(request)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = await this.validationSpy.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
+      const sectorDeleted = await this.deleteSector.delete({ id: Number(request.id) })
+      return sectorDeleted ? ok(sectorDeleted) : forbidden(new InvalidParamError('id'))
+    } catch (error) {
+      return serverError(error)
     }
-    const sectorDeleted = await this.deleteSector.delete({ id: Number(request.id) })
-    return sectorDeleted ? ok(sectorDeleted) : forbidden(new InvalidParamError('id'))
   }
 }
 
