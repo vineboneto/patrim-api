@@ -23,4 +23,11 @@ describe('DbDeleteSector', () => {
     await sut.delete(data)
     expect(deleteSectorRepositorySpy.id).toBe(data.id)
   })
+
+  test('Should return false if DeleteSectorRepository fails', async () => {
+    const { sut, deleteSectorRepositorySpy } = makeSut()
+    deleteSectorRepositorySpy.result = false
+    const result = await sut.delete(mockDeleteSectorParams())
+    expect(result).toBe(false)
+  })
 })
