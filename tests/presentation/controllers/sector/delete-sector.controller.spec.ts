@@ -1,4 +1,6 @@
 import { DeleteSectorController } from '@/presentation/controllers'
+import { MissingParamError } from '@/presentation/errors'
+import { badRequest } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { DeleteSectorSpy } from '@/tests/domain/mocks'
 
@@ -38,5 +40,12 @@ describe('DeleteSectorController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return 400 Validation if validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new MissingParamError('id')
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(validationSpy.result))
   })
 })
