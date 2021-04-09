@@ -45,3 +45,12 @@ export class LoadCategoriesSpy implements LoadCategories {
     return this.categoriesModel
   }
 }
+
+export class DeleteCategorySpy implements DeleteCategory {
+  params: DeleteCategory.Params
+  model = mockCategoryModel()
+  async delete (params: DeleteCategory.Params): Promise<DeleteCategory.Model> {
+    this.params = params
+    return this.model
+  }
+}
