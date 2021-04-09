@@ -77,7 +77,7 @@ describe('SectorPostgresRepository', () => {
     })
   })
 
-  describe('checkById', () => {
+  describe('checkById()', () => {
     test('Should return sector on success', async () => {
       const sut = makeSut()
       const { name } = mockAddSectorParams()

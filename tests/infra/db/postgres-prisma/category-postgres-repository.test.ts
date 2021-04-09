@@ -71,4 +71,18 @@ describe('CategoryPostgresRepository', () => {
       expect(categories).toEqual([])
     })
   })
+
+  describe('checkById()', () => {
+    test('Should return category on success', async () => {
+      const sut = makeSut()
+      const { name } = mockAddCategoryParams()
+      const categoryModel = await prismaClient.category.create({
+        data: {
+          name
+        }
+      })
+      const result = await sut.checkById(categoryModel.id)
+      expect(result).toBe(true)
+    })
+  })
 })
