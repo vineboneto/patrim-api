@@ -15,12 +15,12 @@ describe('Login Routes', () => {
 
   afterAll(async () => {
     await prismaClient.$executeRaw('DELETE FROM "User";')
+    await prismaClient.$executeRaw('ALTER SEQUENCE "User_id_seq" RESTART WITH 1;')
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
     prismaClient = await PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('ALTER SEQUENCE "User_id_seq" RESTART WITH 1;')
     await prismaClient.$executeRaw('DELETE FROM "User";')
   })
 

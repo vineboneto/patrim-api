@@ -14,12 +14,12 @@ describe('SectorPostgresRepository', () => {
 
   afterAll(async () => {
     await prismaClient.$executeRaw('DELETE FROM "Sector";')
+    await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
     prismaClient = await PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
     await prismaClient.$executeRaw('DELETE FROM "Sector";')
   })
 

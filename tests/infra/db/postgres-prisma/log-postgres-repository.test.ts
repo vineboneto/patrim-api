@@ -14,12 +14,12 @@ describe('LogPostgresRepository', () => {
 
   afterAll(async () => {
     await prismaClient.$executeRaw('DELETE FROM "LogError";')
+    await prismaClient.$executeRaw('ALTER SEQUENCE "LogError_id_seq" RESTART WITH 1;')
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
     prismaClient = await PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('ALTER SEQUENCE "LogError_id_seq" RESTART WITH 1;')
     await prismaClient.$executeRaw('DELETE FROM "LogError";')
   })
 
