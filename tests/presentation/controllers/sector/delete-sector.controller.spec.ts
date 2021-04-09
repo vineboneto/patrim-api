@@ -1,6 +1,6 @@
 import { DeleteSectorController } from '@/presentation/controllers'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest, forbidden, ok } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { DeleteSectorSpy } from '@/tests/domain/mocks'
 
@@ -60,5 +60,13 @@ describe('DeleteSectorController', () => {
     const { sut, deleteSectorSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(deleteSectorSpy.model))
+  })
+
+  test('Should return 500 if DeleteSector throws', async () => {
+    const { sut, deleteSectorSpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(deleteSectorSpy, 'delete').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
   })
 })
