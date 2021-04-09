@@ -34,6 +34,19 @@ describe('DbDeleteSector', () => {
     expect(loadSectorByIdRepositorySpy.id).toBe(id)
   })
 
+  test('Should return null if LoadSectorByIdRepository fails', async () => {
+    const { sut, loadSectorByIdRepositorySpy } = makeSut()
+    loadSectorByIdRepositorySpy.model = null
+    const result = await sut.delete(mockDeleteSectorParams())
+    expect(result).toBeNull()
+  })
+
+  test('Should return sector deleted on DeleteSectorRepository succeeds', async () => {
+    const { sut, deleteSectorRepositorySpy } = makeSut()
+    const result = await sut.delete(mockDeleteSectorParams())
+    expect(result).toEqual(deleteSectorRepositorySpy.model)
+  })
+
   test('Should throws if DeleteSectorRepository throws', async () => {
     const { sut, deleteSectorRepositorySpy } = makeSut()
     jest.spyOn(deleteSectorRepositorySpy, 'delete').mockRejectedValueOnce(new Error())
