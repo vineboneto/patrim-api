@@ -10,13 +10,13 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
 
 > ### API construidas
 
-  1. [Criar Conta](./requirements/signup.md)
-  2. [Realizar Login](./requirements/login.md)
-  3. [Autenticar Rotas](./requirements/auth-middleware.md)
-  4. [Criar Setores](./requirements/add-sector.md)
-  5. [Listar Setores](./requirements/load-sectors.md)
-  6. [Criar Categoria](./requirements/add-category.md)
-  7. [Listar Categorias](./requirements/load-categories.md)
+  1. [Criar Conta](./requirements/account/signup.md)
+  2. [Realizar Login](./requirements/account/login.md)
+  3. [Autenticar Rotas](./requirements/account/auth-middleware.md)
+  4. [Criar Setores](./requirements/sector/add-sector.md)
+  5. [Listar Setores](./requirements/sector/load-sectors.md)
+  6. [Criar Categoria](./requirements/category/add-category.md)
+  7. [Listar Categorias](./requirements/category/load-categories.md)
 
 > ### Metodologia de Design
 
