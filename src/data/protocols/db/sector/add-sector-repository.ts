@@ -6,5 +6,5 @@ export interface AddSectorRepository {
 
 export namespace AddSectorRepository {
   export type Params = AddSector.Params
-  export type Model = AddSector.Model
+  export type Model = AddSector.Result
 }

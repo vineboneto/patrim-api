@@ -1,7 +1,10 @@
 export interface DeleteSector {
-  delete (id: number): Promise<DeleteSector.Result>
+  delete (params: DeleteSector.Params): Promise<DeleteSector.Result>
 }
 
 export namespace DeleteSector {
+  export type Params = {
+    id: number
+  }
   export type Result = boolean
 }
