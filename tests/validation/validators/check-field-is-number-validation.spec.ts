@@ -9,4 +9,10 @@ describe('CheckFieldIsNumberValidation', () => {
     const isValid = sut.validate({ field: 'any_string' })
     expect(isValid).toEqual(new InvalidParamError('field'))
   })
+
+  test('Should return null on success to convert string to number', () => {
+    const sut = makeSut()
+    const isValid = sut.validate({ field: '20' })
+    expect(isValid).toBeNull()
+  })
 })
