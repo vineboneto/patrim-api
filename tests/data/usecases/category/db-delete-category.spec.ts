@@ -46,4 +46,11 @@ describe('DbDeleteCategory', () => {
     const result = await sut.delete(mockDeleteCategoryParams())
     expect(result).toEqual(deleteCategoryRepositorySpy.model)
   })
+
+  test('Should throws if DeleteCategoryRepository throws', async () => {
+    const { sut, deleteCategoryRepositorySpy } = makeSut()
+    jest.spyOn(deleteCategoryRepositorySpy, 'delete').mockRejectedValueOnce(new Error())
+    const promise = sut.delete(mockDeleteCategoryParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
