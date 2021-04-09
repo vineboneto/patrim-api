@@ -1,4 +1,6 @@
-import { AddCategory, LoadCategories } from '@/domain/usecases'
+import { CategoryModel } from '@/domain/models'
+import { AddCategory, DeleteCategory, LoadCategories } from '@/domain/usecases'
+
 import faker from 'faker'
 
 export const mockAddCategoryParams = (): AddCategory.Params => ({
@@ -11,16 +13,20 @@ export const mockAddCategoriesParams = (): AddCategory.Params[] => ([
   mockAddCategoryParams()
 ])
 
-export const mockCategoryModel = (): LoadCategories.CategoryModel => ({
+export const mockCategoryModel = (): CategoryModel => ({
   id: faker.datatype.number(),
   name: faker.name.findName()
 })
 
-export const mockCategoriesModel = (): LoadCategories.Model => ([
+export const mockCategoriesModel = (): CategoryModel[] => ([
   mockCategoryModel(),
   mockCategoryModel(),
   mockCategoryModel()
 ])
+
+export const mockDeleteCategoryParams = (): DeleteCategory.Params => ({
+  id: faker.datatype.number()
+})
 
 export class AddCategorySpy implements AddCategory {
   params: AddCategory.Params
