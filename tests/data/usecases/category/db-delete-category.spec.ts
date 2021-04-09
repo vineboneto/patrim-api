@@ -33,4 +33,11 @@ describe('DbDeleteCategory', () => {
     await sut.delete({ id })
     expect(checkCategoryByIdRepositorySpy.id).toBe(id)
   })
+
+  test('Should return null if CheckCategoryByIdRepository return false', async () => {
+    const { sut, checkCategoryByIdRepositorySpy } = makeSut()
+    checkCategoryByIdRepositorySpy.result = false
+    const result = await sut.delete(mockDeleteCategoryParams())
+    expect(result).toBeNull()
+  })
 })
