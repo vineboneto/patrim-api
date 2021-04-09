@@ -1,4 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest } from '@/presentation/helper'
 import { DeleteCategory } from '@/domain/usecases'
 
 export class DeleteCategoryController implements Controller {
@@ -8,7 +9,10 @@ export class DeleteCategoryController implements Controller {
   ) {}
 
   async handle (request: DeleteCategoryController.Request): Promise<HttpResponse> {
-    this.validation.validate(request)
+    const error = this.validation.validate(request)
+    if (error) {
+      return badRequest(error)
+    }
     await this.deleteCategory.delete({ id: Number(request.id) })
     return null
   }
