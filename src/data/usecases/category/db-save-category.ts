@@ -8,8 +8,11 @@ export class DbSaveCategory implements SaveCategory {
   ) {}
 
   async save (category: SaveCategory.Params): Promise<SaveCategory.Result> {
-    await this.checkCategoryByNameRepository.checkByName(category.name)
-    const isValid = await this.saveCategoryRepository.save(category)
+    const exists = await this.checkCategoryByNameRepository.checkByName(category.name)
+    let isValid = false
+    if (!exists) {
+      isValid = await this.saveCategoryRepository.save(category)
+    }
     return isValid
   }
 }
