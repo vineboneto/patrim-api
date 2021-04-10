@@ -23,7 +23,7 @@ describe('SectorPostgresRepository', () => {
     await prismaClient.$executeRaw('DELETE FROM "Sector";')
   })
 
-  describe('addSector()', () => {
+  describe('add()', () => {
     test('Should return true on add succeeds', async () => {
       const sut = makeSut()
       const isValid = await sut.add(mockAddSectorParams())
@@ -35,6 +35,37 @@ describe('SectorPostgresRepository', () => {
       jest.spyOn(prismaClient.sector, 'create').mockResolvedValueOnce(null)
       const isValid = await sut.add(mockAddSectorParams())
       expect(isValid).toBe(false)
+    })
+  })
+
+  describe('save()', () => {
+    test('Should return true on save success', async () => {
+      const sut = makeSut()
+      const { id } = await prismaClient.sector.create({
+        data: mockAddSectorParams()
+      })
+      const result = await sut.save({
+        id,
+        name: 'new_name'
+      })
+      expect(result).toBeTruthy()
+    })
+
+    test('Should update data on success', async () => {
+      const sut = makeSut()
+      const { id } = await prismaClient.sector.create({
+        data: mockAddSectorParams()
+      })
+      await sut.save({
+        id,
+        name: 'new_name'
+      })
+      const { name } = await prismaClient.sector.findFirst({
+        where: {
+          id
+        }
+      })
+      expect(name).toBe('new_name')
     })
   })
 
