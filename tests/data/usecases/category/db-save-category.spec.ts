@@ -54,4 +54,10 @@ describe('DbSaveCategory', () => {
     const isValid = await sut.save(mockSaveCategoryParams())
     expect(isValid).toBeFalsy()
   })
+
+  test('Should return true on success', async () => {
+    const { sut } = makeSut()
+    const isValid = await sut.save(mockSaveCategoryParams())
+    expect(isValid).toBeTruthy()
+  })
 })

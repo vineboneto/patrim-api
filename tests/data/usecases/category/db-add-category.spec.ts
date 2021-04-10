@@ -62,7 +62,7 @@ describe('DbAddCategory', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('DbAddCategory should return true on success', async () => {
+  test('Should return true on success', async () => {
     const { sut } = makeSut()
     const isValid = await sut.add(mockAddCategoryParams())
     expect(isValid).toBeTruthy()
