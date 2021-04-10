@@ -23,17 +23,24 @@ describe('CategoryPostgresRepository', () => {
     await prismaClient.$executeRaw('DELETE FROM "Category";')
   })
 
-  describe('addCategory()', () => {
-    test('Should return false on fail', async () => {
+  describe('add()', () => {
+    test('Should return true on add success', async () => {
       const sut = makeSut()
-      jest.spyOn(prismaClient.category, 'create').mockResolvedValueOnce(null)
       const result = await sut.add(mockAddCategoryParams())
-      expect(result).toBeFalsy()
+      expect(result).toBeTruthy()
     })
+  })
 
-    test('Should return true on success', async () => {
+  describe('save()', () => {
+    test('Should return true on save success', async () => {
       const sut = makeSut()
-      const result = await sut.add(mockAddCategoryParams())
+      const { id } = await prismaClient.category.create({
+        data: mockAddCategoryParams()
+      })
+      const result = await sut.save({
+        id,
+        name: 'new_name'
+      })
       expect(result).toBeTruthy()
     })
   })
