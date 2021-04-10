@@ -43,6 +43,23 @@ describe('CategoryPostgresRepository', () => {
       })
       expect(result).toBeTruthy()
     })
+
+    test('Should update data on success', async () => {
+      const sut = makeSut()
+      const { id } = await prismaClient.category.create({
+        data: mockAddCategoryParams()
+      })
+      await sut.save({
+        id,
+        name: 'new_name'
+      })
+      const { name } = await prismaClient.category.findFirst({
+        where: {
+          id
+        }
+      })
+      expect(name).toBe('new_name')
+    })
   })
 
   describe('checkByName()', () => {
