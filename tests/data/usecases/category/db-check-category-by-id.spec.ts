@@ -37,4 +37,11 @@ describe('DbCheckCategoryById', () => {
     const check = await sut.checkById(faker.datatype.number())
     expect(check).toBe(false)
   })
+
+  test('Should throws if CheckCategoryByIdRepository throws', async () => {
+    const { sut, checkCategoryByIdRepositorySpy } = makeSut()
+    jest.spyOn(checkCategoryByIdRepositorySpy, 'checkById').mockRejectedValueOnce(new Error())
+    const promise = sut.checkById(faker.datatype.number())
+    await expect(promise).rejects.toThrow()
+  })
 })
