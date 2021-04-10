@@ -1,3 +1,4 @@
+import { badRequest } from '@/presentation/helper'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class SaveCategoryController implements Controller {
@@ -6,7 +7,10 @@ export class SaveCategoryController implements Controller {
   ) {}
 
   async handle (request: SaveCategoryController.Request): Promise<HttpResponse> {
-    await this.validation.validate(request)
+    const error = this.validation.validate(request)
+    if (error) {
+      return badRequest(error)
+    }
     return null
   }
 }
