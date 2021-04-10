@@ -1,18 +1,21 @@
 import { DbSaveCategory } from '@/data/usecases'
-import { SaveCategoryRepositorySpy } from '@/tests/data/mocks'
+import { CheckCategoryByNameRepositorySpy, SaveCategoryRepositorySpy } from '@/tests/data/mocks'
 import { mockSaveCategoryParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbSaveCategory
   saveCategoryRepositorySpy: SaveCategoryRepositorySpy
+  checkCategoryByNameRepositorySpy: CheckCategoryByNameRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
+  const checkCategoryByNameRepositorySpy = new CheckCategoryByNameRepositorySpy()
   const saveCategoryRepositorySpy = new SaveCategoryRepositorySpy()
-  const sut = new DbSaveCategory(saveCategoryRepositorySpy)
+  const sut = new DbSaveCategory(saveCategoryRepositorySpy, checkCategoryByNameRepositorySpy)
   return {
     sut,
-    saveCategoryRepositorySpy
+    saveCategoryRepositorySpy,
+    checkCategoryByNameRepositorySpy
   }
 }
 
@@ -22,5 +25,12 @@ describe('DbSaveCategory', () => {
     const category = mockSaveCategoryParams()
     await sut.save(category)
     expect(saveCategoryRepositorySpy.params).toEqual(category)
+  })
+
+  test('Should call CheckCategoryByNameRepository with correct value', async () => {
+    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
+    const category = mockSaveCategoryParams()
+    await sut.save(category)
+    expect(checkCategoryByNameRepositorySpy.name).toEqual(category.name)
   })
 })
