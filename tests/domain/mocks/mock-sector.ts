@@ -1,5 +1,5 @@
 import { SectorModel } from '@/domain/models'
-import { AddSector, LoadSectors, DeleteSector, SaveSector } from '@/domain/usecases'
+import { AddSector, LoadSectors, DeleteSector, SaveSector, CheckSectorById } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -57,5 +57,23 @@ export class DeleteSectorSpy implements DeleteSector {
   async delete (params: DeleteSector.Params): Promise<DeleteSector.Model> {
     this.params = params
     return this.model
+  }
+}
+
+export class SaveSectorSpy implements SaveSector {
+  params: SaveSector.Params
+  result = true
+  async save (sector: SaveSector.Params): Promise<SaveSector.Result> {
+    this.params = sector
+    return this.result
+  }
+}
+
+export class CheckSectorByIdSpy implements CheckSectorById {
+  id: number
+  result = true
+  async checkById (id: number): Promise<CheckSectorById.Result> {
+    this.id = id
+    return this.result
   }
 }
