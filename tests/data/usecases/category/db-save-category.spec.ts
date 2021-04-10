@@ -47,4 +47,11 @@ describe('DbSaveCategory', () => {
     await sut.save(category)
     expect(checkCategoryByNameRepositorySpy.name).toEqual(category.name)
   })
+
+  test('Should return false if CheckCategoryByNameRepository return true', async () => {
+    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
+    checkCategoryByNameRepositorySpy.result = true
+    const isValid = await sut.save(mockSaveCategoryParams())
+    expect(isValid).toBeFalsy()
+  })
 })
