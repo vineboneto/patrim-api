@@ -27,13 +27,13 @@ describe('CategoryPostgresRepository', () => {
     test('Should return false on fail', async () => {
       const sut = makeSut()
       jest.spyOn(prismaClient.category, 'create').mockResolvedValueOnce(null)
-      const result = await sut.addCategory(mockAddCategoryParams())
+      const result = await sut.add(mockAddCategoryParams())
       expect(result).toBeFalsy()
     })
 
     test('Should return true on success', async () => {
       const sut = makeSut()
-      const result = await sut.addCategory(mockAddCategoryParams())
+      const result = await sut.add(mockAddCategoryParams())
       expect(result).toBeTruthy()
     })
   })
@@ -48,7 +48,7 @@ describe('CategoryPostgresRepository', () => {
     test('Should return true if category name already exists', async () => {
       const sut = makeSut()
       const param = mockAddCategoryParams()
-      await sut.addCategory(param)
+      await sut.add(param)
       const result = await sut.checkByName(param.name)
       expect(result).toBeTruthy()
     })

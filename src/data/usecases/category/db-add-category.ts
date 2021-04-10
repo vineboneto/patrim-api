@@ -8,7 +8,7 @@ export class DbAddCategory implements AddCategory {
     const exists = await this.checkCategoryByNameRepository.checkByName(category.name)
     if (exists) return false
     else {
-      const isValid = await this.addCategoryRepository.addCategory(category)
+      const isValid = await this.addCategoryRepository.add(category)
       return isValid
     }
   }

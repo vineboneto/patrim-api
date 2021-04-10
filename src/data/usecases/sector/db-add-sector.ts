@@ -17,7 +17,7 @@ export class DbAddSector implements AddSector {
     const exists = await this.checkSectorByNameRepository.checkByName(sector.name)
     let isValid = false
     if (!exists) {
-      isValid = await this.addSectorRepository.addSector(sector)
+      isValid = await this.addSectorRepository.add(sector)
     }
     return isValid
   }

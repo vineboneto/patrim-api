@@ -12,7 +12,7 @@ import faker from 'faker'
 export class AddSectorRepositorySpy implements AddSectorRepository {
   params: AddSectorRepository.Params
   result = true
-  async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
+  async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     this.params = sector
     return this.result
   }

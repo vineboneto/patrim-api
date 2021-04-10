@@ -13,7 +13,7 @@ export class SectorPostgresRepository implements
   CheckSectorByNameRepository,
   CheckSectorByIdRepository,
   LoadSectorsRepository {
-  async addSector (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
+  async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     const { name } = sector
     const prismaClient = await PrismaHelper.getConnection()
     const sectorModel = await prismaClient.sector.create({

@@ -26,14 +26,14 @@ describe('SectorPostgresRepository', () => {
   describe('addSector()', () => {
     test('Should return true on add succeeds', async () => {
       const sut = makeSut()
-      const isValid = await sut.addSector(mockAddSectorParams())
+      const isValid = await sut.add(mockAddSectorParams())
       expect(isValid).toBeTruthy()
     })
 
     test('Should return false if addSector returns false', async () => {
       const sut = makeSut()
       jest.spyOn(prismaClient.sector, 'create').mockResolvedValueOnce(null)
-      const isValid = await sut.addSector(mockAddSectorParams())
+      const isValid = await sut.add(mockAddSectorParams())
       expect(isValid).toBe(false)
     })
   })

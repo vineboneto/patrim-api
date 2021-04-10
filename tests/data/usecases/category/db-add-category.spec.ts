@@ -36,7 +36,7 @@ describe('DbAddCategory', () => {
 
   test('Should throw if AddCategoryRepository throws', async () => {
     const { sut, addCategoryRepositorySpy } = makeSut()
-    jest.spyOn(addCategoryRepositorySpy, 'addCategory').mockRejectedValueOnce(new Error())
+    jest.spyOn(addCategoryRepositorySpy, 'add').mockRejectedValueOnce(new Error())
     const promise = sut.add(mockAddCategoryParams())
     await expect(promise).rejects.toThrow()
   })
