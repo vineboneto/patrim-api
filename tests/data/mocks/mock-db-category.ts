@@ -4,7 +4,7 @@ import {
   DeleteCategoryRepository,
   LoadCategoriesRepository,
   CheckCategoryByIdRepository,
-  UpdateCategoryRepository
+  SaveCategoryRepository
 } from '@/data/protocols'
 import { mockCategoriesModel, mockCategoryModel } from '@/tests/domain/mocks'
 
@@ -55,10 +55,10 @@ export class CheckCategoryByIdRepositorySpy implements CheckCategoryByIdReposito
   }
 }
 
-export class UpdateCategoryRepositorySpy implements UpdateCategoryRepository {
-  params: UpdateCategoryRepository.Params
+export class SaveCategoryRepositorySpy implements SaveCategoryRepository {
+  params: SaveCategoryRepository.Params
   result = true
-  async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result> {
+  async save (category: SaveCategoryRepository.Params): Promise<SaveCategoryRepository.Result> {
     this.params = category
     return this.result
   }
