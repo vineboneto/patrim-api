@@ -1,5 +1,6 @@
 import {
   AddCategoryRepository,
+  SaveCategoryRepository,
   DeleteCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
@@ -9,6 +10,7 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
 export class CategoryPostgresRepository implements
   AddCategoryRepository,
+  SaveCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
   CheckCategoryByIdRepository,
@@ -24,11 +26,25 @@ export class CategoryPostgresRepository implements
     return categoryResult !== null
   }
 
+  async save (category: SaveCategoryRepository.Params): Promise<SaveCategoryRepository.Result> {
+    const { id, name } = category
+    const prismaClient = await PrismaHelper.getConnection()
+    const categoryResult = await prismaClient.category.update({
+      where: {
+        id
+      },
+      data: {
+        name
+      }
+    })
+    return categoryResult !== null
+  }
+
   async delete (id: number): Promise<DeleteCategoryRepository.Model> {
     const prismaClient = await PrismaHelper.getConnection()
     const categoryDeleted = await prismaClient.category.delete({
       where: {
-        id: id
+        id
       }
     })
     return categoryDeleted
@@ -38,7 +54,7 @@ export class CategoryPostgresRepository implements
     const prismaClient = await PrismaHelper.getConnection()
     const category = await prismaClient.category.findFirst({
       where: {
-        name: name
+        name
       }
     })
     return category !== null
