@@ -1,13 +1,22 @@
 import app from '@/main/config/app'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeAccessToken } from '@/tests/main/mocks'
+import { mockAddSectorsParams } from '@/tests/domain/mocks'
 
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Sector } from '@prisma/client'
 import request from 'supertest'
 import faker from 'faker'
-import { mockAddSectorsParams } from '../../domain/mocks'
 
 let prismaClient: PrismaClient
+
+const makeSector = async (): Promise<Sector> => {
+  const newSector = await prismaClient.sector.create({
+    data: {
+      name: faker.name.jobArea()
+    }
+  })
+  return newSector
+}
 
 describe('Sector Routes', () => {
   beforeAll(() => {
@@ -47,6 +56,20 @@ describe('Sector Routes', () => {
     })
   })
 
+  describe('PUT /sectors', () => {
+    test('Should return 204 on save sector', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      const newSector = await makeSector()
+      await request(app)
+        .put(`/api/sectors/${newSector.id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(204)
+    })
+  })
+
   describe('GET /sectors', () => {
     test('Should return empty array', async () => {
       const accessToken = await makeAccessToken(prismaClient)
@@ -77,11 +100,7 @@ describe('Sector Routes', () => {
   describe('DELETE /sectors/:id', () => {
     test('Should return sector deleted on delete success', async () => {
       const accessToken = await makeAccessToken(prismaClient)
-      const newSector = await prismaClient.sector.create({
-        data: {
-          name: faker.name.jobArea()
-        }
-      })
+      const newSector = await makeSector()
       await request(app)
         .delete(`/api/sectors/${newSector.id}`)
         .set('x-access-token', accessToken)
