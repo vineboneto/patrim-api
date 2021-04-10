@@ -7,7 +7,6 @@ export class DbCheckByIdCategory implements CheckCategoryById {
   ) {}
 
   async checkById (id: number): Promise<CheckCategoryById.Result> {
-    await this.checkSectorByIdRepositorySpy.checkById(id)
-    return null
+    return this.checkSectorByIdRepositorySpy.checkById(id)
   }
 }
