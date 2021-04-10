@@ -15,6 +15,7 @@
 1. [ ] Retorna erro **404** se a API não existir
 2. [ ] Retorna erro **403** se não for um usuário
 3. [ ] Retorna erro **403** se o name já existir
-4. [ ] Retorna erro **400** se name ou id não for fornecidos pelo client
-5. [ ] Retorna erro **400** se o id não for valído
-6. [ ] Retorna erro **500** se der erro ao tentar criar a categoria
+4. [ ] Retorna erro **403** se a categoria não existir
+5. [ ] Retorna erro **400** se name ou id não for fornecidos pelo client
+6. [ ] Retorna erro **400** se o id não for valído
+7. [ ] Retorna erro **500** se der erro ao tentar criar a categoria
