@@ -1,12 +1,12 @@
 import { CheckCategoryById } from '@/domain/usecases'
-import { CheckSectorByIdRepository } from '@/data/protocols'
+import { CheckCategoryByIdRepository } from '@/data/protocols'
 
 export class DbCheckCategoryById implements CheckCategoryById {
   constructor (
-    private readonly checkSectorByIdRepositorySpy: CheckSectorByIdRepository
+    private readonly checkCategoryByIdRepository: CheckCategoryByIdRepository
   ) {}
 
   async checkById (id: number): Promise<CheckCategoryById.Result> {
-    return this.checkSectorByIdRepositorySpy.checkById(id)
+    return this.checkCategoryByIdRepository.checkById(id)
   }
 }
