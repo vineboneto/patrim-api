@@ -1,5 +1,5 @@
 import { SaveCategoryController } from '@/presentation/controllers'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, serverError } from '@/presentation/helper'
 import { AlreadyExistsError, InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { CheckCategoryByIdSpy, SaveCategorySpy } from '@/tests/domain/mocks'
@@ -80,5 +80,21 @@ describe('SaveCategoryController', () => {
     checkCategoryByIdSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
+  })
+
+  test('Should return 500 if CheckCategoryById throws', async () => {
+    const { sut, checkCategoryByIdSpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(checkCategoryByIdSpy, 'checkById').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
+  })
+
+  test('Should return 500 if SaveCategory throws', async () => {
+    const { sut, saveCategorySpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(saveCategorySpy, 'save').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
   })
 })
