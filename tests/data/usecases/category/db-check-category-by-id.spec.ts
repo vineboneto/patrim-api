@@ -26,9 +26,15 @@ describe('DbCheckCategoryById', () => {
   })
 
   test('Should return true if CheckCategoryByIdRepository return true', async () => {
-    const { sut, checkCategoryByIdRepositorySpy } = makeSut()
-    checkCategoryByIdRepositorySpy.result = true
+    const { sut } = makeSut()
     const check = await sut.checkById(faker.datatype.number())
     expect(check).toBe(true)
+  })
+
+  test('Should return false if CheckCategoryByIdRepository return false', async () => {
+    const { sut, checkCategoryByIdRepositorySpy } = makeSut()
+    checkCategoryByIdRepositorySpy.result = false
+    const check = await sut.checkById(faker.datatype.number())
+    expect(check).toBe(false)
   })
 })
