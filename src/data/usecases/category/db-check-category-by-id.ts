@@ -1,7 +1,7 @@
 import { CheckCategoryById } from '@/domain/usecases'
 import { CheckSectorByIdRepository } from '@/data/protocols'
 
-export class DbCheckByIdCategory implements CheckCategoryById {
+export class DbCheckCategoryById implements CheckCategoryById {
   constructor (
     private readonly checkSectorByIdRepositorySpy: CheckSectorByIdRepository
   ) {}

@@ -1,16 +1,16 @@
-import { DbCheckByIdCategory } from '@/data/usecases'
+import { DbCheckCategoryById } from '@/data/usecases'
 import { CheckCategoryByIdRepositorySpy } from '@/tests/data/mocks'
 
 import faker from 'faker'
 
 type SutTypes = {
-  sut: DbCheckByIdCategory
+  sut: DbCheckCategoryById
   checkCategoryByIdRepositorySpy: CheckCategoryByIdRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const checkCategoryByIdRepositorySpy = new CheckCategoryByIdRepositorySpy()
-  const sut = new DbCheckByIdCategory(checkCategoryByIdRepositorySpy)
+  const sut = new DbCheckCategoryById(checkCategoryByIdRepositorySpy)
   return {
     sut,
     checkCategoryByIdRepositorySpy

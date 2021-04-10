@@ -3,8 +3,6 @@ import { RequiredFieldValidation, ValidationComposite } from '@/validation/valid
 
 export const makeAddCategoryValidation = (): Validation => {
   const validations: Validation [] = []
-  for (const field of ['name']) {
-    validations.push(new RequiredFieldValidation(field))
-  }
+  validations.push(new RequiredFieldValidation('name'))
   return new ValidationComposite(validations)
 }
