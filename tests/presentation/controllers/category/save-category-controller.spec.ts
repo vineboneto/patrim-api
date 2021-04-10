@@ -1,5 +1,5 @@
 import { SaveCategoryController } from '@/presentation/controllers'
-import { badRequest, forbidden, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { AlreadyExistsError, InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { CheckCategoryByIdSpy, SaveCategorySpy } from '@/tests/domain/mocks'
@@ -96,5 +96,11 @@ describe('SaveCategoryController', () => {
     jest.spyOn(saveCategorySpy, 'save').mockRejectedValueOnce(error)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(error))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
