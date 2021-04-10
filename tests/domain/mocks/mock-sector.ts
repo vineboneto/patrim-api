@@ -1,5 +1,5 @@
 import { SectorModel } from '@/domain/models'
-import { AddSector, LoadSectors, DeleteSector } from '@/domain/usecases'
+import { AddSector, LoadSectors, DeleteSector, SaveSector } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -14,6 +14,11 @@ export const mockAddSectorsParams = (): AddSector.Params[] => ([
 ])
 
 export const mockSectorModel = (): SectorModel => ({
+  id: faker.datatype.number(),
+  name: faker.name.findName()
+})
+
+export const mockSaveSectorParams = (): SaveSector.Params => ({
   id: faker.datatype.number(),
   name: faker.name.findName()
 })
