@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { CheckCategoryById, SaveCategory } from '@/domain/usecases'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 
@@ -24,7 +24,7 @@ export class SaveCategoryController implements Controller {
       if (!isValid) {
         return forbidden(new AlreadyExistsError(request.name))
       }
-      return null
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
