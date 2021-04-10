@@ -1,6 +1,6 @@
 import { SaveCategoryController } from '@/presentation/controllers'
 import { badRequest, forbidden } from '@/presentation/helper'
-import { AlreadyExistsError, MissingParamError } from '@/presentation/errors'
+import { AlreadyExistsError, InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { CheckCategoryByIdSpy, SaveCategorySpy } from '@/tests/domain/mocks'
 
@@ -73,5 +73,12 @@ describe('SaveCategoryController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(checkCategoryByIdSpy.id).toEqual(request.id)
+  })
+
+  test('Should return 403 if CheckCategoryById if return false', async () => {
+    const { sut, checkCategoryByIdSpy } = makeSut()
+    checkCategoryByIdSpy.result = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
   })
 })
