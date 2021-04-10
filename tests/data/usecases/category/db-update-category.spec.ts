@@ -1,25 +1,25 @@
 import { DbUpdateCategory } from '@/data/usecases'
-import { UpdateCategoryRepository } from '@/data/protocols'
+import { UpdateCategoryRepositorySpy } from '@/tests/data/mocks'
+import { mockUpdateCategoryParams } from '@/tests/domain/mocks'
 
-import faker from 'faker'
+type SutTypes = {
+  sut: DbUpdateCategory
+  updateCategoryRepositorySpy: UpdateCategoryRepositorySpy
+}
 
-class UpdateCategoryRepositorySpy implements UpdateCategoryRepository {
-  params: UpdateCategoryRepository.Params
-  result = true
-  async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result> {
-    this.params = category
-    return this.result
+const makeSut = (): SutTypes => {
+  const updateCategoryRepositorySpy = new UpdateCategoryRepositorySpy()
+  const sut = new DbUpdateCategory(updateCategoryRepositorySpy)
+  return {
+    sut,
+    updateCategoryRepositorySpy
   }
 }
 
 describe('DbUpdateCategory', () => {
   test('Should call UpdateCategoryRepository with correct value', async () => {
-    const updateCategoryRepositorySpy = new UpdateCategoryRepositorySpy()
-    const sut = new DbUpdateCategory(updateCategoryRepositorySpy)
-    const category = {
-      id: faker.datatype.number(),
-      name: faker.name.findName()
-    }
+    const { sut, updateCategoryRepositorySpy } = makeSut()
+    const category = mockUpdateCategoryParams()
     await sut.update(category)
     expect(updateCategoryRepositorySpy.params).toEqual(category)
   })

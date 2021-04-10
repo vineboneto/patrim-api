@@ -3,7 +3,8 @@ import {
   CheckCategoryByNameRepository,
   DeleteCategoryRepository,
   LoadCategoriesRepository,
-  CheckCategoryByIdRepository
+  CheckCategoryByIdRepository,
+  UpdateCategoryRepository
 } from '@/data/protocols'
 import { mockCategoriesModel, mockCategoryModel } from '@/tests/domain/mocks'
 
@@ -50,6 +51,15 @@ export class CheckCategoryByIdRepositorySpy implements CheckCategoryByIdReposito
   id = faker.datatype.number()
   async checkById (id: number): Promise<CheckCategoryByIdRepository.Result> {
     this.id = id
+    return this.result
+  }
+}
+
+export class UpdateCategoryRepositorySpy implements UpdateCategoryRepository {
+  params: UpdateCategoryRepository.Params
+  result = true
+  async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result> {
+    this.params = category
     return this.result
   }
 }
