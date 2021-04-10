@@ -1,12 +1,12 @@
-import { makeSaveCategoryValidation } from '@/main/factories/controllers'
+import { makeSaveSectorValidation } from '@/main/factories/controllers'
 import { ValidationComposite, RequiredFieldValidation, CheckFieldIsNumberValidation } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
 
 jest.mock('@/validation/validators/validation-composite')
 
-describe('SaveCategoryValidation Factory', () => {
+describe('SaveSectorValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
-    makeSaveCategoryValidation()
+    makeSaveSectorValidation()
     const validations: Validation[] = []
     for (const field of ['id', 'name']) {
       validations.push(new RequiredFieldValidation(field))
