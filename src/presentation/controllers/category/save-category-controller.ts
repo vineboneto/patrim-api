@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, forbidden } from '@/presentation/helper'
 import { SaveCategory } from '@/domain/usecases'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 export class SaveCategoryController implements Controller {
   constructor (
@@ -13,7 +14,10 @@ export class SaveCategoryController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    await this.saveCategory.save(request)
+    const isValid = await this.saveCategory.save(request)
+    if (!isValid) {
+      return forbidden(new AlreadyExistsError(request.name))
+    }
     return null
   }
 }
