@@ -5,23 +5,30 @@ import faker from 'faker'
 
 type SutTypes = {
   sut: DbCheckByIdCategory
-  checkSectorByIdRepositorySpy: CheckCategoryByIdRepositorySpy
+  checkCategoryByIdRepositorySpy: CheckCategoryByIdRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const checkSectorByIdRepositorySpy = new CheckCategoryByIdRepositorySpy()
-  const sut = new DbCheckByIdCategory(checkSectorByIdRepositorySpy)
+  const checkCategoryByIdRepositorySpy = new CheckCategoryByIdRepositorySpy()
+  const sut = new DbCheckByIdCategory(checkCategoryByIdRepositorySpy)
   return {
     sut,
-    checkSectorByIdRepositorySpy
+    checkCategoryByIdRepositorySpy
   }
 }
 
 describe('DbCheckCategoryById', () => {
-  test('Should call CheckCategoryById with correct value', async () => {
-    const { sut, checkSectorByIdRepositorySpy } = makeSut()
+  test('Should call CheckCategoryByIdRepository with correct value', async () => {
+    const { sut, checkCategoryByIdRepositorySpy } = makeSut()
     const id = faker.datatype.number()
     await sut.checkById(id)
-    expect(checkSectorByIdRepositorySpy.id).toBe(id)
+    expect(checkCategoryByIdRepositorySpy.id).toBe(id)
+  })
+
+  test('Should return true if CheckCategoryByIdRepository return true', async () => {
+    const { sut, checkCategoryByIdRepositorySpy } = makeSut()
+    checkCategoryByIdRepositorySpy.result = true
+    const check = await sut.checkById(faker.datatype.number())
+    expect(check).toBe(true)
   })
 })
