@@ -13,7 +13,7 @@ export class CategoryPostgresRepository implements
   LoadCategoriesRepository,
   CheckCategoryByIdRepository,
   DeleteCategoryRepository {
-  async add (category: AddCategoryRepository.Params): Promise<boolean> {
+  async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
     const { name } = category
     const prismaClient = await PrismaHelper.getConnection()
     const categoryResult = await prismaClient.category.create({
