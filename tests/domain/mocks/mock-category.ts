@@ -59,3 +59,12 @@ export class DeleteCategorySpy implements DeleteCategory {
     return this.model
   }
 }
+
+export class SaveCategorySpy implements SaveCategory {
+  params: SaveCategory.Params
+  result = true
+  async save (category: SaveCategory.Params): Promise<SaveCategory.Result> {
+    this.params = category
+    return this.result
+  }
+}

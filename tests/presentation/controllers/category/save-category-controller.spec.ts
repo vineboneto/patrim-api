@@ -2,6 +2,7 @@ import { SaveCategoryController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helper'
 import { MissingParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
+import { SaveCategorySpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -13,14 +14,17 @@ const mockRequest = (): SaveCategoryController.Request => ({
 type SutTypes = {
   sut: SaveCategoryController
   validationSpy: ValidationSpy
+  saveCategorySpy: SaveCategorySpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new SaveCategoryController(validationSpy)
+  const saveCategorySpy = new SaveCategorySpy()
+  const sut = new SaveCategoryController(validationSpy, saveCategorySpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    saveCategorySpy
   }
 }
 
@@ -37,5 +41,12 @@ describe('SaveCategoryController', () => {
     validationSpy.result = new MissingParamError('id')
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(validationSpy.result))
+  })
+
+  test('Should call SaveCategory with correct value', async () => {
+    const { sut, saveCategorySpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(saveCategorySpy.params).toEqual(request)
   })
 })
