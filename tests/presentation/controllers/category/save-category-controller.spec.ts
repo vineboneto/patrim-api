@@ -2,7 +2,7 @@ import { SaveCategoryController } from '@/presentation/controllers'
 import { badRequest, forbidden } from '@/presentation/helper'
 import { AlreadyExistsError, MissingParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { SaveCategorySpy } from '@/tests/domain/mocks'
+import { CheckCategoryByIdSpy, SaveCategorySpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -15,16 +15,19 @@ type SutTypes = {
   sut: SaveCategoryController
   validationSpy: ValidationSpy
   saveCategorySpy: SaveCategorySpy
+  checkCategoryByIdSpy: CheckCategoryByIdSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
+  const checkCategoryByIdSpy = new CheckCategoryByIdSpy()
   const saveCategorySpy = new SaveCategorySpy()
-  const sut = new SaveCategoryController(validationSpy, saveCategorySpy)
+  const sut = new SaveCategoryController(validationSpy, saveCategorySpy, checkCategoryByIdSpy)
   return {
     sut,
     validationSpy,
-    saveCategorySpy
+    saveCategorySpy,
+    checkCategoryByIdSpy
   }
 }
 
@@ -63,5 +66,12 @@ describe('SaveCategoryController', () => {
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(forbidden(new AlreadyExistsError(request.name)))
+  })
+
+  test('Should call CheckCategoryById with correct value', async () => {
+    const { sut, checkCategoryByIdSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkCategoryByIdSpy.id).toEqual(request.id)
   })
 })

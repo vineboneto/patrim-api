@@ -1,5 +1,5 @@
 import { CategoryModel } from '@/domain/models'
-import { AddCategory, DeleteCategory, LoadCategories, SaveCategory } from '@/domain/usecases'
+import { AddCategory, CheckCategoryById, DeleteCategory, LoadCategories, SaveCategory } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -65,6 +65,15 @@ export class SaveCategorySpy implements SaveCategory {
   result = true
   async save (category: SaveCategory.Params): Promise<SaveCategory.Result> {
     this.params = category
+    return this.result
+  }
+}
+
+export class CheckCategoryByIdSpy implements CheckCategoryById {
+  id: number
+  result = true
+  async checkById (id: number): Promise<CheckCategoryById.Result> {
+    this.id = id
     return this.result
   }
 }
