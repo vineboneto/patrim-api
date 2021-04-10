@@ -27,6 +27,13 @@ describe('DbSaveCategory', () => {
     expect(saveCategoryRepositorySpy.params).toEqual(category)
   })
 
+  test('Should return false if SaveCategoryRepository returns false', async () => {
+    const { sut, saveCategoryRepositorySpy } = makeSut()
+    saveCategoryRepositorySpy.result = false
+    const result = await sut.save(mockSaveCategoryParams())
+    expect(result).toBe(false)
+  })
+
   test('Should call CheckCategoryByNameRepository with correct value', async () => {
     const { sut, checkCategoryByNameRepositorySpy } = makeSut()
     const category = mockSaveCategoryParams()
