@@ -31,7 +31,7 @@ export class CategoryPostgresRepository implements
     const prismaClient = await PrismaHelper.getConnection()
     const categoryResult = await prismaClient.category.update({
       where: {
-        id
+        id: Number(id)
       },
       data: {
         name
@@ -44,7 +44,7 @@ export class CategoryPostgresRepository implements
     const prismaClient = await PrismaHelper.getConnection()
     const categoryDeleted = await prismaClient.category.delete({
       where: {
-        id
+        id: Number(id)
       }
     })
     return categoryDeleted
@@ -70,7 +70,7 @@ export class CategoryPostgresRepository implements
     const prismaClient = await PrismaHelper.getConnection()
     const categoryWithOnlyId = await prismaClient.category.findFirst({
       where: {
-        id
+        id: Number(id)
       },
       select: {
         id: true

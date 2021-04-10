@@ -3,11 +3,20 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { mockAddCategoriesParams } from '@/tests/domain/mocks'
 import { makeAccessToken } from '@/tests/main/mocks'
 
-import { PrismaClient } from '@prisma/client'
+import { Category, PrismaClient } from '@prisma/client'
 import faker from 'faker'
 import request from 'supertest'
 
 let prismaClient: PrismaClient
+
+const makeCategory = async (): Promise<Category> => {
+  const newCategory = await prismaClient.category.create({
+    data: {
+      name: faker.name.jobArea()
+    }
+  })
+  return newCategory
+}
 
 describe('Category Routes', () => {
   beforeAll(() => {
@@ -26,7 +35,7 @@ describe('Category Routes', () => {
   })
 
   describe('POST /categories', () => {
-    test('Should return 204 on save category', async () => {
+    test('Should return 204 on add category', async () => {
       const accessToken = await makeAccessToken(prismaClient)
       await request(app)
         .post('/api/categories')
@@ -37,13 +46,27 @@ describe('Category Routes', () => {
         .expect(204)
     })
 
-    test('Should return 403 on save category without accessToken', async () => {
+    test('Should return 403 on add category without accessToken', async () => {
       await request(app)
         .post('/api/categories')
         .send({
           name: faker.name.jobArea()
         })
         .expect(403)
+    })
+  })
+
+  describe('PUT /categories', () => {
+    test('Should return 204 on save category', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      const newCategory = await makeCategory()
+      await request(app)
+        .put(`/api/categories/${newCategory.id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(204)
     })
   })
 
@@ -77,11 +100,7 @@ describe('Category Routes', () => {
   describe('DELETE /categories/:id', () => {
     test('Should return category deleted on delete success', async () => {
       const accessToken = await makeAccessToken(prismaClient)
-      const newCategory = await prismaClient.category.create({
-        data: {
-          name: faker.name.jobArea()
-        }
-      })
+      const newCategory = await makeCategory()
       await request(app)
         .delete(`/api/categories/${newCategory.id}`)
         .set('x-access-token', accessToken)
