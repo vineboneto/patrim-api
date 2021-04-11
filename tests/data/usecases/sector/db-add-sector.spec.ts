@@ -1,6 +1,6 @@
 import { DbAddSector } from '@/data/usecases/'
 import { AddSectorRepositorySpy, CheckSectorByNameRepositorySpy } from '@/tests/data/mocks'
-import { mockAddSectorParams } from '@/tests/domain/mocks/'
+import { mockAddSectorParams } from '@/tests/data/mocks/'
 
 type SutTypes = {
   sut: DbAddSector

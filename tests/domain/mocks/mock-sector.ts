@@ -3,22 +3,7 @@ import { AddSector, LoadSectors, DeleteSector, SaveSector, CheckSectorById } fro
 
 import faker from 'faker'
 
-export const mockAddSectorParams = (): AddSector.Params => ({
-  name: faker.name.jobArea()
-})
-
-export const mockAddSectorsParams = (): AddSector.Params[] => ([
-  mockAddSectorParams(),
-  mockAddSectorParams(),
-  mockAddSectorParams()
-])
-
 export const mockSectorModel = (): SectorModel => ({
-  id: faker.datatype.number(),
-  name: faker.name.findName()
-})
-
-export const mockSaveSectorParams = (): SaveSector.Params => ({
   id: faker.datatype.number(),
   name: faker.name.findName()
 })

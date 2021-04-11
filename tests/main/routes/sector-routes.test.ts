@@ -1,7 +1,7 @@
 import app from '@/main/config/app'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeAccessToken } from '@/tests/main/mocks'
-import { mockAddSectorsParams } from '@/tests/domain/mocks'
+import { mockAddSectorsParams } from '@/tests/data/mocks'
 
 import { PrismaClient, Sector } from '@prisma/client'
 import request from 'supertest'

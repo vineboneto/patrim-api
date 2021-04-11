@@ -1,5 +1,6 @@
 import { SectorPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
-import { mockAddSectorParams, mockAddSectorsParams, mockSectorModel } from '@/tests/domain/mocks/mock-sector'
+import { mockAddSectorParams, mockAddSectorsParams } from '@/tests/data/mocks'
+import { mockSectorModel } from '@/tests/domain/mocks'
 
 import { PrismaClient } from '@prisma/client'
 
@@ -38,13 +39,13 @@ describe('SectorPostgresRepository', () => {
     })
   })
 
-  describe('save()', () => {
-    test('Should return true on save success', async () => {
+  describe('update()', () => {
+    test('Should return true on update success', async () => {
       const sut = makeSut()
       const { id } = await prismaClient.sector.create({
         data: mockAddSectorParams()
       })
-      const result = await sut.save({
+      const result = await sut.update({
         id,
         name: 'new_name'
       })
@@ -56,7 +57,7 @@ describe('SectorPostgresRepository', () => {
       const { id } = await prismaClient.sector.create({
         data: mockAddSectorParams()
       })
-      await sut.save({
+      await sut.update({
         id,
         name: 'new_name'
       })

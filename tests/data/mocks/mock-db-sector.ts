@@ -4,16 +4,33 @@ import {
   LoadSectorsRepository,
   DeleteSectorRepository,
   CheckSectorByIdRepository,
-  SaveSectorRepository
+  UpdateSectorRepository
 } from '@/data/protocols'
 import { mockSectorModel, mockSectorsModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
+export const mockUpdateSectorParams = (): UpdateSectorRepository.Params => ({
+  id: faker.datatype.number(),
+  name: faker.name.findName()
+})
+
+export const mockAddSectorParams = (): AddSectorRepository.Params => ({
+  name: faker.name.jobArea()
+})
+
+export const mockAddSectorsParams = (): AddSectorRepository.Params[] => ([
+  mockAddSectorParams(),
+  mockAddSectorParams(),
+  mockAddSectorParams()
+])
+
 export class AddSectorRepositorySpy implements AddSectorRepository {
+  callsCount = 0
   params: AddSectorRepository.Params
   result = true
   async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
+    this.callsCount++
     this.params = sector
     return this.result
   }
@@ -56,10 +73,12 @@ export class CheckSectorByIdRepositorySpy implements CheckSectorByIdRepository {
   }
 }
 
-export class SaveSectorRepositorySpy implements SaveSectorRepository {
-  params: SaveSectorRepository.Params
+export class UpdateSectorRepositorySpy implements UpdateSectorRepository {
+  callsCount = 0
+  params: UpdateSectorRepository.Params
   result = true
-  async save (sector: SaveSectorRepository.Params): Promise<SaveSectorRepository.Result> {
+  async update (sector: UpdateSectorRepository.Params): Promise<UpdateSectorRepository.Result> {
+    this.callsCount++
     this.params = sector
     return this.result
   }
