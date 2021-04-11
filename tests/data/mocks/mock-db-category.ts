@@ -11,9 +11,11 @@ import { mockCategoriesModel, mockCategoryModel } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
+  callsCount = 0
   params: AddCategoryRepository.Params
   result = true
   async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
+    this.callsCount++
     this.params = category
     return this.result
   }
