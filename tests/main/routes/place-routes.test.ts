@@ -2,11 +2,20 @@ import app from '@/main/config/app'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeAccessToken } from '@/tests/main/mocks'
 
-import { PrismaClient } from '@prisma/client'
+import { Place, PrismaClient } from '@prisma/client'
 import faker from 'faker'
 import request from 'supertest'
 
 let prismaClient: PrismaClient
+
+const makePlace = async (): Promise<Place> => {
+  const newPlace = await prismaClient.place.create({
+    data: {
+      name: faker.name.jobArea()
+    }
+  })
+  return newPlace
+}
 
 describe('Place Routes', () => {
   beforeAll(() => {
@@ -43,6 +52,20 @@ describe('Place Routes', () => {
           name: faker.name.jobArea()
         })
         .expect(403)
+    })
+  })
+
+  describe('PUT /places', () => {
+    test('Should return 204 on save sector', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      const { id } = await makePlace()
+      await request(app)
+        .put(`/api/places/${id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(204)
     })
   })
 })
