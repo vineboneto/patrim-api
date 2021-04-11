@@ -69,6 +69,13 @@ describe('DbSaveSector', () => {
     expect(addSectorRepositorySpy.params).toEqual(sector)
   })
 
+  test('Should return false if AddSectorRepository returns false', async () => {
+    const { sut, addSectorRepositorySpy } = makeSut()
+    addSectorRepositorySpy.result = false
+    const result = await sut.save(mockAddSectorParams())
+    expect(result).toBe(false)
+  })
+
   test('Should call CheckSectorByNameRepository with correct value', async () => {
     const { sut, checkSectorByNameRepositorySpy } = makeSut()
     const Sector = mockUpdateSectorParams()
