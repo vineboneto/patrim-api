@@ -21,6 +21,8 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
   9. [Remover Categoria](./requirements/category/delete-category.md)
   10. [Atualizar Categoria](./requirements/category/save-category.md)
   11. [Listar Categorias](./requirements/category/load-categories.md)
+  12. [Criar Localidade](./requirements/place/add-place.md)
+  13. [Atualizar Localidade](./requirements/place/update-place.md)
 
 > ### Metodologia de Design
 
