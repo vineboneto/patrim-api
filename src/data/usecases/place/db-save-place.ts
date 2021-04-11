@@ -13,10 +13,9 @@ export class DbSavePlace implements SavePlace {
     const exists = await this.checkPlaceByNameRepository.checkByName(name)
     let isValid = false
     if (!exists) {
-      if (id) {
-        isValid = await this.updatePlaceRepository.update({ id, name, userId })
-      }
-      await this.addPlaceRepository.add({ name, userId })
+      id
+        ? isValid = await this.updatePlaceRepository.update({ id, name, userId })
+        : await this.addPlaceRepository.add({ name, userId })
     }
     return isValid
   }
