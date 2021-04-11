@@ -10,7 +10,10 @@ export class DbSavePlace implements SavePlace {
   async save (place: SavePlace.Params): Promise<SavePlace.Result> {
     const { id, name, userId } = place
     const exists = await this.checkPlaceByNameRepository.checkByName(name)
-    await this.updatePlaceRepository.update({ id, name, userId })
-    return !exists
+    let isValid = false
+    if (!exists) {
+      isValid = await this.updatePlaceRepository.update({ id, name, userId })
+    }
+    return isValid
   }
 }
