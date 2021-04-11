@@ -64,4 +64,10 @@ describe('DbSavePlace', () => {
     const result = await sut.save(mockUpdatePlaceParams())
     expect(result).toBe(true)
   })
+
+  test('Should call UpdatePlaceRepository if id is not undefined', async () => {
+    const { sut, updatePlaceRepositorySpy } = makeSut()
+    await sut.save(mockUpdatePlaceParams())
+    expect(updatePlaceRepositorySpy.callsCount).toBe(1)
+  })
 })
