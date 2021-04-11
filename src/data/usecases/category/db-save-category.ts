@@ -1,9 +1,9 @@
 import { SaveCategory } from '@/domain/usecases'
-import { CheckCategoryByNameRepository, SaveCategoryRepository } from '@/data/protocols'
+import { CheckCategoryByNameRepository, UpdateCategoryRepository } from '@/data/protocols'
 
 export class DbSaveCategory implements SaveCategory {
   constructor (
-    private readonly saveCategoryRepository: SaveCategoryRepository,
+    private readonly updateCategoryRepository: UpdateCategoryRepository,
     private readonly checkCategoryByNameRepository: CheckCategoryByNameRepository
   ) {}
 
@@ -11,7 +11,12 @@ export class DbSaveCategory implements SaveCategory {
     const exists = await this.checkCategoryByNameRepository.checkByName(category.name)
     let isValid = false
     if (!exists) {
-      isValid = await this.saveCategoryRepository.save(category)
+      if (category.id) {
+        isValid = await this.updateCategoryRepository.update({
+          id: category.id,
+          name: category.name
+        })
+      }
     }
     return isValid
   }
