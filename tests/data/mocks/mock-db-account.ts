@@ -81,8 +81,8 @@ export class DecrypterSpy implements Decrypter {
 
 export class CheckAccountByIdRepositorySpy implements CheckAccountByIdRepository {
   result = true
-  id = faker.datatype.number()
-  async checkById (id: number): Promise<CheckAccountByIdRepository.Result> {
+  id = faker.datatype.number().toString()
+  async checkById (id: string): Promise<CheckAccountByIdRepository.Result> {
     this.id = id
     return this.result
   }

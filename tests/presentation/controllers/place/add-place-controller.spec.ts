@@ -52,4 +52,11 @@ describe('AddPlaceController', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
   })
+
+  test('Should call CheckAccountByIdSpy with correct value', async () => {
+    const { sut, checkAccountByIdSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkAccountByIdSpy.id).toEqual(request.userId)
+  })
 })
