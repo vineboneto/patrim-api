@@ -11,6 +11,7 @@ export class AddPlaceController implements Controller {
   async handle (request: AddPlaceController.Request): Promise<HttpResponse> {
     const { name, userId } = request
     if (!userId) this.validation.validate({ name })
+    else this.validation.validate({ name, userId })
     return null
   }
 }
