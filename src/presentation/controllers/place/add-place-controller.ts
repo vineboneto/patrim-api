@@ -1,5 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { SavePlace, CheckAccountById } from '@/domain/usecases'
+import { badRequest } from '@/presentation/helper'
 
 export class AddPlaceController implements Controller {
   constructor (
@@ -10,16 +11,18 @@ export class AddPlaceController implements Controller {
 
   async handle (request: AddPlaceController.Request): Promise<HttpResponse> {
     const { name, userId } = request
-    this.validate({ name, userId })
+    const error = this.validate({ name, userId })
+    if (error) {
+      return badRequest(error)
+    }
     return null
   }
 
-  private validate ({ name, userId }: AddPlaceController.Request): void {
+  private validate ({ name, userId }: AddPlaceController.Request): Error {
     if (!userId) {
-      this.validation.validate({ name })
-    } else {
-      this.validation.validate({ name, userId })
+      return this.validation.validate({ name })
     }
+    return this.validation.validate({ name, userId })
   }
 }
 
