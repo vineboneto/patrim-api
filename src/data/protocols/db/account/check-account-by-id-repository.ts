@@ -1,5 +1,5 @@
 export interface CheckAccountByIdRepository {
-  checkById (id: number): Promise<CheckAccountByIdRepository.Result>
+  checkById (id: string): Promise<CheckAccountByIdRepository.Result>
 }
 
 export namespace CheckAccountByIdRepository {

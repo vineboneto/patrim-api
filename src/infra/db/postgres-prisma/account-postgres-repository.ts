@@ -38,7 +38,7 @@ export class AccountPostgresRepository implements
     return account !== null
   }
 
-  async checkById (id: number): Promise<CheckAccountByIdRepository.Result> {
+  async checkById (id: string): Promise<CheckAccountByIdRepository.Result> {
     const prismaClient = await PrismaHelper.getConnection()
     const accountWithOnlyId = await prismaClient.user.findFirst({
       where: {

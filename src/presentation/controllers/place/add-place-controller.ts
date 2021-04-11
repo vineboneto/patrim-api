@@ -15,6 +15,7 @@ export class AddPlaceController implements Controller {
     if (error) {
       return badRequest(error)
     }
+    await this.checkAccountById.checkById(userId)
     return null
   }
 

@@ -6,7 +6,7 @@ export class DbCheckAccountById implements CheckAccountById {
     private readonly checkAccountByIdRepository: CheckAccountByIdRepository
   ) {}
 
-  async checkById (id: number): Promise<CheckAccountById.Result> {
+  async checkById (id: string): Promise<CheckAccountById.Result> {
     return this.checkAccountByIdRepository.checkById(id)
   }
 }
