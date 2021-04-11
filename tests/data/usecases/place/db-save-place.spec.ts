@@ -90,6 +90,19 @@ describe('DbSavePlace', () => {
     expect(addPlaceRepositorySpy.params).toEqual(data)
   })
 
+  test('Should return false AddPlaceRepository returns false', async () => {
+    const { sut, addPlaceRepositorySpy } = makeSut()
+    addPlaceRepositorySpy.result = false
+    const result = await sut.save(mockAddPlaceParams())
+    expect(result).toBe(false)
+  })
+
+  test('Should return true AddPlaceRepository returns true', async () => {
+    const { sut } = makeSut()
+    const result = await sut.save(mockAddPlaceParams())
+    expect(result).toBe(true)
+  })
+
   test('Should call AddPlaceRepository if id is undefined', async () => {
     const { sut, addPlaceRepositorySpy, updatePlaceRepositorySpy } = makeSut()
     await sut.save(mockAddPlaceParams())
