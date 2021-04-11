@@ -1,4 +1,4 @@
-import { CheckPlaceByNameRepository, UpdatePlaceRepository } from '@/data/protocols'
+import { AddPlaceRepository, CheckPlaceByNameRepository, UpdatePlaceRepository } from '@/data/protocols'
 import { SavePlace } from '@/domain/usecases'
 
 import faker from 'faker'
@@ -29,6 +29,17 @@ export class UpdatePlaceRepositorySpy implements UpdatePlaceRepository {
   params: UpdatePlaceRepository.Params
   result = true
   async update (place: UpdatePlaceRepository.Params): Promise<UpdatePlaceRepository.Result> {
+    this.callsCount++
+    this.params = place
+    return this.result
+  }
+}
+
+export class AddPlaceRepositorySpy implements AddPlaceRepository {
+  callsCount = 0
+  params: AddPlaceRepository.Params
+  result = true
+  async add (place: AddPlaceRepository.Params): Promise<AddPlaceRepository.Result> {
     this.callsCount++
     this.params = place
     return this.result
