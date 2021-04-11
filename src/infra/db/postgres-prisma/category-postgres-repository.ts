@@ -1,6 +1,6 @@
 import {
   AddCategoryRepository,
-  SaveCategoryRepository,
+  UpdateCategoryRepository,
   DeleteCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
@@ -10,7 +10,7 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
 export class CategoryPostgresRepository implements
   AddCategoryRepository,
-  SaveCategoryRepository,
+  UpdateCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
   CheckCategoryByIdRepository,
@@ -26,7 +26,7 @@ export class CategoryPostgresRepository implements
     return categoryResult !== null
   }
 
-  async save (category: SaveCategoryRepository.Params): Promise<SaveCategoryRepository.Result> {
+  async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result> {
     const { id, name } = category
     const prismaClient = await PrismaHelper.getConnection()
     const categoryResult = await prismaClient.category.update({

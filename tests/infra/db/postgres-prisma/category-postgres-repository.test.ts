@@ -31,13 +31,13 @@ describe('CategoryPostgresRepository', () => {
     })
   })
 
-  describe('save()', () => {
-    test('Should return true on save success', async () => {
+  describe('update()', () => {
+    test('Should return true on update success', async () => {
       const sut = makeSut()
       const { id } = await prismaClient.category.create({
         data: mockAddCategoryParams()
       })
-      const result = await sut.save({
+      const result = await sut.update({
         id,
         name: 'new_name'
       })
@@ -49,7 +49,7 @@ describe('CategoryPostgresRepository', () => {
       const { id } = await prismaClient.category.create({
         data: mockAddCategoryParams()
       })
-      await sut.save({
+      await sut.update({
         id,
         name: 'new_name'
       })
