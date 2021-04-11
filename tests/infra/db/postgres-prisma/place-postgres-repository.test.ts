@@ -115,4 +115,19 @@ describe('PlacePostgresRepository', () => {
       expect(result).toBe(false)
     })
   })
+
+  describe('checkByName()', () => {
+    test('Should return true if sector name exists', async () => {
+      const sut = makeSut()
+      const { name } = await makePlace()
+      const isValid = await sut.checkByName(name)
+      expect(isValid).toBe(true)
+    })
+
+    test('Should return false if sector name does not exists', async () => {
+      const sut = makeSut()
+      const isValid = await sut.checkByName(faker.name.findName())
+      expect(isValid).toBe(false)
+    })
+  })
 })
