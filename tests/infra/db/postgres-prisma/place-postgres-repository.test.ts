@@ -85,5 +85,17 @@ describe('PlacePostgresRepository', () => {
       expect(newName).toBe('other_name')
       expect(newUserIdUpdated).toBe(newUserId)
     })
+
+    test('Should return true on update data without userId success', async () => {
+      const sut = makeSut()
+      const { id } = await makePlace()
+      const result = await sut.update({
+        id,
+        name: 'other_name'
+      })
+      const { name: newName } = await findPlace(id)
+      expect(result).toBe(true)
+      expect(newName).toBe('other_name')
+    })
   })
 })
