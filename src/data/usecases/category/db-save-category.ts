@@ -1,9 +1,10 @@
 import { SaveCategory } from '@/domain/usecases'
-import { CheckCategoryByNameRepository, UpdateCategoryRepository } from '@/data/protocols'
+import { AddCategoryRepository, CheckCategoryByNameRepository, UpdateCategoryRepository } from '@/data/protocols'
 
 export class DbSaveCategory implements SaveCategory {
   constructor (
     private readonly updateCategoryRepository: UpdateCategoryRepository,
+    private readonly addCategoryRepository: AddCategoryRepository,
     private readonly checkCategoryByNameRepository: CheckCategoryByNameRepository
   ) {}
 
@@ -17,6 +18,7 @@ export class DbSaveCategory implements SaveCategory {
           name: category.name
         })
       }
+      await this.addCategoryRepository.add(category)
     }
     return isValid
   }
