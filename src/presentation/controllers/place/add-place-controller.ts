@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { SavePlace, CheckAccountById } from '@/domain/usecases'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, forbidden } from '@/presentation/helper'
+import { InvalidParamError } from '@/presentation/errors'
 
 export class AddPlaceController implements Controller {
   constructor (
@@ -15,7 +16,10 @@ export class AddPlaceController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    await this.checkAccountById.checkById(userId)
+    const exists = await this.checkAccountById.checkById(userId)
+    if (!exists) {
+      return forbidden(new InvalidParamError('userId'))
+    }
     return null
   }
 
