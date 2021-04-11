@@ -1,6 +1,8 @@
 import { AddPlaceController } from '@/presentation/controllers'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { CheckAccountByIdSpy, SavePlaceSpy } from '@/tests/domain/mocks'
+import { badRequest } from '@/presentation/helper'
+import { MissingParamError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -42,5 +44,12 @@ describe('AddPlaceController', () => {
     const { name, userId } = mockRequest()
     await sut.handle({ name, userId })
     expect(validationSpy.input).toEqual({ name, userId })
+  })
+
+  test('Should return 400 Validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new MissingParamError('name')
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
   })
 })
