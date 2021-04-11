@@ -9,13 +9,13 @@ import faker from 'faker'
 
 export const mockAddPlaceParams = (): AddPlaceRepository.Params => ({
   name: faker.name.findName(),
-  userId: faker.datatype.number()
+  userId: faker.datatype.number().toString()
 })
 
 export const mockUpdatePlaceParams = (): UpdatePlaceRepository.Params => ({
   id: faker.datatype.number(),
   name: faker.name.findName(),
-  userId: faker.datatype.number()
+  userId: faker.datatype.number().toString()
 })
 
 export class CheckPlaceByNameRepositorySpy implements CheckPlaceByNameRepository {

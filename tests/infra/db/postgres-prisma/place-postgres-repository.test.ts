@@ -57,7 +57,7 @@ describe('PlacePostgresRepository', () => {
       const { id } = await makeUser()
       const result = await sut.add({
         name: 'any_name',
-        userId: id
+        userId: id.toString()
       })
       expect(result).toBe(true)
     })
@@ -80,7 +80,7 @@ describe('PlacePostgresRepository', () => {
       const result = await sut.update({
         id,
         name: 'other_name',
-        userId: newUserId
+        userId: newUserId.toString()
       })
       const { name: newName, userId: newUserIdUpdated } = await findPlace(id)
       expect(result).toBe(true)

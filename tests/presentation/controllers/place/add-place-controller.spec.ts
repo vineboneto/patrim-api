@@ -13,19 +13,19 @@ const mockRequest = (): AddPlaceController.Request => ({
 
 type SutTypes = {
   sut: AddPlaceController
-  addPlaceSpy: SavePlaceSpy
+  savePlaceSpy: SavePlaceSpy
   validationSpy: ValidationSpy
   checkAccountByIdSpy: CheckAccountByIdSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const addPlaceSpy = new SavePlaceSpy()
+  const savePlaceSpy = new SavePlaceSpy()
   const checkAccountByIdSpy = new CheckAccountByIdSpy()
-  const sut = new AddPlaceController(addPlaceSpy, checkAccountByIdSpy, validationSpy)
+  const sut = new AddPlaceController(savePlaceSpy, checkAccountByIdSpy, validationSpy)
   return {
     sut,
-    addPlaceSpy,
+    savePlaceSpy,
     checkAccountByIdSpy,
     validationSpy
   }
@@ -65,5 +65,12 @@ describe('AddPlaceController', () => {
     checkAccountByIdSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('userId')))
+  })
+
+  test('Should call SavePlace with correct value', async () => {
+    const { sut, savePlaceSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(savePlaceSpy.params).toEqual(request)
   })
 })
