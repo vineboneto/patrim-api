@@ -14,7 +14,7 @@
 
 1. [x] Retorna erro **404** se a API não existir
 2. [x] Retorna erro **403** se não for um usuário
-3. [x] Retorna erro **403** se a categoria não existir
+3. [x] Retorna erro **403** se a id da categoria não existir
 4. [x] Retorna erro **403** se o name já existir
 5. [x] Retorna erro **400** se name ou id não for fornecidos pelo client
 6. [x] Retorna erro **400** se o id não for um número
