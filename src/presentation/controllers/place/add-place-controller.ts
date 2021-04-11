@@ -1,7 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { SavePlace, CheckAccountById } from '@/domain/usecases'
 import { badRequest, forbidden } from '@/presentation/helper'
-import { InvalidParamError } from '@/presentation/errors'
+import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 
 export class AddPlaceController implements Controller {
   constructor (
@@ -20,7 +20,10 @@ export class AddPlaceController implements Controller {
     if (!exists) {
       return forbidden(new InvalidParamError('userId'))
     }
-    await this.savePlace.save({ name, userId })
+    const isValid = await this.savePlace.save({ name, userId })
+    if (!isValid) {
+      return forbidden(new AlreadyExistsError(request.name))
+    }
 
     return null
   }
