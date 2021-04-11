@@ -10,15 +10,22 @@ export class AddPlaceController implements Controller {
 
   async handle (request: AddPlaceController.Request): Promise<HttpResponse> {
     const { name, userId } = request
-    if (!userId) this.validation.validate({ name })
-    else this.validation.validate({ name, userId })
+    this.validate({ name, userId })
     return null
+  }
+
+  private validate ({ name, userId }: AddPlaceController.Request): void {
+    if (!userId) {
+      this.validation.validate({ name })
+    } else {
+      this.validation.validate({ name, userId })
+    }
   }
 }
 
 export namespace AddPlaceController {
   export type Request = {
     name: string
-    userId?: number
+    userId?: string
   }
 }

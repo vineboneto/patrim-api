@@ -6,7 +6,7 @@ import faker from 'faker'
 
 const mockRequest = (): AddPlaceController.Request => ({
   name: faker.name.jobArea(),
-  userId: faker.datatype.number()
+  userId: faker.datatype.number().toString()
 })
 
 type SutTypes = {
