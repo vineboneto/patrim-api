@@ -115,6 +115,14 @@ describe('UpdatePlaceController', () => {
     expect(httpResponse).toEqual(serverError(error))
   })
 
+  test('Should return 500 if CheckPlaceByIdSpy throws', async () => {
+    const { sut, checkPlaceByIdSpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(checkPlaceByIdSpy, 'checkById').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
+  })
+
   test('Should return 500 if SavePlace throws', async () => {
     const { sut, savePlaceSpy } = makeSut()
     const error = new Error()
