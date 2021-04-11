@@ -1,5 +1,5 @@
 import { SectorModel } from '@/domain/models'
-import { AddSector, LoadSectors, DeleteSector, SaveSector, CheckSectorById } from '@/domain/usecases'
+import { LoadSectors, DeleteSector, SaveSector, CheckSectorById } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -17,15 +17,6 @@ export const mockSectorsModel = (): SectorModel[] => ([
 export const mockDeleteSectorParams = (): DeleteSector.Params => ({
   id: faker.datatype.number()
 })
-
-export class AddSectorSpy implements AddSector {
-  params: AddSector.Params
-  result = true
-  async add (sector: AddSector.Params): Promise<AddSector.Result> {
-    this.params = sector
-    return this.result
-  }
-}
 
 export class LoadSectorsSpy implements LoadSectors {
   sectorsModel = mockSectorsModel()

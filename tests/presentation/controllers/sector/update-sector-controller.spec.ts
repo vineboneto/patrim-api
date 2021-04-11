@@ -1,37 +1,37 @@
-import { SaveCategoryController } from '@/presentation/controllers'
+import { UpdateSectorController } from '@/presentation/controllers'
 import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { AlreadyExistsError, InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { CheckCategoryByIdSpy, SaveCategorySpy } from '@/tests/domain/mocks'
+import { CheckSectorByIdSpy, SaveSectorSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-const mockRequest = (): SaveCategoryController.Request => ({
+const mockRequest = (): UpdateSectorController.Request => ({
   id: faker.datatype.number(),
   name: faker.name.findName()
 })
 
 type SutTypes = {
-  sut: SaveCategoryController
+  sut: UpdateSectorController
   validationSpy: ValidationSpy
-  saveCategorySpy: SaveCategorySpy
-  checkCategoryByIdSpy: CheckCategoryByIdSpy
+  saveSectorSpy: SaveSectorSpy
+  checkSectorByIdSpy: CheckSectorByIdSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const checkCategoryByIdSpy = new CheckCategoryByIdSpy()
-  const saveCategorySpy = new SaveCategorySpy()
-  const sut = new SaveCategoryController(validationSpy, saveCategorySpy, checkCategoryByIdSpy)
+  const checkSectorByIdSpy = new CheckSectorByIdSpy()
+  const saveSectorSpy = new SaveSectorSpy()
+  const sut = new UpdateSectorController(validationSpy, saveSectorSpy, checkSectorByIdSpy)
   return {
     sut,
     validationSpy,
-    saveCategorySpy,
-    checkCategoryByIdSpy
+    saveSectorSpy,
+    checkSectorByIdSpy
   }
 }
 
-describe('SaveCategoryController', () => {
+describe('SaveSectorController', () => {
   test('Should call Validation with correct value', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()
@@ -46,54 +46,54 @@ describe('SaveCategoryController', () => {
     expect(httpResponse).toEqual(badRequest(validationSpy.result))
   })
 
-  test('Should call SaveCategory with correct value', async () => {
-    const { sut, saveCategorySpy } = makeSut()
+  test('Should call SaveSector with correct value', async () => {
+    const { sut, saveSectorSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(saveCategorySpy.params).toEqual(request)
+    expect(saveSectorSpy.params).toEqual(request)
   })
 
-  test('Should call SaveCategory with correct value', async () => {
-    const { sut, saveCategorySpy } = makeSut()
+  test('Should call SaveSector with correct value', async () => {
+    const { sut, saveSectorSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(saveCategorySpy.params).toEqual(request)
+    expect(saveSectorSpy.params).toEqual(request)
   })
 
-  test('Should return 403 if SaveCategory fails', async () => {
-    const { sut, saveCategorySpy } = makeSut()
-    saveCategorySpy.result = false
+  test('Should return 403 if SaveSector fails', async () => {
+    const { sut, saveSectorSpy } = makeSut()
+    saveSectorSpy.result = false
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(forbidden(new AlreadyExistsError(request.name)))
   })
 
-  test('Should call CheckCategoryById with correct value', async () => {
-    const { sut, checkCategoryByIdSpy } = makeSut()
+  test('Should call CheckSectorById with correct value', async () => {
+    const { sut, checkSectorByIdSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(checkCategoryByIdSpy.id).toEqual(request.id)
+    expect(checkSectorByIdSpy.id).toEqual(request.id)
   })
 
-  test('Should return 403 if CheckCategoryById if return false', async () => {
-    const { sut, checkCategoryByIdSpy } = makeSut()
-    checkCategoryByIdSpy.result = false
+  test('Should return 403 if CheckSectorById if return false', async () => {
+    const { sut, checkSectorByIdSpy } = makeSut()
+    checkSectorByIdSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
   })
 
-  test('Should return 500 if CheckCategoryById throws', async () => {
-    const { sut, checkCategoryByIdSpy } = makeSut()
+  test('Should return 500 if CheckSectorById throws', async () => {
+    const { sut, checkSectorByIdSpy } = makeSut()
     const error = new Error()
-    jest.spyOn(checkCategoryByIdSpy, 'checkById').mockRejectedValueOnce(error)
+    jest.spyOn(checkSectorByIdSpy, 'checkById').mockRejectedValueOnce(error)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(error))
   })
 
-  test('Should return 500 if SaveCategory throws', async () => {
-    const { sut, saveCategorySpy } = makeSut()
+  test('Should return 500 if SaveSector throws', async () => {
+    const { sut, saveSectorSpy } = makeSut()
     const error = new Error()
-    jest.spyOn(saveCategorySpy, 'save').mockRejectedValueOnce(error)
+    jest.spyOn(saveSectorSpy, 'save').mockRejectedValueOnce(error)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(error))
   })

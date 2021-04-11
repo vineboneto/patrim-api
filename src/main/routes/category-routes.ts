@@ -4,14 +4,14 @@ import {
   makeAddCategoryController,
   makeDeleteCategoryController,
   makeLoadCategoriesController,
-  makeSaveCategoryController
+  makeUpdateCategoryController
 } from '@/main/factories/controllers'
 
 import { Router } from 'express'
 
 export default (router: Router): void => {
   router.post('/categories', auth, adaptRoute(makeAddCategoryController()))
-  router.put('/categories/:id', auth, adaptRoute(makeSaveCategoryController()))
+  router.put('/categories/:id', auth, adaptRoute(makeUpdateCategoryController()))
   router.get('/categories', auth, adaptRoute(makeLoadCategoriesController()))
   router.delete('/categories/:id', auth, adaptRoute(makeDeleteCategoryController()))
 }

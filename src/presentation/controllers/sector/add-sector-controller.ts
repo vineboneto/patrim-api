@@ -1,11 +1,11 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, noContent, serverError, forbidden } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
-import { AddSector } from '@/domain/usecases'
+import { SaveSector } from '@/domain/usecases'
 
 export class AddSectorController implements Controller {
   constructor (
-    private readonly addSector: AddSector,
+    private readonly saveSector: SaveSector,
     private readonly validation: Validation
   ) {}
 
@@ -15,7 +15,7 @@ export class AddSectorController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const isValid = await this.addSector.add(request)
+      const isValid = await this.saveSector.save(request)
       if (!isValid) return forbidden(new AlreadyExistsError(request.name))
       return noContent()
     } catch (error) {

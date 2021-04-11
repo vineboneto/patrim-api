@@ -1,26 +1,26 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
-import { CheckSectorById, SaveSector } from '@/domain/usecases'
+import { CheckCategoryById, SaveCategory } from '@/domain/usecases'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 
-export class SaveSectorController implements Controller {
+export class UpdateCategoryController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly saveSector: SaveSector,
-    private readonly checkSectorById: CheckSectorById
+    private readonly saveCategory: SaveCategory,
+    private readonly checkCategoryById: CheckCategoryById
   ) {}
 
-  async handle (request: SaveSectorController.Request): Promise<HttpResponse> {
+  async handle (request: UpdateCategoryController.Request): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
-      const exists = await this.checkSectorById.checkById(request.id)
+      const exists = await this.checkCategoryById.checkById(request.id)
       if (!exists) {
         return forbidden(new InvalidParamError('id'))
       }
-      const isValid = await this.saveSector.save(request)
+      const isValid = await this.saveCategory.save(request)
       if (!isValid) {
         return forbidden(new AlreadyExistsError(request.name))
       }
@@ -30,7 +30,7 @@ export class SaveSectorController implements Controller {
     }
   }
 }
-export namespace SaveSectorController {
+export namespace UpdateCategoryController {
   export type Request = {
     id: number
     name: string

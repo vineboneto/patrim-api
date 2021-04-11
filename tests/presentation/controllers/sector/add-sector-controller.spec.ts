@@ -2,7 +2,7 @@ import { AddSectorController } from '@/presentation/controllers'
 import { badRequest, noContent, serverError, forbidden } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { AddSectorSpy } from '@/tests/domain/mocks'
+import { SaveSectorSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -12,13 +12,13 @@ const mockRequest = (): AddSectorController.Request => ({
 
 type SutTypes = {
   sut: AddSectorController
-  addSectorSpy: AddSectorSpy
+  addSectorSpy: SaveSectorSpy
   validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const addSectorSpy = new AddSectorSpy()
+  const addSectorSpy = new SaveSectorSpy()
   const sut = new AddSectorController(addSectorSpy, validationSpy)
   return {
     sut,
@@ -42,14 +42,14 @@ describe('AddSectorController', () => {
     expect(httpResponse).toEqual(badRequest(validationSpy.result))
   })
 
-  test('Should call AddSector with correct values', async () => {
+  test('Should call SaveSector with correct values', async () => {
     const { sut, addSectorSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(addSectorSpy.params).toEqual(request)
   })
 
-  test('Should return 403 if AddSector return false', async () => {
+  test('Should return 403 if SaveSector return false', async () => {
     const { sut, addSectorSpy } = makeSut()
     addSectorSpy.result = false
     const request = mockRequest()
@@ -57,9 +57,9 @@ describe('AddSectorController', () => {
     expect(httpResponse).toEqual(forbidden(new AlreadyExistsError(request.name)))
   })
 
-  test('Should return 500 if AddSector throws', async () => {
+  test('Should return 500 if SaveSector throws', async () => {
     const { sut, addSectorSpy } = makeSut()
-    jest.spyOn(addSectorSpy, 'add').mockRejectedValueOnce(new Error())
+    jest.spyOn(addSectorSpy, 'save').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
