@@ -1,6 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { SavePlace, CheckAccountById } from '@/domain/usecases'
-import { badRequest, forbidden, noContent } from '@/presentation/helper'
+import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 
 export class AddPlaceController implements Controller {
@@ -11,21 +11,24 @@ export class AddPlaceController implements Controller {
   ) {}
 
   async handle (request: AddPlaceController.Request): Promise<HttpResponse> {
-    const { name, userId } = request
-    const error = this.validate({ name, userId })
-    if (error) {
-      return badRequest(error)
+    try {
+      const { name, userId } = request
+      const error = this.validate({ name, userId })
+      if (error) {
+        return badRequest(error)
+      }
+      const exists = await this.checkAccountById.checkById(userId)
+      if (!exists) {
+        return forbidden(new InvalidParamError('userId'))
+      }
+      const isValid = await this.savePlace.save({ name, userId })
+      if (!isValid) {
+        return forbidden(new AlreadyExistsError(request.name))
+      }
+      return noContent()
+    } catch (error) {
+      return serverError(error)
     }
-    const exists = await this.checkAccountById.checkById(userId)
-    if (!exists) {
-      return forbidden(new InvalidParamError('userId'))
-    }
-    const isValid = await this.savePlace.save({ name, userId })
-    if (!isValid) {
-      return forbidden(new AlreadyExistsError(request.name))
-    }
-
-    return noContent()
   }
 
   private validate ({ name, userId }: AddPlaceController.Request): Error {
