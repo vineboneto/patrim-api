@@ -15,4 +15,10 @@ describe('CheckFieldIsNumberValidation', () => {
     const isValid = sut.validate({ field: '20' })
     expect(isValid).toBeNull()
   })
+
+  test('Should return null if field is undefined', () => {
+    const sut = makeSut()
+    const isValid = sut.validate({ field: undefined })
+    expect(isValid).toBeNull()
+  })
 })
