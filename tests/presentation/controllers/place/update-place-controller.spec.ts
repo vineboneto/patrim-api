@@ -62,6 +62,14 @@ describe('UpdatePlaceController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(checkAccountByIdSpy.id).toEqual(request.userId)
+    expect(checkAccountByIdSpy.callsCount).toBe(1)
+  })
+
+  test('Should call CheckAccountByIdSpy only userId exists', async () => {
+    const { sut, checkAccountByIdSpy } = makeSut()
+    const { id, name } = mockRequest()
+    await sut.handle({ id, name })
+    expect(checkAccountByIdSpy.callsCount).toBe(0)
   })
 
   test('Should return 403 CheckAccountByIdSpy returns false', async () => {
