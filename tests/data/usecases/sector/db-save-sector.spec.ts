@@ -109,4 +109,11 @@ describe('DbSaveSector', () => {
     const isValid = await sut.save(mockUpdateSectorParams())
     expect(isValid).toBeFalsy()
   })
+
+  test('Should throw if CheckSectorByNameRepository throws', async () => {
+    const { sut, checkSectorByNameRepositorySpy } = makeSut()
+    jest.spyOn(checkSectorByNameRepositorySpy, 'checkByName').mockRejectedValueOnce(new Error())
+    const promise = sut.save(mockAddSectorParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
