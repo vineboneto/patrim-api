@@ -82,6 +82,13 @@ describe('DbSaveSector', () => {
     expect(isValid).toBe(true)
   })
 
+  test('Should call AddSectorRepository if id is undefined', async () => {
+    const { sut, updateSectorRepositorySpy, addSectorRepositorySpy } = makeSut()
+    await sut.save(mockAddSectorParams())
+    expect(addSectorRepositorySpy.callsCount).toBe(1)
+    expect(updateSectorRepositorySpy.callsCount).toBe(0)
+  })
+
   test('Should call CheckSectorByNameRepository with correct value', async () => {
     const { sut, checkSectorByNameRepositorySpy } = makeSut()
     const Sector = mockUpdateSectorParams()
