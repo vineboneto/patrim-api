@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { SavePlace, CheckAccountById } from '@/domain/usecases'
+import { SavePlace, CheckAccountById, CheckPlaceById } from '@/domain/usecases'
 import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 
@@ -7,6 +7,7 @@ export class UpdatePlaceController implements Controller {
   constructor (
     private readonly savePlace: SavePlace,
     private readonly checkAccountById: CheckAccountById,
+    private readonly checkPlaceById: CheckPlaceById,
     private readonly validation: Validation
   ) {}
 
@@ -31,6 +32,7 @@ export class UpdatePlaceController implements Controller {
     let isValid: boolean
     isValid = await this.checkAccountById.checkById(userId)
     if (!isValid) return new InvalidParamError('userId')
+    isValid = await this.checkPlaceById.checkById(id)
     isValid = await this.savePlace.save({ id, name, userId })
     if (!isValid) return new AlreadyExistsError(name)
     return null
