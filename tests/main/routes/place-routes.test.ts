@@ -68,4 +68,41 @@ describe('Place Routes', () => {
         .expect(204)
     })
   })
+
+  describe('GET /places', () => {
+    test('Should return empty array', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await request(app)
+        .get('/api/places')
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+
+    test('Should return all places', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await prismaClient.place.createMany({
+        data: [
+          {
+            name: faker.name.findName()
+          },
+          {
+            name: faker.name.findName()
+          },
+          {
+            name: faker.name.findName()
+          }
+        ]
+      })
+      await request(app)
+        .get('/api/places')
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 403 on load without accessToken', async () => {
+      await request(app)
+        .get('/api/places')
+        .expect(403)
+    })
+  })
 })

@@ -3,14 +3,16 @@ import {
   AddPlaceRepository,
   UpdatePlaceRepository,
   CheckPlaceByIdRepository,
-  CheckPlaceByNameRepository
+  CheckPlaceByNameRepository,
+  LoadPlacesRepository
 } from '@/data/protocols'
 
 export class PlacePostgresRepository implements
   AddPlaceRepository,
   UpdatePlaceRepository,
   CheckPlaceByIdRepository,
-  CheckPlaceByNameRepository {
+  CheckPlaceByNameRepository,
+  LoadPlacesRepository {
   async add (place: AddPlaceRepository.Params): Promise<AddPlaceRepository.Result> {
     const { name, userId } = place
     const prismaClient = await PrismaHelper.getConnection()
@@ -62,5 +64,18 @@ export class PlacePostgresRepository implements
       }
     })
     return placeWithOnlyId !== null
+  }
+
+  async loadAll (): Promise<LoadPlacesRepository.Model> {
+    const prismaClient = await PrismaHelper.getConnection()
+    const places = await prismaClient.place.findMany()
+    const placesCollections = places.map((place) => {
+      return {
+        ...place,
+        id: place.id.toString(),
+        userId: place.userId ? place.userId.toString() : null
+      }
+    })
+    return placesCollections
   }
 }

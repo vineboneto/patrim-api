@@ -2,8 +2,10 @@ import {
   AddPlaceRepository,
   CheckPlaceByIdRepository,
   CheckPlaceByNameRepository,
+  LoadPlacesRepository,
   UpdatePlaceRepository
 } from '@/data/protocols'
+import { mockPlacesModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -11,6 +13,12 @@ export const mockAddPlaceParams = (): AddPlaceRepository.Params => ({
   name: faker.name.findName(),
   userId: faker.datatype.number().toString()
 })
+
+export const mockAddPlacesParams = (): AddPlaceRepository.Params[] => ([
+  mockAddPlaceParams(),
+  mockAddPlaceParams(),
+  mockAddPlaceParams()
+])
 
 export const mockUpdatePlaceParams = (): UpdatePlaceRepository.Params => ({
   id: faker.datatype.number().toString(),
@@ -56,5 +64,14 @@ export class CheckPlaceByIdRepositorySpy implements CheckPlaceByIdRepository {
   async checkById (id: string): Promise<CheckPlaceByIdRepository.Result> {
     this.id = id
     return this.result
+  }
+}
+
+export class LoadPlacesRepositorySpy implements LoadPlacesRepository {
+  sectorModels = mockPlacesModel()
+  callCount = 0
+  async loadAll (): Promise<LoadPlacesRepository.Model> {
+    this.callCount++
+    return this.sectorModels
   }
 }

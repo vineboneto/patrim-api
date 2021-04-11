@@ -130,4 +130,35 @@ describe('PlacePostgresRepository', () => {
       expect(isValid).toBe(false)
     })
   })
+
+  describe('loadAll()', () => {
+    test('Should returns all places on success', async () => {
+      const sut = makeSut()
+      const { id } = await makeUser()
+      await prismaClient.place.createMany({
+        data: [
+          {
+            name: faker.name.findName(),
+            userId: id
+          },
+          {
+            name: faker.name.findName(),
+            userId: id
+          },
+          {
+            name: faker.name.findName()
+          }
+        ]
+      })
+      const places = await sut.loadAll()
+      expect(places).toBeTruthy()
+      expect(places.length).toBe(3)
+    })
+
+    test('Should returns empty array if places not exists', async () => {
+      const sut = makeSut()
+      const sectors = await sut.loadAll()
+      expect(sectors).toEqual([])
+    })
+  })
 })

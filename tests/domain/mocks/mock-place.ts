@@ -1,4 +1,18 @@
-import { CheckPlaceById, SavePlace } from '@/domain/usecases'
+import { CheckPlaceById, LoadPlaces, SavePlace } from '@/domain/usecases'
+
+import faker from 'faker'
+
+export const mockPlaceModel = (): LoadPlaces.PlaceModel => ({
+  id: faker.datatype.number().toString(),
+  name: faker.name.findName(),
+  userId: faker.datatype.number().toString()
+})
+
+export const mockPlacesModel = (): LoadPlaces.Model => ([
+  mockPlaceModel(),
+  mockPlaceModel(),
+  mockPlaceModel()
+])
 
 export class SavePlaceSpy implements SavePlace {
   params: SavePlace.Params
@@ -15,5 +29,14 @@ export class CheckPlaceByIdSpy implements CheckPlaceById {
   async checkById (id: string): Promise<CheckPlaceById.Result> {
     this.id = id
     return this.result
+  }
+}
+
+export class LoadPlacesSpy implements LoadPlaces {
+  placesModel = mockPlacesModel()
+  callsCount = 0
+  async load (): Promise<LoadPlaces.Model> {
+    this.callsCount++
+    return this.placesModel
   }
 }
