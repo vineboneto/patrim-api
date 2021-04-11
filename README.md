@@ -23,6 +23,7 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
   11. [Listar Categorias](./requirements/category/load-categories.md)
   12. [Criar Localidade](./requirements/place/add-place.md)
   13. [Atualizar Localidade](./requirements/place/update-place.md)
+  14. [Listar Localidade](./requirements/place/load-place.md)
 
 > ### Metodologia de Design
 

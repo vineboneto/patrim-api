@@ -76,13 +76,13 @@ describe('AccountPostgresRepository', () => {
       const { id } = await prismaClient.user.create({
         data: mockAddAccountParams()
       })
-      const result = await sut.checkById(id)
+      const result = await sut.checkById(id.toString())
       expect(result).toBe(true)
     })
 
     test('Should return false if category not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number())
+      const result = await sut.checkById(faker.datatype.number().toString())
       expect(result).toBe(false)
     })
   })
