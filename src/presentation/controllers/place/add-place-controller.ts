@@ -1,6 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { SavePlace, CheckAccountById } from '@/domain/usecases'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, noContent } from '@/presentation/helper'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 
 export class AddPlaceController implements Controller {
@@ -25,7 +25,7 @@ export class AddPlaceController implements Controller {
       return forbidden(new AlreadyExistsError(request.name))
     }
 
-    return null
+    return noContent()
   }
 
   private validate ({ name, userId }: AddPlaceController.Request): Error {
