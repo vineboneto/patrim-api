@@ -109,4 +109,11 @@ describe('DbSavePlace', () => {
     expect(addPlaceRepositorySpy.callsCount).toBe(1)
     expect(updatePlaceRepositorySpy.callsCount).toBe(0)
   })
+
+  test('Should throw AddPlaceRepository throw', async () => {
+    const { sut, addPlaceRepositorySpy } = makeSut()
+    jest.spyOn(addPlaceRepositorySpy, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.save(mockAddPlaceParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
