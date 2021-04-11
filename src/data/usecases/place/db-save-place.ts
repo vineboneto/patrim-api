@@ -15,7 +15,7 @@ export class DbSavePlace implements SavePlace {
     if (!exists) {
       id
         ? isValid = await this.updatePlaceRepository.update({ id, name, userId })
-        : await this.addPlaceRepository.add({ name, userId })
+        : isValid = await this.addPlaceRepository.add({ name, userId })
     }
     return isValid
   }
