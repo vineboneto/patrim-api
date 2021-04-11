@@ -8,7 +8,7 @@ export class DbSavePlace implements SavePlace {
 
   async save (place: SavePlace.Params): Promise<SavePlace.Result> {
     const { name } = place
-    await this.checkPlaceByNameRepository.checkByName(name)
-    return null
+    const exists = await this.checkPlaceByNameRepository.checkByName(name)
+    return !exists
   }
 }
