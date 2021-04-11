@@ -3,6 +3,8 @@ import { mockAddAccountParams } from '@/tests/domain/mocks'
 
 import { Place, PrismaClient, User } from '@prisma/client'
 
+import faker from 'faker'
+
 const makeSut = (): PlacePostgresRepository => new PlacePostgresRepository()
 
 let prismaClient: PrismaClient
@@ -96,6 +98,21 @@ describe('PlacePostgresRepository', () => {
       const { name: newName } = await findPlace(id)
       expect(result).toBe(true)
       expect(newName).toBe('other_name')
+    })
+  })
+
+  describe('checkById()', () => {
+    test('Should return sector on success', async () => {
+      const sut = makeSut()
+      const { id } = await makePlace()
+      const result = await sut.checkById(id)
+      expect(result).toBe(true)
+    })
+
+    test('Should return false if sector not exists', async () => {
+      const sut = makeSut()
+      const result = await sut.checkById(faker.datatype.number())
+      expect(result).toBe(false)
     })
   })
 })
