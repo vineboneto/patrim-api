@@ -4,7 +4,7 @@ export interface SaveSector {
 
 export namespace SaveSector {
   export type Params = {
-    id: number
+    id?: number
     name: string
   }
 

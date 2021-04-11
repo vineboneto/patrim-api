@@ -4,13 +4,13 @@ import {
   CheckSectorByNameRepository,
   DeleteSectorRepository,
   LoadSectorsRepository,
-  SaveSectorRepository
+  UpdateSectorRepository
 } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
 export class SectorPostgresRepository implements
   AddSectorRepository,
-  SaveSectorRepository,
+  UpdateSectorRepository,
   DeleteSectorRepository,
   CheckSectorByNameRepository,
   CheckSectorByIdRepository,
@@ -26,7 +26,7 @@ export class SectorPostgresRepository implements
     return sectorModel !== null
   }
 
-  async save (sector: SaveSectorRepository.Params): Promise<SaveSectorRepository.Result> {
+  async update (sector: UpdateSectorRepository.Params): Promise<UpdateSectorRepository.Result> {
     const { id, name } = sector
     const prismaClient = await PrismaHelper.getConnection()
     const sectorResult = await prismaClient.sector.update({
