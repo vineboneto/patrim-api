@@ -13,7 +13,7 @@ export const mockAddPlaceParams = (): AddPlaceRepository.Params => ({
 })
 
 export const mockUpdatePlaceParams = (): UpdatePlaceRepository.Params => ({
-  id: faker.datatype.number(),
+  id: faker.datatype.number().toString(),
   name: faker.name.findName(),
   userId: faker.datatype.number().toString()
 })
@@ -52,8 +52,8 @@ export class AddPlaceRepositorySpy implements AddPlaceRepository {
 
 export class CheckPlaceByIdRepositorySpy implements CheckPlaceByIdRepository {
   result = true
-  id = faker.datatype.number()
-  async checkById (id: number): Promise<CheckPlaceByIdRepository.Result> {
+  id = faker.datatype.number().toString()
+  async checkById (id: string): Promise<CheckPlaceByIdRepository.Result> {
     this.id = id
     return this.result
   }

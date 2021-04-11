@@ -53,9 +53,11 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
 }
 
 export class CheckAccountByIdSpy implements CheckAccountById {
+  callsCount = 0
   id: string
   result = true
   async checkById (id: string): Promise<CheckAccountById.Result> {
+    this.callsCount++
     this.id = id
     return this.result
   }
