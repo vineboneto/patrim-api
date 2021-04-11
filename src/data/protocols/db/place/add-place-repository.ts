@@ -5,7 +5,7 @@ export interface AddPlaceRepository {
 export namespace AddPlaceRepository {
   export type Params = {
     name: string
-    userId?: number
+    userId?: string
   }
   export type Result = boolean
 }

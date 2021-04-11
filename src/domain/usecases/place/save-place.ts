@@ -6,7 +6,7 @@ export namespace SavePlace {
   export type Params = {
     id?: number
     name: string
-    userId?: number
+    userId?: string
   }
 
   export type Result = boolean

@@ -20,6 +20,8 @@ export class AddPlaceController implements Controller {
     if (!exists) {
       return forbidden(new InvalidParamError('userId'))
     }
+    await this.savePlace.save({ name, userId })
+
     return null
   }
 
