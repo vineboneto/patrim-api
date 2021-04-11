@@ -28,7 +28,7 @@ export const mockDeleteCategoryParams = (): DeleteCategory.Params => ({
   id: faker.datatype.number()
 })
 
-export const mockSaveCategoryParams = (): SaveCategory.Params => ({
+export const mockUpdateCategoryParams = (): SaveCategory.Params => ({
   id: faker.datatype.number(),
   name: faker.name.findName()
 })

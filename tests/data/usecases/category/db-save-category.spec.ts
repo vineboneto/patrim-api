@@ -1,6 +1,6 @@
 import { DbSaveCategory } from '@/data/usecases'
 import { AddCategoryRepositorySpy, CheckCategoryByNameRepositorySpy, UpdateCategoryRepositorySpy } from '@/tests/data/mocks'
-import { mockAddCategoryParams, mockSaveCategoryParams } from '@/tests/domain/mocks'
+import { mockAddCategoryParams, mockUpdateCategoryParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbSaveCategory
@@ -25,7 +25,7 @@ const makeSut = (): SutTypes => {
 describe('DbSaveCategory', () => {
   test('Should call UpdateCategoryRepository with correct value', async () => {
     const { sut, updateCategoryRepositorySpy } = makeSut()
-    const category = mockSaveCategoryParams()
+    const category = mockUpdateCategoryParams()
     await sut.save(category)
     expect(updateCategoryRepositorySpy.params).toEqual(category)
   })
@@ -33,27 +33,27 @@ describe('DbSaveCategory', () => {
   test('Should return false if UpdateCategoryRepository returns false', async () => {
     const { sut, updateCategoryRepositorySpy } = makeSut()
     updateCategoryRepositorySpy.result = false
-    const result = await sut.save(mockSaveCategoryParams())
+    const result = await sut.save(mockUpdateCategoryParams())
     expect(result).toBe(false)
   })
 
   test('Should throw if UpdateCategoryRepository throws', async () => {
     const { sut, updateCategoryRepositorySpy } = makeSut()
     jest.spyOn(updateCategoryRepositorySpy, 'update').mockRejectedValueOnce(new Error())
-    const promise = sut.save(mockSaveCategoryParams())
+    const promise = sut.save(mockUpdateCategoryParams())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call UpdateCategoryRepository if id is not undefined', async () => {
     const { sut, updateCategoryRepositorySpy, addCategoryRepositorySpy } = makeSut()
-    await sut.save(mockSaveCategoryParams())
+    await sut.save(mockUpdateCategoryParams())
     expect(updateCategoryRepositorySpy.callsCount).toBe(1)
     expect(addCategoryRepositorySpy.callsCount).toBe(0)
   })
 
   test('Should return true if UpdateCategoryRepository returns true', async () => {
     const { sut } = makeSut()
-    const isValid = await sut.save(mockSaveCategoryParams())
+    const isValid = await sut.save(mockUpdateCategoryParams())
     expect(isValid).toBeTruthy()
   })
 
@@ -78,9 +78,15 @@ describe('DbSaveCategory', () => {
     expect(result).toBe(false)
   })
 
+  test('Should return true if AddCategoryRepository returns true', async () => {
+    const { sut } = makeSut()
+    const result = await sut.save(mockAddCategoryParams())
+    expect(result).toBe(true)
+  })
+
   test('Should call CheckCategoryByNameRepository with correct value', async () => {
     const { sut, checkCategoryByNameRepositorySpy } = makeSut()
-    const category = mockSaveCategoryParams()
+    const category = mockUpdateCategoryParams()
     await sut.save(category)
     expect(checkCategoryByNameRepositorySpy.name).toEqual(category.name)
   })
@@ -88,7 +94,7 @@ describe('DbSaveCategory', () => {
   test('Should return false if CheckCategoryByNameRepository return true', async () => {
     const { sut, checkCategoryByNameRepositorySpy } = makeSut()
     checkCategoryByNameRepositorySpy.result = true
-    const isValid = await sut.save(mockSaveCategoryParams())
+    const isValid = await sut.save(mockUpdateCategoryParams())
     expect(isValid).toBeFalsy()
   })
 })
