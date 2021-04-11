@@ -51,4 +51,11 @@ describe('DbSavePlace', () => {
     await sut.save(data)
     expect(updatePlaceRepositorySpy.params).toEqual(data)
   })
+
+  test('Should return false UpdatePlaceRepository returns false', async () => {
+    const { sut, updatePlaceRepositorySpy } = makeSut()
+    updatePlaceRepositorySpy.result = false
+    const result = await sut.save(mockUpdatePlaceParams())
+    expect(result).toBe(false)
+  })
 })
