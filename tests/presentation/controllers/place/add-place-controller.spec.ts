@@ -1,8 +1,8 @@
 import { AddPlaceController } from '@/presentation/controllers'
+import { AlreadyExistsError, InvalidParamError, MissingParamError } from '@/presentation/errors'
+import { badRequest, forbidden } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { CheckAccountByIdSpy, SavePlaceSpy } from '@/tests/domain/mocks'
-import { badRequest, forbidden } from '@/presentation/helper'
-import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -72,5 +72,13 @@ describe('AddPlaceController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(savePlaceSpy.params).toEqual(request)
+  })
+
+  test('Should return 403 if SavePlace returns false', async () => {
+    const { sut, savePlaceSpy } = makeSut()
+    savePlaceSpy.result = false
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(forbidden(new AlreadyExistsError(request.name)))
   })
 })
