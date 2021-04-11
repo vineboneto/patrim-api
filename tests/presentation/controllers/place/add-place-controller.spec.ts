@@ -1,6 +1,6 @@
 import { AddPlaceController } from '@/presentation/controllers'
 import { AlreadyExistsError, InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest, forbidden, noContent } from '@/presentation/helper'
+import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { CheckAccountByIdSpy, SavePlaceSpy } from '@/tests/domain/mocks'
 
@@ -86,5 +86,21 @@ describe('AddPlaceController', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
+  })
+
+  test('Should return 500 if CheckAccountByIdSpy throws', async () => {
+    const { sut, checkAccountByIdSpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(checkAccountByIdSpy, 'checkById').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
+  })
+
+  test('Should return 500 if SavePlace throws', async () => {
+    const { sut, savePlaceSpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(savePlaceSpy, 'save').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
   })
 })
