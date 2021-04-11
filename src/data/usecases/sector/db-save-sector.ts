@@ -1,9 +1,10 @@
 import { SaveSector } from '@/domain/usecases'
-import { CheckSectorByNameRepository, UpdateSectorRepository } from '@/data/protocols'
+import { AddSectorRepository, CheckSectorByNameRepository, UpdateSectorRepository } from '@/data/protocols'
 
 export class DbSaveSector implements SaveSector {
   constructor (
     private readonly updateSectorRepository: UpdateSectorRepository,
+    private readonly addSectorRepository: AddSectorRepository,
     private readonly checkSectorByNameRepository: CheckSectorByNameRepository
   ) {}
 
@@ -15,6 +16,7 @@ export class DbSaveSector implements SaveSector {
       if (id) {
         isValid = await this.updateSectorRepository.update({ id, name })
       }
+      await this.addSectorRepository.add({ name })
     }
     return isValid
   }
