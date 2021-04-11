@@ -70,9 +70,10 @@ describe('DbSavePlace', () => {
   })
 
   test('Should call UpdatePlaceRepository if id is not undefined', async () => {
-    const { sut, updatePlaceRepositorySpy } = makeSut()
+    const { sut, updatePlaceRepositorySpy, addPlaceRepositorySpy } = makeSut()
     await sut.save(mockUpdatePlaceParams())
     expect(updatePlaceRepositorySpy.callsCount).toBe(1)
+    expect(addPlaceRepositorySpy.callsCount).toBe(0)
   })
 
   test('Should throw UpdatePlaceRepository throw', async () => {
@@ -87,5 +88,12 @@ describe('DbSavePlace', () => {
     const data = mockAddPlaceParams()
     await sut.save(data)
     expect(addPlaceRepositorySpy.params).toEqual(data)
+  })
+
+  test('Should call AddPlaceRepository if id is undefined', async () => {
+    const { sut, addPlaceRepositorySpy, updatePlaceRepositorySpy } = makeSut()
+    await sut.save(mockAddPlaceParams())
+    expect(addPlaceRepositorySpy.callsCount).toBe(1)
+    expect(updatePlaceRepositorySpy.callsCount).toBe(0)
   })
 })
