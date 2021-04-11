@@ -78,7 +78,7 @@ describe('PlacePostgresRepository', () => {
       const { id } = await makePlace(userId)
       const { id: newUserId } = await makeUser()
       const result = await sut.update({
-        id,
+        id: id.toString(),
         name: 'other_name',
         userId: newUserId.toString()
       })
@@ -92,7 +92,7 @@ describe('PlacePostgresRepository', () => {
       const sut = makeSut()
       const { id } = await makePlace()
       const result = await sut.update({
-        id,
+        id: id.toString(),
         name: 'other_name'
       })
       const { name: newName } = await findPlace(id)
@@ -105,13 +105,13 @@ describe('PlacePostgresRepository', () => {
     test('Should return sector on success', async () => {
       const sut = makeSut()
       const { id } = await makePlace()
-      const result = await sut.checkById(id)
+      const result = await sut.checkById(id.toString())
       expect(result).toBe(true)
     })
 
     test('Should return false if sector not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number())
+      const result = await sut.checkById(faker.datatype.number().toString())
       expect(result).toBe(false)
     })
   })

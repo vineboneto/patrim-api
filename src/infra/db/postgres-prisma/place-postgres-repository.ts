@@ -38,7 +38,7 @@ export class PlacePostgresRepository implements
     return placeResult !== null
   }
 
-  async checkById (id: number): Promise<CheckPlaceByIdRepository.Result> {
+  async checkById (id: string): Promise<CheckPlaceByIdRepository.Result> {
     const prismaClient = await PrismaHelper.getConnection()
     const placeWithOnlyId = await prismaClient.place.findFirst({
       where: {

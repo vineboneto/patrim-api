@@ -6,7 +6,7 @@ export class DbCheckPlaceById implements CheckPlaceById {
     private readonly checkPlaceByIdRepository: CheckPlaceByIdRepository
   ) {}
 
-  async checkById (id: number): Promise<CheckPlaceById.Result> {
+  async checkById (id: string): Promise<CheckPlaceById.Result> {
     return this.checkPlaceByIdRepository.checkById(id)
   }
 }

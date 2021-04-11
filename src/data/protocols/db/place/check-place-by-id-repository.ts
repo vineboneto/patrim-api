@@ -1,5 +1,5 @@
 export interface CheckPlaceByIdRepository {
-  checkById (id: number): Promise<CheckPlaceByIdRepository.Result>
+  checkById (id: string): Promise<CheckPlaceByIdRepository.Result>
 }
 
 export namespace CheckPlaceByIdRepository {

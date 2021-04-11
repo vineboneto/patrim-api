@@ -4,7 +4,7 @@ export interface SavePlace {
 
 export namespace SavePlace {
   export type Params = {
-    id?: number
+    id?: string
     name: string
     userId?: string
   }

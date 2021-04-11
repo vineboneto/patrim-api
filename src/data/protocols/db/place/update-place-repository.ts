@@ -4,7 +4,7 @@ export interface UpdatePlaceRepository {
 
 export namespace UpdatePlaceRepository {
   export type Params = {
-    id: number
+    id: string
     name: string
     userId?: string
   }
