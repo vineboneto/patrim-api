@@ -2,7 +2,7 @@ import { UpdatePlaceController } from '@/presentation/controllers'
 import { AlreadyExistsError, InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { CheckAccountByIdSpy, SavePlaceSpy } from '@/tests/domain/mocks'
+import { CheckAccountByIdSpy, CheckPlaceByIdSpy, SavePlaceSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -17,17 +17,20 @@ type SutTypes = {
   savePlaceSpy: SavePlaceSpy
   validationSpy: ValidationSpy
   checkAccountByIdSpy: CheckAccountByIdSpy
+  checkPlaceByIdSpy: CheckPlaceByIdSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const savePlaceSpy = new SavePlaceSpy()
   const checkAccountByIdSpy = new CheckAccountByIdSpy()
-  const sut = new UpdatePlaceController(savePlaceSpy, checkAccountByIdSpy, validationSpy)
+  const checkPlaceByIdSpy = new CheckPlaceByIdSpy()
+  const sut = new UpdatePlaceController(savePlaceSpy, checkAccountByIdSpy, checkPlaceByIdSpy, validationSpy)
   return {
     sut,
     savePlaceSpy,
     checkAccountByIdSpy,
+    checkPlaceByIdSpy,
     validationSpy
   }
 }
@@ -66,6 +69,13 @@ describe('UpdatePlaceController', () => {
     checkAccountByIdSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('userId')))
+  })
+
+  test('Should call CheckPlaceByIdSpy with correct value', async () => {
+    const { sut, checkPlaceByIdSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkPlaceByIdSpy.id).toBe(request.id)
   })
 
   test('Should call SavePlace with correct value', async () => {
