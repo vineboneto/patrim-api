@@ -66,10 +66,16 @@ describe('DbSaveCategory', () => {
 
   test('Should call AddCategoryRepository if id is undefined', async () => {
     const { sut, addCategoryRepositorySpy, updateCategoryRepositorySpy } = makeSut()
-    const category = mockAddCategoryParams()
-    await sut.save(category)
+    await sut.save(mockAddCategoryParams())
     expect(addCategoryRepositorySpy.callsCount).toBe(1)
     expect(updateCategoryRepositorySpy.callsCount).toBe(0)
+  })
+
+  test('Should return false if AddCategoryRepository returns false', async () => {
+    const { sut, addCategoryRepositorySpy } = makeSut()
+    addCategoryRepositorySpy.result = false
+    const result = await sut.save(mockAddCategoryParams())
+    expect(result).toBe(false)
   })
 
   test('Should call CheckCategoryByNameRepository with correct value', async () => {
