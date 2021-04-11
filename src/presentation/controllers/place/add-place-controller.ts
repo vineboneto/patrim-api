@@ -13,17 +13,13 @@ export class AddPlaceController implements Controller {
   async handle (request: AddPlaceController.Request): Promise<HttpResponse> {
     try {
       const { name, userId } = request
-      const error = this.validate({ name, userId })
-      if (error) {
-        return badRequest(error)
+      const badRequestError = this.isBadRequest({ name, userId })
+      if (badRequestError) {
+        return badRequest(badRequestError)
       }
-      const exists = await this.checkAccountById.checkById(userId)
-      if (!exists) {
-        return forbidden(new InvalidParamError('userId'))
-      }
-      const isValid = await this.savePlace.save({ name, userId })
-      if (!isValid) {
-        return forbidden(new AlreadyExistsError(request.name))
+      const forbiddenError = await this.isForbidden({ name, userId })
+      if (forbiddenError) {
+        return forbidden(forbiddenError)
       }
       return noContent()
     } catch (error) {
@@ -31,7 +27,16 @@ export class AddPlaceController implements Controller {
     }
   }
 
-  private validate ({ name, userId }: AddPlaceController.Request): Error {
+  private async isForbidden ({ name, userId }: AddPlaceController.Request): Promise<Error> {
+    let isValid: boolean
+    isValid = await this.checkAccountById.checkById(userId)
+    if (!isValid) return new InvalidParamError('userId')
+    isValid = await this.savePlace.save({ name, userId })
+    if (!isValid) return new AlreadyExistsError(name)
+    return null
+  }
+
+  private isBadRequest ({ name, userId }: AddPlaceController.Request): Error {
     if (!userId) {
       return this.validation.validate({ name })
     }
