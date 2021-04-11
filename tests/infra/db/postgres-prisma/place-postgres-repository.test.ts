@@ -35,5 +35,13 @@ describe('PlacePostgresRepository', () => {
       })
       expect(result).toBe(true)
     })
+
+    test('Should return true on add new place without userId success', async () => {
+      const sut = makeSut()
+      const result = await sut.add({
+        name: 'any_name'
+      })
+      expect(result).toBe(true)
+    })
   })
 })
