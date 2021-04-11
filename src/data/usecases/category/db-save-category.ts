@@ -17,8 +17,9 @@ export class DbSaveCategory implements SaveCategory {
           id: category.id,
           name: category.name
         })
+      } else {
+        await this.addCategoryRepository.add(category)
       }
-      await this.addCategoryRepository.add(category)
     }
     return isValid
   }
