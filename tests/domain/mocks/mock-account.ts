@@ -1,4 +1,4 @@
-import { AddAccount, Authentication, LoadAccountByToken } from '@/domain/usecases'
+import { AddAccount, Authentication, CheckAccountById, LoadAccountByToken } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -48,6 +48,15 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
   async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Model> {
     this.accessToken = accessToken
     this.role = role
+    return this.result
+  }
+}
+
+export class CheckAccountByIdSpy implements CheckAccountById {
+  id: number
+  result = true
+  async checkById (id: number): Promise<CheckAccountById.Result> {
+    this.id = id
     return this.result
   }
 }
