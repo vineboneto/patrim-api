@@ -1,8 +1,8 @@
 import { AddPlaceController } from '@/presentation/controllers'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { CheckAccountByIdSpy, SavePlaceSpy } from '@/tests/domain/mocks'
-import { badRequest } from '@/presentation/helper'
-import { MissingParamError } from '@/presentation/errors'
+import { badRequest, forbidden } from '@/presentation/helper'
+import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -58,5 +58,12 @@ describe('AddPlaceController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(checkAccountByIdSpy.id).toEqual(request.userId)
+  })
+
+  test('Should return 403 CheckAccountByIdSpy returns false', async () => {
+    const { sut, checkAccountByIdSpy } = makeSut()
+    checkAccountByIdSpy.result = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('userId')))
   })
 })
