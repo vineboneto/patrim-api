@@ -78,6 +78,14 @@ describe('UpdatePlaceController', () => {
     expect(checkPlaceByIdSpy.id).toBe(request.id)
   })
 
+  test('Should returns 403 if CheckPlaceByIdSpy returns false', async () => {
+    const { sut, checkPlaceByIdSpy } = makeSut()
+    checkPlaceByIdSpy.result = false
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
+  })
+
   test('Should call SavePlace with correct value', async () => {
     const { sut, savePlaceSpy } = makeSut()
     const request = mockRequest()
