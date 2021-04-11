@@ -70,6 +70,23 @@ describe('AccountPostgresRepository', () => {
     })
   })
 
+  describe('checkById()', () => {
+    test('Should return category on success', async () => {
+      const sut = makeSut()
+      const { id } = await prismaClient.user.create({
+        data: mockAddAccountParams()
+      })
+      const result = await sut.checkById(id)
+      expect(result).toBe(true)
+    })
+
+    test('Should return false if category not exists', async () => {
+      const sut = makeSut()
+      const result = await sut.checkById(faker.datatype.number())
+      expect(result).toBe(false)
+    })
+  })
+
   describe('loadByEmail', () => {
     test('Should returns account on loadByEmail success', async () => {
       const sut = makeSut()

@@ -4,7 +4,8 @@ import {
   CheckAccountByEmailRepository,
   UpdateAccessTokenRepository,
   LoadAccountByTokenRepository,
-  Decrypter
+  Decrypter,
+  CheckAccountByIdRepository
 } from '@/data/protocols'
 
 import faker from 'faker'
@@ -75,5 +76,14 @@ export class DecrypterSpy implements Decrypter {
   async decrypt (token: string): Promise<string> {
     this.token = token
     return this.tokenDecrypted
+  }
+}
+
+export class CheckAccountByIdRepositorySpy implements CheckAccountByIdRepository {
+  result = true
+  id = faker.datatype.number()
+  async checkById (id: number): Promise<CheckAccountByIdRepository.Result> {
+    this.id = id
+    return this.result
   }
 }
