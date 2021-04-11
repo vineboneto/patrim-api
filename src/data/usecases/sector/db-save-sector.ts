@@ -15,7 +15,7 @@ export class DbSaveSector implements SaveSector {
     if (!exists) {
       id
         ? isValid = await this.updateSectorRepository.update({ id, name })
-        : await this.addSectorRepository.add({ name })
+        : isValid = await this.addSectorRepository.add({ name })
     }
     return isValid
   }
