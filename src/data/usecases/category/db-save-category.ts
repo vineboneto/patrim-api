@@ -9,17 +9,13 @@ export class DbSaveCategory implements SaveCategory {
   ) {}
 
   async save (category: SaveCategory.Params): Promise<SaveCategory.Result> {
-    const exists = await this.checkCategoryByNameRepository.checkByName(category.name)
+    const { id, name } = category
+    const exists = await this.checkCategoryByNameRepository.checkByName(name)
     let isValid = false
     if (!exists) {
-      if (category.id) {
-        isValid = await this.updateCategoryRepository.update({
-          id: category.id,
-          name: category.name
-        })
-      } else {
-        isValid = await this.addCategoryRepository.add(category)
-      }
+      id
+        ? isValid = await this.updateCategoryRepository.update({ id, name })
+        : isValid = await this.addCategoryRepository.add({ name })
     }
     return isValid
   }
