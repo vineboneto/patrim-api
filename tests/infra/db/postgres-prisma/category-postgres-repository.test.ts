@@ -1,5 +1,6 @@
 import { PrismaHelper, CategoryPostgresRepository } from '@/infra/db/postgres-prisma/'
-import { mockAddCategoriesParams, mockAddCategoryParams, mockCategoryModel } from '@/tests/domain/mocks'
+import { mockAddCategoriesParams, mockAddCategoryParams } from '@/tests/data/mocks'
+import { mockCategoryModel } from '@/tests/domain/mocks'
 
 import { PrismaClient } from '@prisma/client'
 

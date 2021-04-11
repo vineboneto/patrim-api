@@ -1,6 +1,6 @@
 import app from '@/main/config/app'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
-import { mockAddCategoriesParams } from '@/tests/domain/mocks'
+import { mockAddCategoriesParams } from '@/tests/data/mocks'
 import { makeAccessToken } from '@/tests/main/mocks'
 
 import { Category, PrismaClient } from '@prisma/client'

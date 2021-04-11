@@ -1,6 +1,11 @@
 import { DbSaveCategory } from '@/data/usecases'
-import { AddCategoryRepositorySpy, CheckCategoryByNameRepositorySpy, UpdateCategoryRepositorySpy } from '@/tests/data/mocks'
-import { mockAddCategoryParams, mockUpdateCategoryParams } from '@/tests/domain/mocks'
+import {
+  AddCategoryRepositorySpy,
+  CheckCategoryByNameRepositorySpy,
+  UpdateCategoryRepositorySpy,
+  mockUpdateCategoryParams,
+  mockAddCategoryParams
+} from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbSaveCategory

@@ -10,6 +10,21 @@ import { mockCategoriesModel, mockCategoryModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
+export const mockAddCategoryParams = (): AddCategoryRepository.Params => ({
+  name: faker.name.jobType()
+})
+
+export const mockAddCategoriesParams = (): AddCategoryRepository.Params[] => ([
+  mockAddCategoryParams(),
+  mockAddCategoryParams(),
+  mockAddCategoryParams()
+])
+
+export const mockUpdateCategoryParams = (): UpdateCategoryRepository.Params => ({
+  id: faker.datatype.number(),
+  name: faker.name.findName()
+})
+
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
   callsCount = 0
   params: AddCategoryRepository.Params

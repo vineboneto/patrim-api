@@ -1,11 +1,11 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper/'
 import { AlreadyExistsError } from '@/presentation/errors'
-import { AddCategory } from '@/domain/usecases'
+import { SaveCategory } from '@/domain/usecases'
 
 export class AddCategoryController implements Controller {
   constructor (
-    private readonly addCategory: AddCategory,
+    private readonly saveCategory: SaveCategory,
     private readonly validation: Validation
   ) {}
 
@@ -13,7 +13,10 @@ export class AddCategoryController implements Controller {
     try {
       const error = this.validation.validate(request)
       if (error) return badRequest(error)
-      if (!await this.addCategory.add(request)) return forbidden(new AlreadyExistsError(request.name))
+      const isValid = await this.saveCategory.save(request)
+      if (!isValid) {
+        return forbidden(new AlreadyExistsError(request.name))
+      }
       return noContent()
     } catch (error) {
       return serverError(error)
