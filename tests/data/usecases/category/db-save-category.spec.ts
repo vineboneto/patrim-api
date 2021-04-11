@@ -84,6 +84,13 @@ describe('DbSaveCategory', () => {
     expect(result).toBe(true)
   })
 
+  test('Should throw if AddCategoryRepository throws', async () => {
+    const { sut, addCategoryRepositorySpy } = makeSut()
+    jest.spyOn(addCategoryRepositorySpy, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.save(mockAddCategoryParams())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call CheckCategoryByNameRepository with correct value', async () => {
     const { sut, checkCategoryByNameRepositorySpy } = makeSut()
     const category = mockUpdateCategoryParams()
