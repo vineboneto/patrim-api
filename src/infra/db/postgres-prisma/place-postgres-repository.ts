@@ -44,7 +44,7 @@ export class PlacePostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const placeWithOnlyId = await prismaClient.place.findFirst({
       where: {
-        id: Number(id)
+        id: id ? Number(id) : undefined
       },
       select: {
         id: true

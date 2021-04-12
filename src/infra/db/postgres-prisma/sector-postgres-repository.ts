@@ -31,7 +31,7 @@ export class SectorPostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const sectorResult = await prismaClient.sector.update({
       where: {
-        id: Number(id)
+        id: id ? Number(id) : undefined
       },
       data: {
         name
@@ -44,7 +44,7 @@ export class SectorPostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const sectorDeleted = await prismaClient.sector.delete({
       where: {
-        id: Number(id)
+        id: id ? Number(id) : undefined
       }
     })
     return sectorDeleted ? this.convertIdToString(sectorDeleted) : null
@@ -67,7 +67,7 @@ export class SectorPostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const sectorWithOnlyId = await prismaClient.sector.findFirst({
       where: {
-        id: Number(id)
+        id: id ? Number(id) : undefined
       },
       select: {
         id: true

@@ -42,7 +42,7 @@ export class AccountPostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const accountWithOnlyId = await prismaClient.user.findFirst({
       where: {
-        id: Number(id)
+        id: id ? Number(id) : undefined
       },
       select: {
         id: true

@@ -34,9 +34,7 @@ export class UpdatePlaceController implements Controller {
     if (!isValid) {
       return new InvalidParamError('id')
     }
-    if (userId) {
-      isValid = await this.checkAccountById.checkById(userId)
-    }
+    isValid = await this.checkAccountById.checkById(userId)
     if (!isValid) {
       return new InvalidParamError('userId')
     }
