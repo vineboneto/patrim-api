@@ -1,7 +1,7 @@
 import { SaveOwner } from '@/domain/usecases'
 
 export interface AddOwnerRepository {
-  add: (owner: AddOwnerRepository.Params) => Promise<AddOwnerRepository.Result>
+  add: (owner: AddOwnerRepository.Params) => Promise<AddOwnerRepository.Model>
 }
 
 export namespace AddOwnerRepository {
@@ -9,5 +9,5 @@ export namespace AddOwnerRepository {
     name: string
     sectorId: string
   }
-  export type Result = SaveOwner.Model
+  export type Model = SaveOwner.Model
 }
