@@ -1,22 +1,30 @@
 import { DbSaveOwner } from '@/data/usecases'
-import { AddOwnerRepositorySpy, mockAddOwnerParams } from '@/tests/data/mocks'
+import {
+  AddOwnerRepositorySpy,
+  mockAddOwnerParams,
+  mockUpdateOwnerParams,
+  UpdateOwnerRepositorySpy
+} from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbSaveOwner
   addOwnerRepositorySpy: AddOwnerRepositorySpy
+  updateOwnerRepositorySpy: UpdateOwnerRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const addOwnerRepositorySpy = new AddOwnerRepositorySpy()
-  const sut = new DbSaveOwner(addOwnerRepositorySpy)
+  const updateOwnerRepositorySpy = new UpdateOwnerRepositorySpy()
+  const sut = new DbSaveOwner(addOwnerRepositorySpy, updateOwnerRepositorySpy)
   return {
     sut,
-    addOwnerRepositorySpy
+    addOwnerRepositorySpy,
+    updateOwnerRepositorySpy
   }
 }
 
 describe('DbSaveOwner', () => {
-  test('Should call AddOwnerRepository if correct value', async () => {
+  test('Should call AddOwnerRepository with correct value', async () => {
     const { sut, addOwnerRepositorySpy } = makeSut()
     const data = mockAddOwnerParams()
     await sut.save(data)
@@ -41,5 +49,12 @@ describe('DbSaveOwner', () => {
     jest.spyOn(addOwnerRepositorySpy, 'add').mockRejectedValueOnce(new Error())
     const promise = sut.save(mockAddOwnerParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call UpdateOwnerRepository with correct value', async () => {
+    const { sut, updateOwnerRepositorySpy } = makeSut()
+    const data = mockUpdateOwnerParams()
+    await sut.save(data)
+    expect(updateOwnerRepositorySpy.params).toEqual(data)
   })
 })
