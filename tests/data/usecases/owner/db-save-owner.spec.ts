@@ -35,4 +35,11 @@ describe('DbSaveOwner', () => {
     const owner = await sut.save(mockAddOwnerParams())
     expect(owner).toEqual(addOwnerRepositorySpy.model)
   })
+
+  test('Should throw if AddOwnerRepository throws', async () => {
+    const { sut, addOwnerRepositorySpy } = makeSut()
+    jest.spyOn(addOwnerRepositorySpy, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.save(mockAddOwnerParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
