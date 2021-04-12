@@ -32,14 +32,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('AddPlaceController', () => {
-  test('Should call Validation with only name if userId is undefined', async () => {
-    const { sut, validationSpy } = makeSut()
-    const { name } = mockRequest()
-    await sut.handle({ name })
-    expect(validationSpy.input).toEqual({ name })
-  })
-
-  test('Should call Validation with name and userId if userId not is undefined', async () => {
+  test('Should call Validation with correct value', async () => {
     const { sut, validationSpy } = makeSut()
     const { name, userId } = mockRequest()
     await sut.handle({ name, userId })

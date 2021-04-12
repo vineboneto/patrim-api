@@ -14,9 +14,9 @@ export class UpdatePlaceController implements Controller {
   async handle (request: UpdatePlaceController.Request): Promise<HttpResponse> {
     try {
       const { id, name, userId } = request
-      const badRequestError = this.isBadRequest({ id, name, userId })
-      if (badRequestError) {
-        return badRequest(badRequestError)
+      const error = this.validation.validate({ id, name, userId })
+      if (error) {
+        return badRequest(error)
       }
       const forbiddenError = await this.isForbidden({ id, name, userId })
       if (forbiddenError) {
@@ -45,13 +45,6 @@ export class UpdatePlaceController implements Controller {
       return new AlreadyExistsError(name)
     }
     return null
-  }
-
-  private isBadRequest ({ id, name, userId }: UpdatePlaceController.Request): Error {
-    if (!userId) {
-      return this.validation.validate({ id, name })
-    }
-    return this.validation.validate({ id, name, userId })
   }
 }
 

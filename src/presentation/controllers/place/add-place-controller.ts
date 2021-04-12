@@ -13,9 +13,9 @@ export class AddPlaceController implements Controller {
   async handle (request: AddPlaceController.Request): Promise<HttpResponse> {
     try {
       const { name, userId } = request
-      const badRequestError = this.isBadRequest({ name, userId })
-      if (badRequestError) {
-        return badRequest(badRequestError)
+      const error = this.validation.validate({ name, userId })
+      if (error) {
+        return badRequest(error)
       }
       const forbiddenError = await this.isForbidden({ name, userId })
       if (forbiddenError) {
@@ -40,13 +40,6 @@ export class AddPlaceController implements Controller {
       return new AlreadyExistsError(name)
     }
     return null
-  }
-
-  private isBadRequest ({ name, userId }: AddPlaceController.Request): Error {
-    if (!userId) {
-      return this.validation.validate({ name })
-    }
-    return this.validation.validate({ name, userId })
   }
 }
 
