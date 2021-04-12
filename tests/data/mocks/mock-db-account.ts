@@ -22,7 +22,7 @@ export class AddAccountRepositorySpy implements AddAccountRepository {
 export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailRepository {
   email: string
   account = {
-    id: faker.datatype.number(10),
+    id: faker.datatype.number(10).toString(),
     name: faker.name.findName(),
     password: faker.internet.password()
   }
@@ -44,10 +44,10 @@ export class CheckAccountByEmailRepositorySpy implements CheckAccountByEmailRepo
 }
 
 export class UpdateAccessTokenRepositorySpy implements UpdateAccessTokenRepository {
-  id: number
+  id: string
   token: string
 
-  async updateAccessToken (id: number, token: string): Promise<void> {
+  async updateAccessToken (id: string, token: string): Promise<void> {
     this.id = id
     this.token = token
     return Promise.resolve()
@@ -58,7 +58,7 @@ export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenReposi
   token: string
   role: string
   result = {
-    id: faker.datatype.number()
+    id: faker.datatype.number().toString()
   }
 
   async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Model> {

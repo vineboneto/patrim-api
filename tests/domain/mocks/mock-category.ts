@@ -4,7 +4,7 @@ import { CheckCategoryById, DeleteCategory, LoadCategories, SaveCategory } from 
 import faker from 'faker'
 
 export const mockCategoryModel = (): CategoryModel => ({
-  id: faker.datatype.number(),
+  id: faker.datatype.number().toString(),
   name: faker.name.findName()
 })
 
@@ -15,7 +15,7 @@ export const mockCategoriesModel = (): CategoryModel[] => ([
 ])
 
 export const mockDeleteCategoryParams = (): DeleteCategory.Params => ({
-  id: faker.datatype.number()
+  id: faker.datatype.number().toString()
 })
 
 export class LoadCategoriesSpy implements LoadCategories {
@@ -46,9 +46,9 @@ export class SaveCategorySpy implements SaveCategory {
 }
 
 export class CheckCategoryByIdSpy implements CheckCategoryById {
-  id: number
+  id: string
   result = true
-  async checkById (id: number): Promise<CheckCategoryById.Result> {
+  async checkById (id: string): Promise<CheckCategoryById.Result> {
     this.id = id
     return this.result
   }

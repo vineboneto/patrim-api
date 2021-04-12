@@ -6,7 +6,7 @@ export class DbCheckSectorById implements CheckSectorById {
     private readonly checkSectorByIdRepositorySpy: CheckSectorByIdRepository
   ) {}
 
-  async checkById (id: number): Promise<CheckSectorById.Result> {
+  async checkById (id: string): Promise<CheckSectorById.Result> {
     return this.checkSectorByIdRepositorySpy.checkById(id)
   }
 }

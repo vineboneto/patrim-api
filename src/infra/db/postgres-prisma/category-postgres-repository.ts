@@ -8,8 +8,6 @@ import {
 } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
-import { PrismaClient } from '@prisma/client'
-
 export class CategoryPostgresRepository implements
   AddCategoryRepository,
   UpdateCategoryRepository,
@@ -17,15 +15,10 @@ export class CategoryPostgresRepository implements
   LoadCategoriesRepository,
   CheckCategoryByIdRepository,
   DeleteCategoryRepository {
-  private readonly prismaClient: PrismaClient
-
-  constructor () {
-    this.prismaClient = PrismaHelper.getConnection()
-  }
-
   async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
     const { name } = category
-    const categoryResult = await this.prismaClient.category.create({
+    const prismaClient = PrismaHelper.getConnection()
+    const categoryResult = await prismaClient.category.create({
       data: {
         name
       }
@@ -35,7 +28,8 @@ export class CategoryPostgresRepository implements
 
   async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result> {
     const { id, name } = category
-    const categoryResult = await this.prismaClient.category.update({
+    const prismaClient = PrismaHelper.getConnection()
+    const categoryResult = await prismaClient.category.update({
       where: {
         id: Number(id)
       },
@@ -46,17 +40,19 @@ export class CategoryPostgresRepository implements
     return categoryResult !== null
   }
 
-  async delete (id: number): Promise<DeleteCategoryRepository.Model> {
-    const categoryDeleted = await this.prismaClient.category.delete({
+  async delete (id: string): Promise<DeleteCategoryRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const categoryDeleted = await prismaClient.category.delete({
       where: {
         id: Number(id)
       }
     })
-    return categoryDeleted
+    return this.convertIdToString(categoryDeleted)
   }
 
   async checkByName (name: string): Promise<boolean> {
-    const category = await this.prismaClient.category.findFirst({
+    const prismaClient = PrismaHelper.getConnection()
+    const category = await prismaClient.category.findFirst({
       where: {
         name
       }
@@ -65,12 +61,14 @@ export class CategoryPostgresRepository implements
   }
 
   async loadAll (): Promise<LoadCategoriesRepository.Model> {
-    const categories = await this.prismaClient.category.findMany()
-    return categories
+    const prismaClient = PrismaHelper.getConnection()
+    const categories = await prismaClient.category.findMany()
+    return categories.map(category => category ? this.convertIdToString(category) : null)
   }
 
-  async checkById (id: number): Promise<CheckCategoryByIdRepository.Result> {
-    const categoryWithOnlyId = await this.prismaClient.category.findFirst({
+  async checkById (id: string): Promise<CheckCategoryByIdRepository.Result> {
+    const prismaClient = PrismaHelper.getConnection()
+    const categoryWithOnlyId = await prismaClient.category.findFirst({
       where: {
         id: Number(id)
       },
@@ -79,5 +77,12 @@ export class CategoryPostgresRepository implements
       }
     })
     return categoryWithOnlyId !== null
+  }
+
+  private convertIdToString (entity: any): any {
+    return {
+      ...entity,
+      id: entity.id.toString()
+    }
   }
 }

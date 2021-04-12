@@ -20,28 +20,28 @@ const makeSut = (): SutTypes => {
 describe('DbCheckSectorById', () => {
   test('Should call CheckSectorByIdRepository with correct value', async () => {
     const { sut, checkSectorByIdRepositorySpy } = makeSut()
-    const id = faker.datatype.number()
+    const id = faker.datatype.number().toString()
     await sut.checkById(id)
     expect(checkSectorByIdRepositorySpy.id).toBe(id)
   })
 
   test('Should return true if CheckSectorByIdRepository return true', async () => {
     const { sut } = makeSut()
-    const check = await sut.checkById(faker.datatype.number())
+    const check = await sut.checkById(faker.datatype.number().toString())
     expect(check).toBe(true)
   })
 
   test('Should return false if CheckSectorByIdRepository return false', async () => {
     const { sut, checkSectorByIdRepositorySpy } = makeSut()
     checkSectorByIdRepositorySpy.result = false
-    const check = await sut.checkById(faker.datatype.number())
+    const check = await sut.checkById(faker.datatype.number().toString())
     expect(check).toBe(false)
   })
 
   test('Should throws if CheckSectorByIdRepository throws', async () => {
     const { sut, checkSectorByIdRepositorySpy } = makeSut()
     jest.spyOn(checkSectorByIdRepositorySpy, 'checkById').mockRejectedValueOnce(new Error())
-    const promise = sut.checkById(faker.datatype.number())
+    const promise = sut.checkById(faker.datatype.number().toString())
     await expect(promise).rejects.toThrow()
   })
 })

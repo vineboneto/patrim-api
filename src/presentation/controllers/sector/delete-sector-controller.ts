@@ -15,7 +15,7 @@ export class DeleteSectorController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const sectorDeleted = await this.deleteSector.delete({ id: Number(request.id) })
+      const sectorDeleted = await this.deleteSector.delete({ id: request.id })
       return sectorDeleted ? ok(sectorDeleted) : forbidden(new InvalidParamError('id'))
     } catch (error) {
       return serverError(error)

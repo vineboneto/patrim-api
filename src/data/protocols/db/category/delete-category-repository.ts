@@ -1,7 +1,7 @@
 import { DeleteCategory } from '@/domain/usecases'
 
 export interface DeleteCategoryRepository {
-  delete (id: number): Promise<DeleteCategoryRepository.Model>
+  delete (id: string): Promise<DeleteCategoryRepository.Model>
 }
 
 export namespace DeleteCategoryRepository {

@@ -21,7 +21,7 @@ export const mockAddCategoriesParams = (): AddCategoryRepository.Params[] => ([
 ])
 
 export const mockUpdateCategoryParams = (): UpdateCategoryRepository.Params => ({
-  id: faker.datatype.number(),
+  id: faker.datatype.number().toString(),
   name: faker.name.findName()
 })
 
@@ -56,8 +56,8 @@ export class LoadCategoriesRepositorySpy implements LoadCategoriesRepository {
 
 export class DeleteCategoryRepositorySpy implements DeleteCategoryRepository {
   model = mockCategoryModel()
-  id = faker.datatype.number()
-  async delete (id: number): Promise<DeleteCategoryRepository.Model> {
+  id = faker.datatype.number().toString()
+  async delete (id: string): Promise<DeleteCategoryRepository.Model> {
     this.id = id
     return this.model
   }
@@ -65,8 +65,8 @@ export class DeleteCategoryRepositorySpy implements DeleteCategoryRepository {
 
 export class CheckCategoryByIdRepositorySpy implements CheckCategoryByIdRepository {
   result = true
-  id = faker.datatype.number()
-  async checkById (id: number): Promise<CheckCategoryByIdRepository.Result> {
+  id = faker.datatype.number().toString()
+  async checkById (id: string): Promise<CheckCategoryByIdRepository.Result> {
     this.id = id
     return this.result
   }

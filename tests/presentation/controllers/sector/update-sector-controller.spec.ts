@@ -7,7 +7,7 @@ import { CheckSectorByIdSpy, SaveSectorSpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): UpdateSectorController.Request => ({
-  id: faker.datatype.number(),
+  id: faker.datatype.number().toString(),
   name: faker.name.findName()
 })
 

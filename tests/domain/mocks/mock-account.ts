@@ -19,7 +19,7 @@ export const mockAuthenticationModel = (): Authentication.Model => ({
 })
 
 export const mockLoadAccountByTokenRepositoryModel = (): LoadAccountByToken.Model => ({
-  id: faker.datatype.number()
+  id: faker.datatype.number().toString()
 })
 
 export class AddAccountSpy implements AddAccount {

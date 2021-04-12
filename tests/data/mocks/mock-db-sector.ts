@@ -11,7 +11,7 @@ import { mockSectorModel, mockSectorsModel } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 export const mockUpdateSectorParams = (): UpdateSectorRepository.Params => ({
-  id: faker.datatype.number(),
+  id: faker.datatype.number().toString(),
   name: faker.name.findName()
 })
 
@@ -57,8 +57,8 @@ export class LoadSectorsRepositorySpy implements LoadSectorsRepository {
 
 export class DeleteSectorRepositorySpy implements DeleteSectorRepository {
   model = mockSectorModel()
-  id = faker.datatype.number()
-  async delete (id: number): Promise<DeleteSectorRepository.Model> {
+  id = faker.datatype.number().toString()
+  async delete (id: string): Promise<DeleteSectorRepository.Model> {
     this.id = id
     return this.model
   }
@@ -66,8 +66,8 @@ export class DeleteSectorRepositorySpy implements DeleteSectorRepository {
 
 export class CheckSectorByIdRepositorySpy implements CheckSectorByIdRepository {
   result = true
-  id = faker.datatype.number()
-  async checkById (id: number): Promise<CheckSectorByIdRepository.Result> {
+  id = faker.datatype.number().toString()
+  async checkById (id: string): Promise<CheckSectorByIdRepository.Result> {
     this.id = id
     return this.result
   }

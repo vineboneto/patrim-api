@@ -31,11 +31,19 @@ export class UpdatePlaceController implements Controller {
   private async isForbidden ({ id, name, userId }: UpdatePlaceController.Request): Promise<Error> {
     let isValid = true
     isValid = await this.checkPlaceById.checkById(id)
-    if (!isValid) return new InvalidParamError('id')
-    if (userId) isValid = await this.checkAccountById.checkById(userId)
-    if (!isValid) return new InvalidParamError('userId')
+    if (!isValid) {
+      return new InvalidParamError('id')
+    }
+    if (userId) {
+      isValid = await this.checkAccountById.checkById(userId)
+    }
+    if (!isValid) {
+      return new InvalidParamError('userId')
+    }
     isValid = await this.savePlace.save({ id, name, userId })
-    if (!isValid) return new AlreadyExistsError(name)
+    if (!isValid) {
+      return new AlreadyExistsError(name)
+    }
     return null
   }
 

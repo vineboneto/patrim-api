@@ -59,9 +59,9 @@ describe('Category Routes', () => {
   describe('PUT /categories', () => {
     test('Should return 204 on save category', async () => {
       const accessToken = await makeAccessToken(prismaClient)
-      const newCategory = await makeCategory()
+      const { id } = await makeCategory()
       await request(app)
-        .put(`/api/categories/${newCategory.id}`)
+        .put(`/api/categories/${id}`)
         .set('x-access-token', accessToken)
         .send({
           name: 'new_value'

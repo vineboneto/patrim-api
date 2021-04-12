@@ -6,7 +6,7 @@ export interface DeleteSector {
 
 export namespace DeleteSector {
   export type Params = {
-    id: number
+    id: string
   }
 
   export type Model = SectorModel

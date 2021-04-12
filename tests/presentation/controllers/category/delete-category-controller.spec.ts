@@ -32,7 +32,7 @@ describe('DeleteCategoryController', () => {
     const { sut, deleteCategorySpy } = makeSut()
     const { id } = mockRequest()
     await sut.handle({ id })
-    expect(deleteCategorySpy.params).toEqual({ id: Number(id) })
+    expect(deleteCategorySpy.params).toEqual({ id })
   })
 
   test('Should call Validation with correct value', async () => {

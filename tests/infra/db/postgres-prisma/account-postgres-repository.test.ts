@@ -86,7 +86,7 @@ describe('AccountPostgresRepository', () => {
       const sut = makeSut()
       const { id } = await Helper.makeUser()
       const token = faker.datatype.uuid()
-      await sut.updateAccessToken(id, token)
+      await sut.updateAccessToken(id.toString(), token)
       const accountWithAccessTokenUpdated = await Helper.findUserById(id)
       expect(accountWithAccessTokenUpdated.accessToken).toBe(token)
     })

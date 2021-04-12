@@ -32,7 +32,7 @@ export class UpdateSectorController implements Controller {
 }
 export namespace UpdateSectorController {
   export type Request = {
-    id: number
+    id: string
     name: string
   }
 }

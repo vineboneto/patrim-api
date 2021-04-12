@@ -15,10 +15,10 @@ export const makeAccessToken = async (prismaClient: PrismaClient): Promise<strin
       password
     }
   })
-  const accessToken = sign({ id }, env.jwtSecret)
+  const accessToken = sign({ id: id.toString() }, env.jwtSecret)
   await prismaClient.user.update({
     where: {
-      id
+      id: Number(id)
     },
     data: {
       accessToken

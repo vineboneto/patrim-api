@@ -15,7 +15,7 @@ export class DeleteCategoryController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const categoryDeleted = await this.deleteCategory.delete({ id: Number(request.id) })
+      const categoryDeleted = await this.deleteCategory.delete({ id: request.id })
       return categoryDeleted ? ok(categoryDeleted) : forbidden(new InvalidParamError('id'))
     } catch (error) {
       return serverError(error)

@@ -38,7 +38,7 @@ describe('SectorPostgresRepository', () => {
       const sut = makeSut()
       const { id } = await Helper.makeSector()
       const result = await sut.update({
-        id,
+        id: id.toString(),
         name: 'new_name'
       })
       const { name } = await Helper.findSectorById(id)
@@ -84,13 +84,13 @@ describe('SectorPostgresRepository', () => {
     test('Should return sector on success', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeSector()
-      const result = await sut.checkById(id)
+      const result = await sut.checkById(id.toString())
       expect(result).toBe(true)
     })
 
     test('Should return false if sector not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number())
+      const result = await sut.checkById(faker.datatype.number().toString())
       expect(result).toBe(false)
     })
   })
@@ -99,9 +99,9 @@ describe('SectorPostgresRepository', () => {
     test('Should return sector on delete success', async () => {
       const sut = makeSut()
       const { id, name } = await Helper.makeSector()
-      const sectorDeleted = await sut.delete(id)
+      const sectorDeleted = await sut.delete(id.toString())
       const searchSectorDeleted = await Helper.findSectorById(id)
-      expect(sectorDeleted).toEqual({ id, name })
+      expect(sectorDeleted).toEqual({ id: id.toString(), name })
       expect(searchSectorDeleted).toBeFalsy()
     })
   })

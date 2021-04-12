@@ -32,7 +32,7 @@ export class UpdateCategoryController implements Controller {
 }
 export namespace UpdateCategoryController {
   export type Request = {
-    id: number
+    id: string
     name: string
   }
 }

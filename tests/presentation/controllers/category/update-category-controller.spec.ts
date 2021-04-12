@@ -7,7 +7,7 @@ import { CheckCategoryByIdSpy, SaveCategorySpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): UpdateCategoryController.Request => ({
-  id: faker.datatype.number(),
+  id: faker.datatype.number().toString(),
   name: faker.name.findName()
 })
 

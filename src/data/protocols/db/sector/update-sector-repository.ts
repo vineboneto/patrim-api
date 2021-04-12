@@ -4,7 +4,7 @@ export interface UpdateSectorRepository {
 
 export namespace UpdateSectorRepository {
   export type Params = {
-    id: number
+    id: string
     name: string
   }
   export type Result = boolean

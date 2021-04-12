@@ -7,23 +7,16 @@ import {
   LoadPlacesRepository
 } from '@/data/protocols'
 
-import { PrismaClient } from '@prisma/client'
-
 export class PlacePostgresRepository implements
   AddPlaceRepository,
   UpdatePlaceRepository,
   CheckPlaceByIdRepository,
   CheckPlaceByNameRepository,
   LoadPlacesRepository {
-  private readonly prismaClient: PrismaClient
-
-  constructor () {
-    this.prismaClient = PrismaHelper.getConnection()
-  }
-
   async add (place: AddPlaceRepository.Params): Promise<AddPlaceRepository.Result> {
     const { name, userId } = place
-    const placeResult = await this.prismaClient.place.create({
+    const prismaClient = PrismaHelper.getConnection()
+    const placeResult = await prismaClient.place.create({
       data: {
         name,
         userId: Number(userId) || undefined
@@ -34,7 +27,8 @@ export class PlacePostgresRepository implements
 
   async update (place: UpdatePlaceRepository.Params): Promise<UpdatePlaceRepository.Result> {
     const { id, name, userId } = place
-    const placeResult = await this.prismaClient.place.update({
+    const prismaClient = PrismaHelper.getConnection()
+    const placeResult = await prismaClient.place.update({
       where: {
         id: Number(id)
       },
@@ -47,7 +41,8 @@ export class PlacePostgresRepository implements
   }
 
   async checkById (id: string): Promise<CheckPlaceByIdRepository.Result> {
-    const placeWithOnlyId = await this.prismaClient.place.findFirst({
+    const prismaClient = PrismaHelper.getConnection()
+    const placeWithOnlyId = await prismaClient.place.findFirst({
       where: {
         id: Number(id)
       },
@@ -59,7 +54,8 @@ export class PlacePostgresRepository implements
   }
 
   async checkByName (name: string): Promise<CheckPlaceByNameRepository.Result> {
-    const placeWithOnlyId = await this.prismaClient.place.findFirst({
+    const prismaClient = PrismaHelper.getConnection()
+    const placeWithOnlyId = await prismaClient.place.findFirst({
       where: {
         name: name
       },
@@ -71,14 +67,16 @@ export class PlacePostgresRepository implements
   }
 
   async loadAll (): Promise<LoadPlacesRepository.Model> {
-    const places = await this.prismaClient.place.findMany()
-    const placesCollections = places.map((place) => {
-      return {
-        ...place,
-        id: place.id.toString(),
-        userId: place.userId ? place.userId.toString() : null
-      }
-    })
-    return placesCollections
+    const prismaClient = PrismaHelper.getConnection()
+    const places = await prismaClient.place.findMany()
+    return places.map((place) => place ? this.convertIdToString(place) : null)
+  }
+
+  private convertIdToString (entity: any): any {
+    return {
+      ...entity,
+      userId: entity.userId ? entity.userId.toString() : null,
+      id: entity.id.toString()
+    }
   }
 }

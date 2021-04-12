@@ -1,4 +1,4 @@
 export type SectorModel = {
-  id: number
+  id: string
   name: string
 }

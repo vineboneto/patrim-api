@@ -1,5 +1,5 @@
 export interface CheckCategoryByIdRepository {
-  checkById (id: number): Promise<CheckCategoryByIdRepository.Result>
+  checkById (id: string): Promise<CheckCategoryByIdRepository.Result>
 }
 
 export namespace CheckCategoryByIdRepository {
