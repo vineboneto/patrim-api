@@ -42,6 +42,13 @@ describe('DbSaveOwner', () => {
     expect(owner).toBeNull()
   })
 
+  test('Should throw if CheckSectorByIdRepository throws', async () => {
+    const { sut, checkSectorByIdRepositorySpy } = makeSut()
+    jest.spyOn(checkSectorByIdRepositorySpy, 'checkById').mockRejectedValueOnce(new Error())
+    const promise = sut.save(mockAddOwnerParams())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call AddOwnerRepository with correct value', async () => {
     const { sut, addOwnerRepositorySpy } = makeSut()
     const data = mockAddOwnerParams()
