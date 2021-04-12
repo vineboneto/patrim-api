@@ -7,14 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Owner {
+  id           Int    @id @default(autoincrement())
+  name         String
+  Sector       Sector?    @relation(fields: [sectorId], references: [id])
+  sectorId     Int?
+}
+
 model Sector {
-  id   Int    @id @default(autoincrement())
-  name String
+  id           Int    @id @default(autoincrement())
+  name         String
+  Owner        Owner[]
 }
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  name  String
+  id           Int    @id @default(autoincrement())
+  name         String
 }
 
 model Place {
@@ -36,6 +44,6 @@ model User {
 
 model LogError {
   id          Int     @id @default(autoincrement())
-  stack        String
+  stack       String
   date        DateTime 
 }
