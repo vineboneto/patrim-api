@@ -8,7 +8,7 @@ export class DbSaveOwner implements SaveOwner {
 
   async save (owner: SaveOwner.Params): Promise<SaveOwner.Model> {
     const { name, sectorId } = owner
-    await this.addOwnerRepository.add({ name, sectorId })
-    return null
+    const ownerModel = await this.addOwnerRepository.add({ name, sectorId })
+    return ownerModel
   }
 }
