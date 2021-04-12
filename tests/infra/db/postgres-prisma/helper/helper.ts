@@ -1,9 +1,9 @@
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
-import { AddPlaceRepository } from '@/data/protocols'
+import { AddPlaceRepository, AddOwnerRepository } from '@/data/protocols'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 import { mockAddCategoryParams, mockAddSectorParams } from '@/tests/data/mocks'
 
-import { Category, Place, Sector, User } from '@prisma/client'
+import { Category, Owner, Place, Sector, User } from '@prisma/client'
 
 export const makeUser = async (user = mockAddAccountParams()): Promise<User> => {
   const prismaClient = PrismaHelper.getConnection()
@@ -36,9 +36,28 @@ export const makeSector = async (sector = mockAddSectorParams()): Promise<Sector
   })
 }
 
+export const makeOwner = async (owner: AddOwnerRepository.Params): Promise<Owner> => {
+  const prismaClient = PrismaHelper.getConnection()
+  return await prismaClient.owner.create({
+    data: {
+      name: owner.name,
+      sectorId: Number(owner.sectorId)
+    }
+  })
+}
+
 export const findPlaceById = async (id: number): Promise<Place> => {
   const prismaClient = PrismaHelper.getConnection()
   return await prismaClient.place.findFirst({
+    where: {
+      id
+    }
+  })
+}
+
+export const findOwnerById = async (id: number): Promise<Owner> => {
+  const prismaClient = PrismaHelper.getConnection()
+  return await prismaClient.owner.findFirst({
     where: {
       id
     }

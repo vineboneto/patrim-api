@@ -37,4 +37,20 @@ describe('OwnerPostgresRepository', () => {
       expect(owner.sectorId).toBe(sectorId.toString())
     })
   })
+
+  describe('update()', () => {
+    test('Should return owner on update success', async () => {
+      const sut = makeSut()
+      const { id: sectorId } = await Helper.makeSector()
+      const name = faker.name.findName()
+      const { id } = await Helper.makeOwner({ name, sectorId: sectorId.toString() })
+      const ownerUpdated = await sut.update({
+        id: id.toString(),
+        name: 'new_name',
+        sectorId: sectorId.toString()
+      })
+      expect(ownerUpdated).toBeTruthy()
+      expect(ownerUpdated.name).toBe('new_name')
+    })
+  })
 })
