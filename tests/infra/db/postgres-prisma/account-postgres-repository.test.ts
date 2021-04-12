@@ -1,26 +1,13 @@
 import { AccountPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
-import { AddAccountRepository } from '@/data/protocols'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
+import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { PrismaClient, User } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
 
 let prismaClient: PrismaClient
 
-const makeSut = (): AccountPostgresRepository => {
-  return new AccountPostgresRepository()
-}
-
-const insertAccount = async (account: AddAccountRepository.Params): Promise<User> => {
-  const accountModel = await prismaClient.user.create({
-    data: {
-      name: account.name,
-      email: account.email,
-      password: account.name
-    }
-  })
-  return accountModel
-}
+const makeSut = (): AccountPostgresRepository => new AccountPostgresRepository()
 
 describe('AccountPostgresRepository', () => {
   beforeAll(() => {
@@ -34,32 +21,23 @@ describe('AccountPostgresRepository', () => {
   })
 
   beforeEach(async () => {
-    prismaClient = await PrismaHelper.getConnection()
+    prismaClient = PrismaHelper.getConnection()
     await prismaClient.$executeRaw('DELETE FROM "User";')
   })
 
   describe('add()', () => {
     test('Should return true on add success', async () => {
       const sut = makeSut()
-      const addAccountParams = mockAddAccountParams()
-      const isValid = await sut.add(addAccountParams)
-      expect(isValid).toBe(true)
-    })
-
-    test('Should return false if add returns false', async () => {
-      const sut = makeSut()
-      jest.spyOn(prismaClient.user, 'create').mockResolvedValueOnce(null)
       const isValid = await sut.add(mockAddAccountParams())
-      expect(isValid).toBe(false)
+      expect(isValid).toBe(true)
     })
   })
 
   describe('checkByEmail()', () => {
     test('Should return an true if email exists', async () => {
       const sut = makeSut()
-      const accountParams = mockAddAccountParams()
-      await insertAccount(accountParams)
-      const exists = await sut.checkByEmail(accountParams.email)
+      const { email } = await Helper.makeUser()
+      const exists = await sut.checkByEmail(email)
       expect(exists).toBe(true)
     })
 
@@ -73,9 +51,7 @@ describe('AccountPostgresRepository', () => {
   describe('checkById()', () => {
     test('Should return category on success', async () => {
       const sut = makeSut()
-      const { id } = await prismaClient.user.create({
-        data: mockAddAccountParams()
-      })
+      const { id } = await Helper.makeUser()
       const result = await sut.checkById(id.toString())
       expect(result).toBe(true)
     })
@@ -90,9 +66,8 @@ describe('AccountPostgresRepository', () => {
   describe('loadByEmail', () => {
     test('Should returns account on loadByEmail success', async () => {
       const sut = makeSut()
-      const accountParams = mockAddAccountParams()
-      await insertAccount(accountParams)
-      const account = await sut.loadByEmail(accountParams.email)
+      const { email } = await Helper.makeUser(mockAddAccountParams())
+      const account = await sut.loadByEmail(email)
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
       expect(account.name).toBeTruthy()
@@ -101,8 +76,7 @@ describe('AccountPostgresRepository', () => {
 
     test('Should returns null if loadByEmail fails', async () => {
       const sut = makeSut()
-      const { email } = mockAddAccountParams()
-      const account = await sut.loadByEmail(email)
+      const account = await sut.loadByEmail(faker.internet.email())
       expect(account).toBeNull()
     })
   })
@@ -110,15 +84,10 @@ describe('AccountPostgresRepository', () => {
   describe('updateAccessToken()', () => {
     test('Should update the account accessToken on updateAccessToken success', async () => {
       const sut = makeSut()
-      const accountParams = mockAddAccountParams()
-      const account = await insertAccount(accountParams)
+      const { id } = await Helper.makeUser()
       const token = faker.datatype.uuid()
-      await sut.updateAccessToken(account.id, token)
-      const accountWithAccessTokenUpdated = await prismaClient.user.findFirst({
-        where: {
-          id: account.id
-        }
-      })
+      await sut.updateAccessToken(id, token)
+      const accountWithAccessTokenUpdated = await Helper.findUserById(id)
       expect(accountWithAccessTokenUpdated.accessToken).toBe(token)
     })
   })

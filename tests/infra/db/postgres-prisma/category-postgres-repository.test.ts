@@ -1,8 +1,9 @@
 import { PrismaHelper, CategoryPostgresRepository } from '@/infra/db/postgres-prisma/'
 import { mockAddCategoriesParams, mockAddCategoryParams } from '@/tests/data/mocks'
-import { mockCategoryModel } from '@/tests/domain/mocks'
+import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 import { PrismaClient } from '@prisma/client'
+import faker from 'faker'
 
 let prismaClient: PrismaClient
 
@@ -20,7 +21,7 @@ describe('CategoryPostgresRepository', () => {
   })
 
   beforeEach(async () => {
-    prismaClient = await PrismaHelper.getConnection()
+    prismaClient = PrismaHelper.getConnection()
     await prismaClient.$executeRaw('DELETE FROM "Category";')
   })
 
@@ -35,30 +36,13 @@ describe('CategoryPostgresRepository', () => {
   describe('update()', () => {
     test('Should return true on update success', async () => {
       const sut = makeSut()
-      const { id } = await prismaClient.category.create({
-        data: mockAddCategoryParams()
-      })
+      const { id } = await Helper.makeCategory()
       const result = await sut.update({
         id,
         name: 'new_name'
       })
+      const { name } = await Helper.findCategoryById(id)
       expect(result).toBeTruthy()
-    })
-
-    test('Should update data on success', async () => {
-      const sut = makeSut()
-      const { id } = await prismaClient.category.create({
-        data: mockAddCategoryParams()
-      })
-      await sut.update({
-        id,
-        name: 'new_name'
-      })
-      const { name } = await prismaClient.category.findFirst({
-        where: {
-          id
-        }
-      })
       expect(name).toBe('new_name')
     })
   })
@@ -72,9 +56,8 @@ describe('CategoryPostgresRepository', () => {
 
     test('Should return true if category name already exists', async () => {
       const sut = makeSut()
-      const param = mockAddCategoryParams()
-      await sut.add(param)
-      const result = await sut.checkByName(param.name)
+      const { name } = await Helper.makeCategory()
+      const result = await sut.checkByName(name)
       expect(result).toBeTruthy()
     })
   })
@@ -100,20 +83,14 @@ describe('CategoryPostgresRepository', () => {
   describe('checkById()', () => {
     test('Should return category on success', async () => {
       const sut = makeSut()
-      const { name } = mockAddCategoryParams()
-      const categoryModel = await prismaClient.category.create({
-        data: {
-          name
-        }
-      })
-      const result = await sut.checkById(categoryModel.id)
+      const { id } = await Helper.makeCategory()
+      const result = await sut.checkById(id)
       expect(result).toBe(true)
     })
 
     test('Should return false if category not exists', async () => {
       const sut = makeSut()
-      const { id } = mockCategoryModel()
-      const result = await sut.checkById(id)
+      const result = await sut.checkById(faker.datatype.number())
       expect(result).toBe(false)
     })
   })
@@ -121,19 +98,10 @@ describe('CategoryPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return category on delete success', async () => {
       const sut = makeSut()
-      const { name } = mockAddCategoryParams()
-      const categoryModel = await prismaClient.category.create({
-        data: {
-          name
-        }
-      })
-      const categoryDeleted = await sut.delete(categoryModel.id)
-      const searchCategoryDeleted = await prismaClient.category.findFirst({
-        where: {
-          id: categoryDeleted.id
-        }
-      })
-      expect(categoryDeleted).toEqual(categoryModel)
+      const { id, name } = await Helper.makeCategory()
+      const categoryDeleted = await sut.delete(id)
+      const searchCategoryDeleted = await Helper.findCategoryById(id)
+      expect(categoryDeleted).toEqual({ id, name })
       expect(searchCategoryDeleted).toBeFalsy()
     })
   })

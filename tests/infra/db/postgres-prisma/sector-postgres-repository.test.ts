@@ -1,8 +1,9 @@
 import { SectorPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
 import { mockAddSectorParams, mockAddSectorsParams } from '@/tests/data/mocks'
-import { mockSectorModel } from '@/tests/domain/mocks'
+import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 import { PrismaClient } from '@prisma/client'
+import faker from 'faker'
 
 const makeSut = (): SectorPostgresRepository => new SectorPostgresRepository()
 
@@ -20,7 +21,7 @@ describe('SectorPostgresRepository', () => {
   })
 
   beforeEach(async () => {
-    prismaClient = await PrismaHelper.getConnection()
+    prismaClient = PrismaHelper.getConnection()
     await prismaClient.$executeRaw('DELETE FROM "Sector";')
   })
 
@@ -30,42 +31,18 @@ describe('SectorPostgresRepository', () => {
       const isValid = await sut.add(mockAddSectorParams())
       expect(isValid).toBeTruthy()
     })
-
-    test('Should return false if addSector returns false', async () => {
-      const sut = makeSut()
-      jest.spyOn(prismaClient.sector, 'create').mockResolvedValueOnce(null)
-      const isValid = await sut.add(mockAddSectorParams())
-      expect(isValid).toBe(false)
-    })
   })
 
   describe('update()', () => {
     test('Should return true on update success', async () => {
       const sut = makeSut()
-      const { id } = await prismaClient.sector.create({
-        data: mockAddSectorParams()
-      })
+      const { id } = await Helper.makeSector()
       const result = await sut.update({
         id,
         name: 'new_name'
       })
+      const { name } = await Helper.findSectorById(id)
       expect(result).toBeTruthy()
-    })
-
-    test('Should update data on success', async () => {
-      const sut = makeSut()
-      const { id } = await prismaClient.sector.create({
-        data: mockAddSectorParams()
-      })
-      await sut.update({
-        id,
-        name: 'new_name'
-      })
-      const { name } = await prismaClient.sector.findFirst({
-        where: {
-          id
-        }
-      })
       expect(name).toBe('new_name')
     })
   })
@@ -73,20 +50,14 @@ describe('SectorPostgresRepository', () => {
   describe('checkByName()', () => {
     test('Should return true if sector name exists', async () => {
       const sut = makeSut()
-      const { name } = mockAddSectorParams()
-      await prismaClient.sector.create({
-        data: {
-          name
-        }
-      })
+      const { name } = await Helper.makeSector()
       const isValid = await sut.checkByName(name)
       expect(isValid).toBe(true)
     })
 
     test('Should return false if sector name does not exists', async () => {
       const sut = makeSut()
-      const { name } = mockAddSectorParams()
-      const isValid = await sut.checkByName(name)
+      const isValid = await sut.checkByName(faker.name.findName())
       expect(isValid).toBe(false)
     })
   })
@@ -112,20 +83,14 @@ describe('SectorPostgresRepository', () => {
   describe('checkById()', () => {
     test('Should return sector on success', async () => {
       const sut = makeSut()
-      const { name } = mockAddSectorParams()
-      const sectorModel = await prismaClient.sector.create({
-        data: {
-          name
-        }
-      })
-      const result = await sut.checkById(sectorModel.id)
+      const { id } = await Helper.makeSector()
+      const result = await sut.checkById(id)
       expect(result).toBe(true)
     })
 
     test('Should return false if sector not exists', async () => {
       const sut = makeSut()
-      const { id } = mockSectorModel()
-      const result = await sut.checkById(id)
+      const result = await sut.checkById(faker.datatype.number())
       expect(result).toBe(false)
     })
   })
@@ -133,19 +98,10 @@ describe('SectorPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return sector on delete success', async () => {
       const sut = makeSut()
-      const { name } = mockAddSectorParams()
-      const sectorModel = await prismaClient.sector.create({
-        data: {
-          name
-        }
-      })
-      const sectorDeleted = await sut.delete(sectorModel.id)
-      const searchSectorDeleted = await prismaClient.sector.findFirst({
-        where: {
-          id: sectorDeleted.id
-        }
-      })
-      expect(sectorDeleted).toEqual(sectorModel)
+      const { id, name } = await Helper.makeSector()
+      const sectorDeleted = await sut.delete(id)
+      const searchSectorDeleted = await Helper.findSectorById(id)
+      expect(sectorDeleted).toEqual({ id, name })
       expect(searchSectorDeleted).toBeFalsy()
     })
   })

@@ -1,39 +1,12 @@
 import { PlacePostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
-import { mockAddAccountParams } from '@/tests/domain/mocks'
+import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { Place, PrismaClient, User } from '@prisma/client'
-
+import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
 
 const makeSut = (): PlacePostgresRepository => new PlacePostgresRepository()
 
 let prismaClient: PrismaClient
-
-const makeUser = async (): Promise<User> => {
-  const user = await prismaClient.user.create({
-    data: mockAddAccountParams()
-  })
-  return user
-}
-
-const makePlace = async (userId?: number): Promise<Place> => {
-  const place = await prismaClient.place.create({
-    data: {
-      name: 'any_name',
-      userId
-    }
-  })
-  return place
-}
-
-const findPlace = async (id: number): Promise<Place> => {
-  const place = await prismaClient.place.findFirst({
-    where: {
-      id
-    }
-  })
-  return place
-}
 
 describe('PlacePostgresRepository', () => {
   beforeAll(() => {
@@ -47,14 +20,14 @@ describe('PlacePostgresRepository', () => {
   })
 
   beforeEach(async () => {
-    prismaClient = await PrismaHelper.getConnection()
+    prismaClient = PrismaHelper.getConnection()
     await prismaClient.$executeRaw('DELETE FROM "Place";')
   })
 
   describe('add()', () => {
     test('Should return true on add new place with userId success', async () => {
       const sut = makeSut()
-      const { id } = await makeUser()
+      const { id } = await Helper.makeUser()
       const result = await sut.add({
         name: 'any_name',
         userId: id.toString()
@@ -74,28 +47,28 @@ describe('PlacePostgresRepository', () => {
   describe('update()', () => {
     test('Should return true on update data with userId success', async () => {
       const sut = makeSut()
-      const { id: userId } = await makeUser()
-      const { id } = await makePlace(userId)
-      const { id: newUserId } = await makeUser()
+      const { id: userId } = await Helper.makeUser()
+      const { id } = await Helper.makePlace({ userId: userId.toString(), name: 'any_place' })
+      const { id: newUserId } = await Helper.makeUser()
       const result = await sut.update({
         id: id.toString(),
-        name: 'other_name',
+        name: 'other_place',
         userId: newUserId.toString()
       })
-      const { name: newName, userId: newUserIdUpdated } = await findPlace(id)
+      const { name: newName, userId: newUserIdUpdated } = await Helper.findPlaceById(id)
       expect(result).toBe(true)
-      expect(newName).toBe('other_name')
+      expect(newName).toBe('other_place')
       expect(newUserIdUpdated).toBe(newUserId)
     })
 
     test('Should return true on update data without userId success', async () => {
       const sut = makeSut()
-      const { id } = await makePlace()
+      const { id } = await Helper.makePlace({ name: faker.name.findName() })
       const result = await sut.update({
         id: id.toString(),
         name: 'other_name'
       })
-      const { name: newName } = await findPlace(id)
+      const { name: newName } = await Helper.findPlaceById(id)
       expect(result).toBe(true)
       expect(newName).toBe('other_name')
     })
@@ -104,7 +77,7 @@ describe('PlacePostgresRepository', () => {
   describe('checkById()', () => {
     test('Should return sector on success', async () => {
       const sut = makeSut()
-      const { id } = await makePlace()
+      const { id } = await Helper.makePlace({ name: faker.name.findName() })
       const result = await sut.checkById(id.toString())
       expect(result).toBe(true)
     })
@@ -119,7 +92,7 @@ describe('PlacePostgresRepository', () => {
   describe('checkByName()', () => {
     test('Should return true if sector name exists', async () => {
       const sut = makeSut()
-      const { name } = await makePlace()
+      const { name } = await Helper.makePlace({ name: faker.name.findName() })
       const isValid = await sut.checkByName(name)
       expect(isValid).toBe(true)
     })
@@ -134,16 +107,16 @@ describe('PlacePostgresRepository', () => {
   describe('loadAll()', () => {
     test('Should returns all places on success', async () => {
       const sut = makeSut()
-      const { id } = await makeUser()
+      const { id: userId } = await Helper.makeUser()
       await prismaClient.place.createMany({
         data: [
           {
             name: faker.name.findName(),
-            userId: id
+            userId
           },
           {
             name: faker.name.findName(),
-            userId: id
+            userId
           },
           {
             name: faker.name.findName()
@@ -157,8 +130,8 @@ describe('PlacePostgresRepository', () => {
 
     test('Should returns empty array if places not exists', async () => {
       const sut = makeSut()
-      const sectors = await sut.loadAll()
-      expect(sectors).toEqual([])
+      const places = await sut.loadAll()
+      expect(places).toEqual([])
     })
   })
 })

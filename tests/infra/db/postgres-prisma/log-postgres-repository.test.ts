@@ -19,7 +19,7 @@ describe('LogPostgresRepository', () => {
   })
 
   beforeEach(async () => {
-    prismaClient = await PrismaHelper.getConnection()
+    prismaClient = PrismaHelper.getConnection()
     await prismaClient.$executeRaw('DELETE FROM "LogError";')
   })
 

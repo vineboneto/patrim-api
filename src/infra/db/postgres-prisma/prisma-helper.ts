@@ -12,7 +12,7 @@ export const PrismaHelper = {
     this.client.$disconnect()
   },
 
-  async getConnection (): Promise<PrismaClient> {
+  getConnection (): PrismaClient {
     return this.client
   }
 }

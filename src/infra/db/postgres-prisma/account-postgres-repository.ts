@@ -8,6 +8,8 @@ import {
 } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
+import { PrismaClient } from '@prisma/client'
+
 export class AccountPostgresRepository implements
   AddAccountRepository,
   CheckAccountByEmailRepository,
@@ -15,10 +17,15 @@ export class AccountPostgresRepository implements
   UpdateAccessTokenRepository,
   LoadAccountByTokenRepository,
   CheckAccountByIdRepository {
+  private readonly prismaClient: PrismaClient
+
+  constructor () {
+    this.prismaClient = PrismaHelper.getConnection()
+  }
+
   async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const { name, email, password } = account
-    const prismaClient = await PrismaHelper.getConnection()
-    const accountModel = await prismaClient.user.create({
+    const accountModel = await this.prismaClient.user.create({
       data: {
         name,
         email,
@@ -29,8 +36,7 @@ export class AccountPostgresRepository implements
   }
 
   async checkByEmail (email: string): Promise<boolean> {
-    const prismaClient = await PrismaHelper.getConnection()
-    const account = await prismaClient.user.findFirst({
+    const account = await this.prismaClient.user.findFirst({
       where: {
         email
       }
@@ -39,8 +45,7 @@ export class AccountPostgresRepository implements
   }
 
   async checkById (id: string): Promise<CheckAccountByIdRepository.Result> {
-    const prismaClient = await PrismaHelper.getConnection()
-    const accountWithOnlyId = await prismaClient.user.findFirst({
+    const accountWithOnlyId = await this.prismaClient.user.findFirst({
       where: {
         id: Number(id)
       },
@@ -67,8 +72,7 @@ export class AccountPostgresRepository implements
   }
 
   async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Model> {
-    const prismaClient = await PrismaHelper.getConnection()
-    const account = await prismaClient.user.findFirst({
+    const account = await this.prismaClient.user.findFirst({
       where: {
         accessToken: accessToken,
         role: role
@@ -81,8 +85,7 @@ export class AccountPostgresRepository implements
   }
 
   async updateAccessToken (id: number, token: string): Promise<void> {
-    const prismaClient = await PrismaHelper.getConnection()
-    await prismaClient.user.update({
+    await this.prismaClient.user.update({
       where: {
         id: id
       },

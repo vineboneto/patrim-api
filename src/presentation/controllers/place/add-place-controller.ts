@@ -29,10 +29,16 @@ export class AddPlaceController implements Controller {
 
   private async isForbidden ({ name, userId }: AddPlaceController.Request): Promise<Error> {
     let isValid = true
-    if (userId) isValid = await this.checkAccountById.checkById(userId)
-    if (!isValid) return new InvalidParamError('userId')
+    if (userId) {
+      isValid = await this.checkAccountById.checkById(userId)
+    }
+    if (!isValid) {
+      return new InvalidParamError('userId')
+    }
     isValid = await this.savePlace.save({ name, userId })
-    if (!isValid) return new AlreadyExistsError(name)
+    if (!isValid) {
+      return new AlreadyExistsError(name)
+    }
     return null
   }
 

@@ -16,7 +16,9 @@ export class AddSectorController implements Controller {
         return badRequest(error)
       }
       const isValid = await this.saveSector.save(request)
-      if (!isValid) return forbidden(new AlreadyExistsError(request.name))
+      if (!isValid) {
+        return forbidden(new AlreadyExistsError(request.name))
+      }
       return noContent()
     } catch (error) {
       return serverError(error)
