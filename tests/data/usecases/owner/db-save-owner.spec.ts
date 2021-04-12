@@ -22,4 +22,17 @@ describe('DbSaveOwner', () => {
     await sut.save(data)
     expect(addOwnerRepositorySpy.params).toEqual(data)
   })
+
+  test('Should return null if AddOwnerRepository return null', async () => {
+    const { sut, addOwnerRepositorySpy } = makeSut()
+    addOwnerRepositorySpy.model = null
+    const owner = await sut.save(mockAddOwnerParams())
+    expect(owner).toBeNull()
+  })
+
+  test('Should return owner if AddOwnerRepository return owner', async () => {
+    const { sut, addOwnerRepositorySpy } = makeSut()
+    const owner = await sut.save(mockAddOwnerParams())
+    expect(owner).toEqual(addOwnerRepositorySpy.model)
+  })
 })
