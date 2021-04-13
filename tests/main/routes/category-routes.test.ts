@@ -117,5 +117,16 @@ describe('Category Routes', () => {
         .set('x-access-token', accessToken)
         .expect(200)
     })
+
+    test('Should return 404 on delete category with invalid id', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await request(app)
+        .delete(`/api/categories/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(404)
+    })
   })
 })
