@@ -1,6 +1,5 @@
 import { CheckCategoryById } from '@/domain/usecases'
 import { HttpResponse, Middleware } from '@/presentation/protocols'
-import { InvalidParamError } from '@/presentation/errors'
 import { noContent, notFound, serverError } from '@/presentation/helper'
 
 export class CheckCategoryByIdMiddleware implements Middleware {
@@ -13,7 +12,7 @@ export class CheckCategoryByIdMiddleware implements Middleware {
       const { id } = request
       const isValid = await this.checkCategoryById.checkById(id)
       if (!isValid) {
-        return notFound(new InvalidParamError('id'))
+        return notFound()
       }
       return noContent()
     } catch (error) {

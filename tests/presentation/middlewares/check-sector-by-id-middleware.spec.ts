@@ -1,6 +1,5 @@
 import { CheckSectorByIdMiddleware } from '@/presentation/middlewares'
 import { CheckSectorByIdSpy } from '@/tests/domain/mocks'
-import { InvalidParamError } from '@/presentation/errors'
 import { noContent, notFound, serverError } from '@/presentation/helper'
 
 import faker from 'faker'
@@ -35,7 +34,7 @@ describe('CheckSectorByIdMiddleware', () => {
     const { sut, checkSectorByIdSpy } = makeSut()
     checkSectorByIdSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(notFound(new InvalidParamError('id')))
+    expect(httpResponse).toEqual(notFound())
   })
 
   test('Should return 204 if CheckSectorById return true', async () => {

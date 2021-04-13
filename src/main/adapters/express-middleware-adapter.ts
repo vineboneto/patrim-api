@@ -12,8 +12,10 @@ export const adaptMiddleware = (middleware: Middleware) => {
     const httpResponse = await middleware.handle(request)
     if (httpResponse.statusCode === 204) {
       next()
+    } else if (httpResponse.statusCode === 404) {
+      res.status(404).send()
     } else {
-      res.status(httpResponse.statusCode).json({ error: httpResponse.body.message })
+      res.status(httpResponse.statusCode).json({ error: httpResponse.body?.message })
     }
   }
 }
