@@ -5,13 +5,13 @@ import {
   makeLoadSectorsController,
   makeUpdateSectorController
 } from '@/main/factories/controllers'
-import { auth } from '@/main/middlewares'
+import { auth, checkSectorId } from '@/main/middlewares'
 
 import { Router } from 'express'
 
 export default (router: Router): void => {
   router.post('/sectors', auth, adaptRoute(makeAddSectorController()))
-  router.put('/sectors/:id', auth, adaptRoute(makeUpdateSectorController()))
+  router.put('/sectors/:id', auth, checkSectorId, adaptRoute(makeUpdateSectorController()))
   router.get('/sectors', auth, adaptRoute(makeLoadSectorsController()))
-  router.delete('/sectors/:id', auth, adaptRoute(makeDeleteSectorController()))
+  router.delete('/sectors/:id', auth, checkSectorId, adaptRoute(makeDeleteSectorController()))
 }

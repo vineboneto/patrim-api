@@ -65,15 +65,19 @@ export class SectorPostgresRepository implements
 
   async checkById (id: string): Promise<CheckSectorByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const sectorWithOnlyId = await prismaClient.sector.findFirst({
-      where: {
-        id: Number(id)
-      },
-      select: {
-        id: true
-      }
-    })
-    return sectorWithOnlyId !== null
+    const sectorId = Number(id)
+    if (sectorId) {
+      const sectorWithOnlyId = await prismaClient.sector.findFirst({
+        where: {
+          id: Number(id)
+        },
+        select: {
+          id: true
+        }
+      })
+      return sectorWithOnlyId !== null
+    }
+    return false
   }
 
   async loadAll (): Promise<LoadSectorsRepository.Model> {

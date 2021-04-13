@@ -68,6 +68,17 @@ describe('Sector Routes', () => {
         })
         .expect(204)
     })
+
+    test('Should return 404 on update sector with invalid id', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await request(app)
+        .put(`/api/sectors/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(404)
+    })
   })
 
   describe('GET /sectors', () => {
@@ -105,6 +116,17 @@ describe('Sector Routes', () => {
         .delete(`/api/sectors/${newSector.id}`)
         .set('x-access-token', accessToken)
         .expect(200)
+    })
+
+    test('Should return 404 on update sector with invalid id', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await request(app)
+        .delete(`/api/sectors/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(404)
     })
   })
 })
