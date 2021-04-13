@@ -1,5 +1,7 @@
 import { CheckCategoryById } from '@/domain/usecases'
 import { HttpResponse, Middleware } from '@/presentation/protocols'
+import { InvalidParamError } from '@/presentation/errors'
+import { notFound } from '@/presentation/helper'
 
 export class CheckCategoryByIdMiddleware implements Middleware {
   constructor (
@@ -8,7 +10,10 @@ export class CheckCategoryByIdMiddleware implements Middleware {
 
   async handle (request: CheckCategoryByIdMiddleware.Request): Promise<HttpResponse> {
     const { id } = request
-    await this.checkCategoryById.checkById(id)
+    const isValid = await this.checkCategoryById.checkById(id)
+    if (!isValid) {
+      return notFound(new InvalidParamError('id'))
+    }
     return null
   }
 }
