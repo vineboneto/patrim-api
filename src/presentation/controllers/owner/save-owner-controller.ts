@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest } from '@/presentation/helper'
 import { SaveOwner } from '@/domain/usecases'
+import { InvalidParamError } from '@/presentation/errors'
 
 export class SaveOwnerController implements Controller {
   constructor (
@@ -13,7 +14,10 @@ export class SaveOwnerController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    await this.saveOwner.save(request)
+    const owner = await this.saveOwner.save(request)
+    if (!owner) {
+      return badRequest(new InvalidParamError('sectorId'))
+    }
     return null
   }
 }
