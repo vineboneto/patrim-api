@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, ok } from '@/presentation/helper'
 import { SaveOwner } from '@/domain/usecases'
 import { InvalidParamError } from '@/presentation/errors'
 
@@ -18,7 +18,7 @@ export class SaveOwnerController implements Controller {
     if (!owner) {
       return badRequest(new InvalidParamError('sectorId'))
     }
-    return null
+    return ok(owner)
   }
 }
 
