@@ -1,4 +1,6 @@
 import { SaveOwnerController } from '@/presentation/controllers'
+import { MissingParamError } from '@/presentation/errors'
+import { badRequest } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -29,5 +31,12 @@ describe('SaveOwnerController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return 400 if Validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new MissingParamError('name')
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
   })
 })
