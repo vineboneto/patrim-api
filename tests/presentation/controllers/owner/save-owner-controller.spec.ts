@@ -1,6 +1,6 @@
 import { SaveOwnerController } from '@/presentation/controllers'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest, ok } from '@/presentation/helper'
+import { badRequest, ok, serverError } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SaveOwnerSpy } from '@/tests/domain/mocks'
 
@@ -62,5 +62,12 @@ describe('SaveOwnerController', () => {
     const { sut, saveOwnerSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(saveOwnerSpy.model))
+  })
+
+  test('Should return 500 if SaveCategory throws', async () => {
+    const { sut, saveOwnerSpy } = makeSut()
+    jest.spyOn(saveOwnerSpy, 'save').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
