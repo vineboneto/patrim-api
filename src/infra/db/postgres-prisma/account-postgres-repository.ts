@@ -40,15 +40,19 @@ export class AccountPostgresRepository implements
 
   async checkById (id: string): Promise<CheckAccountByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const accountWithOnlyId = await prismaClient.user.findFirst({
-      where: {
-        id: id ? Number(id) : undefined
-      },
-      select: {
-        id: true
-      }
-    })
-    return accountWithOnlyId !== null
+    const accountId = Number(id)
+    if (accountId) {
+      const accountWithOnlyId = await prismaClient.user.findFirst({
+        where: {
+          id: accountId
+        },
+        select: {
+          id: true
+        }
+      })
+      return accountWithOnlyId !== null
+    }
+    return false
   }
 
   async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Model> {

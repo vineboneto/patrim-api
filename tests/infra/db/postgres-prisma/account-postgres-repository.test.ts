@@ -61,6 +61,12 @@ describe('AccountPostgresRepository', () => {
       const result = await sut.checkById(faker.datatype.number().toString())
       expect(result).toBe(false)
     })
+
+    test('Should return false if account id is not number', async () => {
+      const sut = makeSut()
+      const result = await sut.checkById(faker.random.word())
+      expect(result).toBe(false)
+    })
   })
 
   describe('loadByEmail', () => {
