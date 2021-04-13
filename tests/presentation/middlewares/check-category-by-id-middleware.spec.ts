@@ -1,7 +1,7 @@
 import { CheckCategoryByIdMiddleware } from '@/presentation/middlewares'
 import { CheckCategoryByIdSpy } from '@/tests/domain/mocks'
 import { InvalidParamError } from '@/presentation/errors'
-import { notFound } from '@/presentation/helper'
+import { notFound, ok, serverError } from '@/presentation/helper'
 
 import faker from 'faker'
 
@@ -36,5 +36,20 @@ describe('CheckCategoryByIdMiddleware', () => {
     checkCategoryByIdSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(notFound(new InvalidParamError('id')))
+  })
+
+  test('Should return 200 if CheckCategoryById return true', async () => {
+    const { sut } = makeSut()
+    const { id } = mockRequest()
+    const httpResponse = await sut.handle({ id })
+    expect(httpResponse).toEqual(ok({ id }))
+  })
+
+  test('Should throws if CheckCategoryById throws', async () => {
+    const { sut, checkCategoryByIdSpy } = makeSut()
+    const error = new Error()
+    jest.spyOn(checkCategoryByIdSpy, 'checkById').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
   })
 })
