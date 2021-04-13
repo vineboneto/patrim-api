@@ -2,6 +2,7 @@ import { SaveOwnerController } from '@/presentation/controllers'
 import { MissingParamError } from '@/presentation/errors'
 import { badRequest } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
+import { SaveOwnerSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -14,14 +15,17 @@ const mockRequest = (): SaveOwnerController.Request => ({
 type SutTypes = {
   sut: SaveOwnerController
   validationSpy: ValidationSpy
+  saveOwnerSpy: SaveOwnerSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new SaveOwnerController(validationSpy)
+  const saveOwnerSpy = new SaveOwnerSpy()
+  const sut = new SaveOwnerController(validationSpy, saveOwnerSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    saveOwnerSpy
   }
 }
 
@@ -38,5 +42,12 @@ describe('SaveOwnerController', () => {
     validationSpy.result = new MissingParamError('name')
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
+  })
+
+  test('Should call SaveOwner with correct value', async () => {
+    const { sut, saveOwnerSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(saveOwnerSpy.params).toEqual(request)
   })
 })
