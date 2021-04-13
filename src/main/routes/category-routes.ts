@@ -1,4 +1,4 @@
-import { auth } from '@/main/middlewares'
+import { auth, checkCategoryId } from '@/main/middlewares'
 import { adaptRoute } from '@/main/adapters'
 import {
   makeAddCategoryController,
@@ -11,7 +11,7 @@ import { Router } from 'express'
 
 export default (router: Router): void => {
   router.post('/categories', auth, adaptRoute(makeAddCategoryController()))
-  router.put('/categories/:id', auth, adaptRoute(makeUpdateCategoryController()))
+  router.put('/categories/:id', auth, checkCategoryId, adaptRoute(makeUpdateCategoryController()))
   router.get('/categories', auth, adaptRoute(makeLoadCategoriesController()))
-  router.delete('/categories/:id', auth, adaptRoute(makeDeleteCategoryController()))
+  router.delete('/categories/:id', auth, checkCategoryId, adaptRoute(makeDeleteCategoryController()))
 }

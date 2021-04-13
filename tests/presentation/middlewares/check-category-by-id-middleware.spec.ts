@@ -1,7 +1,7 @@
 import { CheckCategoryByIdMiddleware } from '@/presentation/middlewares'
 import { CheckCategoryByIdSpy } from '@/tests/domain/mocks'
 import { InvalidParamError } from '@/presentation/errors'
-import { notFound, ok, serverError } from '@/presentation/helper'
+import { noContent, notFound, serverError } from '@/presentation/helper'
 
 import faker from 'faker'
 
@@ -38,11 +38,11 @@ describe('CheckCategoryByIdMiddleware', () => {
     expect(httpResponse).toEqual(notFound(new InvalidParamError('id')))
   })
 
-  test('Should return 200 if CheckCategoryById return true', async () => {
+  test('Should return 204 if CheckCategoryById return true', async () => {
     const { sut } = makeSut()
     const { id } = mockRequest()
     const httpResponse = await sut.handle({ id })
-    expect(httpResponse).toEqual(ok({ id }))
+    expect(httpResponse).toEqual(noContent())
   })
 
   test('Should throws if CheckCategoryById throws', async () => {
