@@ -1,17 +1,17 @@
-import { AddSectorController } from '@/presentation/controllers'
-import { badRequest, noContent, serverError, forbidden } from '@/presentation/helper/http-helper'
+import { SaveSectorController } from '@/presentation/controllers'
+import { badRequest, noContent, serverError, unprocessableEntity } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SaveSectorSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-const mockRequest = (): AddSectorController.Request => ({
+const mockRequest = (): SaveSectorController.Request => ({
   name: faker.name.jobArea()
 })
 
 type SutTypes = {
-  sut: AddSectorController
+  sut: SaveSectorController
   addSectorSpy: SaveSectorSpy
   validationSpy: ValidationSpy
 }
@@ -19,7 +19,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const addSectorSpy = new SaveSectorSpy()
-  const sut = new AddSectorController(addSectorSpy, validationSpy)
+  const sut = new SaveSectorController(addSectorSpy, validationSpy)
   return {
     sut,
     addSectorSpy,
@@ -27,7 +27,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('AddSectorController', () => {
+describe('SaveSectorController', () => {
   test('Should call Validation with correct value', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()
@@ -49,12 +49,12 @@ describe('AddSectorController', () => {
     expect(addSectorSpy.params).toEqual(request)
   })
 
-  test('Should return 403 if SaveSector return false', async () => {
+  test('Should return 422 if SaveSector return false', async () => {
     const { sut, addSectorSpy } = makeSut()
     addSectorSpy.result = false
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
-    expect(httpResponse).toEqual(forbidden(new AlreadyExistsError(request.name)))
+    expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.name)))
   })
 
   test('Should return 500 if SaveSector throws', async () => {
