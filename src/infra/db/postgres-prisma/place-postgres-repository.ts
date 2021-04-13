@@ -44,7 +44,7 @@ export class PlacePostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const placeWithOnlyId = await prismaClient.place.findFirst({
       where: {
-        id: id ? Number(id) : undefined
+        id: Number(id)
       },
       select: {
         id: true
@@ -69,7 +69,7 @@ export class PlacePostgresRepository implements
   async loadAll (): Promise<LoadPlacesRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const places = await prismaClient.place.findMany()
-    return places.map((place) => place ? this.convertIdToString(place) : null)
+    return places.map((place) => this.convertIdToString(place))
   }
 
   private convertIdToString (entity: any): any {

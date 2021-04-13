@@ -32,7 +32,7 @@ export class OwnerPostgresRepository implements AddOwnerRepository, UpdateOwnerR
   private convertIdToString (entity: any): any {
     return {
       ...entity,
-      sectorId: entity.sectorId ? entity.sectorId.toString() : null,
+      sectorId: entity.sectorId.toString(),
       id: entity.id.toString()
     }
   }

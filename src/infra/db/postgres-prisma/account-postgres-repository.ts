@@ -93,11 +93,9 @@ export class AccountPostgresRepository implements
   }
 
   private convertIdToString (entity: any): any {
-    if (entity.id) {
-      return {
-        ...entity,
-        id: entity.id.toString()
-      }
+    return {
+      ...entity,
+      id: entity.id.toString()
     }
   }
 }
