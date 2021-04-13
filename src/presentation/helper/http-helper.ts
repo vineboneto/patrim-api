@@ -21,6 +21,11 @@ export const notFound = (error: Error): HttpResponse => ({
   statusCode: 404
 })
 
+export const unprocessableEntity = (error: Error): HttpResponse => ({
+  body: error,
+  statusCode: 422
+})
+
 export const serverError = (error: Error): HttpResponse => ({
   body: new ServerError(error.stack),
   statusCode: 500

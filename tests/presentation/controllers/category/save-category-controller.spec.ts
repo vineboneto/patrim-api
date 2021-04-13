@@ -1,5 +1,5 @@
-import { AddCategoryController } from '@/presentation/controllers/'
-import { badRequest, forbidden, noContent, serverError } from '@/presentation/helper'
+import { SaveCategoryController } from '@/presentation/controllers/'
+import { badRequest, noContent, serverError, unprocessableEntity } from '@/presentation/helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SaveCategorySpy } from '@/tests/domain/mocks'
@@ -9,13 +9,13 @@ import faker from 'faker'
 type SutTypes = {
   saveCategorySpy: SaveCategorySpy
   validationSpy: ValidationSpy
-  sut: AddCategoryController
+  sut: SaveCategoryController
 }
 
 const makeSut = (): SutTypes => {
   const saveCategorySpy = new SaveCategorySpy()
   const validationSpy = new ValidationSpy()
-  const sut = new AddCategoryController(saveCategorySpy, validationSpy)
+  const sut = new SaveCategoryController(saveCategorySpy, validationSpy)
   return {
     saveCategorySpy,
     validationSpy,
@@ -45,12 +45,12 @@ describe('SaveCategoryController', async () => {
     expect(saveCategorySpy.params).toEqual(request)
   })
 
-  test('Should return AlreadyExists if SaveCategory return false', async () => {
+  test('Should return 422 if SaveCategory return false', async () => {
     const { sut, saveCategorySpy } = makeSut()
     saveCategorySpy.result = false
     const param = { name: faker.name.jobArea() }
     const exists = await sut.handle(param)
-    expect(exists).toEqual(forbidden(new AlreadyExistsError(param.name)))
+    expect(exists).toEqual(unprocessableEntity(new AlreadyExistsError(param.name)))
   })
 
   test('Should return 500 if SaveCategory throws', async () => {
