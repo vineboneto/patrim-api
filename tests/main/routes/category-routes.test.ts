@@ -57,7 +57,7 @@ describe('Category Routes', () => {
   })
 
   describe('PUT /categories', () => {
-    test('Should return 204 on save category', async () => {
+    test('Should return 204 on update category', async () => {
       const accessToken = await makeAccessToken(prismaClient)
       const { id } = await makeCategory()
       await request(app)
@@ -67,6 +67,17 @@ describe('Category Routes', () => {
           name: 'new_value'
         })
         .expect(204)
+    })
+
+    test('Should return 404 on update category with invalid id', async () => {
+      const accessToken = await makeAccessToken(prismaClient)
+      await request(app)
+        .put(`/api/categories/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(404)
     })
   })
 
