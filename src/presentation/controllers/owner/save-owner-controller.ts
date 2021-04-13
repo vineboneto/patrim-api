@@ -1,4 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest } from '@/presentation/helper'
 
 export class SaveOwnerController implements Controller {
   constructor (
@@ -6,7 +7,10 @@ export class SaveOwnerController implements Controller {
   ) {}
 
   async handle (request: SaveOwnerController.Request): Promise<HttpResponse> {
-    this.validation.validate(request)
+    const error = this.validation.validate(request)
+    if (error) {
+      return badRequest(error)
+    }
     return null
   }
 }
