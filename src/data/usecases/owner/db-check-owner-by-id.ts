@@ -3,10 +3,10 @@ import { CheckOwnerByIdRepository } from '@/data/protocols'
 
 export class DbCheckOwnerById implements CheckOwnerById {
   constructor (
-    private readonly checkOwnerByIdRepositorySpy: CheckOwnerByIdRepository
+    private readonly checkOwnerByIdRepository: CheckOwnerByIdRepository
   ) {}
 
   async checkById (id: string): Promise<CheckOwnerById.Result> {
-    return this.checkOwnerByIdRepositorySpy.checkById(id)
+    return this.checkOwnerByIdRepository.checkById(id)
   }
 }

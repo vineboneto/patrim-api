@@ -3,10 +3,10 @@ import { CheckSectorByIdRepository } from '@/data/protocols'
 
 export class DbCheckSectorById implements CheckSectorById {
   constructor (
-    private readonly checkSectorByIdRepositorySpy: CheckSectorByIdRepository
+    private readonly checkSectorByIdRepository: CheckSectorByIdRepository
   ) {}
 
   async checkById (id: string): Promise<CheckSectorById.Result> {
-    return this.checkSectorByIdRepositorySpy.checkById(id)
+    return this.checkSectorByIdRepository.checkById(id)
   }
 }
