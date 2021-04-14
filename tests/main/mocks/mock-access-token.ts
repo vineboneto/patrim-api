@@ -12,7 +12,8 @@ export const makeAccessToken = async (prismaClient: PrismaClient): Promise<strin
     data: {
       name,
       email,
-      password
+      password,
+      role: 'admin'
     }
   })
   const accessToken = sign({ id: id.toString() }, env.jwtSecret)

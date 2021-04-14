@@ -1,4 +1,4 @@
-import { auth, checkCategoryId as checkId } from '@/main/middlewares'
+import { auth, adminAuth, checkCategoryId as checkId } from '@/main/middlewares'
 import { adaptRoute } from '@/main/adapters'
 import {
   makeSaveCategoryController,
@@ -12,5 +12,5 @@ export default (router: Router): void => {
   router.post('/categories', auth, adaptRoute(makeSaveCategoryController()))
   router.put('/categories/:id', auth, checkId, adaptRoute(makeSaveCategoryController()))
   router.get('/categories', auth, adaptRoute(makeLoadCategoriesController()))
-  router.delete('/categories/:id', auth, checkId, adaptRoute(makeDeleteCategoryController()))
+  router.delete('/categories/:id', adminAuth, checkId, adaptRoute(makeDeleteCategoryController()))
 }
