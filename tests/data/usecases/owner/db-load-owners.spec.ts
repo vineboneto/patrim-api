@@ -35,4 +35,11 @@ describe('DbLoadOwners', () => {
     const data = await sut.load(mockLoadOwnersParams())
     expect(data).toEqual(loadOwnersRepositorySpy.ownersModel)
   })
+
+  test('Should throw if LoadOwnersRepository throws', async () => {
+    const { sut, loadOwnersRepositorySpy } = makeSut()
+    jest.spyOn(loadOwnersRepositorySpy, 'loadAll').mockRejectedValueOnce(new Error())
+    const promise = sut.load(mockLoadOwnersParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
