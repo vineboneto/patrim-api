@@ -52,10 +52,10 @@ export class CheckOwnerByIdRepositorySpy implements CheckOwnerByIdRepository {
 }
 
 export class LoadOwnersRepositorySpy implements LoadOwnersRepository {
-  sectorModels = mockOwnersModel()
+  ownersModel = mockOwnersModel()
   params: LoadOwnersRepository.Params
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     this.params = params
-    return this.sectorModels
+    return this.ownersModel
   }
 }

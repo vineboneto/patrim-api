@@ -22,4 +22,11 @@ describe('DbLoadOwners', () => {
     await sut.load(params)
     expect(loadOwnersRepositorySpy.params).toEqual(params)
   })
+
+  test('Should return empty array if LoadOwnersRepository returns empty array', async () => {
+    const { sut, loadOwnersRepositorySpy } = makeSut()
+    loadOwnersRepositorySpy.ownersModel = []
+    const data = await sut.load(mockLoadOwnersParams())
+    expect(data).toEqual([])
+  })
 })
