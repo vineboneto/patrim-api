@@ -1,4 +1,4 @@
-import { AddOwnerRepository, UpdateOwnerRepository } from '@/data/protocols'
+import { AddOwnerRepository, CheckOwnerByIdRepository, UpdateOwnerRepository } from '@/data/protocols'
 import { mockOwnerModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -29,5 +29,14 @@ export class UpdateOwnerRepositorySpy implements UpdateOwnerRepository {
   async update (owner: UpdateOwnerRepository.Params): Promise<UpdateOwnerRepository.Model> {
     this.params = owner
     return this.model
+  }
+}
+
+export class CheckOwnerByIdRepositorySpy implements CheckOwnerByIdRepository {
+  result = true
+  id = faker.datatype.number().toString()
+  async checkById (id: string): Promise<CheckOwnerByIdRepository.Result> {
+    this.id = id
+    return this.result
   }
 }

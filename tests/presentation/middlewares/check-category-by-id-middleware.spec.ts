@@ -4,7 +4,7 @@ import { noContent, notFound, serverError } from '@/presentation/helper'
 
 import faker from 'faker'
 
-const mockRequest = (): CheckCategoryByIdMiddleware.Request => ({
+const mockRequest = (): CheckCategoryByIdMiddleware.Params => ({
   id: faker.datatype.number().toString()
 })
 

@@ -53,4 +53,27 @@ describe('OwnerPostgresRepository', () => {
       expect(ownerUpdated.name).toBe('new_name')
     })
   })
+
+  describe('checkById()', () => {
+    test('Should return owner on success', async () => {
+      const sut = makeSut()
+      const name = faker.name.findName()
+      const { id: sectorId } = await Helper.makeSector()
+      const { id } = await Helper.makeOwner({ name, sectorId })
+      const result = await sut.checkById(id)
+      expect(result).toBe(true)
+    })
+
+    test('Should return false if owner not exists', async () => {
+      const sut = makeSut()
+      const result = await sut.checkById(faker.datatype.number())
+      expect(result).toBe(false)
+    })
+
+    test('Should return false if owner id is not number', async () => {
+      const sut = makeSut()
+      const result = await sut.checkById(faker.random.word())
+      expect(result).toBe(false)
+    })
+  })
 })

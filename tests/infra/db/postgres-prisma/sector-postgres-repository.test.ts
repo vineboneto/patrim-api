@@ -94,7 +94,7 @@ describe('SectorPostgresRepository', () => {
       expect(result).toBe(false)
     })
 
-    test('Should return false if category id is not number', async () => {
+    test('Should return false if sector id is not number', async () => {
       const sut = makeSut()
       const result = await sut.checkById(faker.random.word())
       expect(result).toBe(false)

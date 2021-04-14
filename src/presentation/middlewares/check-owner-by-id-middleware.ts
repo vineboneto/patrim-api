@@ -1,16 +1,16 @@
-import { CheckCategoryById } from '@/domain/usecases'
+import { CheckOwnerById } from '@/domain/usecases'
 import { HttpResponse, Middleware } from '@/presentation/protocols'
 import { noContent, notFound, serverError } from '@/presentation/helper'
 
-export class CheckCategoryByIdMiddleware implements Middleware {
+export class CheckOwnerByIdMiddleware implements Middleware {
   constructor (
-    private readonly checkCategoryById: CheckCategoryById
+    private readonly checkOwnerById: CheckOwnerById
   ) {}
 
-  async handle (params: CheckCategoryByIdMiddleware.Params): Promise<HttpResponse> {
+  async handle (params: CheckOwnerByIdMiddleware.Params): Promise<HttpResponse> {
     try {
       const { id } = params
-      const isValid = await this.checkCategoryById.checkById(id)
+      const isValid = await this.checkOwnerById.checkById(id)
       if (!isValid) {
         return notFound()
       }
@@ -21,7 +21,7 @@ export class CheckCategoryByIdMiddleware implements Middleware {
   }
 }
 
-export namespace CheckCategoryByIdMiddleware {
+export namespace CheckOwnerByIdMiddleware {
   export type Params = {
     id: string
   }

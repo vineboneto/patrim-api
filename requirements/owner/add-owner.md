@@ -12,6 +12,6 @@
 
 1. [ ] Retorna erro **404** se a API não existir
 2. [ ] Retorna erro **403** se não for um admin
-3. [ ] Retorna error **400** se o sectorId não for válido
+3. [ ] Retorna error **403** se o sectorId não for válido
 4. [ ] Retorna erro **400** se name ou sectorId não forem fornecidos pelo client
 5. [ ] Retorna erro **500** se der erro ao tentar criar o proprietário
