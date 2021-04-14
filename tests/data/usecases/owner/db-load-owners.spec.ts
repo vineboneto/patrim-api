@@ -29,4 +29,10 @@ describe('DbLoadOwners', () => {
     const data = await sut.load(mockLoadOwnersParams())
     expect(data).toEqual([])
   })
+
+  test('Should return owners on success', async () => {
+    const { sut, loadOwnersRepositorySpy } = makeSut()
+    const data = await sut.load(mockLoadOwnersParams())
+    expect(data).toEqual(loadOwnersRepositorySpy.ownersModel)
+  })
 })
