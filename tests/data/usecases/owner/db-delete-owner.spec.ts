@@ -22,4 +22,11 @@ describe('DbDeleteOwner', () => {
     await sut.delete(params)
     expect(deleteOwnerRepositorySpy.params).toEqual(params)
   })
+
+  test('Should return null if DeleteOwnerRepository return null', async () => {
+    const { sut, deleteOwnerRepositorySpy } = makeSut()
+    deleteOwnerRepositorySpy.model = null
+    const data = await sut.delete(mockDeleteOwnerParams())
+    expect(data).toBe(null)
+  })
 })
