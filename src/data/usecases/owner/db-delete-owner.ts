@@ -7,7 +7,6 @@ export class DbDeleteOwner implements DeleteOwner {
   ) {}
 
   async delete (params: DeleteOwner.Params): Promise<DeleteOwner.Model> {
-    await this.deleteOwnerRepository.delete(params)
-    return null
+    return this.deleteOwnerRepository.delete(params)
   }
 }
