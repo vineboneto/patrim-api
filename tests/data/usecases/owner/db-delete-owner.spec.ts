@@ -29,4 +29,10 @@ describe('DbDeleteOwner', () => {
     const data = await sut.delete(mockDeleteOwnerParams())
     expect(data).toBe(null)
   })
+
+  test('Should return owner deleted on success', async () => {
+    const { sut, deleteOwnerRepositorySpy } = makeSut()
+    const data = await sut.delete(mockDeleteOwnerParams())
+    expect(data).toEqual(deleteOwnerRepositorySpy.model)
+  })
 })
