@@ -1,9 +1,10 @@
-import { ValidationSpy } from '@/tests/presentation/mocks'
+import { badRequest } from '@/presentation/helper'
 import { LoadOwnersController } from '@/presentation/controllers'
+import { InvalidParamError } from '@/presentation/errors'
+import { ValidationSpy } from '@/tests/presentation/mocks'
+import { LoadOwnersSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
-import { badRequest } from '@/presentation/helper'
-import { InvalidParamError } from '@/presentation/errors'
 
 const mockRequest = (): LoadOwnersController.Request => ({
   take: faker.datatype.number().toString(),
@@ -13,14 +14,17 @@ const mockRequest = (): LoadOwnersController.Request => ({
 type SutTypes = {
   sut: LoadOwnersController
   validationSpy: ValidationSpy
+  loadOwnersSpy: LoadOwnersSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new LoadOwnersController(validationSpy)
+  const loadOwnersSpy = new LoadOwnersSpy()
+  const sut = new LoadOwnersController(validationSpy, loadOwnersSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    loadOwnersSpy
   }
 }
 
@@ -37,5 +41,15 @@ describe('LoadOwnersController', () => {
     validationSpy.result = new InvalidParamError('take')
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new InvalidParamError('take')))
+  })
+
+  test('Should call LoadOwners with correct values', async () => {
+    const { sut, loadOwnersSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(loadOwnersSpy.params).toEqual({
+      skip: Number(request.skip),
+      take: Number(request.take)
+    })
   })
 })
