@@ -1,14 +1,16 @@
-import { makeDeleteSectorValidation } from '@/main/factories/controllers'
-import { ValidationComposite, RequiredFieldValidation } from '@/validation/validators'
+import { makeLoadOwnersValidation } from '@/main/factories/controllers'
+import { ValidationComposite, CheckFieldIsNumberValidation } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
 
 jest.mock('@/validation/validators/validation-composite')
 
 describe('DeleteSectorValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
-    makeDeleteSectorValidation()
+    makeLoadOwnersValidation()
     const validations: Validation[] = []
-    validations.push(new RequiredFieldValidation('id'))
+    for (const query of ['take', 'skip']) {
+      validations.push(new CheckFieldIsNumberValidation(query))
+    }
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })

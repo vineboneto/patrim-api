@@ -4,6 +4,7 @@ import { AddOwnerRepository } from '@/data/protocols'
 import { mockAddCategoryParams, mockAddSectorParams } from '@/tests/data/mocks'
 
 import { Category, Owner, Sector, User } from '@prisma/client'
+import faker from 'faker'
 
 export const makeUser = async (user = mockAddAccountParams()): Promise<User> => {
   const prismaClient = PrismaHelper.getConnection()
@@ -70,4 +71,24 @@ export const findUserById = async (id: number): Promise<User> => {
       id
     }
   })
+}
+
+export const makeManyOwners = async (): Promise<Owner[]> => {
+  const prismaClient = PrismaHelper.getConnection()
+  const { id: sectorId } = await makeSector()
+  const owner = {
+    name: faker.name.findName(),
+    sectorId
+  }
+  await prismaClient.owner.createMany({
+    data: [
+      owner,
+      owner,
+      owner,
+      owner,
+      owner,
+      owner
+    ]
+  })
+  return prismaClient.owner.findMany()
 }
