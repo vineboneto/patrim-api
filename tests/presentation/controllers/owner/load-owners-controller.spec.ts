@@ -1,4 +1,4 @@
-import { badRequest, noContent } from '@/presentation/helper'
+import { badRequest, noContent, ok } from '@/presentation/helper'
 import { LoadOwnersController } from '@/presentation/controllers'
 import { InvalidParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
@@ -58,5 +58,11 @@ describe('LoadOwnersController', () => {
     loadOwnersSpy.ownersModel = []
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
+  })
+
+  test('Should return 200 if LoadOwners return owners', async () => {
+    const { sut, loadOwnersSpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(loadOwnersSpy.ownersModel))
   })
 })
