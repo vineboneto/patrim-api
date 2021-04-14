@@ -1,4 +1,4 @@
-import { badRequest, noContent, ok } from '@/presentation/helper'
+import { badRequest, noContent, ok, serverError } from '@/presentation/helper'
 import { LoadOwnersController } from '@/presentation/controllers'
 import { InvalidParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
@@ -64,5 +64,12 @@ describe('LoadOwnersController', () => {
     const { sut, loadOwnersSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(loadOwnersSpy.ownersModel))
+  })
+
+  test('Should throws if LoadOwners throws', async () => {
+    const { sut, loadOwnersSpy } = makeSut()
+    jest.spyOn(loadOwnersSpy, 'load').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
