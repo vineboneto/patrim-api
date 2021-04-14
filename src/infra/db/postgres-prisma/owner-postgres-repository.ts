@@ -55,17 +55,15 @@ export class OwnerPostgresRepository implements
     return false
   }
 
-  async loadAll (params?: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
+  async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    if (params) {
-      const { skip, take } = params
-      if (Number(skip) || Number(take)) {
-        return await prismaClient.owner.findMany({
-          skip,
-          take
-        })
-      }
+    const { skip, take } = params
+    if (isNaN(skip) && isNaN(take)) {
+      return await prismaClient.owner.findMany()
     }
-    return await prismaClient.owner.findMany()
+    return await prismaClient.owner.findMany({
+      skip,
+      take
+    })
   }
 }

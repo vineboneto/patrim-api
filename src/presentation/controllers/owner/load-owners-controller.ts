@@ -10,11 +10,11 @@ export class LoadOwnersController implements Controller {
 
   async handle (request: LoadOwnersController.Request): Promise<HttpResponse> {
     try {
-      const { take, skip } = request
-      const error = this.validation.validate({ take, skip })
+      const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
+      const { take, skip } = request
       const owners = await this.loadOwner.load({ skip: Number(skip), take: Number(take) })
       return owners.length ? ok(owners) : noContent()
     } catch (error) {

@@ -16,6 +16,8 @@ describe('OwnerPostgresRepository', () => {
   afterAll(async () => {
     await prismaClient.$executeRaw('DELETE FROM "Owner";')
     await prismaClient.$executeRaw('ALTER SEQUENCE "Owner_id_seq" RESTART WITH 1;')
+    await prismaClient.$executeRaw('DELETE FROM "Sector";')
+    await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
     PrismaHelper.disconnect()
   })
 
@@ -80,7 +82,7 @@ describe('OwnerPostgresRepository', () => {
     test('Should return owners all owner if take and skip is undefined', async () => {
       const sut = makeSut()
       const owners = await Helper.makeManyOwners()
-      const dataResponse = await sut.loadAll()
+      const dataResponse = await sut.loadAll({ skip: Number('adfavzv'), take: Number('adfasdf') })
       expect(dataResponse).toEqual(owners)
       expect(dataResponse.length).toBe(6)
     })
@@ -94,7 +96,7 @@ describe('OwnerPostgresRepository', () => {
       expect(dataResponse[2]).toEqual(owners[2])
       expect(dataResponse[3]).toBe(undefined)
       expect(dataResponse.length).toBe(3)
-      const dataResponse2 = await sut.loadAll({ skip: 3, take: 6 })
+      const dataResponse2 = await sut.loadAll({ skip: 3, take: 3 })
       expect(dataResponse2[0]).toEqual(owners[3])
       expect(dataResponse2[1]).toEqual(owners[4])
       expect(dataResponse2[2]).toEqual(owners[5])
@@ -104,7 +106,7 @@ describe('OwnerPostgresRepository', () => {
 
     test('Should return empty array if loadOwner is empty', async () => {
       const sut = makeSut()
-      const dataResponse = await sut.loadAll()
+      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
       expect(dataResponse).toEqual([])
     })
   })
