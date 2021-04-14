@@ -7,7 +7,6 @@ export class DbLoadOwners implements LoadOwners {
   ) {}
 
   async load (params: LoadOwners.Params): Promise<LoadOwners.Model> {
-    await this.loadOwnersRepository.loadAll(params)
-    return null
+    return this.loadOwnersRepository.loadAll(params)
   }
 }
