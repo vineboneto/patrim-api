@@ -1,6 +1,6 @@
 import { SignUpController } from '@/presentation/controllers'
 import { EmailInUseError, MissingParamError, ServerError } from '@/presentation/errors'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { AddAccountSpy, AuthenticationSpy } from '@/tests/domain/mocks'
 
@@ -58,11 +58,11 @@ describe('SignUpController', () => {
     expect(addAccountSpy.params).toEqual(request)
   })
 
-  test('Should return 403 if AddAccount returns false', async () => {
+  test('Should return 422 if AddAccount returns false', async () => {
     const { sut, addAccountSpy } = makeSut()
     addAccountSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
+    expect(httpResponse).toEqual(unprocessableEntity(new EmailInUseError()))
   })
 
   test('Should returns 500 if AddAccount throws', async () => {

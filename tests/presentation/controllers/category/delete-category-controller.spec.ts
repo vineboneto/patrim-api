@@ -1,5 +1,5 @@
 import { DeleteCategoryController } from '@/presentation/controllers'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, ok, serverError } from '@/presentation/helper'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { DeleteCategorySpy } from '@/tests/domain/mocks'
@@ -49,11 +49,11 @@ describe('DeleteCategoryController', () => {
     expect(httpResponse).toEqual(badRequest(validationSpy.result))
   })
 
-  test('Should return 403 if DeleteCategory return null', async () => {
+  test('Should return 404 if DeleteCategory return null', async () => {
     const { sut, deleteCategorySpy } = makeSut()
     deleteCategorySpy.model = null
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('id')))
   })
 
   test('Should return 200 with categoryDeleted if DeleteCategory succeeds', async () => {
