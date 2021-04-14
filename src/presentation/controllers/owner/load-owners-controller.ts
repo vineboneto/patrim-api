@@ -1,5 +1,5 @@
 import { LoadOwners } from '@/domain/usecases'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, noContent } from '@/presentation/helper'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class LoadOwnersController implements Controller {
@@ -14,8 +14,8 @@ export class LoadOwnersController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    await this.loadOwner.load({ skip: Number(skip), take: Number(take) })
-    return null
+    const owners = await this.loadOwner.load({ skip: Number(skip), take: Number(take) })
+    return owners.length ? null : noContent()
   }
 }
 
