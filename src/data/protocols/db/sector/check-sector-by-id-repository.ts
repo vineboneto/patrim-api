@@ -1,5 +1,5 @@
 export interface CheckSectorByIdRepository {
-  checkById (id: string): Promise<CheckSectorByIdRepository.Result>
+  checkById (id: string | number): Promise<CheckSectorByIdRepository.Result>
 }
 
 export namespace CheckSectorByIdRepository {

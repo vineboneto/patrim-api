@@ -38,7 +38,7 @@ describe('CategoryPostgresRepository', () => {
       const sut = makeSut()
       const { id } = await Helper.makeCategory()
       const result = await sut.update({
-        id: id.toString(),
+        id: id,
         name: 'new_name'
       })
       const { name } = await Helper.findCategoryById(id)
@@ -84,13 +84,13 @@ describe('CategoryPostgresRepository', () => {
     test('Should return category on success', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeCategory()
-      const result = await sut.checkById(id.toString())
+      const result = await sut.checkById(id)
       expect(result).toBe(true)
     })
 
     test('Should return false if category not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number().toString())
+      const result = await sut.checkById(faker.datatype.number())
       expect(result).toBe(false)
     })
 
@@ -105,9 +105,9 @@ describe('CategoryPostgresRepository', () => {
     test('Should return category on delete success', async () => {
       const sut = makeSut()
       const { id, name } = await Helper.makeCategory()
-      const categoryDeleted = await sut.delete(id.toString())
+      const categoryDeleted = await sut.delete(id)
       const searchCategoryDeleted = await Helper.findCategoryById(id)
-      expect(categoryDeleted).toEqual({ id: id.toString(), name })
+      expect(categoryDeleted).toEqual({ id: id, name })
       expect(searchCategoryDeleted).toBeFalsy()
     })
   })

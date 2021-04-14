@@ -38,7 +38,7 @@ export class AccountPostgresRepository implements
     return account !== null
   }
 
-  async checkById (id: string): Promise<CheckAccountByIdRepository.Result> {
+  async checkById (id: string | number): Promise<CheckAccountByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
     const accountId = Number(id)
     if (accountId) {
@@ -67,7 +67,7 @@ export class AccountPostgresRepository implements
         password: true
       }
     })
-    return account ? this.convertIdToString(account) : null
+    return account
   }
 
   async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Model> {
@@ -81,10 +81,10 @@ export class AccountPostgresRepository implements
         id: true
       }
     })
-    return account ? this.convertIdToString(account) : null
+    return account
   }
 
-  async updateAccessToken (id: string, token: string): Promise<void> {
+  async updateAccessToken (id: string | number, token: string): Promise<void> {
     const prismaClient = PrismaHelper.getConnection()
     await prismaClient.user.update({
       where: {
@@ -94,12 +94,5 @@ export class AccountPostgresRepository implements
         accessToken: token
       }
     })
-  }
-
-  private convertIdToString (entity: any): any {
-    return {
-      ...entity,
-      id: entity.id.toString()
-    }
   }
 }

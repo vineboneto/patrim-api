@@ -4,7 +4,7 @@ export interface SaveCategory {
 
 export namespace SaveCategory {
   export type Params = {
-    id?: string
+    id?: string | number
     name: string
   }
 

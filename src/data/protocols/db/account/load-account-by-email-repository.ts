@@ -4,7 +4,7 @@ export interface LoadAccountByEmailRepository {
 
 export namespace LoadAccountByEmailRepository {
   export type Model = {
-    id: string
+    id: string | number
     name: string
     password: string
   }

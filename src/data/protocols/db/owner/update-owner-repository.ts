@@ -6,9 +6,9 @@ export interface UpdateOwnerRepository {
 
 export namespace UpdateOwnerRepository {
   export type Params = {
-    id: string
+    id: string | number
     name: string
-    sectorId: string
+    sectorId: string | number
   }
   export type Model = SaveOwner.Model
 }

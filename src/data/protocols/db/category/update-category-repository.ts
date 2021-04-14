@@ -4,7 +4,7 @@ export interface UpdateCategoryRepository {
 
 export namespace UpdateCategoryRepository {
   export type Params = {
-    id: string
+    id: string | number
     name: string
   }
   export type Result = boolean

@@ -1,5 +1,5 @@
 export interface CheckCategoryById {
-  checkById (id: string): Promise<CheckCategoryById.Result>
+  checkById (id: string | number): Promise<CheckCategoryById.Result>
 }
 
 export namespace CheckCategoryById {

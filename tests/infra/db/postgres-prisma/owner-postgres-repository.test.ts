@@ -30,11 +30,11 @@ describe('OwnerPostgresRepository', () => {
       const sut = makeSut()
       const { id: sectorId } = await Helper.makeSector()
       const name = faker.name.findName()
-      const owner = await sut.add({ name, sectorId: sectorId.toString() })
+      const owner = await sut.add({ name, sectorId: sectorId })
       expect(owner).toBeTruthy()
       expect(owner.id).toBeTruthy()
       expect(owner.name).toBe(name)
-      expect(owner.sectorId).toBe(sectorId.toString())
+      expect(owner.sectorId).toBe(sectorId)
     })
   })
 
@@ -43,11 +43,11 @@ describe('OwnerPostgresRepository', () => {
       const sut = makeSut()
       const { id: sectorId } = await Helper.makeSector()
       const name = faker.name.findName()
-      const { id } = await Helper.makeOwner({ name, sectorId: sectorId.toString() })
+      const { id } = await Helper.makeOwner({ name, sectorId: sectorId })
       const ownerUpdated = await sut.update({
-        id: id.toString(),
+        id: id,
         name: 'new_name',
-        sectorId: sectorId.toString()
+        sectorId
       })
       expect(ownerUpdated).toBeTruthy()
       expect(ownerUpdated.name).toBe('new_name')

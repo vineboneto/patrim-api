@@ -40,14 +40,14 @@ export class CategoryPostgresRepository implements
     return categoryResult !== null
   }
 
-  async delete (id: string): Promise<DeleteCategoryRepository.Model> {
+  async delete (id: string | number): Promise<DeleteCategoryRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const categoryDeleted = await prismaClient.category.delete({
       where: {
         id: Number(id)
       }
     })
-    return this.convertIdToString(categoryDeleted)
+    return categoryDeleted
   }
 
   async checkByName (name: string): Promise<boolean> {
@@ -63,10 +63,10 @@ export class CategoryPostgresRepository implements
   async loadAll (): Promise<LoadCategoriesRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const categories = await prismaClient.category.findMany()
-    return categories.map(category => this.convertIdToString(category))
+    return categories
   }
 
-  async checkById (id: string): Promise<CheckCategoryByIdRepository.Result> {
+  async checkById (id: string | number): Promise<CheckCategoryByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
     const categoryId = Number(id)
     if (categoryId) {
@@ -81,12 +81,5 @@ export class CategoryPostgresRepository implements
       return categoryWithOnlyId !== null
     }
     return false
-  }
-
-  private convertIdToString (entity: any): any {
-    return {
-      ...entity,
-      id: entity.id.toString()
-    }
   }
 }

@@ -4,14 +4,14 @@ export interface SaveOwner {
 
 export namespace SaveOwner {
   export type Params = {
-    id?: string
+    id?: string | number
     name: string
     sectorId: string
   }
 
   export type Model = {
-    id: string
+    id: string | number
     name: string
-    sectorId: string
+    sectorId: string | number
   }
 }

@@ -52,13 +52,13 @@ describe('AccountPostgresRepository', () => {
     test('Should return category on success', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeUser()
-      const result = await sut.checkById(id.toString())
+      const result = await sut.checkById(id)
       expect(result).toBe(true)
     })
 
     test('Should return false if category not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number().toString())
+      const result = await sut.checkById(faker.datatype.number())
       expect(result).toBe(false)
     })
 
@@ -92,7 +92,7 @@ describe('AccountPostgresRepository', () => {
       const sut = makeSut()
       const { id } = await Helper.makeUser()
       const token = faker.datatype.uuid()
-      await sut.updateAccessToken(id.toString(), token)
+      await sut.updateAccessToken(id, token)
       const accountWithAccessTokenUpdated = await Helper.findUserById(id)
       expect(accountWithAccessTokenUpdated.accessToken).toBe(token)
     })

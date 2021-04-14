@@ -11,7 +11,7 @@ export class OwnerPostgresRepository implements AddOwnerRepository, UpdateOwnerR
         sectorId: Number(sectorId)
       }
     })
-    return this.convertIdToString(ownerModel)
+    return ownerModel
   }
 
   async update (owner: UpdateOwnerRepository.Params): Promise<UpdateOwnerRepository.Model> {
@@ -26,14 +26,6 @@ export class OwnerPostgresRepository implements AddOwnerRepository, UpdateOwnerR
         sectorId: Number(sectorId)
       }
     })
-    return this.convertIdToString(ownerModel)
-  }
-
-  private convertIdToString (entity: any): any {
-    return {
-      ...entity,
-      sectorId: entity.sectorId.toString(),
-      id: entity.id.toString()
-    }
+    return ownerModel
   }
 }
