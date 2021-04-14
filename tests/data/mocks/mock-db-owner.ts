@@ -1,6 +1,7 @@
 import {
   AddOwnerRepository,
   CheckOwnerByIdRepository,
+  DeleteOwnerRepository,
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
@@ -22,6 +23,10 @@ export const mockUpdateOwnerParams = (): UpdateOwnerRepository.Params => ({
 export const mockLoadOwnersParams = (): LoadOwnersRepository.Params => ({
   skip: faker.datatype.number(),
   take: faker.datatype.number()
+})
+
+export const mockDeleteOwnerParams = (): DeleteOwnerRepository.Params => ({
+  id: faker.datatype.number()
 })
 
 export class AddOwnerRepositorySpy implements AddOwnerRepository {
@@ -57,5 +62,14 @@ export class LoadOwnersRepositorySpy implements LoadOwnersRepository {
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     this.params = params
     return this.ownersModel
+  }
+}
+
+export class DeleteOwnerRepositorySpy implements DeleteOwnerRepository {
+  model = mockOwnerModel()
+  params: DeleteOwnerRepository.Params
+  async delete (params: DeleteOwnerRepository.Params): Promise<DeleteOwnerRepository.Model> {
+    this.params = params
+    return this.model
   }
 }
