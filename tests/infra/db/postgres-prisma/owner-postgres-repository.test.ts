@@ -1,13 +1,31 @@
 import { OwnerPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { PrismaClient } from '@prisma/client'
-
+import { Owner, PrismaClient } from '@prisma/client'
 import faker from 'faker'
 
 const makeSut = (): OwnerPostgresRepository => new OwnerPostgresRepository()
 
 let prismaClient: PrismaClient
+
+export const makeManyOwners = async (): Promise<Owner[]> => {
+  const { id: sectorId } = await Helper.makeSector()
+  const owner = {
+    name: faker.name.findName(),
+    sectorId
+  }
+  await prismaClient.owner.createMany({
+    data: [
+      owner,
+      owner,
+      owner,
+      owner,
+      owner,
+      owner
+    ]
+  })
+  return prismaClient.owner.findMany()
+}
 
 describe('OwnerPostgresRepository', () => {
   beforeAll(() => {
@@ -74,6 +92,16 @@ describe('OwnerPostgresRepository', () => {
       const sut = makeSut()
       const result = await sut.checkById(faker.random.word())
       expect(result).toBe(false)
+    })
+  })
+
+  describe('loadAll()', () => {
+    test('Should return owners all owner if take and skip is undefined', async () => {
+      const sut = makeSut()
+      const owners = await makeManyOwners()
+      const dataResponse = await sut.loadAll()
+      expect(dataResponse).toEqual(owners)
+      expect(dataResponse.length).toBe(6)
     })
   })
 })

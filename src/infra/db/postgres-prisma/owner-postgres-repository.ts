@@ -1,7 +1,16 @@
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
-import { AddOwnerRepository, CheckOwnerByIdRepository, UpdateOwnerRepository } from '@/data/protocols'
+import {
+  AddOwnerRepository,
+  CheckOwnerByIdRepository,
+  LoadOwnersRepository,
+  UpdateOwnerRepository
+} from '@/data/protocols'
 
-export class OwnerPostgresRepository implements AddOwnerRepository, UpdateOwnerRepository, CheckOwnerByIdRepository {
+export class OwnerPostgresRepository implements
+  AddOwnerRepository,
+  UpdateOwnerRepository,
+  CheckOwnerByIdRepository,
+  LoadOwnersRepository {
   async add (owner: AddOwnerRepository.Params): Promise<AddOwnerRepository.Model> {
     const { name, sectorId } = owner
     const prismaClient = PrismaHelper.getConnection()
@@ -44,5 +53,17 @@ export class OwnerPostgresRepository implements AddOwnerRepository, UpdateOwnerR
       return ownerWithOnlyId !== null
     }
     return false
+  }
+
+  async loadAll (params?: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    if (params) {
+      const { skip, take } = params
+      return await prismaClient.owner.findMany({
+        skip,
+        take
+      })
+    }
+    return await prismaClient.owner.findMany()
   }
 }

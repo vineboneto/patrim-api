@@ -6,8 +6,8 @@ export interface LoadOwners {
 
 export namespace LoadOwners {
   export type Params = {
-    skip: number
-    take: number
+    skip?: number
+    take?: number
   }
 
   export type Model = OwnerModel[]

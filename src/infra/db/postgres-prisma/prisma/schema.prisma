@@ -10,8 +10,8 @@ datasource db {
 model Owner {
   id           Int    @id @default(autoincrement())
   name         String
-  Sector       Sector?    @relation(fields: [sectorId], references: [id])
-  sectorId     Int?
+  Sector       Sector    @relation(fields: [sectorId], references: [id])
+  sectorId     Int
 }
 
 model Sector {
