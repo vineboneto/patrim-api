@@ -59,10 +59,12 @@ export class OwnerPostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     if (params) {
       const { skip, take } = params
-      return await prismaClient.owner.findMany({
-        skip,
-        take
-      })
+      if (Number(skip) || Number(take)) {
+        return await prismaClient.owner.findMany({
+          skip,
+          take
+        })
+      }
     }
     return await prismaClient.owner.findMany()
   }

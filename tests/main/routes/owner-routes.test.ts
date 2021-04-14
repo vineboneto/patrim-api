@@ -83,5 +83,33 @@ describe('Owner Routes', () => {
         })
         .expect(404)
     })
+
+    describe('GET /owners', () => {
+      test('Should return 200 on load owners', async () => {
+        const accessToken = await makeAccessToken(prismaClient)
+        await Helper.makeManyOwners()
+        await request(app)
+          .get('/api/owners')
+          .set('x-access-token', accessToken)
+          .expect(200)
+      })
+
+      test('Should return 200 on load owners', async () => {
+        const accessToken = await makeAccessToken(prismaClient)
+        await Helper.makeManyOwners()
+        await request(app)
+          .get('/api/owners?take=5&skip=3')
+          .set('x-access-token', accessToken)
+          .expect(200)
+      })
+
+      test('Should return 204 on load owner return empty array', async () => {
+        const accessToken = await makeAccessToken(prismaClient)
+        await request(app)
+          .get('/api/owners')
+          .set('x-access-token', accessToken)
+          .expect(204)
+      })
+    })
   })
 })
