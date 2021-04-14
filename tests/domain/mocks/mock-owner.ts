@@ -1,11 +1,19 @@
-import faker from 'faker'
 import { CheckOwnerById, SaveOwner } from '@/domain/usecases'
+import { OwnerModel } from '@/domain/models'
 
-export const mockOwnerModel = (): SaveOwner.Model => ({
+import faker from 'faker'
+
+export const mockOwnerModel = (): OwnerModel => ({
   id: faker.datatype.number().toString(),
   name: faker.name.findName(),
   sectorId: faker.datatype.number().toString()
 })
+
+export const mockOwnersModel = (): OwnerModel[] => ([
+  mockOwnerModel(),
+  mockOwnerModel(),
+  mockOwnerModel()
+])
 
 export class SaveOwnerSpy implements SaveOwner {
   params: SaveOwner.Params
