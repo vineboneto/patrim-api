@@ -1,6 +1,6 @@
 import { SaveOwnerController } from '@/presentation/controllers'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SaveOwnerSpy } from '@/tests/domain/mocks'
 
@@ -51,11 +51,11 @@ describe('SaveOwnerController', () => {
     expect(saveOwnerSpy.params).toEqual(request)
   })
 
-  test('Should return 400 if SaveOwner returns null', async () => {
+  test('Should return 403 if SaveOwner returns null', async () => {
     const { sut, saveOwnerSpy } = makeSut()
     saveOwnerSpy.model = null
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(badRequest(new InvalidParamError('sectorId')))
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('sectorId')))
   })
 
   test('Should return 200 on success', async () => {

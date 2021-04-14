@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { SaveOwner } from '@/domain/usecases'
 import { InvalidParamError } from '@/presentation/errors'
 
@@ -17,7 +17,7 @@ export class SaveOwnerController implements Controller {
       }
       const owner = await this.saveOwner.save(request)
       if (!owner) {
-        return badRequest(new InvalidParamError('sectorId'))
+        return forbidden(new InvalidParamError('sectorId'))
       }
       return ok(owner)
     } catch (error) {

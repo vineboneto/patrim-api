@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { InvalidParamError } from '@/presentation/errors'
 import { DeleteCategory } from '@/domain/usecases'
 
@@ -16,7 +16,7 @@ export class DeleteCategoryController implements Controller {
         return badRequest(error)
       }
       const categoryDeleted = await this.deleteCategory.delete({ id: request.id })
-      return categoryDeleted ? ok(categoryDeleted) : badRequest(new InvalidParamError('id'))
+      return categoryDeleted ? ok(categoryDeleted) : forbidden(new InvalidParamError('id'))
     } catch (error) {
       return serverError(error)
     }
