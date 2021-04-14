@@ -10,13 +10,13 @@ import faker from 'faker'
 
 export const mockAddOwnerParams = (): AddOwnerRepository.Params => ({
   name: faker.name.findName(),
-  sectorId: faker.datatype.number().toString()
+  sectorId: faker.datatype.number()
 })
 
 export const mockUpdateOwnerParams = (): UpdateOwnerRepository.Params => ({
   id: faker.datatype.number().toString(),
   name: faker.name.findName(),
-  sectorId: faker.datatype.number().toString()
+  sectorId: faker.datatype.number()
 })
 
 export const mockLoadOwnersParams = (): LoadOwnersRepository.Params => ({
