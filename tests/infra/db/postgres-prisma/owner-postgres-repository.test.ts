@@ -120,5 +120,11 @@ describe('OwnerPostgresRepository', () => {
       expect(dataResponse2[3]).toEqual(undefined)
       expect(dataResponse2.length).toBe(3)
     })
+
+    test('Should return empty array if loadOwner is empty', async () => {
+      const sut = makeSut()
+      const dataResponse = await sut.loadAll()
+      expect(dataResponse).toEqual([])
+    })
   })
 })
