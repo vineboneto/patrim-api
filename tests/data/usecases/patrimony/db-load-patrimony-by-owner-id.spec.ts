@@ -27,6 +27,12 @@ describe('DbLoadPatrimonyByOwnerId', () => {
     const { sut, loadPatrimonyByOwnerIdRepositorySpy } = makeSut()
     loadPatrimonyByOwnerIdRepositorySpy.model = null
     const data = await sut.loadByOwnerId(mockLoadPatrimonyByOwnerIdRepositoryParams())
+    expect(data).toBe(null)
+  })
+
+  test('Should return patrimony on success', async () => {
+    const { sut, loadPatrimonyByOwnerIdRepositorySpy } = makeSut()
+    const data = await sut.loadByOwnerId(mockLoadPatrimonyByOwnerIdRepositoryParams())
     expect(data).toEqual(loadPatrimonyByOwnerIdRepositorySpy.model)
   })
 })
