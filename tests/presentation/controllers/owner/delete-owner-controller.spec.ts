@@ -1,5 +1,6 @@
 import { DeleteOwnerSpy } from '@/../tests/domain/mocks'
 import { DeleteOwnerController } from '@/presentation/controllers/owner'
+import { ok } from '@/presentation/helper'
 
 import faker from 'faker'
 
@@ -27,5 +28,11 @@ describe('DeleteOwnerController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(deleteOwnerSpy.params).toEqual({ id: Number(request.id) })
+  })
+
+  test('Should return 200 on delete success', async () => {
+    const { sut, deleteOwnerSpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(deleteOwnerSpy.model))
   })
 })
