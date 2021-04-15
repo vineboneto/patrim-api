@@ -56,4 +56,11 @@ describe('DbDeleteOwner', () => {
     await sut.delete(params)
     expect(checkPatrimonyByOwnerIdSpy.params).toEqual({ ownerId: params.id })
   })
+
+  test('Should return null if CheckPatrimonyByOwnerIdRepository returns false', async () => {
+    const { sut, checkPatrimonyByOwnerIdSpy } = makeSut()
+    checkPatrimonyByOwnerIdSpy.result = true
+    const data = await sut.delete(mockDeleteOwnerParams())
+    expect(data).toBe(null)
+  })
 })
