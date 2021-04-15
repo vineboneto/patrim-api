@@ -7,7 +7,6 @@ export class DbLoadPatrimonyByOwnerId implements LoadPatrimonyByOwnerId {
   ) {}
 
   async loadByOwnerId (params: LoadPatrimonyByOwnerId.Params): Promise<LoadPatrimonyByOwnerId.Model> {
-    await this.loadPatrimonyByOwnerIdRepository.loadByOwnerId(params)
-    return null
+    return this.loadPatrimonyByOwnerIdRepository.loadByOwnerId(params)
   }
 }
