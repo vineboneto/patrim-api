@@ -2,6 +2,7 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import {
   AddOwnerRepository,
   CheckOwnerByIdRepository,
+  DeleteOwnerRepository,
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
@@ -10,10 +11,11 @@ export class OwnerPostgresRepository implements
   AddOwnerRepository,
   UpdateOwnerRepository,
   CheckOwnerByIdRepository,
-  LoadOwnersRepository {
+  LoadOwnersRepository,
+  DeleteOwnerRepository {
   async add (owner: AddOwnerRepository.Params): Promise<AddOwnerRepository.Model> {
-    const { name, sectorId } = owner
     const prismaClient = PrismaHelper.getConnection()
+    const { name, sectorId } = owner
     const ownerModel = await prismaClient.owner.create({
       data: {
         name,
@@ -24,8 +26,8 @@ export class OwnerPostgresRepository implements
   }
 
   async update (owner: UpdateOwnerRepository.Params): Promise<UpdateOwnerRepository.Model> {
-    const { id, name, sectorId } = owner
     const prismaClient = PrismaHelper.getConnection()
+    const { id, name, sectorId } = owner
     const ownerModel = await prismaClient.owner.update({
       where: {
         id: Number(id)
@@ -36,6 +38,17 @@ export class OwnerPostgresRepository implements
       }
     })
     return ownerModel
+  }
+
+  async delete (params: DeleteOwnerRepository.Params): Promise<DeleteOwnerRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const { id } = params
+    const ownerDeleted = await prismaClient.owner.delete({
+      where: {
+        id: Number(id)
+      }
+    })
+    return ownerDeleted
   }
 
   async checkById (id: string | number): Promise<CheckOwnerByIdRepository.Result> {
