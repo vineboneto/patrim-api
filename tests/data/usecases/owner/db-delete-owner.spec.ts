@@ -1,17 +1,24 @@
 import { DbDeleteOwner } from '@/data/usecases'
-import { DeleteOwnerRepositorySpy, mockDeleteOwnerParams } from '@/tests/data/mocks'
+import {
+  DeleteOwnerRepositorySpy,
+  CheckPatrimonyByOwnerIdRepositorySpy,
+  mockDeleteOwnerParams
+} from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbDeleteOwner
   deleteOwnerRepositorySpy: DeleteOwnerRepositorySpy
+  checkPatrimonyByOwnerIdSpy: CheckPatrimonyByOwnerIdRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const deleteOwnerRepositorySpy = new DeleteOwnerRepositorySpy()
-  const sut = new DbDeleteOwner(deleteOwnerRepositorySpy)
+  const checkPatrimonyByOwnerIdSpy = new CheckPatrimonyByOwnerIdRepositorySpy()
+  const sut = new DbDeleteOwner(deleteOwnerRepositorySpy, checkPatrimonyByOwnerIdSpy)
   return {
     sut,
-    deleteOwnerRepositorySpy
+    deleteOwnerRepositorySpy,
+    checkPatrimonyByOwnerIdSpy
   }
 }
 
@@ -41,5 +48,12 @@ describe('DbDeleteOwner', () => {
     jest.spyOn(deleteOwnerRepositorySpy, 'delete').mockRejectedValueOnce(new Error())
     const promise = sut.delete(mockDeleteOwnerParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CheckPatrimonyByOwnerIdRepository with correct value', async () => {
+    const { sut, checkPatrimonyByOwnerIdSpy } = makeSut()
+    const params = mockDeleteOwnerParams()
+    await sut.delete(params)
+    expect(checkPatrimonyByOwnerIdSpy.params).toEqual({ ownerId: params.id })
   })
 })

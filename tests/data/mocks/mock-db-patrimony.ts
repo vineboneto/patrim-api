@@ -1,5 +1,5 @@
 import { mockLoadPatrimonyByOwnerIdModel } from '@/tests/domain/mocks'
-import { LoadPatrimonyByOwnerIdRepository } from '@/data/protocols'
+import { CheckPatrimonyByOwnerIdRepository, LoadPatrimonyByOwnerIdRepository } from '@/data/protocols'
 
 import faker from 'faker'
 
@@ -19,5 +19,16 @@ export class LoadPatrimonyByOwnerIdRepositorySpy implements LoadPatrimonyByOwner
   Promise<LoadPatrimonyByOwnerIdRepository.Model> {
     this.params = params
     return this.model
+  }
+}
+
+export class CheckPatrimonyByOwnerIdRepositorySpy implements CheckPatrimonyByOwnerIdRepository {
+  params: CheckPatrimonyByOwnerIdRepository.Params
+  result = false
+
+  async checkByOwnerId (params: CheckPatrimonyByOwnerIdRepository.Params):
+  Promise<CheckPatrimonyByOwnerIdRepository.Result> {
+    this.params = params
+    return this.result
   }
 }
