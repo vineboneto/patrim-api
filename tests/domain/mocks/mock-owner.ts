@@ -1,4 +1,4 @@
-import { CheckOwnerById, LoadOwners, SaveOwner } from '@/domain/usecases'
+import { CheckOwnerById, DeleteOwner, LoadOwners, SaveOwner } from '@/domain/usecases'
 import { OwnerModel } from '@/domain/models'
 
 import faker from 'faker'
@@ -39,5 +39,14 @@ export class LoadOwnersSpy implements LoadOwners {
   async load (params: LoadOwners.Params): Promise<LoadOwners.Model> {
     this.params = params
     return this.ownersModel
+  }
+}
+
+export class DeleteOwnerSpy implements DeleteOwner {
+  params: DeleteOwner.Params
+  model = mockOwnerModel()
+  async delete (params: DeleteOwner.Params): Promise<DeleteOwner.Model> {
+    this.params = params
+    return this.model
   }
 }
