@@ -110,4 +110,16 @@ describe('OwnerPostgresRepository', () => {
       expect(dataResponse).toEqual([])
     })
   })
+
+  describe('delete()', () => {
+    test('Should return owner on delete success', async () => {
+      const sut = makeSut()
+      const { id: sectorId } = await Helper.makeSector()
+      const { id, name } = await Helper.makeOwner({ name: faker.name.findName(), sectorId })
+      const sectorDeleted = await sut.delete({ id })
+      const searchOwnerDeleted = await Helper.findOwnerById(id)
+      expect(sectorDeleted).toEqual({ id, name, sectorId })
+      expect(searchOwnerDeleted).toBeFalsy()
+    })
+  })
 })
