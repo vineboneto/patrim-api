@@ -66,7 +66,7 @@ describe('LoadOwnersController', () => {
     expect(httpResponse).toEqual(ok(loadOwnersSpy.ownersModel))
   })
 
-  test('Should throws if LoadOwners throws', async () => {
+  test('Should return 500 if LoadOwners throws', async () => {
     const { sut, loadOwnersSpy } = makeSut()
     jest.spyOn(loadOwnersSpy, 'load').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
