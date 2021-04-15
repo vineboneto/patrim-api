@@ -1,5 +1,6 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { DeleteOwner } from '@/domain/usecases'
+import { ok } from '@/presentation/helper'
 
 export class DeleteOwnerController implements Controller {
   constructor (
@@ -7,8 +8,8 @@ export class DeleteOwnerController implements Controller {
   ) {}
 
   async handle (request: DeleteOwnerController.Request): Promise<HttpResponse> {
-    await this.deleteOwner.delete({ id: Number(request.id) })
-    return null
+    const deletedOwner = await this.deleteOwner.delete({ id: Number(request.id) })
+    return ok(deletedOwner)
   }
 }
 
