@@ -1,12 +1,10 @@
+import { mockLoadPatrimonyByOwnerIdModel } from '@/tests/domain/mocks'
 import { LoadPatrimonyByOwnerIdRepository } from '@/data/protocols'
 
 import faker from 'faker'
 
 export const mockLoadPatrimonyByOwnerIdRepositoryModel = ():
-LoadPatrimonyByOwnerIdRepository.Model => ({
-  id: faker.datatype.number(),
-  number: faker.datatype.uuid()
-})
+LoadPatrimonyByOwnerIdRepository.Model => mockLoadPatrimonyByOwnerIdModel()
 
 export const mockLoadPatrimonyByOwnerIdRepositoryParams = ():
 LoadPatrimonyByOwnerIdRepository.Params => ({
