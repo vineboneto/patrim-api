@@ -3,7 +3,7 @@ import { mockAddAccountParams } from '@/tests/domain/mocks'
 import { AddOwnerRepository } from '@/data/protocols'
 import { mockAddCategoryParams, mockAddSectorParams } from '@/tests/data/mocks'
 
-import { Category, Owner, Sector, User } from '@prisma/client'
+import { Category, Owner, Patrimony, Sector, User } from '@prisma/client'
 import faker from 'faker'
 
 export const makeUser = async (user = mockAddAccountParams()): Promise<User> => {
@@ -27,12 +27,36 @@ export const makeSector = async (sector = mockAddSectorParams()): Promise<Sector
   })
 }
 
-export const makeOwner = async (owner: AddOwnerRepository.Params): Promise<Owner> => {
+export const makeOwner = async (owner?: AddOwnerRepository.Params): Promise<Owner> => {
   const prismaClient = PrismaHelper.getConnection()
+  if (owner) {
+    return await prismaClient.owner.create({
+      data: {
+        name: owner.name,
+        sectorId: Number(owner.sectorId)
+      }
+    })
+  }
+  const { id: sectorId } = await makeSector()
   return await prismaClient.owner.create({
     data: {
-      name: owner.name,
-      sectorId: Number(owner.sectorId)
+      name: faker.name.findName(),
+      sectorId
+    }
+  })
+}
+
+export const makePatrimony = async (): Promise<Patrimony> => {
+  const prismaClient = PrismaHelper.getConnection()
+  const { id: ownerId } = await makeOwner()
+  const { id: categoryId } = await makeCategory()
+  return await prismaClient.patrimony.create({
+    data: {
+      brand: faker.random.word(),
+      description: faker.random.words(),
+      number: faker.datatype.uuid(),
+      ownerId,
+      categoryId
     }
   })
 }
