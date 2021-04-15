@@ -1,5 +1,5 @@
-import { DeleteOwnerRepository } from '@/data/protocols'
 import { DeleteOwner } from '@/domain/usecases'
+import { DeleteOwnerRepository } from '@/data/protocols'
 
 export class DbDeleteOwner implements DeleteOwner {
   constructor (
