@@ -2,11 +2,12 @@
 
 > ## Caso de sucesso
 
-1. [ ] Recebe uma requisição do tipo **GET** na rota **/api/owners/page/limit**
+1. [ ] Recebe uma requisição do tipo **GET** na rota **/api/owners?take=#&skip=#
 2. [ ] Valida se a requisição foi feita por um **usuário**
-3. [ ] Valida os parâmetros **page** e **limit**
-4. [ ] Retorna **204** se não tiver nenhum proprietário
-5. [ ] Retorna **200** com os dados dos proprietários
+3. [ ] Valida os parâmetros **take** e **skip
+4. [ ] Retorna **200** com todos os dados se skip e take não forem definidos
+5. [ ] Retorna **204** se não tiver nenhum proprietário
+6. [ ] Retorna **200** com os dados dos proprietários
 
 > ## Exceções
 

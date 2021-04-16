@@ -8,12 +8,12 @@
 4. [x] Valida se o **id** é valido
 5. [x] Valida se o setor existe
 6. [x] **Atualiza** o setor com os dados fornecidos
-7. [x] Retorna **204**, sem dados
+7. [x] Retorna **200**, com o setor
 
 > ## Exceções
 
-1. [x] Retorna erro **404** se a API não existir
-2. [x] Retorna erro **404** se a id do setor não existir
+1. [x] Retorna erro **403** se o id na rota não fora um número
+2. [x] Retorna erro **404** se o id na rota não for encontrado
 3. [x] Retorna erro **403** se não for um usuário
 4. [x] Retorna erro **422** se o name já existir
 5. [x] Retorna erro **400** se name não for fornecidos pelo client
