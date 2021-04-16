@@ -1,5 +1,6 @@
 import { adaptRoute } from '@/main/adapters'
 import {
+  makeDeleteOwnerController,
   makeLoadOwnersController,
   makeSaveOwnerController
 } from '@/main/factories/controllers'
@@ -11,4 +12,5 @@ export default (router: Router): void => {
   router.get('/owners', auth, adaptRoute(makeLoadOwnersController()))
   router.post('/owners', auth, adaptRoute(makeSaveOwnerController()))
   router.put('/owners/:id', adminAuth, checkId, adaptRoute(makeSaveOwnerController()))
+  router.delete('/owners/:id', adminAuth, checkId, adaptRoute(makeDeleteOwnerController()))
 }
