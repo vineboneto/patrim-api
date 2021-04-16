@@ -1,7 +1,10 @@
 export interface CheckAccountById {
-  checkById (id: string | number): Promise<CheckAccountById.Result>
+  checkById (params: CheckAccountById.Params): Promise<CheckAccountById.Result>
 }
 
 export namespace CheckAccountById {
+  export type Params = {
+    id: number
+  }
   export type Result = boolean
 }

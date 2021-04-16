@@ -1,5 +1,5 @@
 export type OwnerModel = {
-  id: string | number
+  id: number
   name: string
-  sectorId: string | number
+  sectorId: number
 }

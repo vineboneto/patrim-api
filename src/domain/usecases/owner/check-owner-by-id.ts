@@ -1,7 +1,10 @@
 export interface CheckOwnerById {
-  checkById (id: string | number): Promise<CheckOwnerById.Result>
+  checkById (params: CheckOwnerById.Params): Promise<CheckOwnerById.Result>
 }
 
 export namespace CheckOwnerById {
+  export type Params = {
+    id: number
+  }
   export type Result = boolean
 }

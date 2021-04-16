@@ -6,7 +6,7 @@ export interface DeleteCategory {
 
 export namespace DeleteCategory {
   export type Params = {
-    id: string | number
+    id: number
   }
 
   export type Model = CategoryModel

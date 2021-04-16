@@ -1,7 +1,10 @@
 export interface CheckSectorById {
-  checkById (id: string | number): Promise<CheckSectorById.Result>
+  checkById (params: CheckSectorById.Params): Promise<CheckSectorById.Result>
 }
 
 export namespace CheckSectorById {
+  export type Params = {
+    id: number
+  }
   export type Result = boolean
 }
