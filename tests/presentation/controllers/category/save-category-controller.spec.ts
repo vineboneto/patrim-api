@@ -1,5 +1,5 @@
 import { SaveCategoryController } from '@/presentation/controllers/'
-import { badRequest, noContent, serverError, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SaveCategorySpy } from '@/tests/domain/mocks'
@@ -51,7 +51,7 @@ describe('SaveCategoryController', () => {
 
   test('Should return 422 if SaveCategory return false', async () => {
     const { sut, saveCategorySpy } = makeSut()
-    saveCategorySpy.result = false
+    saveCategorySpy.model = null
     const param = mockRequest()
     const exists = await sut.handle(param)
     expect(exists).toEqual(unprocessableEntity(new AlreadyExistsError(param.name)))
@@ -65,8 +65,8 @@ describe('SaveCategoryController', () => {
   })
 
   test('Should return 204 on success', async () => {
-    const { sut } = makeSut()
+    const { sut, saveCategorySpy } = makeSut()
     const response = await sut.handle(mockRequest())
-    expect(response).toEqual(noContent())
+    expect(response).toEqual(ok(saveCategorySpy.model))
   })
 })

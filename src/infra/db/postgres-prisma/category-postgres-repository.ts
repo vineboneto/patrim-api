@@ -15,7 +15,7 @@ export class CategoryPostgresRepository implements
   LoadCategoriesRepository,
   CheckCategoryByIdRepository,
   DeleteCategoryRepository {
-  async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
+  async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Model> {
     const { name } = category
     const prismaClient = PrismaHelper.getConnection()
     const categoryResult = await prismaClient.category.create({
@@ -23,10 +23,10 @@ export class CategoryPostgresRepository implements
         name
       }
     })
-    return categoryResult !== null
+    return categoryResult
   }
 
-  async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result> {
+  async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Model> {
     const { id, name } = category
     const prismaClient = PrismaHelper.getConnection()
     const categoryResult = await prismaClient.category.update({
@@ -37,7 +37,7 @@ export class CategoryPostgresRepository implements
         name
       }
     })
-    return categoryResult !== null
+    return categoryResult
   }
 
   async delete (params: DeleteCategoryRepository.Params): Promise<DeleteCategoryRepository.Model> {

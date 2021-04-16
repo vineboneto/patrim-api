@@ -29,7 +29,7 @@ describe('Category Routes', () => {
         .send({
           name: faker.name.jobArea()
         })
-        .expect(204)
+        .expect(200)
     })
 
     test('Should return 403 on add category without accessToken', async () => {
@@ -52,7 +52,7 @@ describe('Category Routes', () => {
         .send({
           name: 'new_value'
         })
-        .expect(204)
+        .expect(200)
     })
 
     test('Should return 404 on update category with invalid id', async () => {

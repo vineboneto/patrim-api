@@ -1,7 +1,7 @@
 import { SaveCategory } from '@/domain/usecases'
 
 export interface UpdateCategoryRepository {
-  update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result>
+  update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Model>
 }
 
 export namespace UpdateCategoryRepository {
@@ -9,5 +9,5 @@ export namespace UpdateCategoryRepository {
     id: number
     name: string
   }
-  export type Result = SaveCategory.Result
+  export type Model = SaveCategory.Model
 }

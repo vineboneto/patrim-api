@@ -1,5 +1,7 @@
+import { CategoryModel } from '@/domain/models'
+
 export interface SaveCategory {
-  save (SaveCategory: SaveCategory.Params): Promise<SaveCategory.Result>
+  save (SaveCategory: SaveCategory.Params): Promise<SaveCategory.Model>
 }
 
 export namespace SaveCategory {
@@ -8,5 +10,5 @@ export namespace SaveCategory {
     name: string
   }
 
-  export type Result = boolean
+  export type Model = CategoryModel
 }

@@ -51,10 +51,10 @@ export class DeleteCategorySpy implements DeleteCategory {
 
 export class SaveCategorySpy implements SaveCategory {
   params: SaveCategory.Params
-  result = true
-  async save (category: SaveCategory.Params): Promise<SaveCategory.Result> {
+  model = mockCategoryModel()
+  async save (category: SaveCategory.Params): Promise<SaveCategory.Model> {
     this.params = category
-    return this.result
+    return this.model
   }
 }
 

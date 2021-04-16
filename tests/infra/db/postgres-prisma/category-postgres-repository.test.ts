@@ -23,8 +23,8 @@ describe('CategoryPostgresRepository', () => {
   describe('add()', () => {
     test('Should return true on add success', async () => {
       const sut = makeSut()
-      const result = await sut.add(mockAddCategoryRepositoryParams())
-      expect(result).toBeTruthy()
+      const model = await sut.add(mockAddCategoryRepositoryParams())
+      expect(model).toBeTruthy()
     })
   })
 
@@ -32,12 +32,12 @@ describe('CategoryPostgresRepository', () => {
     test('Should return true on update success', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeCategory()
-      const result = await sut.update({
+      const model = await sut.update({
         id: id,
         name: 'new_name'
       })
       const { name } = await Helper.findCategoryById(id)
-      expect(result).toBeTruthy()
+      expect(model).toBeTruthy()
       expect(name).toBe('new_name')
     })
   })

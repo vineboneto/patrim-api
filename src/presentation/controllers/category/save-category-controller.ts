@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, unprocessableEntity, noContent, serverError } from '@/presentation/helper/'
+import { badRequest, unprocessableEntity, serverError, ok } from '@/presentation/helper/'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { SaveCategory } from '@/domain/usecases'
 
@@ -15,11 +15,11 @@ export class SaveCategoryController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const isValid = await this.saveCategory.save(request)
-      if (!isValid) {
+      const categoryModel = await this.saveCategory.save(request)
+      if (!categoryModel) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
       }
-      return noContent()
+      return ok(categoryModel)
     } catch (error) {
       return serverError(error)
     }

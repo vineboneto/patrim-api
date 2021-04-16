@@ -32,10 +32,10 @@ export const mockUpdateCategoryRepositoryParams = (): UpdateCategoryRepository.P
 
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
   params: AddCategoryRepository.Params
-  result = true
-  async add (params: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
+  model = mockCategoryModel()
+  async add (params: AddCategoryRepository.Params): Promise<AddCategoryRepository.Model> {
     this.params = params
-    return this.result
+    return this.model
   }
 }
 
@@ -78,9 +78,9 @@ export class CheckCategoryByIdRepositorySpy implements CheckCategoryByIdReposito
 
 export class UpdateCategoryRepositorySpy implements UpdateCategoryRepository {
   params: UpdateCategoryRepository.Params
-  result = true
-  async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result> {
+  model = mockCategoryModel()
+  async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Model> {
     this.params = category
-    return this.result
+    return this.model
   }
 }
