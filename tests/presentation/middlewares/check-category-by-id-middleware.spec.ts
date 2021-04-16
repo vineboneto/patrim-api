@@ -25,9 +25,11 @@ const makeSut = (): SutTypes => {
 describe('CheckCategoryByIdMiddleware', () => {
   test('Should call CheckCategoryById with correct value', async () => {
     const { sut, checkCategoryByIdSpy } = makeSut()
-    const { id } = mockRequest()
-    await sut.handle({ id })
-    expect(checkCategoryByIdSpy.id).toBe(id)
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkCategoryByIdSpy.params).toEqual({
+      id: Number(request.id)
+    })
   })
 
   test('Should return 404 if CheckCategoryById return false', async () => {
@@ -39,8 +41,7 @@ describe('CheckCategoryByIdMiddleware', () => {
 
   test('Should return 204 if CheckCategoryById return true', async () => {
     const { sut } = makeSut()
-    const { id } = mockRequest()
-    const httpResponse = await sut.handle({ id })
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
   })
 

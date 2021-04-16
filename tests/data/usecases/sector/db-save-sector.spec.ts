@@ -2,9 +2,9 @@ import { DbSaveSector } from '@/data/usecases'
 import {
   CheckSectorByNameRepositorySpy,
   UpdateSectorRepositorySpy,
-  mockUpdateSectorParams,
-  mockAddSectorParams,
-  AddSectorRepositorySpy
+  AddSectorRepositorySpy,
+  mockUpdateSectorRepositoryParams,
+  mockAddSectorRepositoryParams
 } from '@/tests/data/mocks'
 
 type SutTypes = {
@@ -30,41 +30,34 @@ const makeSut = (): SutTypes => {
 describe('DbSaveSector', () => {
   test('Should call UpdateSectorRepository with correct value', async () => {
     const { sut, updateSectorRepositorySpy } = makeSut()
-    const sector = mockUpdateSectorParams()
-    await sut.save(sector)
-    expect(updateSectorRepositorySpy.params).toEqual(sector)
+    const params = mockUpdateSectorRepositoryParams()
+    await sut.save(params)
+    expect(updateSectorRepositorySpy.params).toEqual(params)
   })
 
   test('Should return false if UpdateSectorRepository returns false', async () => {
     const { sut, updateSectorRepositorySpy } = makeSut()
     updateSectorRepositorySpy.result = false
-    const result = await sut.save(mockUpdateSectorParams())
+    const result = await sut.save(mockUpdateSectorRepositoryParams())
     expect(result).toBe(false)
   })
 
   test('Should return true if UpdateSectorRepository return true', async () => {
     const { sut } = makeSut()
-    const isValid = await sut.save(mockUpdateSectorParams())
+    const isValid = await sut.save(mockUpdateSectorRepositoryParams())
     expect(isValid).toBe(true)
-  })
-
-  test('Should call UpdateSectorRepository if id is not undefined', async () => {
-    const { sut, updateSectorRepositorySpy, addSectorRepositorySpy } = makeSut()
-    await sut.save(mockUpdateSectorParams())
-    expect(updateSectorRepositorySpy.callsCount).toBe(1)
-    expect(addSectorRepositorySpy.callsCount).toBe(0)
   })
 
   test('Should throw if UpdateSectorRepository throws', async () => {
     const { sut, updateSectorRepositorySpy } = makeSut()
     jest.spyOn(updateSectorRepositorySpy, 'update').mockRejectedValueOnce(new Error())
-    const promise = sut.save(mockUpdateSectorParams())
+    const promise = sut.save(mockUpdateSectorRepositoryParams())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call AddSectorRepository with correct values', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
-    const sector = mockAddSectorParams()
+    const sector = mockAddSectorRepositoryParams()
     await sut.save(sector)
     expect(addSectorRepositorySpy.params).toEqual(sector)
   })
@@ -72,33 +65,26 @@ describe('DbSaveSector', () => {
   test('Should return false if AddSectorRepository returns false', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
     addSectorRepositorySpy.result = false
-    const result = await sut.save(mockAddSectorParams())
+    const result = await sut.save(mockAddSectorRepositoryParams())
     expect(result).toBe(false)
   })
 
   test('Should return true if AddSectorRepository return true', async () => {
     const { sut } = makeSut()
-    const isValid = await sut.save(mockAddSectorParams())
+    const isValid = await sut.save(mockAddSectorRepositoryParams())
     expect(isValid).toBe(true)
-  })
-
-  test('Should call AddSectorRepository if id is undefined', async () => {
-    const { sut, updateSectorRepositorySpy, addSectorRepositorySpy } = makeSut()
-    await sut.save(mockAddSectorParams())
-    expect(addSectorRepositorySpy.callsCount).toBe(1)
-    expect(updateSectorRepositorySpy.callsCount).toBe(0)
   })
 
   test('Should throw if AddSectorRepository throws', async () => {
     const { sut, addSectorRepositorySpy } = makeSut()
     jest.spyOn(addSectorRepositorySpy, 'add').mockRejectedValueOnce(new Error())
-    const promise = sut.save(mockAddSectorParams())
+    const promise = sut.save(mockAddSectorRepositoryParams())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call CheckSectorByNameRepository with correct value', async () => {
     const { sut, checkSectorByNameRepositorySpy } = makeSut()
-    const Sector = mockUpdateSectorParams()
+    const Sector = mockAddSectorRepositoryParams()
     await sut.save(Sector)
     expect(checkSectorByNameRepositorySpy.name).toEqual(Sector.name)
   })
@@ -106,14 +92,14 @@ describe('DbSaveSector', () => {
   test('Should return false if CheckSectorByNameRepository return true', async () => {
     const { sut, checkSectorByNameRepositorySpy } = makeSut()
     checkSectorByNameRepositorySpy.result = true
-    const isValid = await sut.save(mockUpdateSectorParams())
+    const isValid = await sut.save(mockAddSectorRepositoryParams())
     expect(isValid).toBeFalsy()
   })
 
   test('Should throw if CheckSectorByNameRepository throws', async () => {
     const { sut, checkSectorByNameRepositorySpy } = makeSut()
     jest.spyOn(checkSectorByNameRepositorySpy, 'checkByName').mockRejectedValueOnce(new Error())
-    const promise = sut.save(mockAddSectorParams())
+    const promise = sut.save(mockAddSectorRepositoryParams())
     await expect(promise).rejects.toThrow()
   })
 })

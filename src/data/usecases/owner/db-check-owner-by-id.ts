@@ -6,7 +6,8 @@ export class DbCheckOwnerById implements CheckOwnerById {
     private readonly checkOwnerByIdRepository: CheckOwnerByIdRepository
   ) {}
 
-  async checkById (id: string): Promise<CheckOwnerById.Result> {
-    return this.checkOwnerByIdRepository.checkById(id)
+  async checkById (params: CheckOwnerById.Params): Promise<CheckOwnerById.Result> {
+    const { id } = params
+    return this.checkOwnerByIdRepository.checkById({ id })
   }
 }

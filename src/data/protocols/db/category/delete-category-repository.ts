@@ -1,9 +1,10 @@
 import { DeleteCategory } from '@/domain/usecases'
 
 export interface DeleteCategoryRepository {
-  delete (id: string | number): Promise<DeleteCategoryRepository.Model>
+  delete (params: DeleteCategory.Params): Promise<DeleteCategoryRepository.Model>
 }
 
 export namespace DeleteCategoryRepository {
+  export type Params = DeleteCategory.Params
   export type Model = DeleteCategory.Model
 }

@@ -1,6 +1,9 @@
 import { DbDeleteCategory } from '@/data/usecases'
-import { DeleteCategoryRepositorySpy, CheckCategoryByIdRepositorySpy } from '@/tests/data/mocks'
-import { mockDeleteCategoryParams } from '@/tests/domain/mocks'
+import {
+  DeleteCategoryRepositorySpy,
+  CheckCategoryByIdRepositorySpy,
+  mockDeleteCategoryRepositoryParams
+} from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbDeleteCategory
@@ -22,42 +25,42 @@ const makeSut = (): SutTypes => {
 describe('DbDeleteCategory', () => {
   test('Should call DeleteCategoryRepository with correct value', async () => {
     const { sut, deleteCategoryRepositorySpy } = makeSut()
-    const { id } = mockDeleteCategoryParams()
-    await sut.delete({ id })
-    expect(deleteCategoryRepositorySpy.id).toBe(id)
+    const params = mockDeleteCategoryRepositoryParams()
+    await sut.delete(params)
+    expect(deleteCategoryRepositorySpy.params).toEqual(params)
   })
 
   test('Should call CheckCategoryByIdRepository with correct values', async () => {
     const { sut, checkCategoryByIdRepositorySpy } = makeSut()
-    const { id } = mockDeleteCategoryParams()
-    await sut.delete({ id })
-    expect(checkCategoryByIdRepositorySpy.id).toBe(id)
+    const params = mockDeleteCategoryRepositoryParams()
+    await sut.delete(params)
+    expect(checkCategoryByIdRepositorySpy.params).toEqual(params)
   })
 
   test('Should return null if CheckCategoryByIdRepository return false', async () => {
     const { sut, checkCategoryByIdRepositorySpy } = makeSut()
     checkCategoryByIdRepositorySpy.result = false
-    const result = await sut.delete(mockDeleteCategoryParams())
+    const result = await sut.delete(mockDeleteCategoryRepositoryParams())
     expect(result).toBeNull()
   })
 
   test('Should return category deleted on DeleteCategoryRepository succeeds', async () => {
     const { sut, deleteCategoryRepositorySpy } = makeSut()
-    const result = await sut.delete(mockDeleteCategoryParams())
+    const result = await sut.delete(mockDeleteCategoryRepositoryParams())
     expect(result).toEqual(deleteCategoryRepositorySpy.model)
   })
 
   test('Should throws if DeleteCategoryRepository throws', async () => {
     const { sut, deleteCategoryRepositorySpy } = makeSut()
     jest.spyOn(deleteCategoryRepositorySpy, 'delete').mockRejectedValueOnce(new Error())
-    const promise = sut.delete(mockDeleteCategoryParams())
+    const promise = sut.delete(mockDeleteCategoryRepositoryParams())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should throws if CheckCategoryByIdRepository throws', async () => {
     const { sut, checkCategoryByIdRepositorySpy } = makeSut()
     jest.spyOn(checkCategoryByIdRepositorySpy, 'checkById').mockRejectedValueOnce(new Error())
-    const promise = sut.delete(mockDeleteCategoryParams())
+    const promise = sut.delete(mockDeleteCategoryRepositoryParams())
     await expect(promise).rejects.toThrow()
   })
 })

@@ -5,28 +5,29 @@ import {
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
-import { mockOwnerModel, mockOwnersModel } from '@/tests/domain/mocks'
+import {
+  mockAddOwnerParams,
+  mockCheckOwnerByIdParams,
+  mockDeleteOwnerParams,
+  mockLoadOwnersParams,
+  mockOwnerModel,
+  mockOwnersModel
+} from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-export const mockAddOwnerParams = (): AddOwnerRepository.Params => ({
+export const mockAddOwnerRepositoryParams = (): AddOwnerRepository.Params => mockAddOwnerParams()
+
+export const mockCheckOwnerByIdRepositoryParams = (): CheckOwnerByIdRepository.Params => mockCheckOwnerByIdParams()
+
+export const mockDeleteOwnerRepositoryParams = (): DeleteOwnerRepository.Params => mockDeleteOwnerParams()
+
+export const mockLoadOwnersRepositoryParams = (): LoadOwnersRepository.Params => mockLoadOwnersParams()
+
+export const mockUpdateOwnerRepositoryParams = (): UpdateOwnerRepository.Params => ({
+  id: faker.datatype.number(),
   name: faker.name.findName(),
   sectorId: faker.datatype.number()
-})
-
-export const mockUpdateOwnerParams = (): UpdateOwnerRepository.Params => ({
-  id: faker.datatype.number().toString(),
-  name: faker.name.findName(),
-  sectorId: faker.datatype.number()
-})
-
-export const mockLoadOwnersParams = (): LoadOwnersRepository.Params => ({
-  skip: faker.datatype.number(),
-  take: faker.datatype.number()
-})
-
-export const mockDeleteOwnerParams = (): DeleteOwnerRepository.Params => ({
-  id: faker.datatype.number()
 })
 
 export class AddOwnerRepositorySpy implements AddOwnerRepository {
@@ -48,20 +49,20 @@ export class UpdateOwnerRepositorySpy implements UpdateOwnerRepository {
 }
 
 export class CheckOwnerByIdRepositorySpy implements CheckOwnerByIdRepository {
+  params: CheckOwnerByIdRepository.Params
   result = true
-  id = faker.datatype.number().toString()
-  async checkById (id: string): Promise<CheckOwnerByIdRepository.Result> {
-    this.id = id
+  async checkById (params: CheckOwnerByIdRepository.Params): Promise<CheckOwnerByIdRepository.Result> {
+    this.params = params
     return this.result
   }
 }
 
 export class LoadOwnersRepositorySpy implements LoadOwnersRepository {
-  ownersModel = mockOwnersModel()
+  models = mockOwnersModel()
   params: LoadOwnersRepository.Params
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     this.params = params
-    return this.ownersModel
+    return this.models
   }
 }
 

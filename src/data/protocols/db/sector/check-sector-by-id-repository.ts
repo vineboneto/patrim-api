@@ -1,7 +1,10 @@
+import { CheckSectorById } from '@/domain/usecases'
+
 export interface CheckSectorByIdRepository {
-  checkById (id: string | number): Promise<CheckSectorByIdRepository.Result>
+  checkById (params: CheckSectorByIdRepository.Params): Promise<CheckSectorByIdRepository.Result>
 }
 
 export namespace CheckSectorByIdRepository {
-  export type Result = boolean
+  export type Params = CheckSectorById.Params
+  export type Result = CheckSectorById.Result
 }

@@ -15,7 +15,10 @@ export class SaveSectorController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const isValid = await this.saveSector.save(request)
+      const isValid = await this.saveSector.save({
+        id: Number(request.id),
+        name: request.name
+      })
       if (!isValid) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
       }
@@ -28,6 +31,7 @@ export class SaveSectorController implements Controller {
 
 export namespace SaveSectorController {
   export type Request = {
+    id?: string
     name: string
   }
 }

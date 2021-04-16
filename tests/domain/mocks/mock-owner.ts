@@ -4,9 +4,9 @@ import { OwnerModel } from '@/domain/models'
 import faker from 'faker'
 
 export const mockOwnerModel = (): OwnerModel => ({
-  id: faker.datatype.number().toString(),
+  id: faker.datatype.number(),
   name: faker.name.findName(),
-  sectorId: faker.datatype.number().toString()
+  sectorId: faker.datatype.number()
 })
 
 export const mockOwnersModel = (): OwnerModel[] => ([
@@ -14,6 +14,24 @@ export const mockOwnersModel = (): OwnerModel[] => ([
   mockOwnerModel(),
   mockOwnerModel()
 ])
+
+export const mockAddOwnerParams = (): SaveOwner.Params => ({
+  name: faker.name.findName(),
+  sectorId: faker.datatype.number()
+})
+
+export const mockCheckOwnerByIdParams = (): CheckOwnerById.Params => ({
+  id: faker.datatype.number()
+})
+
+export const mockDeleteOwnerParams = (): DeleteOwner.Params => ({
+  id: faker.datatype.number()
+})
+
+export const mockLoadOwnersParams = (): LoadOwners.Params => ({
+  skip: faker.datatype.number(),
+  take: faker.datatype.number()
+})
 
 export class SaveOwnerSpy implements SaveOwner {
   params: SaveOwner.Params
@@ -25,20 +43,20 @@ export class SaveOwnerSpy implements SaveOwner {
 }
 
 export class CheckOwnerByIdSpy implements CheckOwnerById {
-  id: string
+  params: CheckOwnerById.Params
   result = true
-  async checkById (id: string): Promise<CheckOwnerById.Result> {
-    this.id = id
+  async checkById (params: CheckOwnerById.Params): Promise<CheckOwnerById.Result> {
+    this.params = params
     return this.result
   }
 }
 
 export class LoadOwnersSpy implements LoadOwners {
-  ownersModel = mockOwnersModel()
+  model = mockOwnersModel()
   params: LoadOwners.Params
   async load (params: LoadOwners.Params): Promise<LoadOwners.Model> {
     this.params = params
-    return this.ownersModel
+    return this.model
   }
 }
 

@@ -4,11 +4,13 @@ import {
   CheckAccountByEmailRepository,
   UpdateAccessTokenRepository,
   LoadAccountByTokenRepository,
-  Decrypter,
-  CheckAccountByIdRepository
+  Decrypter
 } from '@/data/protocols'
+import { mockAddAccountParams } from '@/tests/domain/mocks'
 
 import faker from 'faker'
+
+export const mockAddAccountRepositoryParams = (): AddAccountRepository.Params => mockAddAccountParams()
 
 export class AddAccountRepositorySpy implements AddAccountRepository {
   params: AddAccountRepository.Params
@@ -22,7 +24,7 @@ export class AddAccountRepositorySpy implements AddAccountRepository {
 export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailRepository {
   email: string
   account = {
-    id: faker.datatype.number(10).toString(),
+    id: faker.datatype.number(10),
     name: faker.name.findName(),
     password: faker.internet.password()
   }
@@ -44,10 +46,10 @@ export class CheckAccountByEmailRepositorySpy implements CheckAccountByEmailRepo
 }
 
 export class UpdateAccessTokenRepositorySpy implements UpdateAccessTokenRepository {
-  id: string
+  id: number
   token: string
 
-  async updateAccessToken (id: string, token: string): Promise<void> {
+  async updateAccessToken (id: number, token: string): Promise<void> {
     this.id = id
     this.token = token
     return Promise.resolve()
@@ -58,7 +60,7 @@ export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenReposi
   token: string
   role: string
   result = {
-    id: faker.datatype.number().toString()
+    id: faker.datatype.number()
   }
 
   async loadByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Model> {
@@ -76,14 +78,5 @@ export class DecrypterSpy implements Decrypter {
   async decrypt (token: string): Promise<string> {
     this.token = token
     return this.tokenDecrypted
-  }
-}
-
-export class CheckAccountByIdRepositorySpy implements CheckAccountByIdRepository {
-  result = true
-  id = faker.datatype.number().toString()
-  async checkById (id: string): Promise<CheckAccountByIdRepository.Result> {
-    this.id = id
-    return this.result
   }
 }

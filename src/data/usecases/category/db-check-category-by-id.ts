@@ -6,7 +6,8 @@ export class DbCheckCategoryById implements CheckCategoryById {
     private readonly checkCategoryByIdRepository: CheckCategoryByIdRepository
   ) {}
 
-  async checkById (id: string): Promise<CheckCategoryById.Result> {
-    return this.checkCategoryByIdRepository.checkById(id)
+  async checkById (params: CheckCategoryById.Params): Promise<CheckCategoryById.Result> {
+    const { id } = params
+    return this.checkCategoryByIdRepository.checkById({ id })
   }
 }

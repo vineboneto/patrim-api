@@ -15,7 +15,7 @@ export class SectorPostgresRepository implements
   CheckSectorByNameRepository,
   CheckSectorByIdRepository,
   LoadSectorsRepository {
-  async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
+  async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Result> {
     const { name } = sector
     const prismaClient = PrismaHelper.getConnection()
     const sectorModel = await prismaClient.sector.create({
@@ -40,11 +40,11 @@ export class SectorPostgresRepository implements
     return sectorResult !== null
   }
 
-  async delete (id: string | number): Promise<DeleteSectorRepository.Model> {
+  async delete (params: DeleteSectorRepository.Params): Promise<DeleteSectorRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const sectorDeleted = await prismaClient.sector.delete({
       where: {
-        id: Number(id)
+        id: Number(params.id)
       }
     })
     return sectorDeleted
@@ -63,13 +63,13 @@ export class SectorPostgresRepository implements
     return sector !== null
   }
 
-  async checkById (id: string | number): Promise<CheckSectorByIdRepository.Result> {
+  async checkById (params: CheckSectorByIdRepository.Params): Promise<CheckSectorByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const sectorId = Number(id)
+    const sectorId = Number(params.id)
     if (sectorId) {
       const sectorWithOnlyId = await prismaClient.sector.findFirst({
         where: {
-          id: Number(id)
+          id: Number(params.id)
         },
         select: {
           id: true

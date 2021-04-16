@@ -1,7 +1,6 @@
 import app from '@/main/config/app'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeAccessToken } from '@/tests/main/mocks'
-import { mockAddSectorsParams } from '@/tests/data/mocks'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 import { PrismaClient } from '@prisma/client'
@@ -84,9 +83,7 @@ describe('Sector Routes', () => {
 
     test('Should return all sectors', async () => {
       const accessToken = await makeAccessToken(prismaClient)
-      await prismaClient.sector.createMany({
-        data: mockAddSectorsParams()
-      })
+      await Helper.makeManySectors()
       await request(app)
         .get('/api/sectors')
         .set('x-access-token', accessToken)

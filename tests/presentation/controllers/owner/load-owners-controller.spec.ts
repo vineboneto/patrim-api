@@ -55,7 +55,7 @@ describe('LoadOwnersController', () => {
 
   test('Should return 204 if LoadOwners return empty array', async () => {
     const { sut, loadOwnersSpy } = makeSut()
-    loadOwnersSpy.ownersModel = []
+    loadOwnersSpy.model = []
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
   })
@@ -63,7 +63,7 @@ describe('LoadOwnersController', () => {
   test('Should return 200 if LoadOwners return owners', async () => {
     const { sut, loadOwnersSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(loadOwnersSpy.ownersModel))
+    expect(httpResponse).toEqual(ok(loadOwnersSpy.model))
   })
 
   test('Should return 500 if LoadOwners throws', async () => {

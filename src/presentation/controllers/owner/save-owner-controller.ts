@@ -15,7 +15,11 @@ export class SaveOwnerController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const owner = await this.saveOwner.save(request)
+      const owner = await this.saveOwner.save({
+        id: Number(request.id),
+        name: request.name,
+        sectorId: Number(request.sectorId)
+      })
       if (!owner) {
         return forbidden(new InvalidParamError('sectorId'))
       }

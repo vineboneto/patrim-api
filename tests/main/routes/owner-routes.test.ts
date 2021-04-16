@@ -3,17 +3,11 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeAccessToken } from '@/tests/main/mocks'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { PrismaClient, Owner } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import request from 'supertest'
 import faker from 'faker'
 
 let prismaClient: PrismaClient
-
-const makeOwner = async (): Promise<Owner> => {
-  const { id: sectorId } = await Helper.makeSector()
-  const owner = await Helper.makeOwner({ name: faker.name.findName(), sectorId })
-  return owner
-}
 
 describe('Owner Routes', () => {
   beforeAll(() => {
@@ -22,7 +16,9 @@ describe('Owner Routes', () => {
 
   afterAll(async () => {
     await prismaClient.$executeRaw('DELETE FROM "Owner";')
+    await prismaClient.$executeRaw('DELETE FROM "Sector";')
     await prismaClient.$executeRaw('ALTER SEQUENCE "Owner_id_seq" RESTART WITH 1;')
+    await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
     PrismaHelper.disconnect()
   })
 
@@ -60,7 +56,7 @@ describe('Owner Routes', () => {
   describe('PUT /owners', () => {
     test('Should return 204 on update owner', async () => {
       const accessToken = await makeAccessToken(prismaClient)
-      const { id, sectorId } = await makeOwner()
+      const { id, sectorId } = await Helper.makeOwner()
       await request(app)
         .put(`/api/owners/${id}`)
         .set('x-access-token', accessToken)

@@ -25,7 +25,7 @@ describe('LoadSectorsController', () => {
 
   test('Should return 204 if sectors is empty', async () => {
     const { sut, loadSectorsSpy } = makeSut()
-    loadSectorsSpy.sectorsModel = []
+    loadSectorsSpy.models = []
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(noContent())
   })
@@ -33,7 +33,7 @@ describe('LoadSectorsController', () => {
   test('Should return 200 if sectors is not empty', async () => {
     const { sut, loadSectorsSpy } = makeSut()
     const httpResponse = await sut.handle()
-    expect(httpResponse).toEqual(ok(loadSectorsSpy.sectorsModel))
+    expect(httpResponse).toEqual(ok(loadSectorsSpy.models))
   })
 
   test('Should return 500 if sectors LoadSectors throws', async () => {

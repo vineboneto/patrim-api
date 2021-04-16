@@ -51,13 +51,13 @@ export class OwnerPostgresRepository implements
     return ownerDeleted
   }
 
-  async checkById (id: string | number): Promise<CheckOwnerByIdRepository.Result> {
+  async checkById (params: CheckOwnerByIdRepository.Params): Promise<CheckOwnerByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const ownerId = Number(id)
+    const ownerId = Number(params.id)
     if (ownerId) {
       const ownerWithOnlyId = await prismaClient.owner.findFirst({
         where: {
-          id: Number(id)
+          id: Number(ownerId)
         },
         select: {
           id: true

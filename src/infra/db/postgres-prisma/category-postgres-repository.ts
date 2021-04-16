@@ -40,11 +40,11 @@ export class CategoryPostgresRepository implements
     return categoryResult !== null
   }
 
-  async delete (id: string | number): Promise<DeleteCategoryRepository.Model> {
+  async delete (params: DeleteCategoryRepository.Params): Promise<DeleteCategoryRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const categoryDeleted = await prismaClient.category.delete({
       where: {
-        id: Number(id)
+        id: Number(params.id)
       }
     })
     return categoryDeleted
@@ -66,9 +66,9 @@ export class CategoryPostgresRepository implements
     return categories
   }
 
-  async checkById (id: string | number): Promise<CheckCategoryByIdRepository.Result> {
+  async checkById (params: CheckCategoryByIdRepository.Params): Promise<CheckCategoryByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const categoryId = Number(id)
+    const categoryId = Number(params.id)
     if (categoryId) {
       const categoryWithOnlyId = await prismaClient.category.findFirst({
         where: {

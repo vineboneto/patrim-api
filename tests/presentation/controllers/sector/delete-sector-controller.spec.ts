@@ -30,9 +30,11 @@ const makeSut = (): SutTypes => {
 describe('DeleteSectorController', () => {
   test('Should call DeleteSector with correct value', async () => {
     const { sut, deleteSectorSpy } = makeSut()
-    const { id } = mockRequest()
-    await sut.handle({ id })
-    expect(deleteSectorSpy.params).toEqual({ id })
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(deleteSectorSpy.params).toEqual({
+      id: Number(request.id)
+    })
   })
 
   test('Should call Validation with correct value', async () => {

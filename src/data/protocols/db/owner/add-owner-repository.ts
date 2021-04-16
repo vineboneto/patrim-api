@@ -7,7 +7,7 @@ export interface AddOwnerRepository {
 export namespace AddOwnerRepository {
   export type Params = {
     name: string
-    sectorId: string | number
+    sectorId: number
   }
   export type Model = SaveOwner.Model
 }

@@ -6,32 +6,32 @@ import {
   CheckCategoryByIdRepository,
   UpdateCategoryRepository
 } from '@/data/protocols'
-import { mockCategoriesModel, mockCategoryModel } from '@/tests/domain/mocks'
+import {
+  mockAddCategoryParams,
+  mockCategoriesModel,
+  mockCategoryModel,
+  mockCheckCategoryByIdParams,
+  mockDeleteCategoryParams
+} from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-export const mockAddCategoryParams = (): AddCategoryRepository.Params => ({
-  name: faker.name.jobType()
-})
+export const mockAddCategoryRepositoryParams = (): AddCategoryRepository.Params => mockAddCategoryParams()
 
-export const mockAddCategoriesParams = (): AddCategoryRepository.Params[] => ([
-  mockAddCategoryParams(),
-  mockAddCategoryParams(),
-  mockAddCategoryParams()
-])
+export const mockCheckCategoryByIdRepositoryParams = (): CheckCategoryByIdRepository.Params => mockCheckCategoryByIdParams()
 
-export const mockUpdateCategoryParams = (): UpdateCategoryRepository.Params => ({
-  id: faker.datatype.number().toString(),
+export const mockDeleteCategoryRepositoryParams = (): DeleteCategoryRepository.Params => mockDeleteCategoryParams()
+
+export const mockUpdateCategoryRepositoryParams = (): UpdateCategoryRepository.Params => ({
+  id: faker.datatype.number(),
   name: faker.name.findName()
 })
 
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
-  callsCount = 0
   params: AddCategoryRepository.Params
   result = true
-  async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
-    this.callsCount++
-    this.params = category
+  async add (params: AddCategoryRepository.Params): Promise<AddCategoryRepository.Result> {
+    this.params = params
     return this.result
   }
 }
@@ -47,37 +47,35 @@ export class CheckCategoryByNameRepositorySpy implements CheckCategoryByNameRepo
 
 export class LoadCategoriesRepositorySpy implements LoadCategoriesRepository {
   callsCount = 0
-  categoryModels = mockCategoriesModel()
+  models = mockCategoriesModel()
   async loadAll (): Promise<LoadCategoriesRepository.Model> {
     this.callsCount++
-    return this.categoryModels
+    return this.models
   }
 }
 
 export class DeleteCategoryRepositorySpy implements DeleteCategoryRepository {
   model = mockCategoryModel()
-  id = faker.datatype.number().toString()
-  async delete (id: string): Promise<DeleteCategoryRepository.Model> {
-    this.id = id
+  params: DeleteCategoryRepository.Params
+  async delete (params: DeleteCategoryRepository.Params): Promise<DeleteCategoryRepository.Model> {
+    this.params = params
     return this.model
   }
 }
 
 export class CheckCategoryByIdRepositorySpy implements CheckCategoryByIdRepository {
+  params: CheckCategoryByIdRepository.Params
   result = true
-  id = faker.datatype.number().toString()
-  async checkById (id: string): Promise<CheckCategoryByIdRepository.Result> {
-    this.id = id
+  async checkById (params: CheckCategoryByIdRepository.Params): Promise<CheckCategoryByIdRepository.Result> {
+    this.params = params
     return this.result
   }
 }
 
 export class UpdateCategoryRepositorySpy implements UpdateCategoryRepository {
-  callsCount = 0
   params: UpdateCategoryRepository.Params
   result = true
   async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Result> {
-    this.callsCount++
     this.params = category
     return this.result
   }

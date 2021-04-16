@@ -1,22 +1,13 @@
 import app from '@/main/config/app'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
-import { mockAddCategoriesParams } from '@/tests/data/mocks'
 import { makeAccessToken } from '@/tests/main/mocks'
+import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { Category, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
 import request from 'supertest'
 
 let prismaClient: PrismaClient
-
-const makeCategory = async (): Promise<Category> => {
-  const newCategory = await prismaClient.category.create({
-    data: {
-      name: faker.name.jobArea()
-    }
-  })
-  return newCategory
-}
 
 describe('Category Routes', () => {
   beforeAll(() => {
@@ -59,7 +50,7 @@ describe('Category Routes', () => {
   describe('PUT /categories', () => {
     test('Should return 204 on update category', async () => {
       const accessToken = await makeAccessToken(prismaClient)
-      const { id } = await makeCategory()
+      const { id } = await Helper.makeCategory()
       await request(app)
         .put(`/api/categories/${id}`)
         .set('x-access-token', accessToken)
@@ -92,9 +83,7 @@ describe('Category Routes', () => {
 
     test('Should return all categories', async () => {
       const accessToken = await makeAccessToken(prismaClient)
-      await prismaClient.category.createMany({
-        data: mockAddCategoriesParams()
-      })
+      await Helper.makeManyCategories()
       await request(app)
         .get('/api/categories')
         .set('x-access-token', accessToken)
@@ -111,9 +100,9 @@ describe('Category Routes', () => {
   describe('DELETE /categories/:id', () => {
     test('Should return category deleted on delete success', async () => {
       const accessToken = await makeAccessToken(prismaClient)
-      const newCategory = await makeCategory()
+      const { id } = await Helper.makeCategory()
       await request(app)
-        .delete(`/api/categories/${newCategory.id}`)
+        .delete(`/api/categories/${id}`)
         .set('x-access-token', accessToken)
         .expect(200)
     })

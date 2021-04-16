@@ -4,7 +4,7 @@ import { LoadSectors, DeleteSector, SaveSector, CheckSectorById } from '@/domain
 import faker from 'faker'
 
 export const mockSectorModel = (): SectorModel => ({
-  id: faker.datatype.number().toString(),
+  id: faker.datatype.number(),
   name: faker.name.findName()
 })
 
@@ -14,16 +14,24 @@ export const mockSectorsModel = (): SectorModel[] => ([
   mockSectorModel()
 ])
 
+export const mockAddSectorParams = (): SaveSector.Params => ({
+  name: faker.name.findName()
+})
+
+export const mockCheckSectorByIdParams = (): CheckSectorById.Params => ({
+  id: faker.datatype.number()
+})
+
 export const mockDeleteSectorParams = (): DeleteSector.Params => ({
-  id: faker.datatype.number().toString()
+  id: faker.datatype.number()
 })
 
 export class LoadSectorsSpy implements LoadSectors {
-  sectorsModel = mockSectorsModel()
+  models = mockSectorsModel()
   callsCount = 0
   async load (): Promise<LoadSectors.Model> {
     this.callsCount++
-    return this.sectorsModel
+    return this.models
   }
 }
 
@@ -46,10 +54,10 @@ export class SaveSectorSpy implements SaveSector {
 }
 
 export class CheckSectorByIdSpy implements CheckSectorById {
-  id: string
+  params: CheckSectorById.Params
   result = true
-  async checkById (id: string): Promise<CheckSectorById.Result> {
-    this.id = id
+  async checkById (params: CheckSectorById.Params): Promise<CheckSectorById.Result> {
+    this.params = params
     return this.result
   }
 }

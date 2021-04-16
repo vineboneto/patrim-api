@@ -1,3 +1,3 @@
 export interface CheckSectorByNameRepository {
-  checkByName (name: string | number): Promise<boolean>
+  checkByName (name: string): Promise<boolean>
 }

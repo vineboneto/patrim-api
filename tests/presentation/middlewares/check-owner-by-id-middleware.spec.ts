@@ -25,9 +25,11 @@ const makeSut = (): SutTypes => {
 describe('CheckOwnerByIdMiddleware', () => {
   test('Should call CheckOwnerById with correct value', async () => {
     const { sut, checkOwnerByIdSpy } = makeSut()
-    const { id } = mockRequest()
-    await sut.handle({ id })
-    expect(checkOwnerByIdSpy.id).toBe(id)
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkOwnerByIdSpy.params).toEqual({
+      id: Number(request.id)
+    })
   })
 
   test('Should return 404 if CheckOwnerById return false', async () => {
@@ -39,8 +41,7 @@ describe('CheckOwnerByIdMiddleware', () => {
 
   test('Should return 204 if CheckOwnerById return true', async () => {
     const { sut } = makeSut()
-    const { id } = mockRequest()
-    const httpResponse = await sut.handle({ id })
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
   })
 

@@ -48,31 +48,10 @@ describe('AccountPostgresRepository', () => {
     })
   })
 
-  describe('checkById()', () => {
-    test('Should return category on success', async () => {
-      const sut = makeSut()
-      const { id } = await Helper.makeUser()
-      const result = await sut.checkById(id)
-      expect(result).toBe(true)
-    })
-
-    test('Should return false if category not exists', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number())
-      expect(result).toBe(false)
-    })
-
-    test('Should return false if account id is not number', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById(faker.random.word())
-      expect(result).toBe(false)
-    })
-  })
-
   describe('loadByEmail', () => {
     test('Should returns account on loadByEmail success', async () => {
       const sut = makeSut()
-      const { email } = await Helper.makeUser(mockAddAccountParams())
+      const { email } = await Helper.makeUser()
       const account = await sut.loadByEmail(email)
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()

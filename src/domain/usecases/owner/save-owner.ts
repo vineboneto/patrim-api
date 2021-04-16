@@ -6,9 +6,9 @@ export interface SaveOwner {
 
 export namespace SaveOwner {
   export type Params = {
-    id?: string | number
+    id?: number
     name: string
-    sectorId: string
+    sectorId: number
   }
 
   export type Model = OwnerModel

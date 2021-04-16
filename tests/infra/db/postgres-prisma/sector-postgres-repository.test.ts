@@ -1,5 +1,5 @@
 import { SectorPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
-import { mockAddSectorParams, mockAddSectorsParams } from '@/tests/data/mocks'
+import { mockAddSectorRepositoryParams, mockCheckSectorByIdRepositoryParams } from '@/tests/data/mocks'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 import { PrismaClient } from '@prisma/client'
@@ -28,7 +28,7 @@ describe('SectorPostgresRepository', () => {
   describe('add()', () => {
     test('Should return true on add succeeds', async () => {
       const sut = makeSut()
-      const isValid = await sut.add(mockAddSectorParams())
+      const isValid = await sut.add(mockAddSectorRepositoryParams())
       expect(isValid).toBeTruthy()
     })
   })
@@ -65,9 +65,7 @@ describe('SectorPostgresRepository', () => {
   describe('loadAll()', () => {
     test('Should returns all sectors on success', async () => {
       const sut = makeSut()
-      await prismaClient.sector.createMany({
-        data: mockAddSectorsParams()
-      })
+      await Helper.makeManySectors()
       const sectors = await sut.loadAll()
       expect(sectors).toBeTruthy()
       expect(sectors.length).toBe(3)
@@ -84,19 +82,13 @@ describe('SectorPostgresRepository', () => {
     test('Should return sector on success', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeSector()
-      const result = await sut.checkById(id)
+      const result = await sut.checkById({ id })
       expect(result).toBe(true)
     })
 
     test('Should return false if sector not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number())
-      expect(result).toBe(false)
-    })
-
-    test('Should return false if sector id is not number', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById(faker.random.word())
+      const result = await sut.checkById(mockCheckSectorByIdRepositoryParams())
       expect(result).toBe(false)
     })
   })
@@ -105,7 +97,7 @@ describe('SectorPostgresRepository', () => {
     test('Should return sector on delete success', async () => {
       const sut = makeSut()
       const { id, name } = await Helper.makeSector()
-      const sectorDeleted = await sut.delete(id)
+      const sectorDeleted = await sut.delete({ id })
       const searchSectorDeleted = await Helper.findSectorById(id)
       expect(sectorDeleted).toEqual({ id: id, name })
       expect(searchSectorDeleted).toBeFalsy()

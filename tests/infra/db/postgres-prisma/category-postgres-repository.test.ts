@@ -1,6 +1,6 @@
-import { PrismaHelper, CategoryPostgresRepository } from '@/infra/db/postgres-prisma/'
-import { mockAddCategoriesParams, mockAddCategoryParams } from '@/tests/data/mocks'
+import { PrismaHelper, CategoryPostgresRepository } from '@/infra/db/postgres-prisma'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
+import { mockAddCategoryRepositoryParams, mockCheckCategoryByIdRepositoryParams } from '@/tests/data/mocks'
 
 import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
@@ -28,7 +28,7 @@ describe('CategoryPostgresRepository', () => {
   describe('add()', () => {
     test('Should return true on add success', async () => {
       const sut = makeSut()
-      const result = await sut.add(mockAddCategoryParams())
+      const result = await sut.add(mockAddCategoryRepositoryParams())
       expect(result).toBeTruthy()
     })
   })
@@ -50,7 +50,7 @@ describe('CategoryPostgresRepository', () => {
   describe('checkByName()', () => {
     test('Should return false if category name do not exist', async () => {
       const sut = makeSut()
-      const result = await sut.checkByName(mockAddCategoryParams.name)
+      const result = await sut.checkByName(faker.name.findName())
       expect(result).toBeFalsy()
     })
 
@@ -65,9 +65,7 @@ describe('CategoryPostgresRepository', () => {
   describe('loadAll()', () => {
     test('Should return all categories on success', async () => {
       const sut = makeSut()
-      await prismaClient.category.createMany({
-        data: mockAddCategoriesParams()
-      })
+      await Helper.makeManyCategories()
       const categories = await sut.loadAll()
       expect(categories).toBeTruthy()
       expect(categories.length).toBe(3)
@@ -84,19 +82,13 @@ describe('CategoryPostgresRepository', () => {
     test('Should return category on success', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeCategory()
-      const result = await sut.checkById(id)
+      const result = await sut.checkById({ id })
       expect(result).toBe(true)
     })
 
     test('Should return false if category not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number())
-      expect(result).toBe(false)
-    })
-
-    test('Should return false if category id is not number', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById(faker.random.word())
+      const result = await sut.checkById(mockCheckCategoryByIdRepositoryParams())
       expect(result).toBe(false)
     })
   })
@@ -105,7 +97,7 @@ describe('CategoryPostgresRepository', () => {
     test('Should return category on delete success', async () => {
       const sut = makeSut()
       const { id, name } = await Helper.makeCategory()
-      const categoryDeleted = await sut.delete(id)
+      const categoryDeleted = await sut.delete({ id })
       const searchCategoryDeleted = await Helper.findCategoryById(id)
       expect(categoryDeleted).toEqual({ id: id, name })
       expect(searchCategoryDeleted).toBeFalsy()

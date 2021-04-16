@@ -1,3 +1,4 @@
+import { mockAuthenticationParams } from '@/../tests/domain/mocks'
 import { DbAuthentication } from '@/data/usecases'
 import {
   LoadAccountByEmailRepositorySpy,
@@ -5,7 +6,6 @@ import {
   EncrypterSpy,
   UpdateAccessTokenRepositorySpy
 } from '@/tests/data/mocks'
-import { mockAuthenticationParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAuthentication

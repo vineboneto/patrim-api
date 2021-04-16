@@ -25,9 +25,11 @@ const makeSut = (): SutTypes => {
 describe('CheckSectorByIdMiddleware', () => {
   test('Should call CheckSectorById with correct value', async () => {
     const { sut, checkSectorByIdSpy } = makeSut()
-    const { id } = mockRequest()
-    await sut.handle({ id })
-    expect(checkSectorByIdSpy.id).toBe(id)
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkSectorByIdSpy.params).toEqual({
+      id: Number(request.id)
+    })
   })
 
   test('Should return 404 if CheckSectorById return false', async () => {
@@ -39,8 +41,8 @@ describe('CheckSectorByIdMiddleware', () => {
 
   test('Should return 204 if CheckSectorById return true', async () => {
     const { sut } = makeSut()
-    const { id } = mockRequest()
-    const httpResponse = await sut.handle({ id })
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(noContent())
   })
 

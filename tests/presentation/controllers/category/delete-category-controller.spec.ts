@@ -30,9 +30,9 @@ const makeSut = (): SutTypes => {
 describe('DeleteCategoryController', () => {
   test('Should call DeleteCategory with correct value', async () => {
     const { sut, deleteCategorySpy } = makeSut()
-    const { id } = mockRequest()
-    await sut.handle({ id })
-    expect(deleteCategorySpy.params).toEqual({ id })
+    const params = mockRequest()
+    await sut.handle(params)
+    expect(deleteCategorySpy.params).toEqual({ id: Number(params.id) })
   })
 
   test('Should call Validation with correct value', async () => {

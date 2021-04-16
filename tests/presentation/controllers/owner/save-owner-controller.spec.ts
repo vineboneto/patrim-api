@@ -48,7 +48,11 @@ describe('SaveOwnerController', () => {
     const { sut, saveOwnerSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(saveOwnerSpy.params).toEqual(request)
+    expect(saveOwnerSpy.params).toEqual({
+      id: Number(request.id),
+      name: request.name,
+      sectorId: Number(request.sectorId)
+    })
   })
 
   test('Should return 403 if SaveOwner returns null', async () => {

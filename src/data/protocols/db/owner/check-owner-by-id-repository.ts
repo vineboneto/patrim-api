@@ -1,7 +1,10 @@
+import { CheckOwnerById } from '@/domain/usecases'
+
 export interface CheckOwnerByIdRepository {
-  checkById (id: string | number): Promise<CheckOwnerByIdRepository.Result>
+  checkById (params: CheckOwnerByIdRepository.Params): Promise<CheckOwnerByIdRepository.Result>
 }
 
 export namespace CheckOwnerByIdRepository {
-  export type Result = boolean
+  export type Params = CheckOwnerById.Params
+  export type Result = CheckOwnerById.Result
 }

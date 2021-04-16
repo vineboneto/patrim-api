@@ -42,9 +42,7 @@ describe('OwnerPostgresRepository', () => {
   describe('update()', () => {
     test('Should return owner on update success', async () => {
       const sut = makeSut()
-      const { id: sectorId } = await Helper.makeSector()
-      const name = faker.name.findName()
-      const { id } = await Helper.makeOwner({ name, sectorId: sectorId })
+      const { id, sectorId } = await Helper.makeOwner()
       const ownerUpdated = await sut.update({
         id: id,
         name: 'new_name',
@@ -58,28 +56,20 @@ describe('OwnerPostgresRepository', () => {
   describe('checkById()', () => {
     test('Should return owner on success', async () => {
       const sut = makeSut()
-      const name = faker.name.findName()
-      const { id: sectorId } = await Helper.makeSector()
-      const { id } = await Helper.makeOwner({ name, sectorId })
-      const result = await sut.checkById(id)
+      const { id } = await Helper.makeOwner()
+      const result = await sut.checkById({ id })
       expect(result).toBe(true)
     })
 
     test('Should return false if owner not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(faker.datatype.number())
-      expect(result).toBe(false)
-    })
-
-    test('Should return false if owner id is not number', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById(faker.random.word())
+      const result = await sut.checkById({ id: faker.datatype.number() })
       expect(result).toBe(false)
     })
   })
 
   describe('loadAll()', () => {
-    test('Should return owners all owner if take and skip is undefined', async () => {
+    test('Should return all owners if take and skip is NaN', async () => {
       const sut = makeSut()
       const owners = await Helper.makeManyOwners()
       const dataResponse = await sut.loadAll({ skip: Number('adfavzv'), take: Number('adfasdf') })
@@ -114,8 +104,7 @@ describe('OwnerPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return owner on delete success', async () => {
       const sut = makeSut()
-      const { id: sectorId } = await Helper.makeSector()
-      const { id, name } = await Helper.makeOwner({ name: faker.name.findName(), sectorId })
+      const { id, name, sectorId } = await Helper.makeOwner()
       const sectorDeleted = await sut.delete({ id })
       const searchOwnerDeleted = await Helper.findOwnerById(id)
       expect(sectorDeleted).toEqual({ id, name, sectorId })

@@ -10,12 +10,12 @@ export class DbSaveOwner implements SaveOwner {
 
   async save (owner: SaveOwner.Params): Promise<SaveOwner.Model> {
     const { id, name, sectorId } = owner
-    const exists = await this.checkSectorByIdRepository.checkById(sectorId)
+    const exists = await this.checkSectorByIdRepository.checkById({ id: sectorId })
     if (exists) {
       if (id) {
-        return await this.updateOwnerRepository.update({ id, name, sectorId })
+        return this.updateOwnerRepository.update({ id, name, sectorId })
       }
-      return await this.addOwnerRepository.add({ name, sectorId })
+      return this.addOwnerRepository.add({ name, sectorId })
     }
     return null
   }

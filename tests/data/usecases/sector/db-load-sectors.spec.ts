@@ -25,7 +25,7 @@ describe('DbLoadSectors', () => {
   test('Should returns sectors on LoadSectorsRepository success', async () => {
     const { sut, loadSectorsRepositorySpy } = makeSut()
     const httpResponse = await sut.load()
-    expect(httpResponse).toBe(loadSectorsRepositorySpy.sectorModels)
+    expect(httpResponse).toBe(loadSectorsRepositorySpy.models)
   })
 
   test('Should throws if LoadSectorsRepository throws', async () => {

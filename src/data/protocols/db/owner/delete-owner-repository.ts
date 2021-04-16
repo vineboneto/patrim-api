@@ -1,7 +1,7 @@
 import { DeleteOwner } from '@/domain/usecases'
 
 export interface DeleteOwnerRepository {
-  delete (params: DeleteOwner.Params): Promise<DeleteOwner.Model>
+  delete (params: DeleteOwnerRepository.Params): Promise<DeleteOwnerRepository.Model>
 }
 
 export namespace DeleteOwnerRepository {

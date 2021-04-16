@@ -1,9 +1,10 @@
 import { DeleteSector } from '@/domain/usecases'
 
 export interface DeleteSectorRepository {
-  delete (id: string | number): Promise<DeleteSectorRepository.Model>
+  delete (params: DeleteSectorRepository.Params): Promise<DeleteSectorRepository.Model>
 }
 
 export namespace DeleteSectorRepository {
+  export type Params =DeleteSector.Params
   export type Model = DeleteSector.Model
 }

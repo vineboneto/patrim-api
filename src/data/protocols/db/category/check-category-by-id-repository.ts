@@ -1,7 +1,10 @@
+import { CheckCategoryById } from '@/domain/usecases'
+
 export interface CheckCategoryByIdRepository {
-  checkById (id: string | number): Promise<CheckCategoryByIdRepository.Result>
+  checkById (params: CheckCategoryById.Params): Promise<CheckCategoryByIdRepository.Result>
 }
 
 export namespace CheckCategoryByIdRepository {
-  export type Result = boolean
+  export type Params = CheckCategoryById.Params
+  export type Result = CheckCategoryById.Result
 }
