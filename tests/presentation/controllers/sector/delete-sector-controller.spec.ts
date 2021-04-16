@@ -1,7 +1,6 @@
 import { DeleteSectorController } from '@/presentation/controllers'
-import { LinkedDataError, MissingParamError } from '@/presentation/errors'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
-import { ValidationSpy } from '@/tests/presentation/mocks'
+import { LinkedDataError } from '@/presentation/errors'
+import { forbidden, ok, serverError } from '@/presentation/helper'
 import { DeleteSectorSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -13,17 +12,14 @@ const mockRequest = (): DeleteSectorController.Request => ({
 type SutTypes = {
   sut: DeleteSectorController
   deleteSectorSpy: DeleteSectorSpy
-  validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
-  const validationSpy = new ValidationSpy()
   const deleteSectorSpy = new DeleteSectorSpy()
-  const sut = new DeleteSectorController(deleteSectorSpy, validationSpy)
+  const sut = new DeleteSectorController(deleteSectorSpy)
   return {
     sut,
-    deleteSectorSpy,
-    validationSpy
+    deleteSectorSpy
   }
 }
 
@@ -33,20 +29,6 @@ describe('DeleteSectorController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(deleteSectorSpy.params).toEqual(request)
-  })
-
-  test('Should call Validation with correct value', async () => {
-    const { sut, validationSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(validationSpy.input).toEqual(request)
-  })
-
-  test('Should return 400 Validation if validation fails', async () => {
-    const { sut, validationSpy } = makeSut()
-    validationSpy.result = new MissingParamError('id')
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(badRequest(validationSpy.result))
   })
 
   test('Should return 403 if DeleteSector return null', async () => {

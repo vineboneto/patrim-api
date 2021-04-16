@@ -1,7 +1,6 @@
 import { DeleteCategoryController } from '@/presentation/controllers'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
-import { LinkedDataError, MissingParamError } from '@/presentation/errors'
-import { ValidationSpy } from '@/tests/presentation/mocks'
+import { forbidden, ok, serverError } from '@/presentation/helper'
+import { LinkedDataError } from '@/presentation/errors'
 import { DeleteCategorySpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -13,17 +12,14 @@ const mockRequest = (): DeleteCategoryController.Request => ({
 type SutTypes = {
   sut: DeleteCategoryController
   deleteCategorySpy: DeleteCategorySpy
-  validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
-  const validationSpy = new ValidationSpy()
   const deleteCategorySpy = new DeleteCategorySpy()
-  const sut = new DeleteCategoryController(deleteCategorySpy, validationSpy)
+  const sut = new DeleteCategoryController(deleteCategorySpy)
   return {
     sut,
-    deleteCategorySpy,
-    validationSpy
+    deleteCategorySpy
   }
 }
 
@@ -33,20 +29,6 @@ describe('DeleteCategoryController', () => {
     const params = mockRequest()
     await sut.handle(params)
     expect(deleteCategorySpy.params).toEqual(params)
-  })
-
-  test('Should call Validation with correct value', async () => {
-    const { sut, validationSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(validationSpy.input).toEqual(request)
-  })
-
-  test('Should return 400 Validation if validation fails', async () => {
-    const { sut, validationSpy } = makeSut()
-    validationSpy.result = new MissingParamError('id')
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(badRequest(validationSpy.result))
   })
 
   test('Should return 403 if DeleteCategory return null', async () => {

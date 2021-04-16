@@ -1,20 +1,15 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { Controller, HttpResponse } from '@/presentation/protocols'
+import { forbidden, ok, serverError } from '@/presentation/helper'
 import { DeleteSector } from '@/domain/usecases'
 import { LinkedDataError } from '@/presentation/errors'
 
 export class DeleteSectorController implements Controller {
   constructor (
-    private readonly deleteSector: DeleteSector,
-    private readonly validation: Validation
+    private readonly deleteSector: DeleteSector
   ) {}
 
   async handle (request: DeleteSectorController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
-      }
       const sectorDeleted = await this.deleteSector.delete(request)
       if (!sectorDeleted) {
         return forbidden(new LinkedDataError('owners'))

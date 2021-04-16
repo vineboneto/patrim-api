@@ -1,7 +1,7 @@
 import { DeleteOwnerController } from '@/presentation/controllers'
 import { Controller } from '@/presentation/protocols'
-import { makeLogControllerDecorator } from '../../decorators'
-import { makeDbDeleteOwner } from '../../usecases'
+import { makeLogControllerDecorator } from '@/main/factories/decorators'
+import { makeDbDeleteOwner } from '@/main/factories/usecases'
 
 export const makeDeleteOwnerController = (): Controller => {
   const controller = new DeleteOwnerController(makeDbDeleteOwner())

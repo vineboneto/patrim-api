@@ -1,20 +1,15 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { Controller, HttpResponse } from '@/presentation/protocols'
+import { forbidden, ok, serverError } from '@/presentation/helper'
 import { LinkedDataError } from '@/presentation/errors'
 import { DeleteCategory } from '@/domain/usecases'
 
 export class DeleteCategoryController implements Controller {
   constructor (
-    private readonly deleteCategory: DeleteCategory,
-    private readonly validation: Validation
+    private readonly deleteCategory: DeleteCategory
   ) {}
 
   async handle (request: DeleteCategoryController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
-      }
       const categoryDeleted = await this.deleteCategory.delete(request)
       if (!categoryDeleted) {
         return forbidden(new LinkedDataError('categories'))

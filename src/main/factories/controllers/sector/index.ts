@@ -1,5 +1,3 @@
 export * from './save-sector-controller-factory'
-export * from './save-sector-validation-factory'
 export * from './load-sectors-controller-factory'
 export * from './delete-sector-controller-factory'
-export * from './delete-sector-validation-factory'
