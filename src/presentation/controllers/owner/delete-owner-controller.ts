@@ -1,21 +1,15 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
-import { DeleteOwner, LoadPatrimonyByOwnerId } from '@/domain/usecases'
-import { forbidden, ok, serverError } from '@/presentation/helper'
-import { LinkedDataError } from '@/presentation/errors'
+import { DeleteOwner } from '@/domain/usecases'
+import { ok, serverError } from '@/presentation/helper'
 
 export class DeleteOwnerController implements Controller {
   constructor (
-    private readonly deleteOwner: DeleteOwner,
-    private readonly loadPatrimonyByOwnerId: LoadPatrimonyByOwnerId
+    private readonly deleteOwner: DeleteOwner
   ) {}
 
   async handle (request: DeleteOwnerController.Request): Promise<HttpResponse> {
     try {
       const { id } = request
-      const existingPatrimony = await this.loadPatrimonyByOwnerId.loadByOwnerId({ ownerId: Number(id) })
-      if (existingPatrimony) {
-        return forbidden(new LinkedDataError('patrimonies'))
-      }
       const deletedOwner = await this.deleteOwner.delete({ id: Number(id) })
       return ok(deletedOwner)
     } catch (error) {
