@@ -1,6 +1,7 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { DeleteOwner } from '@/domain/usecases'
-import { ok, serverError } from '@/presentation/helper'
+import { forbidden, ok, serverError } from '@/presentation/helper'
+import { LinkedDataError } from '@/presentation/errors'
 
 export class DeleteOwnerController implements Controller {
   constructor (
@@ -11,6 +12,9 @@ export class DeleteOwnerController implements Controller {
     try {
       const { id } = request
       const deletedOwner = await this.deleteOwner.delete({ id: Number(id) })
+      if (!deletedOwner) {
+        return forbidden(new LinkedDataError('patrimonies'))
+      }
       return ok(deletedOwner)
     } catch (error) {
       return serverError(error)
