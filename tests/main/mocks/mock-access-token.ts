@@ -1,10 +1,11 @@
 import env from '@/main/config/env'
+import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
-import { PrismaClient } from '@prisma/client'
 import { sign } from 'jsonwebtoken'
 import faker from 'faker'
 
-export const makeAccessToken = async (prismaClient: PrismaClient): Promise<string> => {
+export const makeAccessToken = async (): Promise<string> => {
+  const prismaClient = PrismaHelper.getConnection()
   const name = faker.name.findName()
   const email = faker.internet.email()
   const password = faker.internet.password()

@@ -29,7 +29,7 @@ describe('Owner Routes', () => {
 
   describe('POST /owners', () => {
     test('Should return 204 on save owner', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       const { id: sectorId } = await Helper.makeSector()
       await request(app)
         .post('/api/owners')
@@ -55,7 +55,7 @@ describe('Owner Routes', () => {
 
   describe('PUT /owners', () => {
     test('Should return 204 on update owner', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       const { id, sectorId } = await Helper.makeOwner()
       await request(app)
         .put(`/api/owners/${id}`)
@@ -68,7 +68,7 @@ describe('Owner Routes', () => {
     })
 
     test('Should return 404 on update owner with invalid id', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       const { id: sectorId } = await Helper.makeSector()
       await request(app)
         .put(`/api/owners/${faker.datatype.number()}`)
@@ -82,7 +82,7 @@ describe('Owner Routes', () => {
 
     describe('GET /owners', () => {
       test('Should return 200 on load owners', async () => {
-        const accessToken = await makeAccessToken(prismaClient)
+        const accessToken = await makeAccessToken()
         await Helper.makeManyOwners()
         await request(app)
           .get('/api/owners')
@@ -91,7 +91,7 @@ describe('Owner Routes', () => {
       })
 
       test('Should return 200 on load owners', async () => {
-        const accessToken = await makeAccessToken(prismaClient)
+        const accessToken = await makeAccessToken()
         await Helper.makeManyOwners()
         await request(app)
           .get('/api/owners?take=5&skip=3')
@@ -100,7 +100,7 @@ describe('Owner Routes', () => {
       })
 
       test('Should return 204 on load owner return empty array', async () => {
-        const accessToken = await makeAccessToken(prismaClient)
+        const accessToken = await makeAccessToken()
         await request(app)
           .get('/api/owners')
           .set('x-access-token', accessToken)
@@ -111,7 +111,7 @@ describe('Owner Routes', () => {
     describe('DELETE /owners', () => {
       test('Should return owner deleted on success', async () => {
         const { id } = await Helper.makeOwner()
-        const accessToken = await makeAccessToken(prismaClient)
+        const accessToken = await makeAccessToken()
         await request(app)
           .delete(`/api/owners/${id}`)
           .set('x-access-token', accessToken)
@@ -120,7 +120,7 @@ describe('Owner Routes', () => {
 
       test('Should return 403 if patrimony exists', async () => {
         const { ownerId } = await Helper.makePatrimony()
-        const accessToken = await makeAccessToken(prismaClient)
+        const accessToken = await makeAccessToken()
         await request(app)
           .delete(`/api/owners/${ownerId}`)
           .set('x-access-token', accessToken)

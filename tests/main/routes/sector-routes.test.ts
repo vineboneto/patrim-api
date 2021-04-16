@@ -29,7 +29,7 @@ describe('Sector Routes', () => {
 
   describe('POST /sectors', () => {
     test('Should return 204 on save sector', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       await request(app)
         .post('/api/sectors')
         .set('x-access-token', accessToken)
@@ -51,7 +51,7 @@ describe('Sector Routes', () => {
 
   describe('PUT /sectors', () => {
     test('Should return 204 on save sector', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       const { id } = await Helper.makeSector()
       await request(app)
         .put(`/api/sectors/${id}`)
@@ -63,7 +63,7 @@ describe('Sector Routes', () => {
     })
 
     test('Should return 404 on update sector with invalid id', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       await request(app)
         .put(`/api/sectors/${faker.datatype.number()}`)
         .set('x-access-token', accessToken)
@@ -76,7 +76,7 @@ describe('Sector Routes', () => {
 
   describe('GET /sectors', () => {
     test('Should return empty array', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       await request(app)
         .get('/api/sectors')
         .set('x-access-token', accessToken)
@@ -84,7 +84,7 @@ describe('Sector Routes', () => {
     })
 
     test('Should return all sectors', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       await Helper.makeManySectors()
       await request(app)
         .get('/api/sectors')
@@ -101,7 +101,7 @@ describe('Sector Routes', () => {
 
   describe('DELETE /sectors/:id', () => {
     test('Should return sector deleted on delete success', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       const { id } = await Helper.makeSector()
       await request(app)
         .delete(`/api/sectors/${id}`)
@@ -110,7 +110,7 @@ describe('Sector Routes', () => {
     })
 
     test('Should return 404 on update sector with invalid id', async () => {
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       await request(app)
         .delete(`/api/sectors/${faker.datatype.number()}`)
         .set('x-access-token', accessToken)
@@ -119,7 +119,7 @@ describe('Sector Routes', () => {
 
     test('Should return 403 if owners exists', async () => {
       const { sectorId } = await Helper.makeOwner()
-      const accessToken = await makeAccessToken(prismaClient)
+      const accessToken = await makeAccessToken()
       await request(app)
         .delete(`/api/sectors/${sectorId}`)
         .set('x-access-token', accessToken)
