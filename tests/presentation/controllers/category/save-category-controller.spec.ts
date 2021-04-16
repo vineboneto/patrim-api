@@ -27,7 +27,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('SaveCategoryController', async () => {
+describe('SaveCategoryController', () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()

@@ -15,7 +15,9 @@ describe('Sector Routes', () => {
   })
 
   afterAll(async () => {
+    await prismaClient.$executeRaw('DELETE FROM "Owner";')
     await prismaClient.$executeRaw('DELETE FROM "Sector";')
+    await prismaClient.$executeRaw('ALTER SEQUENCE "Owner_id_seq" RESTART WITH 1;')
     await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
     PrismaHelper.disconnect()
   })
@@ -112,10 +114,16 @@ describe('Sector Routes', () => {
       await request(app)
         .delete(`/api/sectors/${faker.datatype.number()}`)
         .set('x-access-token', accessToken)
-        .send({
-          name: 'new_value'
-        })
         .expect(404)
+    })
+
+    test('Should return 403 if owners exists', async () => {
+      const { sectorId } = await Helper.makeOwner()
+      const accessToken = await makeAccessToken(prismaClient)
+      await request(app)
+        .delete(`/api/sectors/${sectorId}`)
+        .set('x-access-token', accessToken)
+        .expect(403)
     })
   })
 })

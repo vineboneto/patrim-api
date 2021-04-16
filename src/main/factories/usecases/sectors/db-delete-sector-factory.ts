@@ -1,8 +1,9 @@
 import { DbDeleteSector } from '@/data/usecases'
 import { DeleteSector } from '@/domain/usecases'
-import { SectorPostgresRepository } from '@/infra/db/postgres-prisma'
+import { OwnerPostgresRepository, SectorPostgresRepository } from '@/infra/db/postgres-prisma'
 
 export const makeDbDeleteSector = (): DeleteSector => {
   const sectorPostgresRepository = new SectorPostgresRepository()
-  return new DbDeleteSector(sectorPostgresRepository, sectorPostgresRepository)
+  const ownerPostgresRepository = new OwnerPostgresRepository()
+  return new DbDeleteSector(sectorPostgresRepository, ownerPostgresRepository)
 }

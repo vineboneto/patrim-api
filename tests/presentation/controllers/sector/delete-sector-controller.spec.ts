@@ -1,5 +1,5 @@
 import { DeleteSectorController } from '@/presentation/controllers'
-import { InvalidParamError, MissingParamError } from '@/presentation/errors'
+import { LinkedDataError, MissingParamError } from '@/presentation/errors'
 import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { DeleteSectorSpy } from '@/tests/domain/mocks'
@@ -55,7 +55,7 @@ describe('DeleteSectorController', () => {
     const { sut, deleteSectorSpy } = makeSut()
     deleteSectorSpy.model = null
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
+    expect(httpResponse).toEqual(forbidden(new LinkedDataError('owners')))
   })
 
   test('Should return 200 with sectorDeleted if DeleteSector succeeds', async () => {
