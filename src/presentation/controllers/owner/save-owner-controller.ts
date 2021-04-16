@@ -32,8 +32,8 @@ export class SaveOwnerController implements Controller {
 
 export namespace SaveOwnerController {
   export type Request = {
-    id?: string
+    id?: number
     name: string
-    sectorId: string
+    sectorId: number
   }
 }

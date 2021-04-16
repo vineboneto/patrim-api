@@ -83,11 +83,11 @@ describe('Owner Routes', () => {
           .expect(200)
       })
 
-      test('Should return 200 on load owners', async () => {
+      test('Should return 200 on load owners with take and skip', async () => {
         const accessToken = await makeAccessToken()
         await Helper.makeManyOwners()
         await request(app)
-          .get('/api/owners?take=5&skip=3')
+          .get('/api/owners?take=3&skip=0')
           .set('x-access-token', accessToken)
           .expect(200)
       })

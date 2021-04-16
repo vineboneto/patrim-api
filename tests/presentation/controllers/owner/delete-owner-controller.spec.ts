@@ -6,7 +6,7 @@ import { DeleteOwnerSpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): DeleteOwnerController.Request => ({
-  id: faker.datatype.number().toString()
+  id: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -28,7 +28,7 @@ describe('DeleteOwnerController', () => {
     const { sut, deleteOwnerSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(deleteOwnerSpy.params).toEqual({ id: Number(request.id) })
+    expect(deleteOwnerSpy.params).toEqual(request)
   })
 
   test('Should return 403 if delete fails', async () => {

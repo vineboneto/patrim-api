@@ -74,18 +74,18 @@ export class CategoryPostgresRepository implements
 
   async checkById (params: CheckCategoryByIdRepository.Params): Promise<CheckCategoryByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const categoryId = Number(params.id)
-    if (categoryId) {
-      const categoryWithOnlyId = await prismaClient.category.findFirst({
-        where: {
-          id: categoryId
-        },
-        select: {
-          id: true
-        }
-      })
-      return categoryWithOnlyId !== null
+    const { id } = params
+    if (isNaN(id)) {
+      return false
     }
-    return false
+    const categoryWithOnlyId = await prismaClient.category.findFirst({
+      where: {
+        id: Number(id)
+      },
+      select: {
+        id: true
+      }
+    })
+    return categoryWithOnlyId !== null
   }
 }

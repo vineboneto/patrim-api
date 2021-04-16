@@ -5,7 +5,7 @@ import { noContent, notFound, serverError } from '@/presentation/helper'
 import faker from 'faker'
 
 const mockRequest = (): CheckOwnerByIdMiddleware.Params => ({
-  id: faker.datatype.number().toString()
+  id: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -27,9 +27,7 @@ describe('CheckOwnerByIdMiddleware', () => {
     const { sut, checkOwnerByIdSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(checkOwnerByIdSpy.params).toEqual({
-      id: Number(request.id)
-    })
+    expect(checkOwnerByIdSpy.params).toEqual(request)
   })
 
   test('Should return 404 if CheckOwnerById return false', async () => {

@@ -5,8 +5,8 @@ import { LoadOwnersSpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): LoadOwnersController.Request => ({
-  take: faker.datatype.number().toString(),
-  skip: faker.datatype.number().toString()
+  take: faker.datatype.number(),
+  skip: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -28,10 +28,7 @@ describe('LoadOwnersController', () => {
     const { sut, loadOwnersSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(loadOwnersSpy.params).toEqual({
-      skip: Number(request.skip),
-      take: Number(request.take)
-    })
+    expect(loadOwnersSpy.params).toEqual(request)
   })
 
   test('Should return 204 if LoadOwners return empty array', async () => {

@@ -15,10 +15,7 @@ export class SaveCategoryController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const isValid = await this.saveCategory.save({
-        id: Number(request.id),
-        name: request.name
-      })
+      const isValid = await this.saveCategory.save(request)
       if (!isValid) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
       }
@@ -31,7 +28,7 @@ export class SaveCategoryController implements Controller {
 
 export namespace SaveCategoryController {
   export type Request = {
-    id?: string
+    id?: number
     name: string
   }
 }

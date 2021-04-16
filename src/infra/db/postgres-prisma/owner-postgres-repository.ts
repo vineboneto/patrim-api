@@ -55,19 +55,19 @@ export class OwnerPostgresRepository implements
 
   async checkById (params: CheckOwnerByIdRepository.Params): Promise<CheckOwnerByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const ownerId = Number(params.id)
-    if (ownerId) {
-      const ownerWithOnlyId = await prismaClient.owner.findFirst({
-        where: {
-          id: Number(ownerId)
-        },
-        select: {
-          id: true
-        }
-      })
-      return ownerWithOnlyId !== null
+    const { id } = params
+    if (isNaN(id)) {
+      return false
     }
-    return false
+    const ownerWithOnlyId = await prismaClient.owner.findFirst({
+      where: {
+        id: Number(id)
+      },
+      select: {
+        id: true
+      }
+    })
+    return ownerWithOnlyId !== null
   }
 
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
@@ -76,10 +76,11 @@ export class OwnerPostgresRepository implements
     if (isNaN(skip) || isNaN(take)) {
       return await prismaClient.owner.findMany()
     }
-    return await prismaClient.owner.findMany({
-      skip,
-      take
+    const owners = await prismaClient.owner.findMany({
+      skip: Number(skip),
+      take: Number(take)
     })
+    return owners
   }
 
   async checkBySectorId (params: CheckOwnerBySectorIdRepository.Params): Promise<CheckOwnerBySectorIdRepository.Result> {

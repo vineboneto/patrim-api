@@ -9,10 +9,7 @@ export class CheckOwnerByIdMiddleware implements Middleware {
 
   async handle (params: CheckOwnerByIdMiddleware.Params): Promise<HttpResponse> {
     try {
-      const { id } = params
-      const isValid = await this.checkOwnerById.checkById({
-        id: Number(id)
-      })
+      const isValid = await this.checkOwnerById.checkById(params)
       if (!isValid) {
         return notFound()
       }
@@ -25,6 +22,6 @@ export class CheckOwnerByIdMiddleware implements Middleware {
 
 export namespace CheckOwnerByIdMiddleware {
   export type Params = {
-    id: string
+    id: number
   }
 }

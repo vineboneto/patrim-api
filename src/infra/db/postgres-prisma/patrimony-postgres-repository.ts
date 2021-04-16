@@ -26,13 +26,17 @@ export class PatrimonyPostgresRepository implements
 
   async checkByOwnerId (params: CheckPatrimonyByOwnerIdRepository.Params):
   Promise<CheckPatrimonyByOwnerIdRepository.Result> {
+    const { ownerId } = params
+    if (isNaN(ownerId)) {
+      return false
+    }
     const prismaClient = PrismaHelper.getConnection()
     const patrimony = await prismaClient.patrimony.findFirst({
       select: {
         id: true
       },
       where: {
-        ownerId: Number(params.ownerId)
+        ownerId: Number(ownerId)
       }
     })
     return patrimony !== null
@@ -41,6 +45,10 @@ export class PatrimonyPostgresRepository implements
   async checkByCategoryId (params: CheckPatrimonyByCategoryIdRepository.Params):
   Promise<CheckPatrimonyByCategoryIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
+    const { categoryId } = params
+    if (isNaN(categoryId)) {
+      return false
+    }
     const patrimony = await prismaClient.patrimony.findFirst({
       select: {
         id: true

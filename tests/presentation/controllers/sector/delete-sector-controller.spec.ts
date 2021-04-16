@@ -7,7 +7,7 @@ import { DeleteSectorSpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): DeleteSectorController.Request => ({
-  id: faker.datatype.number().toString()
+  id: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -32,9 +32,7 @@ describe('DeleteSectorController', () => {
     const { sut, deleteSectorSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(deleteSectorSpy.params).toEqual({
-      id: Number(request.id)
-    })
+    expect(deleteSectorSpy.params).toEqual(request)
   })
 
   test('Should call Validation with correct value', async () => {

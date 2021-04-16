@@ -7,9 +7,9 @@ import { SaveOwnerSpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): SaveOwnerController.Request => ({
-  id: faker.datatype.number().toString(),
+  id: faker.datatype.number(),
   name: faker.name.findName(),
-  sectorId: faker.datatype.number().toString()
+  sectorId: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -48,11 +48,7 @@ describe('SaveOwnerController', () => {
     const { sut, saveOwnerSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(saveOwnerSpy.params).toEqual({
-      id: Number(request.id),
-      name: request.name,
-      sectorId: Number(request.sectorId)
-    })
+    expect(saveOwnerSpy.params).toEqual(request)
   })
 
   test('Should return 403 if SaveOwner returns null', async () => {

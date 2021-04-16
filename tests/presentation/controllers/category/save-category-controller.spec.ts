@@ -46,10 +46,7 @@ describe('SaveCategoryController', () => {
     const { sut, saveCategorySpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(saveCategorySpy.params).toEqual({
-      id: Number(request.id),
-      name: request.name
-    })
+    expect(saveCategorySpy.params).toEqual(request)
   })
 
   test('Should return 422 if SaveCategory return false', async () => {

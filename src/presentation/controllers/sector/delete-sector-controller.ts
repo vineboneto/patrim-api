@@ -15,7 +15,7 @@ export class DeleteSectorController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const sectorDeleted = await this.deleteSector.delete({ id: Number(request.id) })
+      const sectorDeleted = await this.deleteSector.delete(request)
       if (!sectorDeleted) {
         return forbidden(new LinkedDataError('owners'))
       }
@@ -28,6 +28,6 @@ export class DeleteSectorController implements Controller {
 
 export namespace DeleteSectorController {
   export type Request = {
-    id: string
+    id: number
   }
 }

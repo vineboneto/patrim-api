@@ -9,10 +9,7 @@ export class CheckCategoryByIdMiddleware implements Middleware {
 
   async handle (params: CheckCategoryByIdMiddleware.Params): Promise<HttpResponse> {
     try {
-      const { id } = params
-      const isValid = await this.checkCategoryById.checkById({
-        id: Number(id)
-      })
+      const isValid = await this.checkCategoryById.checkById(params)
       if (!isValid) {
         return notFound()
       }
@@ -25,6 +22,6 @@ export class CheckCategoryByIdMiddleware implements Middleware {
 
 export namespace CheckCategoryByIdMiddleware {
   export type Params = {
-    id: string
+    id: number
   }
 }
