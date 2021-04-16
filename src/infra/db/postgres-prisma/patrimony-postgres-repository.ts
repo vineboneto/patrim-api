@@ -1,8 +1,9 @@
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
-import { LoadPatrimonyByOwnerIdRepository } from '@/data/protocols'
+import { CheckPatrimonyByOwnerIdRepository, LoadPatrimonyByOwnerIdRepository } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
-  LoadPatrimonyByOwnerIdRepository {
+  LoadPatrimonyByOwnerIdRepository,
+  CheckPatrimonyByOwnerIdRepository {
   async loadByOwnerId (params: LoadPatrimonyByOwnerIdRepository.Params):
   Promise<LoadPatrimonyByOwnerIdRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
@@ -16,5 +17,19 @@ export class PatrimonyPostgresRepository implements
       }
     })
     return patrimony
+  }
+
+  async checkByOwnerId (params: CheckPatrimonyByOwnerIdRepository.Params):
+  Promise<CheckPatrimonyByOwnerIdRepository.Result> {
+    const prismaClient = PrismaHelper.getConnection()
+    const patrimony = await prismaClient.patrimony.findFirst({
+      select: {
+        id: true
+      },
+      where: {
+        ownerId: Number(params.ownerId)
+      }
+    })
+    return patrimony !== null
   }
 }
