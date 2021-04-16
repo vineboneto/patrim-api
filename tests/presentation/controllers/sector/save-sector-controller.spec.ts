@@ -1,5 +1,5 @@
 import { SaveSectorController } from '@/presentation/controllers'
-import { badRequest, noContent, serverError, unprocessableEntity } from '@/presentation/helper/http-helper'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SaveSectorSpy } from '@/tests/domain/mocks'
@@ -49,9 +49,9 @@ describe('SaveSectorController', () => {
     expect(saveSectorSpy.params).toEqual(request)
   })
 
-  test('Should return 422 if SaveSector return false', async () => {
+  test('Should return 422 if SaveSector return null', async () => {
     const { sut, saveSectorSpy } = makeSut()
-    saveSectorSpy.result = false
+    saveSectorSpy.model = null
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.name)))
@@ -65,8 +65,8 @@ describe('SaveSectorController', () => {
   })
 
   test('Should return 204 on success', async () => {
-    const { sut } = makeSut()
+    const { sut, saveSectorSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(noContent())
+    expect(httpResponse).toEqual(ok(saveSectorSpy.model))
   })
 })

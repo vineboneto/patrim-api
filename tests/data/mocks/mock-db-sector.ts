@@ -32,10 +32,10 @@ export const mockLoadSectorsRepositoryParams = (): LoadSectorsRepository.Params 
 
 export class AddSectorRepositorySpy implements AddSectorRepository {
   params: AddSectorRepository.Params
-  result = true
-  async add (params: AddSectorRepository.Params): Promise<AddSectorRepository.Result> {
+  model = mockSectorModel()
+  async add (params: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     this.params = params
-    return this.result
+    return this.model
   }
 }
 
@@ -78,9 +78,9 @@ export class CheckSectorByIdRepositorySpy implements CheckSectorByIdRepository {
 
 export class UpdateSectorRepositorySpy implements UpdateSectorRepository {
   params: UpdateSectorRepository.Params
-  result = true
-  async update (params: UpdateSectorRepository.Params): Promise<UpdateSectorRepository.Result> {
+  model = mockSectorModel()
+  async update (params: UpdateSectorRepository.Params): Promise<UpdateSectorRepository.Model> {
     this.params = params
-    return this.result
+    return this.model
   }
 }

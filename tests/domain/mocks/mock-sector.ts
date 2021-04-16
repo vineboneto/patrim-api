@@ -51,10 +51,10 @@ export class DeleteSectorSpy implements DeleteSector {
 
 export class SaveSectorSpy implements SaveSector {
   params: SaveSector.Params
-  result = true
-  async save (sector: SaveSector.Params): Promise<SaveSector.Result> {
+  model = mockSectorModel()
+  async save (sector: SaveSector.Params): Promise<SaveSector.Model> {
     this.params = sector
-    return this.result
+    return this.model
   }
 }
 

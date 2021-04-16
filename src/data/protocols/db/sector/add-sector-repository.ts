@@ -1,12 +1,12 @@
 import { SaveSector } from '@/domain/usecases'
 
 export interface AddSectorRepository {
-  add: (sector: AddSectorRepository.Params) => Promise<AddSectorRepository.Result>
+  add: (sector: AddSectorRepository.Params) => Promise<AddSectorRepository.Model>
 }
 
 export namespace AddSectorRepository {
   export type Params = {
     name: string
   }
-  export type Result = SaveSector.Result
+  export type Model = SaveSector.Model
 }

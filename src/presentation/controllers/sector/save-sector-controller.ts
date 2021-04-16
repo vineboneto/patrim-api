@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, noContent, serverError, unprocessableEntity } from '@/presentation/helper/http-helper'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { SaveSector } from '@/domain/usecases'
 
@@ -15,11 +15,11 @@ export class SaveSectorController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const isValid = await this.saveSector.save(request)
-      if (!isValid) {
+      const sectorModel = await this.saveSector.save(request)
+      if (!sectorModel) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
       }
-      return noContent()
+      return ok(sectorModel)
     } catch (error) {
       return serverError(error)
     }

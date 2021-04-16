@@ -29,7 +29,7 @@ describe('Sector Routes', () => {
         .send({
           name: faker.name.jobArea()
         })
-        .expect(204)
+        .expect(200)
     })
 
     test('Should return 403 on save sector without accessToken', async () => {
@@ -52,7 +52,7 @@ describe('Sector Routes', () => {
         .send({
           name: 'new_value'
         })
-        .expect(204)
+        .expect(200)
     })
 
     test('Should return 404 on update sector with invalid id', async () => {

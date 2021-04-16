@@ -1,5 +1,7 @@
+import { SectorModel } from '@/domain/models'
+
 export interface SaveSector {
-  save (SaveSector: SaveSector.Params): Promise<SaveSector.Result>
+  save (SaveSector: SaveSector.Params): Promise<SaveSector.Model>
 }
 
 export namespace SaveSector {
@@ -8,5 +10,5 @@ export namespace SaveSector {
     name: string
   }
 
-  export type Result = boolean
+  export type Model = SectorModel
 }

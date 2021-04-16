@@ -8,15 +8,15 @@ export class DbSaveSector implements SaveSector {
     private readonly checkSectorByNameRepository: CheckSectorByNameRepository
   ) {}
 
-  async save (sector: SaveSector.Params): Promise<SaveSector.Result> {
+  async save (sector: SaveSector.Params): Promise<SaveSector.Model> {
     const { id, name } = sector
     const exists = await this.checkSectorByNameRepository.checkByName(name)
-    let isValid = false
+    let sectorModel = null
     if (!exists) {
       id
-        ? isValid = await this.updateSectorRepository.update({ id, name })
-        : isValid = await this.addSectorRepository.add({ name })
+        ? sectorModel = await this.updateSectorRepository.update({ id, name })
+        : sectorModel = await this.addSectorRepository.add({ name })
     }
-    return isValid
+    return sectorModel
   }
 }

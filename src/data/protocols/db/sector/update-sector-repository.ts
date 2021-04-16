@@ -1,7 +1,7 @@
 import { SaveSector } from '@/domain/usecases'
 
 export interface UpdateSectorRepository {
-  update: (sector: UpdateSectorRepository.Params) => Promise<UpdateSectorRepository.Result>
+  update: (sector: UpdateSectorRepository.Params) => Promise<UpdateSectorRepository.Model>
 }
 
 export namespace UpdateSectorRepository {
@@ -9,5 +9,5 @@ export namespace UpdateSectorRepository {
     id: number
     name: string
   }
-  export type Result = SaveSector.Result
+  export type Model = SaveSector.Model
 }
