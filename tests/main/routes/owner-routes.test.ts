@@ -111,5 +111,16 @@ describe('Owner Routes', () => {
           .expect(204)
       })
     })
+
+    describe('DELETE /owners', () => {
+      test('Should return owner deleted on success', async () => {
+        const { id } = await Helper.makeOwner()
+        const accessToken = await makeAccessToken(prismaClient)
+        await request(app)
+          .delete(`/api/owners/${id}`)
+          .set('x-access-token', accessToken)
+          .expect(200)
+      })
+    })
   })
 })
