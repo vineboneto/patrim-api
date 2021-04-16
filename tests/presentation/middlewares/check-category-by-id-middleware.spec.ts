@@ -1,6 +1,8 @@
 import { CheckCategoryByIdMiddleware } from '@/presentation/middlewares'
+import { InvalidParamError } from '@/presentation/errors'
+import { badRequest, noContent, notFound, serverError } from '@/presentation/helper'
 import { CheckCategoryByIdSpy } from '@/tests/domain/mocks'
-import { noContent, notFound, serverError } from '@/presentation/helper'
+import { ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -11,18 +13,35 @@ const mockRequest = (): CheckCategoryByIdMiddleware.Params => ({
 type SutTypes = {
   sut: CheckCategoryByIdMiddleware
   checkCategoryByIdSpy: CheckCategoryByIdSpy
+  validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
   const checkCategoryByIdSpy = new CheckCategoryByIdSpy()
-  const sut = new CheckCategoryByIdMiddleware(checkCategoryByIdSpy)
+  const validationSpy = new ValidationSpy()
+  const sut = new CheckCategoryByIdMiddleware(checkCategoryByIdSpy, validationSpy)
   return {
     sut,
-    checkCategoryByIdSpy
+    checkCategoryByIdSpy,
+    validationSpy
   }
 }
 
 describe('CheckCategoryByIdMiddleware', () => {
+  test('Should call Validation with correct value', async () => {
+    const { sut, validationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return 400 if Validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new InvalidParamError('id')
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('id')))
+  })
+
   test('Should call CheckCategoryById with correct value', async () => {
     const { sut, checkCategoryByIdSpy } = makeSut()
     const request = mockRequest()

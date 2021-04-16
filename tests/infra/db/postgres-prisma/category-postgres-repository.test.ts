@@ -84,7 +84,7 @@ describe('CategoryPostgresRepository', () => {
   })
 
   describe('checkById()', () => {
-    test('Should return category on success', async () => {
+    test('Should return true if category exists', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeCategory()
       const result = await sut.checkById({ id })
