@@ -1,7 +1,8 @@
+import { makeDbCheckOwnerById } from '@/main/factories/usecases'
 import { CheckOwnerByIdMiddleware } from '@/presentation/middlewares'
 import { Middleware } from '@/presentation/protocols'
-import { makeDbCheckOwnerById } from '../usecases'
+import { CheckFieldIsNumberValidation } from '@/validation/validators'
 
 export const makeCheckOwnerByIdMiddleware = (): Middleware => {
-  return new CheckOwnerByIdMiddleware(makeDbCheckOwnerById())
+  return new CheckOwnerByIdMiddleware(makeDbCheckOwnerById(), new CheckFieldIsNumberValidation('id'))
 }

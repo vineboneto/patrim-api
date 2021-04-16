@@ -1,6 +1,8 @@
 import { CheckOwnerByIdMiddleware } from '@/presentation/middlewares'
+import { badRequest, noContent, notFound, serverError } from '@/presentation/helper'
+import { InvalidParamError } from '@/presentation/errors'
 import { CheckOwnerByIdSpy } from '@/tests/domain/mocks'
-import { noContent, notFound, serverError } from '@/presentation/helper'
+import { ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -11,18 +13,35 @@ const mockRequest = (): CheckOwnerByIdMiddleware.Params => ({
 type SutTypes = {
   sut: CheckOwnerByIdMiddleware
   checkOwnerByIdSpy: CheckOwnerByIdSpy
+  validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
   const checkOwnerByIdSpy = new CheckOwnerByIdSpy()
-  const sut = new CheckOwnerByIdMiddleware(checkOwnerByIdSpy)
+  const validationSpy = new ValidationSpy()
+  const sut = new CheckOwnerByIdMiddleware(checkOwnerByIdSpy, validationSpy)
   return {
     sut,
-    checkOwnerByIdSpy
+    checkOwnerByIdSpy,
+    validationSpy
   }
 }
 
 describe('CheckOwnerByIdMiddleware', () => {
+  test('Should call Validation with correct value', async () => {
+    const { sut, validationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return 400 if Validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new InvalidParamError('id')
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('id')))
+  })
+
   test('Should call CheckOwnerById with correct value', async () => {
     const { sut, checkOwnerByIdSpy } = makeSut()
     const request = mockRequest()
