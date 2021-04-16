@@ -121,6 +121,15 @@ describe('Owner Routes', () => {
           .set('x-access-token', accessToken)
           .expect(200)
       })
+
+      test('Should return 403 if patrimony exists', async () => {
+        const { ownerId } = await Helper.makePatrimony()
+        const accessToken = await makeAccessToken(prismaClient)
+        await request(app)
+          .delete(`/api/owners/${ownerId}`)
+          .set('x-access-token', accessToken)
+          .expect(403)
+      })
     })
   })
 })
