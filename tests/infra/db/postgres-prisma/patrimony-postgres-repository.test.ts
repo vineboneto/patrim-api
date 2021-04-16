@@ -37,4 +37,13 @@ describe('PatrimonyPostgresRepository', () => {
       })
     })
   })
+
+  describe('checkByOwnerId()', () => {
+    test('Should return true if exists patrimony', async () => {
+      const sut = makeSut()
+      const { ownerId } = await Helper.makePatrimony()
+      const exists = await sut.checkByOwnerId({ ownerId })
+      expect(exists).toBe(true)
+    })
+  })
 })
