@@ -15,8 +15,10 @@ describe('Owner Routes', () => {
   })
 
   afterAll(async () => {
+    await prismaClient.$executeRaw('DELETE FROM "Patrimony";')
     await prismaClient.$executeRaw('DELETE FROM "Owner";')
     await prismaClient.$executeRaw('DELETE FROM "Sector";')
+    await prismaClient.$executeRaw('ALTER SEQUENCE "Patrimony_id_seq" RESTART WITH 1;')
     await prismaClient.$executeRaw('ALTER SEQUENCE "Owner_id_seq" RESTART WITH 1;')
     await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
     PrismaHelper.disconnect()

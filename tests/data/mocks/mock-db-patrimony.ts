@@ -1,4 +1,8 @@
-import { CheckPatrimonyByOwnerIdRepository, LoadPatrimonyByOwnerIdRepository } from '@/data/protocols'
+import {
+  CheckPatrimonyByCategoryIdRepository,
+  CheckPatrimonyByOwnerIdRepository,
+  LoadPatrimonyByOwnerIdRepository
+} from '@/data/protocols'
 
 import faker from 'faker'
 
@@ -21,6 +25,17 @@ export class CheckPatrimonyByOwnerIdRepositorySpy implements CheckPatrimonyByOwn
   result = false
 
   async checkByOwnerId (params: CheckPatrimonyByOwnerIdRepository.Params):
+  Promise<CheckPatrimonyByOwnerIdRepository.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class CheckPatrimonyByCategoryIdRepositorySpy implements CheckPatrimonyByCategoryIdRepository {
+  params: CheckPatrimonyByCategoryIdRepository.Params
+  result = false
+
+  async checkByCategoryId (params: CheckPatrimonyByCategoryIdRepository.Params):
   Promise<CheckPatrimonyByOwnerIdRepository.Result> {
     this.params = params
     return this.result

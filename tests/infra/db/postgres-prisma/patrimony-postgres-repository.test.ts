@@ -53,4 +53,19 @@ describe('PatrimonyPostgresRepository', () => {
       expect(exists).toBe(false)
     })
   })
+
+  describe('checkByOwnerId()', () => {
+    test('Should return true if exists patrimony', async () => {
+      const sut = makeSut()
+      const { categoryId } = await Helper.makePatrimony()
+      const exists = await sut.checkByCategoryId({ categoryId })
+      expect(exists).toBe(true)
+    })
+
+    test('Should return false if not exists patrimony', async () => {
+      const sut = makeSut()
+      const exists = await sut.checkByCategoryId({ categoryId: faker.datatype.number() })
+      expect(exists).toBe(false)
+    })
+  })
 })
