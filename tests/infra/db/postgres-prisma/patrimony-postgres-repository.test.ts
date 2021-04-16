@@ -2,6 +2,7 @@ import { PatrimonyPostgresRepository, PrismaHelper } from '@/infra/db/postgres-p
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 import { PrismaClient } from '@prisma/client'
+import faker from 'faker'
 
 const makeSut = (): PatrimonyPostgresRepository => new PatrimonyPostgresRepository()
 
@@ -44,6 +45,12 @@ describe('PatrimonyPostgresRepository', () => {
       const { ownerId } = await Helper.makePatrimony()
       const exists = await sut.checkByOwnerId({ ownerId })
       expect(exists).toBe(true)
+    })
+
+    test('Should return false if not exists patrimony', async () => {
+      const sut = makeSut()
+      const exists = await sut.checkByOwnerId({ ownerId: faker.datatype.number() })
+      expect(exists).toBe(false)
     })
   })
 })
