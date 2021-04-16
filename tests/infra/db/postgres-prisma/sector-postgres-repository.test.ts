@@ -2,12 +2,9 @@ import { SectorPostgresRepository, PrismaHelper } from '@/infra/db/postgres-pris
 import { mockAddSectorRepositoryParams, mockCheckSectorByIdRepositoryParams } from '@/tests/data/mocks'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
 
 const makeSut = (): SectorPostgresRepository => new SectorPostgresRepository()
-
-let prismaClient: PrismaClient
 
 describe('SectorPostgresRepository', () => {
   beforeAll(() => {
@@ -15,14 +12,12 @@ describe('SectorPostgresRepository', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "Sector";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
-    prismaClient = PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "Sector";')
+    await Helper.deleteAll()
   })
 
   describe('add()', () => {
@@ -63,18 +58,28 @@ describe('SectorPostgresRepository', () => {
   })
 
   describe('loadAll()', () => {
-    test('Should returns all sectors on success', async () => {
+    test('Should return all sectors if take and skip is NaN', async () => {
       const sut = makeSut()
-      await Helper.makeManySectors()
-      const sectors = await sut.loadAll()
-      expect(sectors).toBeTruthy()
-      expect(sectors.length).toBe(3)
+      const sectors = await Helper.makeManySectors()
+      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
+      expect(dataResponse).toEqual(sectors)
+      expect(dataResponse.length).toBe(3)
     })
 
-    test('Should returns empty array if sectors not exists', async () => {
+    test('Should return the correctly number of owners if take and skip not undefined', async () => {
       const sut = makeSut()
-      const sectors = await sut.loadAll()
-      expect(sectors).toEqual([])
+      const sectors = await Helper.makeManySectors()
+      const dataResponse = await sut.loadAll({ skip: 0, take: 2 })
+      expect(dataResponse[0]).toEqual(sectors[0])
+      expect(dataResponse[1]).toEqual(sectors[1])
+      expect(dataResponse[2]).toBe(undefined)
+      expect(dataResponse.length).toBe(2)
+    })
+
+    test('Should return empty array if loadOwner is empty', async () => {
+      const sut = makeSut()
+      const dataResponse = await sut.loadAll({ skip: NaN, take: faker.datatype.number() })
+      expect(dataResponse).toEqual([])
     })
   })
 

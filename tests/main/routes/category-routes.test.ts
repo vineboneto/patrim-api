@@ -3,11 +3,8 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeAccessToken } from '@/tests/main/mocks'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
 import request from 'supertest'
-
-let prismaClient: PrismaClient
 
 describe('Category Routes', () => {
   beforeAll(() => {
@@ -15,16 +12,12 @@ describe('Category Routes', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "Patrimony";')
-    await prismaClient.$executeRaw('DELETE FROM "Category";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Patrimony_id_seq" RESTART WITH 1;')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Category_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
-    prismaClient = await PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "Category";')
+    await Helper.deleteAll()
   })
 
   describe('POST /categories', () => {

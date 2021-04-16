@@ -1,5 +1,5 @@
 import { DbLoadSectors } from '@/data/usecases'
-import { LoadSectorsRepositorySpy } from '@/tests/data/mocks'
+import { LoadSectorsRepositorySpy, mockLoadSectorsRepositoryParams } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbLoadSectors
@@ -18,20 +18,21 @@ const makeSut = (): SutTypes => {
 describe('DbLoadSectors', () => {
   test('Should call LoadSectorsRepository', async () => {
     const { sut, loadSectorsRepositorySpy } = makeSut()
-    await sut.load()
-    expect(loadSectorsRepositorySpy.callCount).toBe(1)
+    const params = mockLoadSectorsRepositoryParams()
+    await sut.load(params)
+    expect(loadSectorsRepositorySpy.params).toEqual(params)
   })
 
   test('Should returns sectors on LoadSectorsRepository success', async () => {
     const { sut, loadSectorsRepositorySpy } = makeSut()
-    const httpResponse = await sut.load()
+    const httpResponse = await sut.load(mockLoadSectorsRepositoryParams())
     expect(httpResponse).toBe(loadSectorsRepositorySpy.models)
   })
 
   test('Should throws if LoadSectorsRepository throws', async () => {
     const { sut, loadSectorsRepositorySpy } = makeSut()
     jest.spyOn(loadSectorsRepositorySpy, 'loadAll').mockRejectedValueOnce(new Error())
-    const promise = sut.load()
+    const promise = sut.load(mockLoadSectorsRepositoryParams())
     await expect(promise).rejects.toThrow()
   })
 })

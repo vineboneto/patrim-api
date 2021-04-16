@@ -32,5 +32,5 @@ export const makeManySectors = async (): Promise<Sector[]> => {
       mockAddSectorRepositoryParams()
     ]
   })
-  return prismaClient.owner.findMany()
+  return prismaClient.sector.findMany()
 }

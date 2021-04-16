@@ -73,7 +73,7 @@ export class OwnerPostgresRepository implements
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { skip, take } = params
-    if (isNaN(skip) && isNaN(take)) {
+    if (isNaN(skip) || isNaN(take)) {
       return await prismaClient.owner.findMany()
     }
     return await prismaClient.owner.findMany({

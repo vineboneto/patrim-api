@@ -1,5 +1,6 @@
 import app from '@/main/config/app'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
+import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 import { PrismaClient } from '@prisma/client'
 import request from 'supertest'
@@ -14,14 +15,12 @@ describe('Login Routes', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "User";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "User_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
-    prismaClient = await PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "User";')
+    prismaClient = PrismaHelper.getConnection()
   })
 
   describe('POST /signup', () => {

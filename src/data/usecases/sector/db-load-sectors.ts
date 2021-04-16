@@ -6,7 +6,7 @@ export class DbLoadSectors implements LoadSectors {
     private readonly loadSectorsRepository: LoadSectorsRepository
   ) {}
 
-  async load (): Promise<LoadSectors.Model> {
-    return this.loadSectorsRepository.loadAll()
+  async load (params: LoadSectors.Params): Promise<LoadSectors.Model> {
+    return this.loadSectorsRepository.loadAll(params)
   }
 }

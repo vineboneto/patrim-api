@@ -10,6 +10,7 @@ import {
   mockAddSectorParams,
   mockCheckSectorByIdParams,
   mockDeleteSectorParams,
+  mockLoadSectorsParams,
   mockSectorModel,
   mockSectorsModel
 } from '@/tests/domain/mocks'
@@ -26,6 +27,8 @@ export const mockUpdateSectorRepositoryParams = (): UpdateSectorRepository.Param
 export const mockCheckSectorByIdRepositoryParams = (): CheckSectorByIdRepository.Params => mockCheckSectorByIdParams()
 
 export const mockDeleteSectorRepositoryParams = (): DeleteSectorRepository.Params => mockDeleteSectorParams()
+
+export const mockLoadSectorsRepositoryParams = (): LoadSectorsRepository.Params => mockLoadSectorsParams()
 
 export class AddSectorRepositorySpy implements AddSectorRepository {
   params: AddSectorRepository.Params
@@ -48,9 +51,9 @@ export class CheckSectorByNameRepositorySpy implements CheckSectorByNameReposito
 
 export class LoadSectorsRepositorySpy implements LoadSectorsRepository {
   models = mockSectorsModel()
-  callCount = 0
-  async loadAll (): Promise<LoadSectorsRepository.Model> {
-    this.callCount++
+  params: LoadSectorsRepository.Params
+  async loadAll (params: LoadSectorsRepository.Params): Promise<LoadSectorsRepository.Model> {
+    this.params = params
     return this.models
   }
 }

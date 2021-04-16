@@ -15,14 +15,13 @@ describe('AccountPostgresRepository', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "User";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "User_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
     prismaClient = PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "User";')
+    await Helper.deleteAll()
   })
 
   describe('add()', () => {

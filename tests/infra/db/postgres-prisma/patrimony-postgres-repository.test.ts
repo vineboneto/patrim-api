@@ -1,12 +1,9 @@
 import { PatrimonyPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
 
 const makeSut = (): PatrimonyPostgresRepository => new PatrimonyPostgresRepository()
-
-let prismaClient: PrismaClient
 
 describe('PatrimonyPostgresRepository', () => {
   beforeAll(() => {
@@ -14,19 +11,14 @@ describe('PatrimonyPostgresRepository', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "Patrimony";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Patrimony_id_seq" RESTART WITH 1;')
-    await prismaClient.$executeRaw('DELETE FROM "Owner";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Owner_id_seq" RESTART WITH 1;')
-    await prismaClient.$executeRaw('DELETE FROM "Category";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Category_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
-    prismaClient = PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "Patrimony";')
+    await Helper.deleteAll()
   })
+
   describe('loadByPatrimonyId()', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()

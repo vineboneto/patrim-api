@@ -80,9 +80,15 @@ export class SectorPostgresRepository implements
     return false
   }
 
-  async loadAll (): Promise<LoadSectorsRepository.Model> {
+  async loadAll (params: LoadSectorsRepository.Params): Promise<LoadSectorsRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const sectors = await prismaClient.sector.findMany()
-    return sectors
+    const { skip, take } = params
+    if (isNaN(skip) || isNaN(take)) {
+      return await prismaClient.sector.findMany()
+    }
+    return await prismaClient.sector.findMany({
+      skip: Number(skip),
+      take: Number(take)
+    })
   }
 }

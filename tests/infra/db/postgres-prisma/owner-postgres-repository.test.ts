@@ -1,12 +1,9 @@
 import { OwnerPostgresRepository, PrismaHelper } from '@/infra/db/postgres-prisma'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
 
 const makeSut = (): OwnerPostgresRepository => new OwnerPostgresRepository()
-
-let prismaClient: PrismaClient
 
 describe('OwnerPostgresRepository', () => {
   beforeAll(() => {
@@ -14,16 +11,12 @@ describe('OwnerPostgresRepository', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "Owner";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Owner_id_seq" RESTART WITH 1;')
-    await prismaClient.$executeRaw('DELETE FROM "Sector";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
-    prismaClient = PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "Owner";')
+    await Helper.deleteAll()
   })
 
   describe('add()', () => {

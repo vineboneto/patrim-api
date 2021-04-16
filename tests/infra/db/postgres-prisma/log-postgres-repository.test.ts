@@ -1,5 +1,5 @@
 import { PrismaHelper, LogPostgresRepository } from '@/infra/db/postgres-prisma'
-
+import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
 
@@ -13,14 +13,13 @@ describe('LogPostgresRepository', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "LogError";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "LogError_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
     prismaClient = PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "LogError";')
+    await Helper.deleteAll()
   })
 
   test('Should save logError on success', async () => {

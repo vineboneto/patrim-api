@@ -2,10 +2,7 @@ import { PrismaHelper, CategoryPostgresRepository } from '@/infra/db/postgres-pr
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 import { mockAddCategoryRepositoryParams, mockCheckCategoryByIdRepositoryParams } from '@/tests/data/mocks'
 
-import { PrismaClient } from '@prisma/client'
 import faker from 'faker'
-
-let prismaClient: PrismaClient
 
 const makeSut = (): CategoryPostgresRepository => new CategoryPostgresRepository()
 
@@ -15,14 +12,12 @@ describe('CategoryPostgresRepository', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "Category";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Category_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
-    prismaClient = PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "Category";')
+    await Helper.deleteAll()
   })
 
   describe('add()', () => {

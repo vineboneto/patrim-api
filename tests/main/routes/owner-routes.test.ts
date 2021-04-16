@@ -3,11 +3,8 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeAccessToken } from '@/tests/main/mocks'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
-import { PrismaClient } from '@prisma/client'
 import request from 'supertest'
 import faker from 'faker'
-
-let prismaClient: PrismaClient
 
 describe('Owner Routes', () => {
   beforeAll(() => {
@@ -15,18 +12,12 @@ describe('Owner Routes', () => {
   })
 
   afterAll(async () => {
-    await prismaClient.$executeRaw('DELETE FROM "Patrimony";')
-    await prismaClient.$executeRaw('DELETE FROM "Owner";')
-    await prismaClient.$executeRaw('DELETE FROM "Sector";')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Patrimony_id_seq" RESTART WITH 1;')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Owner_id_seq" RESTART WITH 1;')
-    await prismaClient.$executeRaw('ALTER SEQUENCE "Sector_id_seq" RESTART WITH 1;')
+    await Helper.deleteAll()
     PrismaHelper.disconnect()
   })
 
   beforeEach(async () => {
-    prismaClient = PrismaHelper.getConnection()
-    await prismaClient.$executeRaw('DELETE FROM "Owner";')
+    await Helper.deleteAll()
   })
 
   describe('POST /owners', () => {

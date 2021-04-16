@@ -7,12 +7,19 @@ export class LoadSectorsController implements Controller {
     private readonly loadSectors: LoadSectors
   ) {}
 
-  async handle (): Promise<HttpResponse> {
+  async handle (request: LoadSectorsController.Request): Promise<HttpResponse> {
     try {
-      const sectors = await this.loadSectors.load()
+      const sectors = await this.loadSectors.load(request)
       return sectors.length ? ok(sectors) : noContent()
     } catch (error) {
       return serverError(error)
     }
+  }
+}
+
+export namespace LoadSectorsController {
+  export type Request = {
+    take: number
+    skip: number
   }
 }

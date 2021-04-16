@@ -26,11 +26,16 @@ export const mockDeleteSectorParams = (): DeleteSector.Params => ({
   id: faker.datatype.number()
 })
 
+export const mockLoadSectorsParams = (): LoadSectors.Params => ({
+  skip: faker.datatype.number(),
+  take: faker.datatype.number()
+})
+
 export class LoadSectorsSpy implements LoadSectors {
   models = mockSectorsModel()
-  callsCount = 0
-  async load (): Promise<LoadSectors.Model> {
-    this.callsCount++
+  params: LoadSectors.Params
+  async load (params: LoadSectors.Params): Promise<LoadSectors.Model> {
+    this.params = params
     return this.models
   }
 }
