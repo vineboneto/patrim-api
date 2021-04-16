@@ -1,5 +1,6 @@
 import { DeleteOwnerController } from '@/presentation/controllers/owner'
-import { ok, serverError } from '@/presentation/helper'
+import { LinkedDataError } from '@/presentation/errors'
+import { forbidden, ok, serverError } from '@/presentation/helper'
 import { DeleteOwnerSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -28,6 +29,13 @@ describe('DeleteOwnerController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(deleteOwnerSpy.params).toEqual({ id: Number(request.id) })
+  })
+
+  test('Should return 403 if delete fails', async () => {
+    const { sut, deleteOwnerSpy } = makeSut()
+    deleteOwnerSpy.model = null
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new LinkedDataError('patrimonies')))
   })
 
   test('Should return 200 on delete success', async () => {
