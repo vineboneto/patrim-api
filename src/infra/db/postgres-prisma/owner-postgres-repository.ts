@@ -56,9 +56,6 @@ export class OwnerPostgresRepository implements
   async checkById (params: CheckOwnerByIdRepository.Params): Promise<CheckOwnerByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
     const { id } = params
-    if (isNaN(id)) {
-      return false
-    }
     const ownerWithOnlyId = await prismaClient.owner.findFirst({
       where: {
         id: Number(id)
