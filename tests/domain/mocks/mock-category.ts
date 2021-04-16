@@ -26,11 +26,16 @@ export const mockDeleteCategoryParams = (): DeleteCategory.Params => ({
   id: faker.datatype.number()
 })
 
+export const mockLoadCategoriesParams = (): LoadCategories.Params => ({
+  skip: faker.datatype.number(),
+  take: faker.datatype.number()
+})
+
 export class LoadCategoriesSpy implements LoadCategories {
   categoriesModel = mockCategoriesModel()
-  callsCount = 0
-  async load (): Promise<LoadCategories.Model> {
-    this.callsCount++
+  params: LoadCategories.Params
+  async load (params: LoadCategories.Params): Promise<LoadCategories.Model> {
+    this.params = params
     return this.categoriesModel
   }
 }

@@ -34,5 +34,5 @@ export const makeManyCategories = async (): Promise<Category[]> => {
       mockAddCategoryRepositoryParams()
     ]
   })
-  return prismaClient.owner.findMany()
+  return prismaClient.category.findMany()
 }

@@ -66,7 +66,7 @@ describe('SectorPostgresRepository', () => {
       expect(dataResponse.length).toBe(3)
     })
 
-    test('Should return the correctly number of owners if take and skip not undefined', async () => {
+    test('Should return the correctly number of sectors if take and skip not undefined', async () => {
       const sut = makeSut()
       const sectors = await Helper.makeManySectors()
       const dataResponse = await sut.loadAll({ skip: 0, take: 2 })
@@ -76,7 +76,7 @@ describe('SectorPostgresRepository', () => {
       expect(dataResponse.length).toBe(2)
     })
 
-    test('Should return empty array if loadOwner is empty', async () => {
+    test('Should return empty array if load sectors is empty', async () => {
       const sut = makeSut()
       const dataResponse = await sut.loadAll({ skip: NaN, take: faker.datatype.number() })
       expect(dataResponse).toEqual([])
@@ -84,7 +84,7 @@ describe('SectorPostgresRepository', () => {
   })
 
   describe('checkById()', () => {
-    test('Should return sector on success', async () => {
+    test('Should return true on success', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeSector()
       const result = await sut.checkById({ id })

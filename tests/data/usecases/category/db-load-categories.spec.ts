@@ -1,5 +1,5 @@
 import { DbLoadCategories } from '@/data/usecases'
-import { LoadCategoriesRepositorySpy } from '@/tests/data/mocks'
+import { LoadCategoriesRepositorySpy, mockLoadCategoriesRepositoryParams } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbLoadCategories
@@ -16,22 +16,23 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbLoadCategories', () => {
-  test('Should call LoadCategoriesRepository', async () => {
+  test('Should call LoadCategoriesRepository with correct value', async () => {
     const { sut, loadCategoriesRepositorySpy } = makeSut()
-    await sut.load()
-    expect(loadCategoriesRepositorySpy.callsCount).toBe(1)
+    const params = mockLoadCategoriesRepositoryParams()
+    await sut.load(params)
+    expect(loadCategoriesRepositorySpy.params).toEqual(params)
   })
 
   test('Should returns categories on LoadCategoriesRepository success', async () => {
     const { sut, loadCategoriesRepositorySpy } = makeSut()
-    const categories = await sut.load()
+    const categories = await sut.load(mockLoadCategoriesRepositoryParams())
     expect(categories).toEqual(loadCategoriesRepositorySpy.models)
   })
 
   test('Should throw if LoadCategoriesRepository throws', async () => {
     const { sut, loadCategoriesRepositorySpy } = makeSut()
     jest.spyOn(loadCategoriesRepositorySpy, 'loadAll').mockRejectedValueOnce(new Error())
-    const promise = sut.load()
+    const promise = sut.load(mockLoadCategoriesRepositoryParams())
     await expect(promise).rejects.toThrow()
   })
 })

@@ -60,10 +60,16 @@ export class CategoryPostgresRepository implements
     return category !== null
   }
 
-  async loadAll (): Promise<LoadCategoriesRepository.Model> {
+  async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const categories = await prismaClient.category.findMany()
-    return categories
+    const { skip, take } = params
+    if (isNaN(skip) || isNaN(take)) {
+      return await prismaClient.category.findMany()
+    }
+    return await prismaClient.category.findMany({
+      skip: Number(skip),
+      take: Number(take)
+    })
   }
 
   async checkById (params: CheckCategoryByIdRepository.Params): Promise<CheckCategoryByIdRepository.Result> {

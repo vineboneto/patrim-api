@@ -6,7 +6,7 @@ export class DbLoadCategories implements LoadCategories {
     private readonly loadCategoriesRepository: LoadCategoriesRepository
   ) {}
 
-  async load (): Promise<LoadCategories.Model> {
-    return this.loadCategoriesRepository.loadAll()
+  async load (params: LoadCategories.Params): Promise<LoadCategories.Model> {
+    return this.loadCategoriesRepository.loadAll(params)
   }
 }

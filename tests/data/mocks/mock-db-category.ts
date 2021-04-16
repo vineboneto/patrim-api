@@ -11,7 +11,8 @@ import {
   mockCategoriesModel,
   mockCategoryModel,
   mockCheckCategoryByIdParams,
-  mockDeleteCategoryParams
+  mockDeleteCategoryParams,
+  mockLoadCategoriesParams
 } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -21,6 +22,8 @@ export const mockAddCategoryRepositoryParams = (): AddCategoryRepository.Params 
 export const mockCheckCategoryByIdRepositoryParams = (): CheckCategoryByIdRepository.Params => mockCheckCategoryByIdParams()
 
 export const mockDeleteCategoryRepositoryParams = (): DeleteCategoryRepository.Params => mockDeleteCategoryParams()
+
+export const mockLoadCategoriesRepositoryParams = (): LoadCategoriesRepository.Params => mockLoadCategoriesParams()
 
 export const mockUpdateCategoryRepositoryParams = (): UpdateCategoryRepository.Params => ({
   id: faker.datatype.number(),
@@ -46,10 +49,11 @@ export class CheckCategoryByNameRepositorySpy implements CheckCategoryByNameRepo
 }
 
 export class LoadCategoriesRepositorySpy implements LoadCategoriesRepository {
-  callsCount = 0
+  params: LoadCategoriesRepository.Params
   models = mockCategoriesModel()
-  async loadAll (): Promise<LoadCategoriesRepository.Model> {
-    this.callsCount++
+
+  async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
+    this.params = params
     return this.models
   }
 }

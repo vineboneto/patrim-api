@@ -58,18 +58,28 @@ describe('CategoryPostgresRepository', () => {
   })
 
   describe('loadAll()', () => {
-    test('Should return all categories on success', async () => {
+    test('Should return all categories if take and skip is NaN', async () => {
       const sut = makeSut()
-      await Helper.makeManyCategories()
-      const categories = await sut.loadAll()
-      expect(categories).toBeTruthy()
-      expect(categories.length).toBe(3)
+      const categories = await Helper.makeManyCategories()
+      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
+      expect(dataResponse).toEqual(categories)
+      expect(dataResponse.length).toBe(3)
     })
 
-    test('Should return empty array if categories not exists', async () => {
+    test('Should return the correctly number of categories if take and skip not undefined', async () => {
       const sut = makeSut()
-      const categories = await sut.loadAll()
-      expect(categories).toEqual([])
+      const categories = await Helper.makeManyCategories()
+      const dataResponse = await sut.loadAll({ skip: 0, take: 2 })
+      expect(dataResponse[0]).toEqual(categories[0])
+      expect(dataResponse[1]).toEqual(categories[1])
+      expect(dataResponse[2]).toBe(undefined)
+      expect(dataResponse.length).toBe(2)
+    })
+
+    test('Should return empty array if load categories is empty', async () => {
+      const sut = makeSut()
+      const dataResponse = await sut.loadAll({ skip: NaN, take: faker.datatype.number() })
+      expect(dataResponse).toEqual([])
     })
   })
 

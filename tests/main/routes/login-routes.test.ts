@@ -21,6 +21,7 @@ describe('Login Routes', () => {
 
   beforeEach(async () => {
     prismaClient = PrismaHelper.getConnection()
+    await Helper.deleteAll()
   })
 
   describe('POST /signup', () => {

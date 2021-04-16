@@ -21,7 +21,7 @@ describe('Owner Routes', () => {
   })
 
   describe('POST /owners', () => {
-    test('Should return 204 on save owner', async () => {
+    test('Should return 200 on save owner', async () => {
       const accessToken = await makeAccessToken()
       const { id: sectorId } = await Helper.makeSector()
       await request(app)
@@ -47,7 +47,7 @@ describe('Owner Routes', () => {
   })
 
   describe('PUT /owners', () => {
-    test('Should return 204 on update owner', async () => {
+    test('Should return 200 on update owner', async () => {
       const accessToken = await makeAccessToken()
       const { id, sectorId } = await Helper.makeOwner()
       await request(app)
