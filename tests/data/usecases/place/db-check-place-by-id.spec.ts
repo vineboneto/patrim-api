@@ -26,13 +26,20 @@ describe('DbCheckPlaceById', () => {
   test('Should return false if CheckPlaceByIdRepository returns false', async () => {
     const { sut, checkPlaceByIdRepositorySpy } = makeSut()
     checkPlaceByIdRepositorySpy.result = false
-    await sut.checkById(mockCheckPlaceByIdRepositoryParams())
-    expect(checkPlaceByIdRepositorySpy.result).toBe(false)
+    const data = await sut.checkById(mockCheckPlaceByIdRepositoryParams())
+    expect(data).toBe(false)
   })
 
   test('Should return true if CheckPlaceByIdRepository returns true', async () => {
+    const { sut } = makeSut()
+    const data = await sut.checkById(mockCheckPlaceByIdRepositoryParams())
+    expect(data).toBe(true)
+  })
+
+  test('Should throw CheckPlaceByIdRepository throws', async () => {
     const { sut, checkPlaceByIdRepositorySpy } = makeSut()
-    await sut.checkById(mockCheckPlaceByIdRepositoryParams())
-    expect(checkPlaceByIdRepositorySpy.result).toBe(true)
+    jest.spyOn(checkPlaceByIdRepositorySpy, 'checkById').mockRejectedValueOnce(new Error())
+    const promise = sut.checkById(mockCheckPlaceByIdRepositoryParams())
+    await expect(promise).rejects.toThrow()
   })
 })
