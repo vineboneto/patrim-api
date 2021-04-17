@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, ok, unprocessableEntity } from '@/presentation/helper'
 import { SavePlace } from '@/domain/usecases'
 import { AlreadyExistsError } from '@/presentation/errors'
 
@@ -18,7 +18,7 @@ export class SavePlaceController implements Controller {
     if (!placeModel) {
       return unprocessableEntity(new AlreadyExistsError(request.name))
     }
-    return null
+    return ok(placeModel)
   }
 }
 
