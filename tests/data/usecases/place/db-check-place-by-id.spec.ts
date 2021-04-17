@@ -29,4 +29,10 @@ describe('DbCheckPlaceById', () => {
     await sut.checkById(mockCheckPlaceByIdRepositoryParams())
     expect(checkPlaceByIdRepositorySpy.result).toBe(false)
   })
+
+  test('Should return true if CheckPlaceByIdRepository returns true', async () => {
+    const { sut, checkPlaceByIdRepositorySpy } = makeSut()
+    await sut.checkById(mockCheckPlaceByIdRepositoryParams())
+    expect(checkPlaceByIdRepositorySpy.result).toBe(true)
+  })
 })
