@@ -68,5 +68,11 @@ describe('PatrimonyPostgresRepository', () => {
       const exists = await sut.checkByPlaceId({ placeId })
       expect(exists).toBe(true)
     })
+
+    test('Should return false if not exists patrimony', async () => {
+      const sut = makeSut()
+      const exists = await sut.checkByPlaceId({ placeId: faker.datatype.number() })
+      expect(exists).toBe(false)
+    })
   })
 })
