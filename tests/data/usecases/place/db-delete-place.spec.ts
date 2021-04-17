@@ -56,4 +56,11 @@ describe('DbDeletePlace', () => {
     await sut.delete(params)
     expect(checkPatrimonyByPlaceIdRepositorySpy.params).toEqual({ placeId: params.id })
   })
+
+  test('Should return null if CheckPatrimonyByPlaceIdRepository if return true', async () => {
+    const { sut, checkPatrimonyByPlaceIdRepositorySpy } = makeSut()
+    checkPatrimonyByPlaceIdRepositorySpy.result = true
+    const data = await sut.delete(mockDeletePlaceRepositoryParams())
+    expect(data).toBe(null)
+  })
 })
