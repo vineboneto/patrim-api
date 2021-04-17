@@ -1,6 +1,6 @@
 import { DeletePlaceController } from '@/presentation/controllers'
 import { LinkedDataError } from '@/presentation/errors'
-import { forbidden, ok } from '@/presentation/helper'
+import { forbidden, ok, serverError } from '@/presentation/helper'
 import { DeletePlaceSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -42,5 +42,12 @@ describe('DeletePlaceController', () => {
     const { sut, deletePlaceSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(deletePlaceSpy.model))
+  })
+
+  test('Should return 500 if DeletePlace throws', async () => {
+    const { sut, deletePlaceSpy } = makeSut()
+    jest.spyOn(deletePlaceSpy, 'delete').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
