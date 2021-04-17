@@ -18,11 +18,25 @@ describe('PlacePostgresRepository', () => {
     await Helper.deleteAll()
   })
 
-  test('Should return place on add on success', async () => {
-    const sut = makeSut()
-    const { id, name } = await sut.add(mockAddPlaceRepositoryParams())
-    const place = await Helper.findPlaceById(id)
-    expect(place.id).toBe(id)
-    expect(place.name).toBe(name)
+  describe('add()', () => {
+    test('Should return place on add on success', async () => {
+      const sut = makeSut()
+      const { id, name } = await sut.add(mockAddPlaceRepositoryParams())
+      const place = await Helper.findPlaceById(id)
+      expect(place.id).toBe(id)
+      expect(place.name).toBe(name)
+    })
+  })
+
+  describe('update()', () => {
+    test('Should returns place on update success', async () => {
+      const sut = makeSut()
+      const { id } = await Helper.makePlace()
+      const updatedPlace = await sut.update({
+        id: id,
+        name: 'new_name'
+      })
+      expect(updatedPlace.name).toBe('new_name')
+    })
   })
 })
