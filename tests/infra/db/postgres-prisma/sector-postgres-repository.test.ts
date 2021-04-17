@@ -21,15 +21,15 @@ describe('SectorPostgresRepository', () => {
   })
 
   describe('add()', () => {
-    test('Should return true on add succeeds', async () => {
+    test('Should return sector on add succeeds', async () => {
       const sut = makeSut()
-      const isValid = await sut.add(mockAddSectorRepositoryParams())
-      expect(isValid).toBeTruthy()
+      const sector = await sut.add(mockAddSectorRepositoryParams())
+      expect(sector).toBeTruthy()
     })
   })
 
   describe('update()', () => {
-    test('Should return true on update success', async () => {
+    test('Should return sector on update success', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeSector()
       const result = await sut.update({
