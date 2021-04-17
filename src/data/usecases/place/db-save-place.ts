@@ -1,13 +1,15 @@
 import { SavePlace } from '@/domain/usecases'
-import { AddPlaceRepository } from '@/data/protocols'
+import { AddPlaceRepository, UpdatePlaceRepository } from '@/data/protocols'
 
 export class DbSavePlace implements SavePlace {
   constructor (
-    private readonly addPlaceRepository: AddPlaceRepository
+    private readonly addPlaceRepository: AddPlaceRepository,
+    private readonly updatePlaceRepository: UpdatePlaceRepository
   ) {}
 
   async save (params: SavePlace.Params): Promise<SavePlace.Model> {
-    const { name } = params
+    const { id, name } = params
+    await this.updatePlaceRepository.update({ id, name })
     return this.addPlaceRepository.add({ name })
   }
 }
