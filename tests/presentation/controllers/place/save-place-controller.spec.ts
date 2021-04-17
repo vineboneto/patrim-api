@@ -1,9 +1,10 @@
 import { SavePlaceController } from '@/presentation/controllers'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, unprocessableEntity } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SavePlaceSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 const mockRequest = (): SavePlaceController.Request => ({
   id: faker.datatype.number(),
@@ -47,5 +48,13 @@ describe('SavePlaceController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(savePlaceSpy.params).toEqual(request)
+  })
+
+  test('Should return 422 if SavePlace returns null', async () => {
+    const { sut, savePlaceSpy } = makeSut()
+    savePlaceSpy.model = null
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.name)))
   })
 })
