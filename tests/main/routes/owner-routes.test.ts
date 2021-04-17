@@ -21,7 +21,7 @@ describe('Owner Routes', () => {
   })
 
   describe('POST /owners', () => {
-    test('Should return 200 on save owner', async () => {
+    test('Should return 200 on add owner', async () => {
       const accessToken = await makeAccessToken()
       const { id: sectorId } = await Helper.makeSector()
       await request(app)
@@ -34,7 +34,7 @@ describe('Owner Routes', () => {
         .expect(200)
     })
 
-    test('Should return 403 on save owner without accessToken', async () => {
+    test('Should return 403 on add owner without accessToken', async () => {
       const { id: sectorId } = await Helper.makeSector()
       await request(app)
         .post('/api/owners')

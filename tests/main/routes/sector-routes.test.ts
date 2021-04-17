@@ -21,7 +21,7 @@ describe('Sector Routes', () => {
   })
 
   describe('POST /sectors', () => {
-    test('Should return 204 on save sector', async () => {
+    test('Should return 204 on add sector', async () => {
       const accessToken = await makeAccessToken()
       await request(app)
         .post('/api/sectors')
@@ -32,7 +32,7 @@ describe('Sector Routes', () => {
         .expect(200)
     })
 
-    test('Should return 403 on save sector without accessToken', async () => {
+    test('Should return 403 on add sector without accessToken', async () => {
       await request(app)
         .post('/api/sectors')
         .send({
@@ -43,7 +43,7 @@ describe('Sector Routes', () => {
   })
 
   describe('PUT /sectors', () => {
-    test('Should return 204 on save sector', async () => {
+    test('Should return 204 on update sector', async () => {
       const accessToken = await makeAccessToken()
       const { id } = await Helper.makeSector()
       await request(app)
