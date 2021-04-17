@@ -29,4 +29,10 @@ describe('DbDeletePlace', () => {
     const data = await sut.delete(mockDeletePlaceRepositoryParams())
     expect(data).toBe(null)
   })
+
+  test('Should return place if DeletePlaceRepository returns place ', async () => {
+    const { sut, deletePlaceRepositorySpy } = makeSut()
+    const data = await sut.delete(mockDeletePlaceRepositoryParams())
+    expect(data).toEqual(deletePlaceRepositorySpy.model)
+  })
 })
