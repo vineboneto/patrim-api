@@ -7,7 +7,6 @@ export class DbDeletePlace implements DeletePlace {
   ) {}
 
   async delete (params: DeletePlace.Params): Promise<DeletePlace.Model> {
-    await this.deletePlaceRepository.delete(params)
-    return null
+    return this.deletePlaceRepository.delete(params)
   }
 }
