@@ -19,3 +19,12 @@ export class SavePlaceSpy implements SavePlace {
     return this.model
   }
 }
+
+export class CheckPlaceByIdSpy implements CheckPlaceById {
+  params: CheckPlaceById.Params
+  result = true
+  async checkById (params: CheckPlaceById.Params): Promise<CheckPlaceById.Result> {
+    this.params = params
+    return this.result
+  }
+}
