@@ -25,6 +25,15 @@ export class SavePlaceSpy implements SavePlace {
   }
 }
 
+export class DeletePlaceSpy implements DeletePlace {
+  params: DeletePlace.Params
+  model = mockPlaceModel()
+  async delete (params: DeletePlace.Params): Promise<DeletePlace.Model> {
+    this.params = params
+    return this.model
+  }
+}
+
 export class CheckPlaceByIdSpy implements CheckPlaceById {
   params: CheckPlaceById.Params
   result = true
