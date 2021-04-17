@@ -1,6 +1,6 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { DeletePlace } from '@/domain/usecases'
-import { forbidden, ok } from '@/presentation/helper'
+import { forbidden, ok, serverError } from '@/presentation/helper'
 import { LinkedDataError } from '@/presentation/errors'
 
 export class DeletePlaceController implements Controller {
@@ -9,11 +9,15 @@ export class DeletePlaceController implements Controller {
   ) {}
 
   async handle (request: DeletePlaceController.Request): Promise<HttpResponse> {
-    const placeModel = await this.deletePlace.delete(request)
-    if (!placeModel) {
-      return forbidden(new LinkedDataError('patrimonies'))
+    try {
+      const placeModel = await this.deletePlace.delete(request)
+      if (!placeModel) {
+        return forbidden(new LinkedDataError('patrimonies'))
+      }
+      return ok(placeModel)
+    } catch (error) {
+      return serverError(error)
     }
-    return ok(placeModel)
   }
 }
 
