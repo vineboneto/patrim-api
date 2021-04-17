@@ -1,6 +1,6 @@
 import { DeletePlaceController } from '@/presentation/controllers'
 import { LinkedDataError } from '@/presentation/errors'
-import { forbidden } from '@/presentation/helper'
+import { forbidden, ok } from '@/presentation/helper'
 import { DeletePlaceSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -36,5 +36,11 @@ describe('DeletePlaceController', () => {
     deletePlaceSpy.model = null
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new LinkedDataError('patrimonies')))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut, deletePlaceSpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(deletePlaceSpy.model))
   })
 })
