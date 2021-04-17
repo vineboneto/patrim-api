@@ -12,7 +12,7 @@
 
 > ## Exceções
 
-1. [x] Retorna erro **403** se o id na rota não fora um número
+1. [x] Retorna erro **403** se o id na rota não for um número
 2. [x] Retorna erro **404** se o id na rota não for encontrado
 3. [x] Retorna erro **403** se não for um usuário
 4. [x] Retorna erro **422** se o name já existir

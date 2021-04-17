@@ -15,12 +15,14 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
   3. [Autenticar Rotas](./requirements/account/auth-middleware.md)
   4. [Criar Setor](./requirements/sector/add-sector.md)
   5. [Remover Setor](./requirements/sector/delete-sector.md)
-  6. [Atualizar Setor](./requirements/sector/save-sector.md)
+  6. [Atualizar Setor](./requirements/sector/update-sector.md)
   7. [Listar Setores](./requirements/sector/load-sectors.md)
   8. [Criar Categoria](./requirements/category/add-category.md)
   9. [Remover Categoria](./requirements/category/delete-category.md)
-  10. [Atualizar Categoria](./requirements/category/save-category.md)
+  10. [Atualizar Categoria](./requirements/category/update-category.md)
   11. [Listar Categorias](./requirements/category/load-categories.md)
+  12. [Criar Localidades](./requirements/place/add-place.md)
+  13. [Atualizar Localidades](./requirements/place/update-place.md)
 
 > ### Metodologia de Design
 
