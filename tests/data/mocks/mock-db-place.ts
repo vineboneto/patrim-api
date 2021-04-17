@@ -1,5 +1,10 @@
-import { AddPlaceRepository, CheckPlaceByNameRepository, UpdatePlaceRepository } from '@/data/protocols'
-import { mockPlaceModel } from '@/tests/domain/mocks'
+import {
+  AddPlaceRepository,
+  CheckPlaceByIdRepository,
+  CheckPlaceByNameRepository,
+  UpdatePlaceRepository
+} from '@/data/protocols'
+import { mockCheckPlaceByIdParams, mockPlaceModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -11,6 +16,8 @@ export const mockUpdatePlaceRepositoryParams = (): UpdatePlaceRepository.Params 
   id: faker.datatype.number(),
   name: faker.name.findName()
 })
+
+export const mockCheckPlaceByIdRepositoryParams = (): CheckPlaceByIdRepository.Params => mockCheckPlaceByIdParams()
 
 export class AddOPlaceRepositorySpy implements AddPlaceRepository {
   params: AddPlaceRepository.Params
@@ -36,6 +43,15 @@ export class CheckPlaceByNameRepositorySpy implements CheckPlaceByNameRepository
 
   async checkByName (name: string): Promise<boolean> {
     this.name = name
+    return this.result
+  }
+}
+
+export class CheckPlaceByIdRepositorySpy implements CheckPlaceByIdRepository {
+  params: CheckPlaceByIdRepository.Params
+  result = true
+  async checkById (params: CheckPlaceByIdRepository.Params): Promise<CheckPlaceByIdRepository.Result> {
+    this.params = params
     return this.result
   }
 }
