@@ -60,4 +60,13 @@ describe('PatrimonyPostgresRepository', () => {
       expect(exists).toBe(false)
     })
   })
+
+  describe('checkByPlaceId()', () => {
+    test('Should return true if exists patrimony', async () => {
+      const sut = makeSut()
+      const { placeId } = await Helper.makePatrimony()
+      const exists = await sut.checkByPlaceId({ placeId })
+      expect(exists).toBe(true)
+    })
+  })
 })
