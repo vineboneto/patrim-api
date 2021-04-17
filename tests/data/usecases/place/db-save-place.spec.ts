@@ -1,6 +1,7 @@
 import { DbSavePlace } from '@/data/usecases'
 import {
   AddOPlaceRepositorySpy,
+  CheckPlaceByNameRepositorySpy,
   mockAddPlaceRepositoryParams,
   mockUpdatePlaceRepositoryParams,
   UpdatePlaceRepositorySpy
@@ -10,16 +11,19 @@ type SutTypes = {
   sut: DbSavePlace
   addPlaceRepositorySpy: AddOPlaceRepositorySpy
   updatePlaceRepositorySpy: UpdatePlaceRepositorySpy
+  checkPlaceByNameRepositorySpy: CheckPlaceByNameRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const addPlaceRepositorySpy = new AddOPlaceRepositorySpy()
   const updatePlaceRepositorySpy = new UpdatePlaceRepositorySpy()
-  const sut = new DbSavePlace(addPlaceRepositorySpy, updatePlaceRepositorySpy)
+  const checkPlaceByNameRepositorySpy = new CheckPlaceByNameRepositorySpy()
+  const sut = new DbSavePlace(addPlaceRepositorySpy, updatePlaceRepositorySpy, checkPlaceByNameRepositorySpy)
   return {
     sut,
     addPlaceRepositorySpy,
-    updatePlaceRepositorySpy
+    updatePlaceRepositorySpy,
+    checkPlaceByNameRepositorySpy
   }
 }
 
@@ -76,5 +80,12 @@ describe('DbSavePlace', () => {
     jest.spyOn(updatePlaceRepositorySpy, 'update').mockRejectedValueOnce(new Error())
     const promise = sut.save(mockUpdatePlaceRepositoryParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CheckPlaceByNameRepository with correct value', async () => {
+    const { sut, checkPlaceByNameRepositorySpy } = makeSut()
+    const params = mockAddPlaceRepositoryParams()
+    await sut.save(params)
+    expect(checkPlaceByNameRepositorySpy.name).toBe(params.name)
   })
 })
