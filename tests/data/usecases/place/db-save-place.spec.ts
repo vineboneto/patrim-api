@@ -29,4 +29,10 @@ describe('DbSavePlace', () => {
     const data = await sut.save(mockAddPlaceRepositoryParams())
     expect(data).toEqual(addPlaceRepositorySpy.model)
   })
+
+  test('Should return place if AddPlaceRepository returns place', async () => {
+    const { sut, addPlaceRepositorySpy } = makeSut()
+    const data = await sut.save(mockAddPlaceRepositoryParams())
+    expect(data).toEqual(addPlaceRepositorySpy.model)
+  })
 })
