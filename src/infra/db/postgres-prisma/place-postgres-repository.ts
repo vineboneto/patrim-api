@@ -49,7 +49,7 @@ AddPlaceRepository, UpdatePlaceRepository, CheckPlaceByNameRepository {
     const { id } = params
     const placeModel = await prismaClient.place.findFirst({
       where: {
-        id
+        id: Number(id)
       },
       select: {
         id: true
