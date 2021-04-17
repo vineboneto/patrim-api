@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, unprocessableEntity } from '@/presentation/helper'
 import { SavePlace } from '@/domain/usecases'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 export class SavePlaceController implements Controller {
   constructor (
@@ -13,7 +14,10 @@ export class SavePlaceController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    await this.savePlace.save(request)
+    const placeModel = await this.savePlace.save(request)
+    if (!placeModel) {
+      return unprocessableEntity(new AlreadyExistsError(request.name))
+    }
     return null
   }
 }
