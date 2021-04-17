@@ -1,10 +1,10 @@
 import { SavePlaceController } from '@/presentation/controllers'
-import { badRequest, ok, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { AlreadyExistsError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SavePlaceSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
-import { AlreadyExistsError } from '@/presentation/errors'
 
 const mockRequest = (): SavePlaceController.Request => ({
   id: faker.datatype.number(),
@@ -62,5 +62,12 @@ describe('SavePlaceController', () => {
     const { sut, savePlaceSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(savePlaceSpy.model))
+  })
+
+  test('Should return 500 if SavePlace throws', async () => {
+    const { sut, savePlaceSpy } = makeSut()
+    jest.spyOn(savePlaceSpy, 'save').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
