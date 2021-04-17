@@ -1,6 +1,7 @@
 import { SavePlaceController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
+import { SavePlaceSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -12,14 +13,17 @@ const mockRequest = (): SavePlaceController.Request => ({
 type SutTypes = {
   sut: SavePlaceController
   validationSpy: ValidationSpy
+  savePlaceSpy: SavePlaceSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new SavePlaceController(validationSpy)
+  const savePlaceSpy = new SavePlaceSpy()
+  const sut = new SavePlaceController(validationSpy, savePlaceSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    savePlaceSpy
   }
 }
 
@@ -36,5 +40,12 @@ describe('SavePlaceController', () => {
     validationSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call SavePlace with correct value', async () => {
+    const { sut, savePlaceSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(savePlaceSpy.params).toEqual(request)
   })
 })
