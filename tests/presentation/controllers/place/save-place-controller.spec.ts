@@ -1,5 +1,5 @@
 import { SavePlaceController } from '@/presentation/controllers'
-import { badRequest, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, ok, unprocessableEntity } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { SavePlaceSpy } from '@/tests/domain/mocks'
 
@@ -56,5 +56,11 @@ describe('SavePlaceController', () => {
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.name)))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut, savePlaceSpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(savePlaceSpy.model))
   })
 })
