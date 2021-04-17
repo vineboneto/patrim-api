@@ -71,4 +71,16 @@ describe('PlacePostgresRepository', () => {
       expect(result).toBe(false)
     })
   })
+
+  describe('delete()', () => {
+    test('Should return place deleted on success', async () => {
+      const sut = makeSut()
+      const { id, name } = await Helper.makePlace()
+      const place = await sut.delete({ id })
+      const searchPlaceDeleted = await Helper.findPlaceById(id)
+      expect(place.id).toBe(id)
+      expect(place.name).toBe(name)
+      expect(searchPlaceDeleted).toBeFalsy()
+    })
+  })
 })
