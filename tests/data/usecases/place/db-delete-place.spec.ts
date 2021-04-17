@@ -1,17 +1,24 @@
 import { DbDeletePlace } from '@/data/usecases'
-import { DeletePlaceRepositorySpy, mockDeletePlaceRepositoryParams } from '@/tests/data/mocks'
+import {
+  CheckPatrimonyByPlaceIdRepositorySpy,
+  DeletePlaceRepositorySpy,
+  mockDeletePlaceRepositoryParams
+} from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbDeletePlace
   deletePlaceRepositorySpy: DeletePlaceRepositorySpy
+  checkPatrimonyByPlaceIdRepositorySpy: CheckPatrimonyByPlaceIdRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const deletePlaceRepositorySpy = new DeletePlaceRepositorySpy()
-  const sut = new DbDeletePlace(deletePlaceRepositorySpy)
+  const checkPatrimonyByPlaceIdRepositorySpy = new CheckPatrimonyByPlaceIdRepositorySpy()
+  const sut = new DbDeletePlace(deletePlaceRepositorySpy, checkPatrimonyByPlaceIdRepositorySpy)
   return {
     sut,
-    deletePlaceRepositorySpy
+    deletePlaceRepositorySpy,
+    checkPatrimonyByPlaceIdRepositorySpy
   }
 }
 
@@ -41,5 +48,12 @@ describe('DbDeletePlace', () => {
     jest.spyOn(deletePlaceRepositorySpy, 'delete').mockRejectedValueOnce(new Error())
     const promise = sut.delete(mockDeletePlaceRepositoryParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CheckPatrimonyByPlaceIdRepository with correct value', async () => {
+    const { sut, checkPatrimonyByPlaceIdRepositorySpy } = makeSut()
+    const params = mockDeletePlaceRepositoryParams()
+    await sut.delete(params)
+    expect(checkPatrimonyByPlaceIdRepositorySpy.params).toEqual({ placeId: params.id })
   })
 })

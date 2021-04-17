@@ -1,6 +1,7 @@
 import {
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByOwnerIdRepository,
+  CheckPatrimonyByPlaceIdRepository,
   LoadPatrimonyByOwnerIdRepository
 } from '@/data/protocols'
 
@@ -36,7 +37,18 @@ export class CheckPatrimonyByCategoryIdRepositorySpy implements CheckPatrimonyBy
   result = false
 
   async checkByCategoryId (params: CheckPatrimonyByCategoryIdRepository.Params):
-  Promise<CheckPatrimonyByOwnerIdRepository.Result> {
+  Promise<CheckPatrimonyByCategoryIdRepository.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class CheckPatrimonyByPlaceIdRepositorySpy implements CheckPatrimonyByPlaceIdRepository {
+  params: CheckPatrimonyByPlaceIdRepository.Params
+  result = false
+
+  async checkByPlaceId (params: CheckPatrimonyByPlaceIdRepository.Params):
+  Promise<CheckPatrimonyByPlaceIdRepository.Result> {
     this.params = params
     return this.result
   }
