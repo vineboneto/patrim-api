@@ -8,7 +8,6 @@ export class DbSavePlace implements SavePlace {
 
   async save (params: SavePlace.Params): Promise<SavePlace.Model> {
     const { name } = params
-    await this.addPlaceRepository.add({ name })
-    return null
+    return this.addPlaceRepository.add({ name })
   }
 }
