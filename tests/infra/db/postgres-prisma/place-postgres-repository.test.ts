@@ -39,4 +39,13 @@ describe('PlacePostgresRepository', () => {
       expect(updatedPlace.name).toBe('new_name')
     })
   })
+
+  describe('checkByName', () => {
+    test('Should return true if name exists', async () => {
+      const sut = makeSut()
+      const { name } = await Helper.makePlace()
+      const result = await sut.checkByName(name)
+      expect(result).toBe(true)
+    })
+  })
 })
