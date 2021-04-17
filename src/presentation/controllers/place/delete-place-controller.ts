@@ -1,6 +1,6 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { DeletePlace } from '@/domain/usecases'
-import { forbidden } from '@/presentation/helper'
+import { forbidden, ok } from '@/presentation/helper'
 import { LinkedDataError } from '@/presentation/errors'
 
 export class DeletePlaceController implements Controller {
@@ -13,7 +13,7 @@ export class DeletePlaceController implements Controller {
     if (!placeModel) {
       return forbidden(new LinkedDataError('patrimonies'))
     }
-    return null
+    return ok(placeModel)
   }
 }
 
