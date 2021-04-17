@@ -8,7 +8,10 @@ export class DbDeletePlace implements DeletePlace {
   ) {}
 
   async delete (params: DeletePlace.Params): Promise<DeletePlace.Model> {
-    await this.checkPatrimonyByPlaceId.checkByPlaceId({ placeId: params.id })
-    return this.deletePlaceRepository.delete(params)
+    const exists = await this.checkPatrimonyByPlaceId.checkByPlaceId({ placeId: params.id })
+    if (!exists) {
+      return this.deletePlaceRepository.delete(params)
+    }
+    return null
   }
 }
