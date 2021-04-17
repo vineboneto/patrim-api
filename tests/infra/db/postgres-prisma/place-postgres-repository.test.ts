@@ -56,4 +56,13 @@ describe('PlacePostgresRepository', () => {
       expect(result).toBe(false)
     })
   })
+
+  describe('checkById', () => {
+    test('Should return true if id exists', async () => {
+      const sut = makeSut()
+      const { id } = await Helper.makePlace()
+      const result = await sut.checkById({ id })
+      expect(result).toBe(true)
+    })
+  })
 })
