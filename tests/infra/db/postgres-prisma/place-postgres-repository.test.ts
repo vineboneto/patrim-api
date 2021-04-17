@@ -2,6 +2,8 @@ import { PlacePostgresRepository, PrismaHelper } from '@/infra/db/postgres-prism
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 import { mockAddPlaceRepositoryParams } from '@/tests/data/mocks'
 
+import faker from 'faker'
+
 const makeSut = (): PlacePostgresRepository => new PlacePostgresRepository()
 
 describe('PlacePostgresRepository', () => {
@@ -46,6 +48,12 @@ describe('PlacePostgresRepository', () => {
       const { name } = await Helper.makePlace()
       const result = await sut.checkByName(name)
       expect(result).toBe(true)
+    })
+
+    test('Should return false if name not exists', async () => {
+      const sut = makeSut()
+      const result = await sut.checkByName(faker.name.findName())
+      expect(result).toBe(false)
     })
   })
 })
