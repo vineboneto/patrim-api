@@ -41,4 +41,29 @@ describe('Place Routes', () => {
         .expect(403)
     })
   })
+
+  describe('PUT /places', () => {
+    test('Should return 200 on update place', async () => {
+      const accessToken = await makeAccessToken()
+      const { id } = await Helper.makePlace()
+      await request(app)
+        .put(`/api/places/${id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: faker.name.findName()
+        })
+        .expect(200)
+    })
+
+    test('Should return 404 on update place with invalid id', async () => {
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .put(`/api/places/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: faker.name.findName()
+        })
+        .expect(404)
+    })
+  })
 })

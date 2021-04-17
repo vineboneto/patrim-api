@@ -21,7 +21,7 @@ describe('Category Routes', () => {
   })
 
   describe('POST /categories', () => {
-    test('Should return 204 on add category', async () => {
+    test('Should return 200 on add category', async () => {
       const accessToken = await makeAccessToken()
       await request(app)
         .post('/api/categories')
@@ -43,7 +43,7 @@ describe('Category Routes', () => {
   })
 
   describe('PUT /categories', () => {
-    test('Should return 204 on update category', async () => {
+    test('Should return 200 on update category', async () => {
       const accessToken = await makeAccessToken()
       const { id } = await Helper.makeCategory()
       await request(app)

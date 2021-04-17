@@ -43,7 +43,7 @@ describe('Sector Routes', () => {
   })
 
   describe('PUT /sectors', () => {
-    test('Should return 204 on update sector', async () => {
+    test('Should return 200 on update sector', async () => {
       const accessToken = await makeAccessToken()
       const { id } = await Helper.makeSector()
       await request(app)
