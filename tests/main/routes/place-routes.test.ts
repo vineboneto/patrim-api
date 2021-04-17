@@ -66,4 +66,32 @@ describe('Place Routes', () => {
         .expect(404)
     })
   })
+
+  describe('DELETE /places/:id', () => {
+    test('Should return places deleted on success', async () => {
+      const accessToken = await makeAccessToken()
+      const { id } = await Helper.makePlace()
+      await request(app)
+        .delete(`/api/places/${id}`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 404 on update place with invalid id', async () => {
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .delete(`/api/places/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .expect(404)
+    })
+
+    test('Should return 403 if patrimony exists', async () => {
+      const { placeId } = await Helper.makePatrimony()
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .delete(`/api/places/${placeId}`)
+        .set('x-access-token', accessToken)
+        .expect(403)
+    })
+  })
 })
