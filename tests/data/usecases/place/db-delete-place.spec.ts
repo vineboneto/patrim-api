@@ -63,4 +63,11 @@ describe('DbDeletePlace', () => {
     const data = await sut.delete(mockDeletePlaceRepositoryParams())
     expect(data).toBe(null)
   })
+
+  test('Should throw if CheckPatrimonyByPlaceIdRepository throws', async () => {
+    const { sut, checkPatrimonyByPlaceIdRepositorySpy } = makeSut()
+    jest.spyOn(checkPatrimonyByPlaceIdRepositorySpy, 'checkByPlaceId').mockRejectedValueOnce(new Error())
+    const promise = sut.delete(mockDeletePlaceRepositoryParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
