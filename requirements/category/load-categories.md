@@ -6,7 +6,7 @@
 2. [x] Valida se a requisição foi feita por um **usuário**
 3. [ ] Valida os parâmetros **page** e **limit**
 4. [x] Retorna **204** se não tiver nenhum setor
-5. [x] Retorna **200** com os dados dos setores
+5. [x] Retorna **200** com os dados dos categoria
 
 > ## Exceções
 
