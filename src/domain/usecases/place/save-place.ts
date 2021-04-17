@@ -1,9 +1,9 @@
 export interface SavePlace {
-  save (params: SavePlace.Request): Promise<SavePlace.Model>
+  save (params: SavePlace.Params): Promise<SavePlace.Model>
 }
 
 export namespace SavePlace {
-  export type Request = {
+  export type Params = {
     id?: number
     name: string
   }
