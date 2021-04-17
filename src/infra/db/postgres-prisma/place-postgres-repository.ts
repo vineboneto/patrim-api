@@ -4,11 +4,15 @@ import {
   CheckPlaceByIdRepository,
   CheckPlaceByNameRepository,
   CheckSectorByIdRepository,
+  DeletePlaceRepository,
   UpdatePlaceRepository
 } from '@/data/protocols'
 
 export class PlacePostgresRepository implements
-AddPlaceRepository, UpdatePlaceRepository, CheckPlaceByNameRepository {
+  AddPlaceRepository,
+  UpdatePlaceRepository,
+  CheckPlaceByNameRepository,
+  DeletePlaceRepository {
   async add (params: AddPlaceRepository.Params): Promise<AddPlaceRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const placeModel = await prismaClient.place.create({
@@ -24,6 +28,17 @@ AddPlaceRepository, UpdatePlaceRepository, CheckPlaceByNameRepository {
       data: {
         name
       },
+      where: {
+        id: Number(id)
+      }
+    })
+    return placeModel
+  }
+
+  async delete (params: DeletePlaceRepository.Params): Promise<DeletePlaceRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const { id } = params
+    const placeModel = await prismaClient.place.delete({
       where: {
         id: Number(id)
       }
