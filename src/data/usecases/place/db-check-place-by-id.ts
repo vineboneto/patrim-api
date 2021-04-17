@@ -7,7 +7,6 @@ export class DbCheckPlaceById implements CheckPlaceById {
   ) {}
 
   async checkById (params: CheckPlaceById.Params): Promise<CheckPlaceById.Result> {
-    await this.checkPlaceByIdRepository.checkById(params)
-    return null
+    return this.checkPlaceByIdRepository.checkById(params)
   }
 }
