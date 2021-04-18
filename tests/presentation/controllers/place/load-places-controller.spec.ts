@@ -1,5 +1,5 @@
 import { LoadPlacesController } from '@/presentation/controllers'
-import { noContent, ok } from '@/presentation/helper'
+import { noContent, ok, serverError } from '@/presentation/helper'
 import { LoadPlacesSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -42,5 +42,12 @@ describe('LoadPlacesController', () => {
     const { sut, loadPlacesSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(loadPlacesSpy.models))
+  })
+
+  test('Should return 500 if LoadPlaces throws', async () => {
+    const { sut, loadPlacesSpy } = makeSut()
+    jest.spyOn(loadPlacesSpy, 'load').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
