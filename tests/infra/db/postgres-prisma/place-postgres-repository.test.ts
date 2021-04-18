@@ -92,5 +92,16 @@ describe('PlacePostgresRepository', () => {
       expect(dataResponse).toEqual(places)
       expect(dataResponse.length).toBe(3)
     })
+
+    test('Should return the correctly number of places if take and skip not undefined', async () => {
+      const sut = makeSut()
+      const places = await Helper.makeManyPlaces()
+      const dataResponse = await sut.loadAll({ skip: 0, take: 3 })
+      expect(dataResponse[0]).toEqual(places[0])
+      expect(dataResponse[1]).toEqual(places[1])
+      expect(dataResponse[2]).toEqual(places[2])
+      expect(dataResponse[3]).toBe(undefined)
+      expect(dataResponse.length).toBe(3)
+    })
   })
 })
