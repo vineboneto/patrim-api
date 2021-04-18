@@ -1,6 +1,6 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { LoadPlaces } from '@/domain/usecases'
-import { noContent, ok } from '@/presentation/helper'
+import { noContent, ok, serverError } from '@/presentation/helper'
 
 export class LoadPlacesController implements Controller {
   constructor (
@@ -8,8 +8,12 @@ export class LoadPlacesController implements Controller {
   ) {}
 
   async handle (request: LoadPlacesController.Request): Promise<HttpResponse> {
-    const places = await this.loadPlaces.load(request)
-    return places.length ? ok(places) : noContent()
+    try {
+      const places = await this.loadPlaces.load(request)
+      return places.length ? ok(places) : noContent()
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
 
