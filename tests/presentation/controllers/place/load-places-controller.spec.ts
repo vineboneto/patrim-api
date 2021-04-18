@@ -1,5 +1,5 @@
 import { LoadPlacesController } from '@/presentation/controllers'
-import { noContent } from '@/presentation/helper'
+import { noContent, ok } from '@/presentation/helper'
 import { LoadPlacesSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -36,5 +36,11 @@ describe('LoadPlacesController', () => {
     loadPlacesSpy.models = []
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
+  })
+
+  test('Should return 200 if LoadPlaces return places', async () => {
+    const { sut, loadPlacesSpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(loadPlacesSpy.models))
   })
 })
