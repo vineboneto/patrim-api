@@ -1,4 +1,5 @@
 import { LoadPlacesController } from '@/presentation/controllers'
+import { noContent } from '@/presentation/helper'
 import { LoadPlacesSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -28,5 +29,12 @@ describe('LoadPlacesController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(loadPlacesSpy.params).toEqual(request)
+  })
+
+  test('Should return 204 if LoadPlaces returns empty array', async () => {
+    const { sut, loadPlacesSpy } = makeSut()
+    loadPlacesSpy.models = []
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
