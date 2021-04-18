@@ -22,4 +22,11 @@ describe('DbLoadPlaces', () => {
     await sut.load(params)
     expect(loadPlacesRepositorySpy.params).toEqual(params)
   })
+
+  test('Should return empty array if LoadPlacesRepository returns empty array', async () => {
+    const { sut, loadPlacesRepositorySpy } = makeSut()
+    loadPlacesRepositorySpy.models = []
+    const data = await sut.load(mockLoadPlacesRepositoryParams())
+    expect(data).toEqual([])
+  })
 })
