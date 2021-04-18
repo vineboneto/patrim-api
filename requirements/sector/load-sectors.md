@@ -4,7 +4,7 @@
 
 1. [x] Recebe uma requisição do tipo **GET** na rota **/api/sectors/page/limit**
 2. [x] Valida se a requisição foi feita por um **usuário**
-3. [ ] Valida os parâmetros **page** e **limit**
+3. [x] Retorna **200** com todos os dados se skip e take não forem definidos
 4. [x] Retorna **204** se não tiver nenhum setor
 5. [x] Retorna **200** com os dados dos setores
 

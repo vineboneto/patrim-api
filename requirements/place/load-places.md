@@ -4,7 +4,7 @@
 
 1. [ ] Recebe uma requisição do tipo **GET** na rota **/api/places?take=#&skip=#**
 2. [ ] Valida se a requisição foi feita por um **usuário**
-3. [ ] Valida os parâmetros **page** e **limit**
+3. [ ] Retorna **200** com todos os dados se skip e take não forem definidos
 4. [ ] Retorna **204** se não tiver nenhum localidades
 5. [ ] Retorna **200** com os dados dos localidades
 
