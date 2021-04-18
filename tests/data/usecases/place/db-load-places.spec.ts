@@ -29,4 +29,10 @@ describe('DbLoadPlaces', () => {
     const data = await sut.load(mockLoadPlacesRepositoryParams())
     expect(data).toEqual([])
   })
+
+  test('Should places if LoadPlacesRepository returns places', async () => {
+    const { sut, loadPlacesRepositorySpy } = makeSut()
+    const data = await sut.load(mockLoadPlacesRepositoryParams())
+    expect(data).toEqual(loadPlacesRepositorySpy.models)
+  })
 })
