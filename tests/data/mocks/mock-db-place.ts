@@ -3,9 +3,16 @@ import {
   CheckPlaceByIdRepository,
   CheckPlaceByNameRepository,
   DeletePlaceRepository,
+  LoadPlacesRepository,
   UpdatePlaceRepository
 } from '@/data/protocols'
-import { mockCheckPlaceByIdParams, mockDeletePlaceParams, mockPlaceModel } from '@/tests/domain/mocks'
+import {
+  mockCheckPlaceByIdParams,
+  mockDeletePlaceParams,
+  mockLoadPlacesParams,
+  mockPlaceModel,
+  mockPlacesModel
+} from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -17,6 +24,8 @@ export const mockUpdatePlaceRepositoryParams = (): UpdatePlaceRepository.Params 
   id: faker.datatype.number(),
   name: faker.name.findName()
 })
+
+export const mockLoadPlacesRepositoryParams = (): LoadPlacesRepository.Params => mockLoadPlacesParams()
 
 export const mockCheckPlaceByIdRepositoryParams = (): CheckPlaceByIdRepository.Params => mockCheckPlaceByIdParams()
 
@@ -46,6 +55,15 @@ export class DeletePlaceRepositorySpy implements DeletePlaceRepository {
   async delete (params: DeletePlaceRepository.Params): Promise<DeletePlaceRepository.Model> {
     this.params = params
     return this.model
+  }
+}
+
+export class LoadPlacesRepositorySpy implements LoadPlacesRepository {
+  models = mockPlacesModel()
+  params: LoadPlacesRepository.Params
+  async loadAll (params: LoadPlacesRepository.Params): Promise<LoadPlacesRepository.Model> {
+    this.params = params
+    return this.models
   }
 }
 
