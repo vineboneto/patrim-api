@@ -103,5 +103,11 @@ describe('PlacePostgresRepository', () => {
       expect(dataResponse[3]).toBe(undefined)
       expect(dataResponse.length).toBe(3)
     })
+
+    test('Should return empty array if load places is empty', async () => {
+      const sut = makeSut()
+      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
+      expect(dataResponse).toEqual([])
+    })
   })
 })
