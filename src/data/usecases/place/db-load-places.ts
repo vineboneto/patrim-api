@@ -7,7 +7,6 @@ export class DbLoadPlaces implements LoadPlaces {
   ) {}
 
   async load (params: LoadPlaces.Params): Promise<LoadPlaces.Model> {
-    await this.loadPlaceRepository.loadAll(params)
-    return null
+    return this.loadPlaceRepository.loadAll(params)
   }
 }
