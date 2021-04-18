@@ -19,7 +19,7 @@ export class LoadSectorsController implements Controller {
 
 export namespace LoadSectorsController {
   export type Request = {
-    take: number
-    skip: number
+    take?: number
+    skip?: number
   }
 }
