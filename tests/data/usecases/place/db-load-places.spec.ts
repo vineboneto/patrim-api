@@ -35,4 +35,11 @@ describe('DbLoadPlaces', () => {
     const data = await sut.load(mockLoadPlacesRepositoryParams())
     expect(data).toEqual(loadPlacesRepositorySpy.models)
   })
+
+  test('Should throw if LoadPlacesRepository throws', async () => {
+    const { sut, loadPlacesRepositorySpy } = makeSut()
+    jest.spyOn(loadPlacesRepositorySpy, 'loadAll').mockRejectedValueOnce(new Error())
+    const promise = sut.load(mockLoadPlacesRepositoryParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
