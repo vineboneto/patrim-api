@@ -53,3 +53,12 @@ export class CheckPlaceByIdSpy implements CheckPlaceById {
     return this.result
   }
 }
+
+export class LoadPlacesSpy implements LoadPlaces {
+  models = mockPlacesModel()
+  params: LoadPlaces.Params
+  async load (params: LoadPlaces.Params): Promise<LoadPlaces.Model> {
+    this.params = params
+    return this.models
+  }
+}
