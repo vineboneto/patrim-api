@@ -83,4 +83,14 @@ describe('PlacePostgresRepository', () => {
       expect(searchPlaceDeleted).toBeFalsy()
     })
   })
+
+  describe('loadAll()', () => {
+    test('Should return all places if take and skip is NaN', async () => {
+      const sut = makeSut()
+      const places = await Helper.makeManyPlaces()
+      const dataResponse = await sut.loadAll({ skip: Number('adfavzv'), take: Number('adfasdf') })
+      expect(dataResponse).toEqual(places)
+      expect(dataResponse.length).toBe(3)
+    })
+  })
 })
