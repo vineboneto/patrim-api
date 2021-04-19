@@ -26,7 +26,7 @@ export class PatrimonyPostgresRepository implements
       data: {
         number: params.number,
         brand: params.brand,
-        description: params?.description,
+        description: params.description,
         ownerId: Number(params.ownerId),
         placeId: Number(params.placeId),
         categoryId: Number(params.categoryId)

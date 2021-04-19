@@ -19,7 +19,7 @@ model Patrimony {
   id           Int    @id @default(autoincrement())
   number       String  @unique
   brand        String 
-  description  String
+  description  String?
   Category     Category  @relation(fields: [categoryId], references: [id])
   categoryId   Int
   Owner        Owner     @relation(fields: [ownerId], references: [id])
