@@ -38,4 +38,11 @@ describe('CheckExistCategoryId', () => {
     const error = await sut.check({ categoryId: faker.datatype.number() })
     expect(error).toEqual(null)
   })
+
+  test('Should throw if CheckCategoryById throw', async () => {
+    const { sut, checkCategoryByIdSpy } = makeSut()
+    jest.spyOn(checkCategoryByIdSpy, 'checkById').mockRejectedValueOnce(new Error())
+    const promise = sut.check({ categoryId: faker.datatype.number() })
+    await expect(promise).rejects.toThrow()
+  })
 })

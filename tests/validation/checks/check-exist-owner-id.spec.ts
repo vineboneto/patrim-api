@@ -38,4 +38,11 @@ describe('CheckExistOwnerId', () => {
     const error = await sut.check({ ownerId: faker.datatype.number() })
     expect(error).toEqual(null)
   })
+
+  test('Should throw if CheckOwnerById throw', async () => {
+    const { sut, checkOwnerByIdSpy } = makeSut()
+    jest.spyOn(checkOwnerByIdSpy, 'checkById').mockRejectedValueOnce(new Error())
+    const promise = sut.check({ ownerId: faker.datatype.number() })
+    await expect(promise).rejects.toThrow()
+  })
 })

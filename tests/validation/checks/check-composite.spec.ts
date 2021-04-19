@@ -39,4 +39,11 @@ describe('CheckExistComposite', () => {
     const error = await sut.check({ field: faker.random.word() })
     expect(error).toBeFalsy()
   })
+
+  test('Should throw if same CheckExist throw', async () => {
+    const { sut, checkSpies } = makeSut()
+    jest.spyOn(checkSpies[0], 'check').mockRejectedValueOnce(new Error())
+    const promise = sut.check({ ownerId: faker.datatype.number() })
+    await expect(promise).rejects.toThrow()
+  })
 })
