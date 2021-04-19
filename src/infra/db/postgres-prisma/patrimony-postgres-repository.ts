@@ -6,9 +6,6 @@ import {
   CheckPatrimonyByPlaceIdRepository,
   AddPatrimonyRepository
 } from '@/data/protocols'
-import { Category, Owner, Patrimony, Place } from '@prisma/client'
-
-type PatrimonyPrisma = Patrimony & { Category: Category, Owner: Owner, Place: Place }
 
 export class PatrimonyPostgresRepository implements
   AddPatrimonyRepository,
@@ -33,7 +30,7 @@ export class PatrimonyPostgresRepository implements
         Place: true
       }
     })
-    return this.adapt(patrimony)
+    return PrismaHelper.adaptPatrimony(patrimony)
   }
 
   async loadByOwnerId (params: LoadPatrimonyByOwnerIdRepository.Params):
@@ -94,30 +91,5 @@ export class PatrimonyPostgresRepository implements
       }
     })
     return patrimony !== null
-  }
-
-  private adapt (patrimony: PatrimonyPrisma): AddPatrimonyRepository.Model {
-    return {
-      id: patrimony.id,
-      number: patrimony.number,
-      description: patrimony.description,
-      brand: patrimony.brand,
-      category: {
-        id: patrimony.Category.id,
-        name: patrimony.Category.name
-      },
-      owner: {
-        id: patrimony.Owner.id,
-        name: patrimony.Owner.name,
-        sector: {
-          id: patrimony.Owner.id,
-          name: patrimony.Owner.name
-        }
-      },
-      place: {
-        id: patrimony.Owner.id,
-        name: patrimony.Owner.name
-      }
-    }
   }
 }

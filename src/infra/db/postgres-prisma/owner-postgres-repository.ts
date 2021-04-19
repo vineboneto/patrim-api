@@ -7,7 +7,7 @@ import {
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
-import { Owner } from '@prisma/client'
+import { Owner, Sector } from '@prisma/client'
 
 export class OwnerPostgresRepository implements
   AddOwnerRepository,
@@ -28,7 +28,7 @@ export class OwnerPostgresRepository implements
         Sector: true
       }
     })
-    return this.adapt(ownerModel)
+    return PrismaHelper.adaptOwner(ownerModel)
   }
 
   async update (owner: UpdateOwnerRepository.Params): Promise<UpdateOwnerRepository.Model> {
@@ -46,7 +46,7 @@ export class OwnerPostgresRepository implements
         Sector: true
       }
     })
-    return this.adapt(ownerModel)
+    return PrismaHelper.adaptOwner(ownerModel)
   }
 
   async delete (params: DeleteOwnerRepository.Params): Promise<DeleteOwnerRepository.Model> {
@@ -60,7 +60,7 @@ export class OwnerPostgresRepository implements
         Sector: true
       }
     })
-    return this.adapt(ownerDeleted)
+    return PrismaHelper.adaptOwner(ownerDeleted)
   }
 
   async checkById (params: CheckOwnerByIdRepository.Params): Promise<CheckOwnerByIdRepository.Result> {
@@ -80,7 +80,7 @@ export class OwnerPostgresRepository implements
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { skip, take } = params
-    let owners: Owner[]
+    let owners: Array<Owner & { Sector: Sector}>
     if (isNaN(skip) || isNaN(take)) {
       owners = await prismaClient.owner.findMany({
         include: {
@@ -96,7 +96,7 @@ export class OwnerPostgresRepository implements
         }
       })
     }
-    return owners.map(owner => this.adapt(owner))
+    return owners.map(owner => PrismaHelper.adaptOwner(owner))
   }
 
   async checkBySectorId (params: CheckOwnerBySectorIdRepository.Params): Promise<CheckOwnerBySectorIdRepository.Result> {
@@ -111,16 +111,5 @@ export class OwnerPostgresRepository implements
       }
     })
     return sectorWithOnlyId !== null
-  }
-
-  private adapt (ownerModel: any): any {
-    return {
-      id: ownerModel.id,
-      name: ownerModel.name,
-      sector: {
-        id: ownerModel.Sector.id,
-        name: ownerModel.Sector.name
-      }
-    }
   }
 }

@@ -30,7 +30,7 @@ export const makeOwner = async (owner?: AddOwnerRepository.Params): Promise<Owne
       }
     })
   }
-  return adapt(ownerModel)
+  return PrismaHelper.adaptOwner(ownerModel)
 }
 
 export const makeManyOwners = async (): Promise<OwnerModel []> => {
@@ -51,18 +51,11 @@ export const makeManyOwners = async (): Promise<OwnerModel []> => {
     ]
   })
   const owners = await prismaClient.owner.findMany({
-    select: {
-      id: true,
-      name: true,
-      Sector: {
-        select: {
-          id: true,
-          name: true
-        }
-      }
+    include: {
+      Sector: true
     }
   })
-  return owners.map(owner => adapt(owner))
+  return owners.map(owner => PrismaHelper.adaptOwner(owner))
 }
 
 export const findOwnerById = async (id: number): Promise<OwnerModel> => {
@@ -78,16 +71,5 @@ export const findOwnerById = async (id: number): Promise<OwnerModel> => {
   if (!owner) {
     return null
   }
-  return adapt(owner)
-}
-
-const adapt = (owner: any): OwnerModel => {
-  return {
-    id: owner.id,
-    name: owner.name,
-    sector: {
-      id: owner.Sector.id,
-      name: owner.Sector.name
-    }
-  }
+  return PrismaHelper.adaptOwner(owner)
 }
