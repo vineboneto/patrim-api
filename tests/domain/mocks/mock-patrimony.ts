@@ -38,6 +38,15 @@ export class SavePatrimonySpy implements SavePatrimony {
   }
 }
 
+export class CheckPatrimonyByIdSpy implements CheckPatrimonyById {
+  params: CheckPatrimonyById.Params
+  result = true
+  async checkById (params: CheckPatrimonyById.Params): Promise<CheckPatrimonyById.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
 export class LoadPatrimonyByOwnerIdSpy implements LoadPatrimonyByOwnerId {
   params: LoadPatrimonyByOwnerId.Params
   model = {
