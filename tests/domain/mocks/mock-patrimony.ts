@@ -1,4 +1,4 @@
-import { LoadPatrimonyByOwnerId, SavePatrimony } from '@/domain/usecases'
+import { CheckPatrimonyById, LoadPatrimonyByOwnerId, SavePatrimony } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -23,6 +23,10 @@ export const mockPatrimonyModel = (): SavePatrimony.Model => ({
     id: faker.datatype.number(),
     name: faker.name.findName()
   }
+})
+
+export const mockCheckPatrimonyByIdParams = (): CheckPatrimonyById.Params => ({
+  id: faker.datatype.number()
 })
 
 export class LoadPatrimonyByOwnerIdSpy implements LoadPatrimonyByOwnerId {
