@@ -1,13 +1,14 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden } from '@/presentation/helper'
-import { CheckCategoryById, CheckPlaceById } from '@/domain/usecases'
+import { CheckCategoryById, CheckOwnerById, CheckPlaceById } from '@/domain/usecases'
 import { InvalidParamError } from '@/presentation/errors'
 
 export class SavePatrimonyController implements Controller {
   constructor (
     private readonly validation: Validation,
     private readonly checkCategoryById: CheckCategoryById,
-    private readonly checkPlaceById: CheckPlaceById
+    private readonly checkPlaceById: CheckPlaceById,
+    private readonly checkOwnerById: CheckOwnerById
   ) {}
 
   async handle (request: SavePatrimonyController.Request): Promise<HttpResponse> {
@@ -24,6 +25,7 @@ export class SavePatrimonyController implements Controller {
     if (!isValid) {
       return forbidden(new InvalidParamError('placeId'))
     }
+    await this.checkOwnerById.checkById({ id: request.ownerId })
     return null
   }
 }
