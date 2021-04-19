@@ -71,4 +71,11 @@ describe('SavePatrimonyController', () => {
     await sut.handle(request)
     expect(checkPlaceByIdSpy.params).toEqual({ id: request.placeId })
   })
+
+  test('Should return 403 if CheckPlaceById with return false', async () => {
+    const { sut, checkPlaceByIdSpy } = makeSut()
+    checkPlaceByIdSpy.result = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('placeId')))
+  })
 })
