@@ -1,14 +1,12 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
-import { CheckCategoryById, CheckOwnerById, CheckPlaceById, SavePatrimony } from '@/domain/usecases'
-import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
+import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { SavePatrimony } from '@/domain/usecases'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 export class SavePatrimonyController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly checkCategoryById: CheckCategoryById,
-    private readonly checkPlaceById: CheckPlaceById,
-    private readonly checkOwnerById: CheckOwnerById,
+    private readonly checkExist: CheckExist,
     private readonly savePatrimony: SavePatrimony
   ) {}
 
@@ -18,19 +16,7 @@ export class SavePatrimonyController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      let isValid: boolean
-      isValid = await this.checkCategoryById.checkById({ id: request.categoryId })
-      if (!isValid) {
-        return forbidden(new InvalidParamError('categoryId'))
-      }
-      isValid = await this.checkPlaceById.checkById({ id: request.placeId })
-      if (!isValid) {
-        return forbidden(new InvalidParamError('placeId'))
-      }
-      isValid = await this.checkOwnerById.checkById({ id: request.ownerId })
-      if (!isValid) {
-        return forbidden(new InvalidParamError('ownerId'))
-      }
+      await this.checkExist.check(request)
       const patrimonyModel = await this.savePatrimony.save(request)
       if (!patrimonyModel) {
         return unprocessableEntity(new AlreadyExistsError(request.number))
