@@ -9,10 +9,13 @@ export class DbSavePatrimony implements SavePatrimony {
   ) {}
 
   async save (params: SavePatrimony.Params): Promise<SavePatrimony.Model> {
-    await this.checkPatrimonyByNumberRepository.checkByNumber(params.number)
-    if (params.id) {
-      return this.updatePatrimonyRepository.update({ id: params.id, ...params })
+    const exists = await this.checkPatrimonyByNumberRepository.checkByNumber(params.number)
+    if (!exists) {
+      if (params.id) {
+        return this.updatePatrimonyRepository.update({ id: params.id, ...params })
+      }
+      return this.addPatrimonyRepository.add(params)
     }
-    return this.addPatrimonyRepository.add(params)
+    return null
   }
 }
