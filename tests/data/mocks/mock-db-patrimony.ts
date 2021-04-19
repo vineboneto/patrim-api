@@ -1,11 +1,31 @@
 import {
+  AddPatrimonyRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByPlaceIdRepository,
   LoadPatrimonyByOwnerIdRepository
 } from '@/data/protocols'
+import { mockPatrimonyModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
+
+export const mockAddPatrimonyRepositoryParams = (): AddPatrimonyRepository.Params => ({
+  brand: faker.random.word(),
+  number: faker.datatype.number().toString(),
+  description: faker.random.words(),
+  categoryId: faker.datatype.number(),
+  ownerId: faker.datatype.number(),
+  placeId: faker.datatype.number()
+})
+
+export class AddPatrimonyRepositorySpy implements AddPatrimonyRepository {
+  params: AddPatrimonyRepository.Params
+  model = mockPatrimonyModel()
+  async add (params: AddPatrimonyRepository.Params): Promise<AddPatrimonyRepository.Model> {
+    this.params = params
+    return this.model
+  }
+}
 
 export class LoadPatrimonyByOwnerIdRepositorySpy implements LoadPatrimonyByOwnerIdRepository {
   params: LoadPatrimonyByOwnerIdRepository.Params
