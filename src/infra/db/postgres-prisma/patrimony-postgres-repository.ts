@@ -4,6 +4,7 @@ import {
   LoadPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByPlaceIdRepository,
+  CheckPatrimonyByNumberRepository,
   AddPatrimonyRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
@@ -11,6 +12,7 @@ import {
 export class PatrimonyPostgresRepository implements
   AddPatrimonyRepository,
   UpdatePatrimonyRepository,
+  CheckPatrimonyByNumberRepository,
   LoadPatrimonyByOwnerIdRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
@@ -71,6 +73,19 @@ export class PatrimonyPostgresRepository implements
       }
     })
     return patrimony
+  }
+
+  async checkByNumber (number: string): Promise<boolean> {
+    const prismaClient = PrismaHelper.getConnection()
+    const patrimony = await prismaClient.patrimony.findFirst({
+      select: {
+        id: true
+      },
+      where: {
+        number
+      }
+    })
+    return patrimony !== null
   }
 
   async checkByOwnerId (params: CheckPatrimonyByOwnerIdRepository.Params):
