@@ -49,13 +49,13 @@ describe('Owner Routes', () => {
   describe('PUT /owners', () => {
     test('Should return 200 on update owner', async () => {
       const accessToken = await makeAccessToken()
-      const { id, sectorId } = await Helper.makeOwner()
+      const { id, sector } = await Helper.makeOwner()
       await request(app)
         .put(`/api/owners/${id}`)
         .set('x-access-token', accessToken)
         .send({
           name: 'new_value',
-          sectorId
+          sectorId: sector.id
         })
         .expect(200)
     })

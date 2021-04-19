@@ -6,7 +6,10 @@ import faker from 'faker'
 export const mockOwnerModel = (): OwnerModel => ({
   id: faker.datatype.number(),
   name: faker.name.findName(),
-  sectorId: faker.datatype.number()
+  sector: {
+    id: faker.datatype.number(),
+    name: faker.name.findName()
+  }
 })
 
 export const mockOwnersModel = (): OwnerModel[] => ([

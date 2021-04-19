@@ -14,7 +14,10 @@ export const mockPatrimonyModel = (): SavePatrimony.Model => ({
   owner: {
     id: faker.datatype.number(),
     name: faker.name.findName(),
-    sectorId: faker.datatype.number()
+    sector: {
+      id: faker.datatype.number(),
+      name: faker.name.findName()
+    }
   },
   place: {
     id: faker.datatype.number(),

@@ -7,6 +7,7 @@ import {
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
+import { Owner } from '@prisma/client'
 
 export class OwnerPostgresRepository implements
   AddOwnerRepository,
@@ -22,9 +23,12 @@ export class OwnerPostgresRepository implements
       data: {
         name,
         sectorId: Number(sectorId)
+      },
+      include: {
+        Sector: true
       }
     })
-    return ownerModel
+    return this.adapt(ownerModel)
   }
 
   async update (owner: UpdateOwnerRepository.Params): Promise<UpdateOwnerRepository.Model> {
@@ -37,9 +41,12 @@ export class OwnerPostgresRepository implements
       data: {
         name,
         sectorId: Number(sectorId)
+      },
+      include: {
+        Sector: true
       }
     })
-    return ownerModel
+    return this.adapt(ownerModel)
   }
 
   async delete (params: DeleteOwnerRepository.Params): Promise<DeleteOwnerRepository.Model> {
@@ -48,9 +55,12 @@ export class OwnerPostgresRepository implements
     const ownerDeleted = await prismaClient.owner.delete({
       where: {
         id: Number(id)
+      },
+      include: {
+        Sector: true
       }
     })
-    return ownerDeleted
+    return this.adapt(ownerDeleted)
   }
 
   async checkById (params: CheckOwnerByIdRepository.Params): Promise<CheckOwnerByIdRepository.Result> {
@@ -70,14 +80,23 @@ export class OwnerPostgresRepository implements
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { skip, take } = params
+    let owners: Owner[]
     if (isNaN(skip) || isNaN(take)) {
-      return await prismaClient.owner.findMany()
+      owners = await prismaClient.owner.findMany({
+        include: {
+          Sector: true
+        }
+      })
+    } else {
+      owners = await prismaClient.owner.findMany({
+        skip: Number(skip),
+        take: Number(take),
+        include: {
+          Sector: true
+        }
+      })
     }
-    const owners = await prismaClient.owner.findMany({
-      skip: Number(skip),
-      take: Number(take)
-    })
-    return owners
+    return owners.map(owner => this.adapt(owner))
   }
 
   async checkBySectorId (params: CheckOwnerBySectorIdRepository.Params): Promise<CheckOwnerBySectorIdRepository.Result> {
@@ -92,5 +111,16 @@ export class OwnerPostgresRepository implements
       }
     })
     return sectorWithOnlyId !== null
+  }
+
+  private adapt (ownerModel: any): any {
+    return {
+      id: ownerModel.id,
+      name: ownerModel.name,
+      sector: {
+        id: ownerModel.Sector.id,
+        name: ownerModel.Sector.name
+      }
+    }
   }
 }

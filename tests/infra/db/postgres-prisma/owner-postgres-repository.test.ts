@@ -22,24 +22,25 @@ describe('OwnerPostgresRepository', () => {
   describe('add()', () => {
     test('Should return owner on add success', async () => {
       const sut = makeSut()
-      const { id: sectorId } = await Helper.makeSector()
+      const { id: sectorId, name: sectorName } = await Helper.makeSector()
       const name = faker.name.findName()
       const owner = await sut.add({ name, sectorId: sectorId })
       expect(owner).toBeTruthy()
       expect(owner.id).toBeTruthy()
       expect(owner.name).toBe(name)
-      expect(owner.sectorId).toBe(sectorId)
+      expect(owner.sector.id).toBe(sectorId)
+      expect(owner.sector.name).toBe(sectorName)
     })
   })
 
   describe('update()', () => {
     test('Should return owner on update success', async () => {
       const sut = makeSut()
-      const { id, sectorId } = await Helper.makeOwner()
+      const { id, sector } = await Helper.makeOwner()
       const ownerUpdated = await sut.update({
-        id: id,
+        id,
         name: 'new_name',
-        sectorId
+        sectorId: sector.id
       })
       expect(ownerUpdated).toBeTruthy()
       expect(ownerUpdated.name).toBe('new_name')
@@ -97,10 +98,13 @@ describe('OwnerPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return owner on delete success', async () => {
       const sut = makeSut()
-      const { id, name, sectorId } = await Helper.makeOwner()
+      const { id, name, sector } = await Helper.makeOwner()
       const sectorDeleted = await sut.delete({ id })
       const searchOwnerDeleted = await Helper.findOwnerById(id)
-      expect(sectorDeleted).toEqual({ id, name, sectorId })
+      expect(sectorDeleted.id).toBe(id)
+      expect(sectorDeleted.name).toBe(name)
+      expect(sectorDeleted.sector.id).toBe(sector.id)
+      expect(sectorDeleted.sector.name).toBe(sector.name)
       expect(searchOwnerDeleted).toBeFalsy()
     })
   })
@@ -108,8 +112,8 @@ describe('OwnerPostgresRepository', () => {
   describe('checkBySectorId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { sectorId } = await Helper.makeOwner()
-      const exists = await sut.checkBySectorId({ sectorId })
+      const { sector } = await Helper.makeOwner()
+      const exists = await sut.checkBySectorId({ sectorId: sector.id })
       expect(exists).toBe(true)
     })
 
