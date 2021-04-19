@@ -100,4 +100,11 @@ describe('DbSavePatrimony', () => {
     const data = await sut.save(params)
     expect(data).toBe(null)
   })
+
+  test('Should throws CheckPatrimonyByNumberRepository throw', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
+    jest.spyOn(checkPatrimonyByNumberRepositorySpy, 'checkByNumber').mockRejectedValueOnce(new Error())
+    const promise = sut.save(mockUpdatePatrimonyRepositoryParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
