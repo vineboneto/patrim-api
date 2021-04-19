@@ -40,6 +40,27 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
+  describe('update()', () => {
+    test('Should return patrimony on update success', async () => {
+      const sut = makeSut()
+      const { id, description, owner, place, category } = await Helper.makePatrimony()
+      const data = await sut.update({
+        id,
+        brand: 'new_brand',
+        number: 'new_number',
+        ownerId: owner.id,
+        placeId: place.id,
+        categoryId: category.id
+      })
+      expect(data.brand).toBe('new_brand')
+      expect(data.number).toBe('new_number')
+      expect(data.description).toBe(description)
+      expect(data.owner.id).toBe(owner.id)
+      expect(data.place.id).toBe(place.id)
+      expect(data.category.id).toBe(category.id)
+    })
+  })
+
   describe('loadByPatrimonyId()', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
