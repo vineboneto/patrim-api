@@ -88,4 +88,11 @@ describe('SavePatrimonyController', () => {
     await sut.handle(request)
     expect(checkOwnerByIdSpy.params).toEqual({ id: request.ownerId })
   })
+
+  test('Should return 403 if CheckOwnerById with return false', async () => {
+    const { sut, checkOwnerByIdSpy } = makeSut()
+    checkOwnerByIdSpy.result = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('ownerId')))
+  })
 })
