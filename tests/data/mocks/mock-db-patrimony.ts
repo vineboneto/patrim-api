@@ -1,6 +1,7 @@
 import {
   AddPatrimonyRepository,
   CheckPatrimonyByCategoryIdRepository,
+  CheckPatrimonyByNumberRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByPlaceIdRepository,
   LoadPatrimonyByOwnerIdRepository,
@@ -44,6 +45,16 @@ export class UpdatePatrimonyRepositorySpy implements UpdatePatrimonyRepository {
   async update (params: UpdatePatrimonyRepository.Params): Promise<UpdatePatrimonyRepository.Model> {
     this.params = params
     return this.model
+  }
+}
+
+export class CheckPatrimonyByNumberRepositorySpy implements CheckPatrimonyByNumberRepository {
+  number: string
+  result = false
+
+  async checkByNumber (number: string): Promise<boolean> {
+    this.number = number
+    return this.result
   }
 }
 

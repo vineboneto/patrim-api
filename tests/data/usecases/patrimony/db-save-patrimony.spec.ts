@@ -1,6 +1,7 @@
 import { DbSavePatrimony } from '@/data/usecases'
 import {
   AddPatrimonyRepositorySpy,
+  CheckPatrimonyByNumberRepositorySpy,
   mockAddPatrimonyRepositoryParams,
   mockUpdatePatrimonyRepositoryParams,
   UpdatePatrimonyRepositorySpy
@@ -10,16 +11,23 @@ type SutTypes = {
   sut: DbSavePatrimony
   addPatrimonyRepositorySpy: AddPatrimonyRepositorySpy
   updatePatrimonyRepositorySpy: UpdatePatrimonyRepositorySpy
+  checkPatrimonyByNumberRepositorySpy: CheckPatrimonyByNumberRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const addPatrimonyRepositorySpy = new AddPatrimonyRepositorySpy()
   const updatePatrimonyRepositorySpy = new UpdatePatrimonyRepositorySpy()
-  const sut = new DbSavePatrimony(addPatrimonyRepositorySpy, updatePatrimonyRepositorySpy)
+  const checkPatrimonyByNumberRepositorySpy = new CheckPatrimonyByNumberRepositorySpy()
+  const sut = new DbSavePatrimony(
+    addPatrimonyRepositorySpy,
+    updatePatrimonyRepositorySpy,
+    checkPatrimonyByNumberRepositorySpy
+  )
   return {
     sut,
     addPatrimonyRepositorySpy,
-    updatePatrimonyRepositorySpy
+    updatePatrimonyRepositorySpy,
+    checkPatrimonyByNumberRepositorySpy
   }
 }
 
@@ -76,5 +84,12 @@ describe('DbSavePatrimony', () => {
     jest.spyOn(updatePatrimonyRepositorySpy, 'update').mockRejectedValueOnce(new Error())
     const promise = sut.save(mockUpdatePatrimonyRepositoryParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CheckPatrimonyByNumberRepository with correct values', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
+    const params = mockUpdatePatrimonyRepositoryParams()
+    await sut.save(params)
+    expect(checkPatrimonyByNumberRepositorySpy.number).toBe(params.number)
   })
 })
