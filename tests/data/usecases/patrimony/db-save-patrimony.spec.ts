@@ -22,4 +22,11 @@ describe('DbSavePatrimony', () => {
     await sut.save(params)
     expect(addPatrimonyRepositorySpy.params).toEqual(params)
   })
+
+  test('Should return null if AddPatrimonyRepository return null', async () => {
+    const { sut, addPatrimonyRepositorySpy } = makeSut()
+    addPatrimonyRepositorySpy.model = null
+    const data = await sut.save(mockAddPatrimonyRepositoryParams())
+    expect(data).toBe(null)
+  })
 })
