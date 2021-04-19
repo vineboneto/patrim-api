@@ -32,4 +32,10 @@ describe('CheckExistIdOwner', () => {
     const error = await sut.check({ ownerId: faker.datatype.number() })
     expect(error).toEqual(new InvalidParamError('ownerId'))
   })
+
+  test('Should return null if CheckOwnerById returns true', async () => {
+    const { sut } = makeSut()
+    const error = await sut.check({ ownerId: faker.datatype.number() })
+    expect(error).toEqual(null)
+  })
 })
