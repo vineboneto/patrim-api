@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { SavePatrimony } from '@/domain/usecases'
 import { AlreadyExistsError } from '@/presentation/errors'
 
@@ -16,7 +16,10 @@ export class SavePatrimonyController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.checkExist.check(request)
+      const checkError = await this.checkExist.check(request)
+      if (checkError) {
+        return forbidden(checkError)
+      }
       const patrimonyModel = await this.savePatrimony.save(request)
       if (!patrimonyModel) {
         return unprocessableEntity(new AlreadyExistsError(request.number))
