@@ -1,8 +1,8 @@
 import { SavePatrimonyController } from '@/presentation/controllers'
-import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
-import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
-import { CheckCategoryByIdSpy, CheckOwnerByIdSpy, CheckPlaceByIdSpy, SavePatrimonySpy } from '@/tests/domain/mocks'
-import { ValidationSpy } from '@/tests/presentation/mocks'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { AlreadyExistsError } from '@/presentation/errors'
+import { SavePatrimonySpy } from '@/tests/domain/mocks'
+import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -19,26 +19,20 @@ const mockRequest = (): SavePatrimonyController.Request => ({
 type SutTypes = {
   sut: SavePatrimonyController
   validationSpy: ValidationSpy
-  checkCategoryByIdSpy: CheckCategoryByIdSpy
-  checkPlaceByIdSpy: CheckPlaceByIdSpy
-  checkOwnerByIdSpy: CheckOwnerByIdSpy
+  checkExistSpy: CheckExistSpy
   savePatrimonySpy: SavePatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const checkCategoryByIdSpy = new CheckCategoryByIdSpy()
-  const checkPlaceByIdSpy = new CheckPlaceByIdSpy()
-  const checkOwnerByIdSpy = new CheckOwnerByIdSpy()
+  const checkExistSpy = new CheckExistSpy()
   const savePatrimonySpy = new SavePatrimonySpy()
-  const sut = new SavePatrimonyController(validationSpy, checkCategoryByIdSpy, checkPlaceByIdSpy, checkOwnerByIdSpy, savePatrimonySpy)
+  const sut = new SavePatrimonyController(validationSpy, checkExistSpy, savePatrimonySpy)
   return {
     sut,
     validationSpy,
-    checkCategoryByIdSpy,
-    checkPlaceByIdSpy,
-    checkOwnerByIdSpy,
-    savePatrimonySpy
+    savePatrimonySpy,
+    checkExistSpy
   }
 }
 
@@ -57,46 +51,11 @@ describe('SavePatrimonyController', () => {
     expect(httpResponse).toEqual(badRequest(new Error()))
   })
 
-  test('Should call CheckCategoryById with correct values', async () => {
-    const { sut, checkCategoryByIdSpy } = makeSut()
+  test('Should call CheckExist with correct values', async () => {
+    const { sut, checkExistSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(checkCategoryByIdSpy.params).toEqual({ id: request.categoryId })
-  })
-
-  test('Should return 403 if CheckCategoryById return false', async () => {
-    const { sut, checkCategoryByIdSpy } = makeSut()
-    checkCategoryByIdSpy.result = false
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('categoryId')))
-  })
-
-  test('Should call CheckPlaceById with correct values', async () => {
-    const { sut, checkPlaceByIdSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(checkPlaceByIdSpy.params).toEqual({ id: request.placeId })
-  })
-
-  test('Should return 403 if CheckPlaceById with return false', async () => {
-    const { sut, checkPlaceByIdSpy } = makeSut()
-    checkPlaceByIdSpy.result = false
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('placeId')))
-  })
-
-  test('Should call CheckOwnerById with correct values', async () => {
-    const { sut, checkOwnerByIdSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(checkOwnerByIdSpy.params).toEqual({ id: request.ownerId })
-  })
-
-  test('Should return 403 if CheckOwnerById with return false', async () => {
-    const { sut, checkOwnerByIdSpy } = makeSut()
-    checkOwnerByIdSpy.result = false
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('ownerId')))
+    expect(checkExistSpy.input).toBe(request)
   })
 
   test('Should call SavePatrimony with correct values', async () => {
