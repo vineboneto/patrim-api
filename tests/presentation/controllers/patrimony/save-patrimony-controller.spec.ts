@@ -1,7 +1,7 @@
 import { SavePatrimonyController } from '@/presentation/controllers'
 import { badRequest, forbidden } from '@/presentation/helper'
 import { InvalidParamError } from '@/presentation/errors'
-import { CheckCategoryByIdSpy, CheckOwnerByIdSpy, CheckPlaceByIdSpy } from '@/tests/domain/mocks'
+import { CheckCategoryByIdSpy, CheckOwnerByIdSpy, CheckPlaceByIdSpy, SavePatrimonySpy } from '@/tests/domain/mocks'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -22,6 +22,7 @@ type SutTypes = {
   checkCategoryByIdSpy: CheckCategoryByIdSpy
   checkPlaceByIdSpy: CheckPlaceByIdSpy
   checkOwnerByIdSpy: CheckOwnerByIdSpy
+  savePatrimonySpy: SavePatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
@@ -29,13 +30,15 @@ const makeSut = (): SutTypes => {
   const checkCategoryByIdSpy = new CheckCategoryByIdSpy()
   const checkPlaceByIdSpy = new CheckPlaceByIdSpy()
   const checkOwnerByIdSpy = new CheckOwnerByIdSpy()
-  const sut = new SavePatrimonyController(validationSpy, checkCategoryByIdSpy, checkPlaceByIdSpy, checkOwnerByIdSpy)
+  const savePatrimonySpy = new SavePatrimonySpy()
+  const sut = new SavePatrimonyController(validationSpy, checkCategoryByIdSpy, checkPlaceByIdSpy, checkOwnerByIdSpy, savePatrimonySpy)
   return {
     sut,
     validationSpy,
     checkCategoryByIdSpy,
     checkPlaceByIdSpy,
-    checkOwnerByIdSpy
+    checkOwnerByIdSpy,
+    savePatrimonySpy
   }
 }
 
@@ -94,5 +97,12 @@ describe('SavePatrimonyController', () => {
     checkOwnerByIdSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('ownerId')))
+  })
+
+  test('Should call SavePatrimony with correct values', async () => {
+    const { sut, savePatrimonySpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(savePatrimonySpy.params).toEqual(request)
   })
 })
