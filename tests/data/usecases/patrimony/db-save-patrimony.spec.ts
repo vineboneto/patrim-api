@@ -64,4 +64,10 @@ describe('DbSavePatrimony', () => {
     const data = await sut.save(mockUpdatePatrimonyRepositoryParams())
     expect(data).toBe(null)
   })
+
+  test('Should return patrimony if UpdatePatrimonyRepository return patrimony', async () => {
+    const { sut, updatePatrimonyRepositorySpy } = makeSut()
+    const data = await sut.save(mockUpdatePatrimonyRepositoryParams())
+    expect(data).toBe(updatePatrimonyRepositorySpy.model)
+  })
 })
