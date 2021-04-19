@@ -8,7 +8,9 @@ export class DbSavePatrimony implements SavePatrimony {
   ) {}
 
   async save (params: SavePatrimony.Params): Promise<SavePatrimony.Model> {
-    await this.updatePatrimonyRepository.update({ id: params.id, ...params })
+    if (params.id) {
+      return this.updatePatrimonyRepository.update({ id: params.id, ...params })
+    }
     return this.addPatrimonyRepository.add(params)
   }
 }
