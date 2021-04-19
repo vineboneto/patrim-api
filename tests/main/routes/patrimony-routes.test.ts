@@ -38,5 +38,39 @@ describe('Patrimony Routes', () => {
         })
         .expect(200)
     })
+
+    test('Should return 403 on add without accessToken', async () => {
+      const { id: ownerId } = await Helper.makeOwner()
+      const { id: categoryId } = await Helper.makeCategory()
+      const { id: placeId } = await Helper.makePlace()
+      await request(app)
+        .post('/api/patrimonies')
+        .send({
+          number: faker.datatype.number().toString(),
+          brand: faker.random.word(),
+          ownerId,
+          categoryId,
+          placeId
+        })
+        .expect(403)
+    })
+  })
+
+  describe('PUT /patrimonies', () => {
+    test('Should return 200 on update category', async () => {
+      const accessToken = await makeAccessToken()
+      const { id, category, place, owner } = await Helper.makePatrimony()
+      await request(app)
+        .put(`/api/patrimonies/${id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          number: faker.datatype.number().toString(),
+          brand: faker.random.word(),
+          ownerId: category.id,
+          categoryId: owner.id,
+          placeId: place.id
+        })
+        .expect(200)
+    })
   })
 })
