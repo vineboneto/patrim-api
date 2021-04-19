@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, forbidden } from '@/presentation/helper'
 import { CheckCategoryById } from '@/domain/usecases'
+import { InvalidParamError } from '@/presentation/errors'
 
 export class SavePatrimonyController implements Controller {
   constructor (
@@ -13,7 +14,10 @@ export class SavePatrimonyController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    await this.checkCategoryById.checkById({ id: request.categoryId })
+    const isValid = await this.checkCategoryById.checkById({ id: request.categoryId })
+    if (!isValid) {
+      return forbidden(new InvalidParamError('categoryId'))
+    }
     return null
   }
 }
