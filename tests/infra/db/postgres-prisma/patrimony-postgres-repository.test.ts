@@ -88,6 +88,21 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
+  describe('checkByNumber()', () => {
+    test('Should return true if exists number patrimony', async () => {
+      const sut = makeSut()
+      const { number } = await Helper.makePatrimony()
+      const exists = await sut.checkByNumber(number)
+      expect(exists).toBe(true)
+    })
+
+    test('Should return false if not exists number patrimony', async () => {
+      const sut = makeSut()
+      const exists = await sut.checkByNumber(faker.datatype.number().toString())
+      expect(exists).toBe(false)
+    })
+  })
+
   describe('checkByOwnerId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
