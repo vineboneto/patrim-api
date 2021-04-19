@@ -4,11 +4,13 @@ import {
   LoadPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByPlaceIdRepository,
-  AddPatrimonyRepository
+  AddPatrimonyRepository,
+  UpdatePatrimonyRepository
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
   AddPatrimonyRepository,
+  UpdatePatrimonyRepository,
   LoadPatrimonyByOwnerIdRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
@@ -20,9 +22,32 @@ export class PatrimonyPostgresRepository implements
         number: params.number,
         brand: params.brand,
         description: params?.description,
-        ownerId: params.ownerId,
-        placeId: params.placeId,
-        categoryId: params.categoryId
+        ownerId: Number(params.ownerId),
+        placeId: Number(params.placeId),
+        categoryId: Number(params.categoryId)
+      },
+      include: {
+        Category: true,
+        Owner: true,
+        Place: true
+      }
+    })
+    return PrismaHelper.adaptPatrimony(patrimony)
+  }
+
+  async update (params: UpdatePatrimonyRepository.Params): Promise<UpdatePatrimonyRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const patrimony = await prismaClient.patrimony.update({
+      where: {
+        id: Number(params.id)
+      },
+      data: {
+        number: params.number,
+        brand: params.brand,
+        description: params.description ? undefined : params.description,
+        ownerId: Number(params.ownerId),
+        placeId: Number(params.placeId),
+        categoryId: Number(params.categoryId)
       },
       include: {
         Category: true,

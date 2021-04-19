@@ -25,7 +25,7 @@ export const PrismaHelper = {
     return {
       id: patrimony.id,
       number: patrimony.number,
-      description: patrimony.description,
+      description: patrimony?.description,
       brand: patrimony.brand,
       category: {
         id: patrimony.Category.id,
