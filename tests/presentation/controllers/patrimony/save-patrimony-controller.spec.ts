@@ -1,7 +1,7 @@
 import { SavePatrimonyController } from '@/presentation/controllers'
 import { badRequest, forbidden } from '@/presentation/helper'
 import { InvalidParamError } from '@/presentation/errors'
-import { CheckCategoryByIdSpy } from '@/tests/domain/mocks'
+import { CheckCategoryByIdSpy, CheckPlaceByIdSpy } from '@/tests/domain/mocks'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -20,16 +20,19 @@ type SutTypes = {
   sut: SavePatrimonyController
   validationSpy: ValidationSpy
   checkCategoryByIdSpy: CheckCategoryByIdSpy
+  checkPlaceByIdSpy: CheckPlaceByIdSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const checkCategoryByIdSpy = new CheckCategoryByIdSpy()
-  const sut = new SavePatrimonyController(validationSpy, checkCategoryByIdSpy)
+  const checkPlaceByIdSpy = new CheckPlaceByIdSpy()
+  const sut = new SavePatrimonyController(validationSpy, checkCategoryByIdSpy, checkPlaceByIdSpy)
   return {
     sut,
     validationSpy,
-    checkCategoryByIdSpy
+    checkCategoryByIdSpy,
+    checkPlaceByIdSpy
   }
 }
 
@@ -48,17 +51,24 @@ describe('SavePatrimonyController', () => {
     expect(httpResponse).toEqual(badRequest(new Error()))
   })
 
-  test('Should call CheckCategory with correct values', async () => {
+  test('Should call CheckCategoryById with correct values', async () => {
     const { sut, checkCategoryByIdSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
     expect(checkCategoryByIdSpy.params).toEqual({ id: request.categoryId })
   })
 
-  test('Should return 403 if CheckCategory return false', async () => {
+  test('Should return 403 if CheckCategoryById return false', async () => {
     const { sut, checkCategoryByIdSpy } = makeSut()
     checkCategoryByIdSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('categoryId')))
+  })
+
+  test('Should call CheckPlaceById with correct values', async () => {
+    const { sut, checkPlaceByIdSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkPlaceByIdSpy.params).toEqual({ id: request.placeId })
   })
 })
