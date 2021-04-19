@@ -1,7 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, unprocessableEntity } from '@/presentation/helper'
 import { CheckCategoryById, CheckOwnerById, CheckPlaceById, SavePatrimony } from '@/domain/usecases'
-import { InvalidParamError } from '@/presentation/errors'
+import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 
 export class SavePatrimonyController implements Controller {
   constructor (
@@ -30,7 +30,10 @@ export class SavePatrimonyController implements Controller {
     if (!isValid) {
       return forbidden(new InvalidParamError('ownerId'))
     }
-    await this.savePatrimony.save(request)
+    const patrimonyModel = await this.savePatrimony.save(request)
+    if (!patrimonyModel) {
+      return unprocessableEntity(new AlreadyExistsError(request.number))
+    }
     return null
   }
 }
