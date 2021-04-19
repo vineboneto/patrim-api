@@ -1,5 +1,5 @@
 import { SavePatrimonyController } from '@/presentation/controllers'
-import { badRequest, forbidden, ok, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 import { CheckCategoryByIdSpy, CheckOwnerByIdSpy, CheckPlaceByIdSpy, SavePatrimonySpy } from '@/tests/domain/mocks'
 import { ValidationSpy } from '@/tests/presentation/mocks'
@@ -118,5 +118,12 @@ describe('SavePatrimonyController', () => {
     const { sut, savePatrimonySpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(savePatrimonySpy.model))
+  })
+
+  test('Should return 500 if SavePatrimony throws', async () => {
+    const { sut, savePatrimonySpy } = makeSut()
+    jest.spyOn(savePatrimonySpy, 'save').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
