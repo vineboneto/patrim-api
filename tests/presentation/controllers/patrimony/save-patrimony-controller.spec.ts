@@ -1,3 +1,4 @@
+import { CheckCategoryByIdSpy } from '@/../tests/domain/mocks'
 import { SavePatrimonyController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
@@ -17,14 +18,17 @@ const mockRequest = (): SavePatrimonyController.Request => ({
 type SutTypes = {
   sut: SavePatrimonyController
   validationSpy: ValidationSpy
+  checkCategoryByIdSpy: CheckCategoryByIdSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new SavePatrimonyController(validationSpy)
+  const checkCategoryByIdSpy = new CheckCategoryByIdSpy()
+  const sut = new SavePatrimonyController(validationSpy, checkCategoryByIdSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    checkCategoryByIdSpy
   }
 }
 
@@ -41,5 +45,12 @@ describe('SavePatrimonyController', () => {
     validationSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call CheckCategory with correct values', async () => {
+    const { sut, checkCategoryByIdSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkCategoryByIdSpy.params).toEqual({ id: request.categoryId })
   })
 })
