@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, forbidden, ok, unprocessableEntity } from '@/presentation/helper'
 import { CheckCategoryById, CheckOwnerById, CheckPlaceById, SavePatrimony } from '@/domain/usecases'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 
@@ -34,7 +34,7 @@ export class SavePatrimonyController implements Controller {
     if (!patrimonyModel) {
       return unprocessableEntity(new AlreadyExistsError(request.number))
     }
-    return null
+    return ok(patrimonyModel)
   }
 }
 
