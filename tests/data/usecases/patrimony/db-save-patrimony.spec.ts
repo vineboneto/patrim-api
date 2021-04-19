@@ -92,4 +92,12 @@ describe('DbSavePatrimony', () => {
     await sut.save(params)
     expect(checkPatrimonyByNumberRepositorySpy.number).toBe(params.number)
   })
+
+  test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
+    checkPatrimonyByNumberRepositorySpy.result = true
+    const params = mockUpdatePatrimonyRepositoryParams()
+    const data = await sut.save(params)
+    expect(data).toBe(null)
+  })
 })
