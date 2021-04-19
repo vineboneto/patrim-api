@@ -1,6 +1,6 @@
 import { SavePatrimonyController } from '@/presentation/controllers'
-import { badRequest, forbidden } from '@/presentation/helper'
-import { InvalidParamError } from '@/presentation/errors'
+import { badRequest, forbidden, unprocessableEntity } from '@/presentation/helper'
+import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 import { CheckCategoryByIdSpy, CheckOwnerByIdSpy, CheckPlaceByIdSpy, SavePatrimonySpy } from '@/tests/domain/mocks'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 
@@ -104,5 +104,13 @@ describe('SavePatrimonyController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(savePatrimonySpy.params).toEqual(request)
+  })
+
+  test('Should return 403 if SavePatrimony fails', async () => {
+    const { sut, savePatrimonySpy } = makeSut()
+    savePatrimonySpy.model = null
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.number)))
   })
 })
