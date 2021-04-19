@@ -19,11 +19,32 @@ describe('PatrimonyPostgresRepository', () => {
     await Helper.deleteAll()
   })
 
+  describe('add()', () => {
+    test('Should return patrimony on add success', async () => {
+      const sut = makeSut()
+      const { id: placeId } = await Helper.makePlace()
+      const { id: ownerId } = await Helper.makeOwner()
+      const { id: categoryId } = await Helper.makeCategory()
+      const data = await sut.add({
+        number: faker.datatype.number().toString(),
+        brand: faker.random.word(),
+        description: faker.random.words(),
+        categoryId,
+        ownerId,
+        placeId
+      })
+      expect(data).toBeTruthy()
+      expect(data.category.id).toBe(categoryId)
+      expect(data.place.id).toBe(placeId)
+      expect(data.owner.id).toBe(ownerId)
+    })
+  })
+
   describe('loadByPatrimonyId()', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
-      const { ownerId, id, number } = await Helper.makePatrimony()
-      const patrimony = await sut.loadByOwnerId({ ownerId })
+      const { owner, id, number } = await Helper.makePatrimony()
+      const patrimony = await sut.loadByOwnerId({ ownerId: owner.id })
       expect(patrimony).toEqual({
         id,
         number
@@ -34,8 +55,8 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByOwnerId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { ownerId } = await Helper.makePatrimony()
-      const exists = await sut.checkByOwnerId({ ownerId })
+      const { owner } = await Helper.makePatrimony()
+      const exists = await sut.checkByOwnerId({ ownerId: owner.id })
       expect(exists).toBe(true)
     })
 
@@ -49,8 +70,8 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByOwnerId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { categoryId } = await Helper.makePatrimony()
-      const exists = await sut.checkByCategoryId({ categoryId })
+      const { category } = await Helper.makePatrimony()
+      const exists = await sut.checkByCategoryId({ categoryId: category.id })
       expect(exists).toBe(true)
     })
 
@@ -64,8 +85,8 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByPlaceId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { placeId } = await Helper.makePatrimony()
-      const exists = await sut.checkByPlaceId({ placeId })
+      const { place } = await Helper.makePatrimony()
+      const exists = await sut.checkByPlaceId({ placeId: place.id })
       expect(exists).toBe(true)
     })
 

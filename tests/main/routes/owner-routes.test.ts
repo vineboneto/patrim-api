@@ -112,10 +112,10 @@ describe('Owner Routes', () => {
       })
 
       test('Should return 403 if patrimony exists', async () => {
-        const { ownerId } = await Helper.makePatrimony()
+        const { owner } = await Helper.makePatrimony()
         const accessToken = await makeAccessToken()
         await request(app)
-          .delete(`/api/owners/${ownerId}`)
+          .delete(`/api/owners/${owner.id}`)
           .set('x-access-token', accessToken)
           .expect(403)
       })

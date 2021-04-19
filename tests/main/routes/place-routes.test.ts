@@ -86,10 +86,10 @@ describe('Place Routes', () => {
     })
 
     test('Should return 403 if patrimony exists', async () => {
-      const { placeId } = await Helper.makePatrimony()
+      const { place } = await Helper.makePatrimony()
       const accessToken = await makeAccessToken()
       await request(app)
-        .delete(`/api/places/${placeId}`)
+        .delete(`/api/places/${place.id}`)
         .set('x-access-token', accessToken)
         .expect(403)
     })

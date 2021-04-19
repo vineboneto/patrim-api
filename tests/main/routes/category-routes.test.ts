@@ -114,10 +114,10 @@ describe('Category Routes', () => {
     })
 
     test('Should return 403 if patrimony exists', async () => {
-      const { categoryId } = await Helper.makePatrimony()
+      const { category } = await Helper.makePatrimony()
       const accessToken = await makeAccessToken()
       await request(app)
-        .delete(`/api/categories/${categoryId}`)
+        .delete(`/api/categories/${category.id}`)
         .set('x-access-token', accessToken)
         .expect(403)
     })
