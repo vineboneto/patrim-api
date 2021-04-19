@@ -1,6 +1,7 @@
-import { CheckCategoryByIdSpy } from '@/../tests/domain/mocks'
 import { SavePatrimonyController } from '@/presentation/controllers'
-import { badRequest } from '@/presentation/helper'
+import { badRequest, forbidden } from '@/presentation/helper'
+import { InvalidParamError } from '@/presentation/errors'
+import { CheckCategoryByIdSpy } from '@/tests/domain/mocks'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -52,5 +53,12 @@ describe('SavePatrimonyController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(checkCategoryByIdSpy.params).toEqual({ id: request.categoryId })
+  })
+
+  test('Should return 403 if CheckCategory return false', async () => {
+    const { sut, checkCategoryByIdSpy } = makeSut()
+    checkCategoryByIdSpy.result = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('categoryId')))
   })
 })
