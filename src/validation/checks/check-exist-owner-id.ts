@@ -2,7 +2,7 @@ import { CheckExist } from '@/presentation/protocols'
 import { CheckOwnerById } from '@/domain/usecases'
 import { InvalidParamError } from '@/presentation/errors'
 
-export class CheckExistIdOwner implements CheckExist {
+export class CheckExistOwnerId implements CheckExist {
   constructor (
     private readonly checkOwnerById: CheckOwnerById,
     private readonly fieldName: string

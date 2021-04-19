@@ -1,1 +1,2 @@
-export * from './check-exist-id-owner'
+export * from './check-exist-owner-id'
+export * from './check-exist-place-id'
