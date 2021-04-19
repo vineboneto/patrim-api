@@ -12,5 +12,5 @@ export default (router: Router): void => {
   router.post('/categories', auth, adaptRoute(makeSaveCategoryController()))
   router.put('/categories/:id', auth, checkId, adaptRoute(makeSaveCategoryController()))
   router.get('/categories', auth, adaptRoute(makeLoadCategoriesController()))
-  router.delete('/categories/:id', adminAuth, checkId, adaptRoute(makeDeleteCategoryController()))
+  router.delete('/categories/:id', adminAuth, adaptRoute(makeDeleteCategoryController()))
 }
