@@ -25,7 +25,10 @@ export class SavePatrimonyController implements Controller {
     if (!isValid) {
       return forbidden(new InvalidParamError('placeId'))
     }
-    await this.checkOwnerById.checkById({ id: request.ownerId })
+    isValid = await this.checkOwnerById.checkById({ id: request.ownerId })
+    if (!isValid) {
+      return forbidden(new InvalidParamError('ownerId'))
+    }
     return null
   }
 }
