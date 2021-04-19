@@ -1,24 +1,24 @@
-import { CheckExistIdOwner } from '@/validation/checks'
+import { CheckExistOwnerId } from '@/validation/checks'
 import { CheckOwnerByIdSpy } from '@/tests/domain/mocks'
-
-import faker from 'faker'
 import { InvalidParamError } from '@/presentation/errors'
 
+import faker from 'faker'
+
 type SutTypes = {
-  sut: CheckExistIdOwner
+  sut: CheckExistOwnerId
   checkOwnerByIdSpy: CheckOwnerByIdSpy
 }
 
 const makeSut = (): SutTypes => {
   const checkOwnerByIdSpy = new CheckOwnerByIdSpy()
-  const sut = new CheckExistIdOwner(checkOwnerByIdSpy, 'ownerId')
+  const sut = new CheckExistOwnerId(checkOwnerByIdSpy, 'ownerId')
   return {
     sut,
     checkOwnerByIdSpy
   }
 }
 
-describe('CheckExistIdOwner', () => {
+describe('CheckExistOwnerId', () => {
   test('Should call CheckOwnerById with correct values', async () => {
     const { sut, checkOwnerByIdSpy } = makeSut()
     const id = faker.datatype.number()
