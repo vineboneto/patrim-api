@@ -7,7 +7,6 @@ export class DbSavePatrimony implements SavePatrimony {
   ) {}
 
   async save (params: SavePatrimony.Params): Promise<SavePatrimony.Model> {
-    await this.addPatrimonyRepository.add(params)
-    return null
+    return this.addPatrimonyRepository.add(params)
   }
 }
