@@ -15,11 +15,15 @@ export class SavePatrimonyController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    const isValid = await this.checkCategoryById.checkById({ id: request.categoryId })
+    let isValid: boolean
+    isValid = await this.checkCategoryById.checkById({ id: request.categoryId })
     if (!isValid) {
       return forbidden(new InvalidParamError('categoryId'))
     }
-    await this.checkPlaceById.checkById({ id: request.placeId })
+    isValid = await this.checkPlaceById.checkById({ id: request.placeId })
+    if (!isValid) {
+      return forbidden(new InvalidParamError('placeId'))
+    }
     return null
   }
 }
