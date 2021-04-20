@@ -2,6 +2,7 @@ import { UpdatePatrimonyController } from '@/presentation/controllers'
 import { InvalidParamError } from '@/presentation/errors'
 import { badRequest, forbidden } from '@/presentation/helper'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
+import { UpdatePatrimonySpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -19,16 +20,19 @@ type SutTypes = {
   sut: UpdatePatrimonyController
   validationSpy: ValidationSpy
   checkExistSpy: CheckExistSpy
+  updatePatrimonySpy: UpdatePatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const checkExistSpy = new CheckExistSpy()
-  const sut = new UpdatePatrimonyController(validationSpy, checkExistSpy)
+  const updatePatrimonySpy = new UpdatePatrimonySpy()
+  const sut = new UpdatePatrimonyController(validationSpy, checkExistSpy, updatePatrimonySpy)
   return {
     sut,
     validationSpy,
-    checkExistSpy
+    checkExistSpy,
+    updatePatrimonySpy
   }
 }
 
@@ -59,5 +63,12 @@ describe('UpdatePatrimonyController', () => {
     checkExistSpy.result = new InvalidParamError('categoryId')
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('categoryId')))
+  })
+
+  test('Should call UpdatePatrimony with correct values', async () => {
+    const { sut, updatePatrimonySpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(updatePatrimonySpy.params).toEqual(request)
   })
 })
