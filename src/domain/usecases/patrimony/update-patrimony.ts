@@ -1,7 +1,7 @@
 import { PatrimonyModel } from '@/domain/models'
 
 export interface UpdatePatrimony {
-  update ()
+  update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model>
 }
 
 export namespace UpdatePatrimony {
