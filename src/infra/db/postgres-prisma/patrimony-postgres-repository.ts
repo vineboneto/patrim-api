@@ -72,7 +72,7 @@ export class PatrimonyPostgresRepository implements
         number: true
       },
       where: {
-        id: (id)
+        id: Number(id)
       }
     })
     return patrimony

@@ -1,7 +1,11 @@
 import { Validation } from '@/presentation/protocols'
-import { CheckFieldIsNumberValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
+import {
+  CheckFieldIsNumberValidation,
+  RequiredFieldValidation,
+  ValidationComposite
+} from '@/validation/validators'
 
-export const makeSaveToUpdatePatrimonyValidation = (): Validation => {
+export const makeUpdatePatrimonyValidation = (): Validation => {
   const validations: Validation[] = []
   for (const field of ['id', 'number', 'brand', 'categoryId', 'placeId', 'ownerId']) {
     validations.push(new RequiredFieldValidation(field))

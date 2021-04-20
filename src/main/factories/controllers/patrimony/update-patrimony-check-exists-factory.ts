@@ -1,8 +1,13 @@
-import { makeDbCheckCategoryById, makeDbCheckOwnerById, makeDbCheckPatrimonyById, makeDbCheckPlaceById } from '@/main/factories/usecases'
+import {
+  makeDbCheckCategoryById,
+  makeDbCheckOwnerById,
+  makeDbCheckPatrimonyById,
+  makeDbCheckPlaceById
+} from '@/main/factories/usecases'
 import { CheckExist } from '@/presentation/protocols'
 import { CheckExistCategoryId, CheckExistComposite, CheckExistOwnerId, CheckExistPatrimonyId, CheckExistPlaceId } from '@/validation/checks'
 
-export const makeSaveToUpdatePatrimonyCheckExist = (): CheckExist => {
+export const makeUpdatePatrimonyCheckExist = (): CheckExist => {
   const checkExists: CheckExist[] = []
   checkExists.push(new CheckExistPatrimonyId(makeDbCheckPatrimonyById(), 'id'))
   checkExists.push(new CheckExistOwnerId(makeDbCheckOwnerById(), 'ownerId'))
