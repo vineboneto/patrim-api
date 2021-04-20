@@ -6,6 +6,7 @@ import {
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByPlaceIdRepository,
   LoadPatrimonyByOwnerIdRepository,
+  LoadPatrimonyNumberByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
 import { mockCheckPatrimonyByIdParams, mockPatrimonyModel, mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
@@ -39,6 +40,15 @@ export class UpdatePatrimonyRepositorySpy implements UpdatePatrimonyRepository {
   model = mockPatrimonyModel()
   async update (params: UpdatePatrimonyRepository.Params): Promise<UpdatePatrimonyRepository.Model> {
     this.params = params
+    return this.model
+  }
+}
+
+export class LoadPatrimonyNumberByIdRepositorySpy implements LoadPatrimonyNumberByIdRepository {
+  id: number
+  model = { number: faker.datatype.uuid() }
+  async loadNumberById (id: number): Promise<LoadPatrimonyNumberByIdRepository.Model> {
+    this.id = id
     return this.model
   }
 }
