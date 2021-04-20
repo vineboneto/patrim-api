@@ -65,9 +65,16 @@ describe('DbUpdatePatrimony', () => {
     expect(loadPatrimonyNumberByIdRepositorySpy.id).toEqual(params.id)
   })
 
+  test('Should throws if LoadPatrimonyNumberByIdRepository throw', async () => {
+    const { sut, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
+    jest.spyOn(loadPatrimonyNumberByIdRepositorySpy, 'loadNumberById').mockRejectedValueOnce(new Error())
+    const promise = sut.update(mockUpdatePatrimonyRepositoryParams())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call CheckPatrimonyByNumberRepository with correct values', async () => {
     const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
-    loadPatrimonyNumberByIdRepositorySpy.model.number = '456'
+    loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
     const params = mockUpdatePatrimonyRepositoryParams()
     await sut.update(params)
     expect(checkPatrimonyByNumberRepositorySpy.number).toBe(params.number)
@@ -75,10 +82,18 @@ describe('DbUpdatePatrimony', () => {
 
   test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
     const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
-    loadPatrimonyNumberByIdRepositorySpy.model.number = '456'
+    loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
     checkPatrimonyByNumberRepositorySpy.result = true
     const params = mockUpdatePatrimonyRepositoryParams()
     const data = await sut.update(params)
     expect(data).toBe(null)
+  })
+
+  test('Should throws if CheckPatrimonyByNumberRepository throw', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
+    loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
+    jest.spyOn(checkPatrimonyByNumberRepositorySpy, 'checkByNumber').mockRejectedValueOnce(new Error())
+    const promise = sut.update(mockUpdatePatrimonyRepositoryParams())
+    await expect(promise).rejects.toThrow()
   })
 })
