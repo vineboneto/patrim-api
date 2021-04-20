@@ -65,6 +65,13 @@ describe('UpdatePatrimonyController', () => {
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('categoryId')))
   })
 
+  test('Should return 500 if CheckExists  throws', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    jest.spyOn(checkExistSpy, 'check').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
   test('Should call UpdatePatrimony with correct values', async () => {
     const { sut, updatePatrimonySpy } = makeSut()
     const request = mockRequest()
