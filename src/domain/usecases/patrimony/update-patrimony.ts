@@ -1,12 +1,12 @@
 import { PatrimonyModel } from '@/domain/models'
 
-export interface SavePatrimony {
-  save (params: SavePatrimony.Params): Promise<SavePatrimony.Model>
+export interface UpdatePatrimony {
+  update ()
 }
 
-export namespace SavePatrimony {
+export namespace UpdatePatrimony {
   export type Params = {
-    id?: number
+    id: number
     number: string
     brand: string
     description?: string
@@ -14,6 +14,5 @@ export namespace SavePatrimony {
     ownerId: number
     placeId: number
   }
-
   export type Model = PatrimonyModel
 }
