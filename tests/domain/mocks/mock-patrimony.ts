@@ -40,6 +40,15 @@ export const mockCheckPatrimonyByIdParams = (): CheckPatrimonyById.Params => ({
   id: faker.datatype.number()
 })
 
+export class UpdatePatrimonySpy implements UpdatePatrimony {
+  params: UpdatePatrimony.Params
+  model = mockPatrimonyModel()
+  async update (patrimony: UpdatePatrimony.Params): Promise<SavePatrimony.Model> {
+    this.params = patrimony
+    return this.model
+  }
+}
+
 export class SavePatrimonySpy implements SavePatrimony {
   params: SavePatrimony.Params
   model = mockPatrimonyModel()

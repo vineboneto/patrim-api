@@ -1,10 +1,12 @@
-import { badRequest, forbidden } from '@/presentation/helper'
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest, forbidden } from '@/presentation/helper'
+import { UpdatePatrimony } from '@/domain/usecases'
 
 export class UpdatePatrimonyController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly checkExist: CheckExist
+    private readonly checkExist: CheckExist,
+    private readonly updatePatrimony: UpdatePatrimony
   ) {}
 
   async handle (request: UpdatePatrimonyController.Request): Promise<HttpResponse> {
@@ -16,6 +18,7 @@ export class UpdatePatrimonyController implements Controller {
     if (checkError) {
       return forbidden(checkError)
     }
+    await this.updatePatrimony.update(request)
     return null
   }
 }
