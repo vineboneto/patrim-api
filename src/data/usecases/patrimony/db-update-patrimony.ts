@@ -7,7 +7,6 @@ export class DbUpdatePatrimony implements UpdatePatrimony {
   ) {}
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
-    await this.updatePatrimonyRepository.update(params)
-    return null
+    return this.updatePatrimonyRepository.update(params)
   }
 }
