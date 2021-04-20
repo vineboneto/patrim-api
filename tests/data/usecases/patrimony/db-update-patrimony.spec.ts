@@ -1,5 +1,6 @@
 import { DbUpdatePatrimony } from '@/data/usecases'
 import {
+  CheckPatrimonyByNumberRepositorySpy,
   LoadPatrimonyNumberByIdRepositorySpy,
   mockUpdatePatrimonyRepositoryParams,
   UpdatePatrimonyRepositorySpy
@@ -9,16 +10,23 @@ type SutTypes = {
   sut: DbUpdatePatrimony
   updatePatrimonyRepositorySpy: UpdatePatrimonyRepositorySpy
   loadPatrimonyNumberByIdRepositorySpy: LoadPatrimonyNumberByIdRepositorySpy
+  checkPatrimonyByNumberRepositorySpy: CheckPatrimonyByNumberRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const updatePatrimonyRepositorySpy = new UpdatePatrimonyRepositorySpy()
   const loadPatrimonyNumberByIdRepositorySpy = new LoadPatrimonyNumberByIdRepositorySpy()
-  const sut = new DbUpdatePatrimony(updatePatrimonyRepositorySpy, loadPatrimonyNumberByIdRepositorySpy)
+  const checkPatrimonyByNumberRepositorySpy = new CheckPatrimonyByNumberRepositorySpy()
+  const sut = new DbUpdatePatrimony(
+    updatePatrimonyRepositorySpy,
+    loadPatrimonyNumberByIdRepositorySpy,
+    checkPatrimonyByNumberRepositorySpy
+  )
   return {
     sut,
     updatePatrimonyRepositorySpy,
-    loadPatrimonyNumberByIdRepositorySpy
+    loadPatrimonyNumberByIdRepositorySpy,
+    checkPatrimonyByNumberRepositorySpy
   }
 }
 
@@ -57,12 +65,11 @@ describe('DbUpdatePatrimony', () => {
     expect(loadPatrimonyNumberByIdRepositorySpy.id).toEqual(params.id)
   })
 
-  test('Should return null if LoadPatrimonyNumberByIdRepository returns different number of params', async () => {
-    const { sut, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
-    loadPatrimonyNumberByIdRepositorySpy.model.number = '123'
+  test('Should call CheckPatrimonyByNumberRepository with correct values', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
+    loadPatrimonyNumberByIdRepositorySpy.model.number = '456'
     const params = mockUpdatePatrimonyRepositoryParams()
-    params.number = '456'
-    const data = await sut.update(params)
-    expect(data).toBe(null)
+    await sut.update(params)
+    expect(checkPatrimonyByNumberRepositorySpy.number).toBe(params.number)
   })
 })
