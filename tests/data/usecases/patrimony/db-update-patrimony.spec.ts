@@ -40,7 +40,7 @@ describe('DbUpdatePatrimony', () => {
   test('Should return patrimony on success', async () => {
     const { sut, updatePatrimonyRepositorySpy } = makeSut()
     const data = await sut.update(mockUpdatePatrimonyRepositoryParams())
-    expect(data).toBe(updatePatrimonyRepositorySpy.model)
+    expect(data).toEqual(updatePatrimonyRepositorySpy.model)
   })
 
   test('Should throws if UpdatePatrimonyRepository throw', async () => {
@@ -55,5 +55,14 @@ describe('DbUpdatePatrimony', () => {
     const params = mockUpdatePatrimonyRepositoryParams()
     await sut.update(params)
     expect(loadPatrimonyNumberByIdRepositorySpy.id).toEqual(params.id)
+  })
+
+  test('Should return null if LoadPatrimonyNumberByIdRepository returns different number of params', async () => {
+    const { sut, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
+    loadPatrimonyNumberByIdRepositorySpy.model.number = '123'
+    const params = mockUpdatePatrimonyRepositoryParams()
+    params.number = '456'
+    const data = await sut.update(params)
+    expect(data).toBe(null)
   })
 })

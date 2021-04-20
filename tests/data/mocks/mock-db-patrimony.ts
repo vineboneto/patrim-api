@@ -46,7 +46,7 @@ export class UpdatePatrimonyRepositorySpy implements UpdatePatrimonyRepository {
 
 export class LoadPatrimonyNumberByIdRepositorySpy implements LoadPatrimonyNumberByIdRepository {
   id: number
-  model = { number: faker.datatype.uuid() }
+  model = { number: mockUpdatePatrimonyParams().number }
   async loadNumberById (id: number): Promise<LoadPatrimonyNumberByIdRepository.Model> {
     this.id = id
     return this.model

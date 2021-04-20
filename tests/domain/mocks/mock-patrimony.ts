@@ -27,7 +27,7 @@ export const mockPatrimonyModel = (): SavePatrimony.Model => ({
 
 export const mockUpdatePatrimonyParams = (): UpdatePatrimony.Params => ({
   id: faker.datatype.number(),
-  number: faker.datatype.number().toString(),
+  number: '123',
   brand: faker.random.word(),
   description: faker.random.words(),
   categoryId: faker.datatype.number(),
