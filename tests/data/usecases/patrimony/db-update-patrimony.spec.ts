@@ -28,4 +28,17 @@ describe('DbUpdatePatrimony', () => {
     const data = await sut.update(mockUpdatePatrimonyRepositoryParams())
     expect(data).toBe(null)
   })
+
+  test('Should return patrimony on success', async () => {
+    const { sut, updatePatrimonyRepositorySpy } = makeSut()
+    const data = await sut.update(mockUpdatePatrimonyRepositoryParams())
+    expect(data).toBe(updatePatrimonyRepositorySpy.model)
+  })
+
+  test('Should throws UpdatePatrimonyRepository throw', async () => {
+    const { sut, updatePatrimonyRepositorySpy } = makeSut()
+    jest.spyOn(updatePatrimonyRepositorySpy, 'update').mockRejectedValueOnce(new Error())
+    const promise = sut.update(mockUpdatePatrimonyRepositoryParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
