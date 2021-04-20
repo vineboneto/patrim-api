@@ -14,14 +14,13 @@ export class DbUpdatePatrimony implements UpdatePatrimony {
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
     const { number } = await this.loadPatrimonyNumberByIdRepository.loadNumberById(params.id)
-    if (number === params.number) {
-      return this.updatePatrimonyRepository.update(params)
-    } else {
+    if (number !== params.number) {
       const exists = await this.checkPatrimonyByNumberRepository.checkByNumber(params.number)
       if (!exists) {
         return this.updatePatrimonyRepository.update(params)
       }
+      return null
     }
-    return null
+    return this.updatePatrimonyRepository.update(params)
   }
 }

@@ -72,4 +72,13 @@ describe('DbUpdatePatrimony', () => {
     await sut.update(params)
     expect(checkPatrimonyByNumberRepositorySpy.number).toBe(params.number)
   })
+
+  test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
+    loadPatrimonyNumberByIdRepositorySpy.model.number = '456'
+    checkPatrimonyByNumberRepositorySpy.result = true
+    const params = mockUpdatePatrimonyRepositoryParams()
+    const data = await sut.update(params)
+    expect(data).toBe(null)
+  })
 })
