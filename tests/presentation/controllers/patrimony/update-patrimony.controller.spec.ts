@@ -1,6 +1,6 @@
 import { UpdatePatrimonyController } from '@/presentation/controllers'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
-import { badRequest, forbidden, ok, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdatePatrimonySpy } from '@/tests/domain/mocks'
 
@@ -84,5 +84,12 @@ describe('UpdatePatrimonyController', () => {
     const { sut, updatePatrimonySpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(updatePatrimonySpy.model))
+  })
+
+  test('Should return 500 if UpdatePatrimony throws', async () => {
+    const { sut, updatePatrimonySpy } = makeSut()
+    jest.spyOn(updatePatrimonySpy, 'update').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
