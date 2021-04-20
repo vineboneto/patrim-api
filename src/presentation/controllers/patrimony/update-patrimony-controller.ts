@@ -1,6 +1,7 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, unprocessableEntity } from '@/presentation/helper'
 import { UpdatePatrimony } from '@/domain/usecases'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 export class UpdatePatrimonyController implements Controller {
   constructor (
@@ -18,7 +19,10 @@ export class UpdatePatrimonyController implements Controller {
     if (checkError) {
       return forbidden(checkError)
     }
-    await this.updatePatrimony.update(request)
+    const patrimonyModel = await this.updatePatrimony.update(request)
+    if (!patrimonyModel) {
+      return unprocessableEntity(new AlreadyExistsError(request.number))
+    }
     return null
   }
 }
