@@ -8,7 +8,7 @@ import {
   LoadPatrimonyByOwnerIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
-import { mockCheckPatrimonyByIdParams, mockPatrimonyModel } from '@/tests/domain/mocks'
+import { mockCheckPatrimonyByIdParams, mockPatrimonyModel, mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -21,15 +21,7 @@ export const mockAddPatrimonyRepositoryParams = (): AddPatrimonyRepository.Param
   placeId: faker.datatype.number()
 })
 
-export const mockUpdatePatrimonyRepositoryParams = (): UpdatePatrimonyRepository.Params => ({
-  id: faker.datatype.number(),
-  brand: faker.random.word(),
-  number: faker.datatype.number().toString(),
-  description: faker.random.words(),
-  categoryId: faker.datatype.number(),
-  ownerId: faker.datatype.number(),
-  placeId: faker.datatype.number()
-})
+export const mockUpdatePatrimonyRepositoryParams = (): UpdatePatrimonyRepository.Params => mockUpdatePatrimonyParams()
 
 export const mockCheckPatrimonyByIdRepositoryParams = (): CheckPatrimonyByIdRepository.Params => mockCheckPatrimonyByIdParams()
 

@@ -1,4 +1,4 @@
-import { CheckPatrimonyById, LoadPatrimonyByOwnerId, SavePatrimony } from '@/domain/usecases'
+import { CheckPatrimonyById, LoadPatrimonyByOwnerId, SavePatrimony, UpdatePatrimony } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -23,6 +23,17 @@ export const mockPatrimonyModel = (): SavePatrimony.Model => ({
     id: faker.datatype.number(),
     name: faker.name.findName()
   }
+})
+
+export const mockUpdatePatrimonyParams = (): UpdatePatrimony.Params => ({
+  id: faker.datatype.number(),
+  number: faker.datatype.number().toString(),
+  brand: faker.random.word(),
+  description: faker.random.words(),
+  categoryId: faker.datatype.number(),
+  ownerId: faker.datatype.number(),
+  placeId: faker.datatype.number()
+
 })
 
 export const mockCheckPatrimonyByIdParams = (): CheckPatrimonyById.Params => ({
