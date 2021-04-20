@@ -8,7 +8,10 @@ export class DbUpdatePatrimony implements UpdatePatrimony {
   ) {}
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
-    await this.loadPatrimonyNumberByIdRepository.loadNumberById(params.id)
-    return this.updatePatrimonyRepository.update(params)
+    const { number } = await this.loadPatrimonyNumberByIdRepository.loadNumberById(params.id)
+    if (number === params.number) {
+      return this.updatePatrimonyRepository.update(params)
+    }
+    return null
   }
 }
