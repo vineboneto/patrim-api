@@ -1,4 +1,4 @@
-import { badRequest } from '@/presentation/helper'
+import { badRequest, forbidden } from '@/presentation/helper'
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class UpdatePatrimonyController implements Controller {
@@ -12,7 +12,10 @@ export class UpdatePatrimonyController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    await this.checkExist.check(request)
+    const checkError = await this.checkExist.check(request)
+    if (checkError) {
+      return forbidden(checkError)
+    }
     return null
   }
 }
