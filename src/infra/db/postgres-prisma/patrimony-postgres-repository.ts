@@ -8,7 +8,8 @@ import {
   CheckPlaceByIdRepository,
   AddPatrimonyRepository,
   UpdatePatrimonyRepository,
-  CheckPatrimonyByIdRepository
+  CheckPatrimonyByIdRepository,
+  LoadPatrimonyNumberByIdRepository
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
@@ -16,6 +17,7 @@ export class PatrimonyPostgresRepository implements
   UpdatePatrimonyRepository,
   CheckPatrimonyByNumberRepository,
   LoadPatrimonyByOwnerIdRepository,
+  LoadPatrimonyNumberByIdRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByPlaceIdRepository,
@@ -61,6 +63,19 @@ export class PatrimonyPostgresRepository implements
       }
     })
     return PrismaHelper.adaptPatrimony(patrimony)
+  }
+
+  async loadNumberById (id: number): Promise<LoadPatrimonyNumberByIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const patrimony = await prismaClient.patrimony.findFirst({
+      select: {
+        number: true
+      },
+      where: {
+        id: (id)
+      }
+    })
+    return patrimony
   }
 
   async loadByOwnerId (params: LoadPatrimonyByOwnerIdRepository.Params):
