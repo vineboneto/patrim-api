@@ -1,6 +1,6 @@
 import { UpdateCategoryController } from '@/presentation/controllers/'
 import { badRequest } from '@/presentation/helper'
-import { ValidationSpy } from '@/tests/presentation/mocks'
+import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -12,14 +12,17 @@ const mockRequest = (): UpdateCategoryController.Request => ({
 type SutTypes = {
   validationSpy: ValidationSpy
   sut: UpdateCategoryController
+  checkExistSpy: CheckExistSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new UpdateCategoryController(validationSpy)
+  const checkExistSpy = new CheckExistSpy()
+  const sut = new UpdateCategoryController(validationSpy, checkExistSpy)
   return {
+    sut,
     validationSpy,
-    sut
+    checkExistSpy
   }
 }
 
@@ -36,5 +39,12 @@ describe('UpdateCategoryController', () => {
     validationSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call CheckExist with correct values', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkExistSpy.input).toEqual(request)
   })
 })
