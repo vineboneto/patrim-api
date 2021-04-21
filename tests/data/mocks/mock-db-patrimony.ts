@@ -7,6 +7,7 @@ import {
   CheckPatrimonyByPlaceIdRepository,
   DeletePatrimonyRepository,
   LoadPatrimoniesRepository,
+  LoadPatrimonyByIdRepository,
   LoadPatrimonyByOwnerIdRepository,
   LoadPatrimonyNumberByIdRepository,
   UpdatePatrimonyRepository
@@ -16,6 +17,7 @@ import {
   mockCheckPatrimonyByIdParams,
   mockDeletePatrimonyParams,
   mockLoadPatrimoniesParams,
+  mockLoadPatrimonyById,
   mockPatrimoniesModel,
   mockPatrimonyModel,
   mockUpdatePatrimonyParams
@@ -37,6 +39,9 @@ DeletePatrimonyRepository.Params => mockDeletePatrimonyParams()
 
 export const mockLoadPatrimoniesRepositoryParams = ():
 LoadPatrimoniesRepository.Params => mockLoadPatrimoniesParams()
+
+export const mockLoadPatrimonyByIdRepository = ():
+LoadPatrimonyByIdRepository.Params => mockLoadPatrimonyById()
 
 export class AddPatrimonyRepositorySpy implements AddPatrimonyRepository {
   params: AddPatrimonyRepository.Params
@@ -71,6 +76,15 @@ export class LoadPatrimoniesRepositorySpy implements LoadPatrimoniesRepository {
   async loadAll (params: LoadPatrimoniesRepository.Params): Promise<LoadPatrimoniesRepository.Model> {
     this.params = params
     return this.models
+  }
+}
+
+export class LoadPatrimonyByIdRepositorySpy implements LoadPatrimonyByIdRepository {
+  params: LoadPatrimonyByIdRepository.Params
+  model = mockPatrimonyModel()
+  async loadById (params: LoadPatrimonyByIdRepository.Params): Promise<LoadPatrimonyByIdRepository.Model> {
+    this.params = params
+    return this.model
   }
 }
 
