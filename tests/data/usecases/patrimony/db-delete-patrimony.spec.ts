@@ -22,4 +22,11 @@ describe('DbDeletePatrimony', () => {
     await sut.delete(params)
     expect(deletePatrimonyRepositorySpy.params).toEqual(params)
   })
+
+  test('Should return null if DeletePatrimonyRepository return null', async () => {
+    const { sut, deletePatrimonyRepositorySpy } = makeSut()
+    deletePatrimonyRepositorySpy.model = null
+    const data = await sut.delete(mockDeletePatrimonyRepositoryParams())
+    expect(data).toBe(null)
+  })
 })
