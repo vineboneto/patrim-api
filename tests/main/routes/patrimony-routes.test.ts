@@ -92,4 +92,29 @@ describe('Patrimony Routes', () => {
         .expect(403)
     })
   })
+
+  describe('GET /patrimonies', () => {
+    test('Should return empty array', async () => {
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .get('/api/sectors')
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+
+    test('Should return all patrimonies', async () => {
+      const accessToken = await makeAccessToken()
+      await Helper.makeManyPatrimonies()
+      await request(app)
+        .get('/api/patrimonies')
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 403 on load without accessToken', async () => {
+      await request(app)
+        .get('/api/patrimonies')
+        .expect(403)
+    })
+  })
 })
