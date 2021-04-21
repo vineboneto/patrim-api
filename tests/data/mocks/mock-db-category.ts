@@ -4,7 +4,8 @@ import {
   DeleteCategoryRepository,
   LoadCategoriesRepository,
   CheckCategoryByIdRepository,
-  UpdateCategoryRepository
+  UpdateCategoryRepository,
+  LoadCategoryNameByIdRepository
 } from '@/data/protocols'
 import {
   mockAddCategoryParams,
@@ -45,6 +46,15 @@ export class UpdateCategoryRepositorySpy implements UpdateCategoryRepository {
   model = mockCategoryModel()
   async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Model> {
     this.params = category
+    return this.model
+  }
+}
+
+export class LoadCategoryNameByIdRepositorySpy implements LoadCategoryNameByIdRepository {
+  id: number
+  model = { name: mockUpdateCategoryRepositoryParams().name }
+  async loadNameById (id: number): Promise<LoadCategoryNameByIdRepository.Model> {
+    this.id = id
     return this.model
   }
 }
