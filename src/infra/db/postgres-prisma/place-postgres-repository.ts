@@ -5,6 +5,7 @@ import {
   CheckPlaceByNameRepository,
   CheckSectorByIdRepository,
   DeletePlaceRepository,
+  LoadPlaceNameByIdRepository,
   LoadPlacesRepository,
   UpdatePlaceRepository
 } from '@/data/protocols'
@@ -13,6 +14,7 @@ export class PlacePostgresRepository implements
   AddPlaceRepository,
   UpdatePlaceRepository,
   LoadPlacesRepository,
+  LoadPlaceNameByIdRepository,
   CheckPlaceByNameRepository,
   DeletePlaceRepository {
   async add (params: AddPlaceRepository.Params): Promise<AddPlaceRepository.Model> {
@@ -46,6 +48,19 @@ export class PlacePostgresRepository implements
       }
     })
     return placeModel
+  }
+
+  async loadNameById (id: number): Promise<LoadPlaceNameByIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const place = prismaClient.place.findFirst({
+      where: {
+        id: Number(id)
+      },
+      select: {
+        name: true
+      }
+    })
+    return place
   }
 
   async loadAll (params: LoadPlacesRepository.Params): Promise<LoadPlacesRepository.Model> {

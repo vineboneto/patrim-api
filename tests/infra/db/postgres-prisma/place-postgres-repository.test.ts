@@ -42,36 +42,6 @@ describe('PlacePostgresRepository', () => {
     })
   })
 
-  describe('checkByName', () => {
-    test('Should return true if name exists', async () => {
-      const sut = makeSut()
-      const { name } = await Helper.makePlace()
-      const result = await sut.checkByName(name)
-      expect(result).toBe(true)
-    })
-
-    test('Should return false if name not exists', async () => {
-      const sut = makeSut()
-      const result = await sut.checkByName(faker.name.findName())
-      expect(result).toBe(false)
-    })
-  })
-
-  describe('checkById', () => {
-    test('Should return true if id exists', async () => {
-      const sut = makeSut()
-      const { id } = await Helper.makePlace()
-      const result = await sut.checkById({ id })
-      expect(result).toBe(true)
-    })
-
-    test('Should return false if id not exists', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById({ id: faker.datatype.number() })
-      expect(result).toBe(false)
-    })
-  })
-
   describe('delete()', () => {
     test('Should return place deleted on success', async () => {
       const sut = makeSut()
@@ -81,6 +51,21 @@ describe('PlacePostgresRepository', () => {
       expect(place.id).toBe(id)
       expect(place.name).toBe(name)
       expect(searchPlaceDeleted).toBeFalsy()
+    })
+  })
+
+  describe('loadNameById()', () => {
+    test('Should return name place on success', async () => {
+      const sut = makeSut()
+      const { id, name } = await Helper.makePlace()
+      const placeName = await sut.loadNameById(id)
+      expect(placeName).toEqual({ name })
+    })
+
+    test('Should return null on fails', async () => {
+      const sut = makeSut()
+      const placeName = await sut.loadNameById(faker.datatype.number())
+      expect(placeName).toBe(null)
     })
   })
 
@@ -108,6 +93,36 @@ describe('PlacePostgresRepository', () => {
       const sut = makeSut()
       const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
       expect(dataResponse).toEqual([])
+    })
+  })
+
+  describe('checkByName', () => {
+    test('Should return true if name exists', async () => {
+      const sut = makeSut()
+      const { name } = await Helper.makePlace()
+      const result = await sut.checkByName(name)
+      expect(result).toBe(true)
+    })
+
+    test('Should return false if name not exists', async () => {
+      const sut = makeSut()
+      const result = await sut.checkByName(faker.name.findName())
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('checkById', () => {
+    test('Should return true if id exists', async () => {
+      const sut = makeSut()
+      const { id } = await Helper.makePlace()
+      const result = await sut.checkById({ id })
+      expect(result).toBe(true)
+    })
+
+    test('Should return false if id not exists', async () => {
+      const sut = makeSut()
+      const result = await sut.checkById({ id: faker.datatype.number() })
+      expect(result).toBe(false)
     })
   })
 })

@@ -54,17 +54,6 @@ describe('Place Routes', () => {
         })
         .expect(200)
     })
-
-    test('Should return 404 on update place with invalid id', async () => {
-      const accessToken = await makeAccessToken()
-      await request(app)
-        .put(`/api/places/${faker.datatype.number()}`)
-        .set('x-access-token', accessToken)
-        .send({
-          name: faker.name.findName()
-        })
-        .expect(404)
-    })
   })
 
   describe('DELETE /places/:id', () => {
