@@ -88,11 +88,11 @@ export class AddPatrimonySpy implements AddPatrimony {
 }
 
 export class LoadPatrimonyByIdSpy implements LoadPatrimonyById {
-  models = mockPatrimonyModel()
+  model = mockPatrimonyModel()
   params: LoadPatrimonyById.Params
   async loadById (params: LoadPatrimonyById.Params): Promise<LoadPatrimonyById.Model> {
     this.params = params
-    return this.models
+    return this.model
   }
 }
 
