@@ -4,6 +4,7 @@ import {
   makeAddPatrimonyController,
   makeDeletePatrimonyController,
   makeLoadPatrimoniesController,
+  makeLoadPatrimonyByIdController,
   makeUpdatePatrimonyController
 } from '@/main/factories/controllers'
 import { auth } from '@/main/middlewares'
@@ -13,4 +14,5 @@ export default (router: Router): void => {
   router.put('/patrimonies/:id', auth, adaptRoute(makeUpdatePatrimonyController()))
   router.delete('/patrimonies/:id', auth, adaptRoute(makeDeletePatrimonyController()))
   router.get('/patrimonies', auth, adaptRoute(makeLoadPatrimoniesController()))
+  router.get('/patrimonies/:id', auth, adaptRoute(makeLoadPatrimonyByIdController()))
 }
