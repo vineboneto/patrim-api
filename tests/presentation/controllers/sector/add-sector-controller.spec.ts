@@ -1,33 +1,33 @@
-import { SaveSectorController } from '@/presentation/controllers'
+import { AddSectorController } from '@/presentation/controllers'
 import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { SaveSectorSpy } from '@/tests/domain/mocks'
+import { AddSectorSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-const mockRequest = (): SaveSectorController.Request => ({
+const mockRequest = (): AddSectorController.Request => ({
   name: faker.name.jobArea()
 })
 
 type SutTypes = {
-  sut: SaveSectorController
-  saveSectorSpy: SaveSectorSpy
+  sut: AddSectorController
+  addSectorSpy: AddSectorSpy
   validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const saveSectorSpy = new SaveSectorSpy()
-  const sut = new SaveSectorController(saveSectorSpy, validationSpy)
+  const addSectorSpy = new AddSectorSpy()
+  const sut = new AddSectorController(addSectorSpy, validationSpy)
   return {
     sut,
-    saveSectorSpy,
+    addSectorSpy,
     validationSpy
   }
 }
 
-describe('SaveSectorController', () => {
+describe('AddSectorController', () => {
   test('Should call Validation with correct value', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()
@@ -42,31 +42,31 @@ describe('SaveSectorController', () => {
     expect(httpResponse).toEqual(badRequest(validationSpy.result))
   })
 
-  test('Should call SaveSector with correct values', async () => {
-    const { sut, saveSectorSpy } = makeSut()
+  test('Should call AddSector with correct values', async () => {
+    const { sut, addSectorSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(saveSectorSpy.params).toEqual(request)
+    expect(addSectorSpy.params).toEqual(request)
   })
 
-  test('Should return 422 if SaveSector return null', async () => {
-    const { sut, saveSectorSpy } = makeSut()
-    saveSectorSpy.model = null
+  test('Should return 422 if AddSector return null', async () => {
+    const { sut, addSectorSpy } = makeSut()
+    addSectorSpy.model = null
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.name)))
   })
 
-  test('Should return 500 if SaveSector throws', async () => {
-    const { sut, saveSectorSpy } = makeSut()
-    jest.spyOn(saveSectorSpy, 'save').mockRejectedValueOnce(new Error())
+  test('Should return 500 if AddSector throws', async () => {
+    const { sut, addSectorSpy } = makeSut()
+    jest.spyOn(addSectorSpy, 'add').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 204 on success', async () => {
-    const { sut, saveSectorSpy } = makeSut()
+    const { sut, addSectorSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(saveSectorSpy.model))
+    expect(httpResponse).toEqual(ok(addSectorSpy.model))
   })
 })

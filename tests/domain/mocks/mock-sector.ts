@@ -1,5 +1,5 @@
 import { SectorModel } from '@/domain/models'
-import { LoadSectors, DeleteSector, SaveSector, CheckSectorById, UpdateSector } from '@/domain/usecases'
+import { LoadSectors, DeleteSector, AddSector, CheckSectorById, UpdateSector } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -14,7 +14,7 @@ export const mockSectorsModel = (): SectorModel[] => ([
   mockSectorModel()
 ])
 
-export const mockAddSectorParams = (): SaveSector.Params => ({
+export const mockAddSectorParams = (): AddSector.Params => ({
   name: faker.name.findName()
 })
 
@@ -63,10 +63,10 @@ export class LoadSectorsSpy implements LoadSectors {
   }
 }
 
-export class SaveSectorSpy implements SaveSector {
-  params: SaveSector.Params
+export class AddSectorSpy implements AddSector {
+  params: AddSector.Params
   model = mockSectorModel()
-  async save (sector: SaveSector.Params): Promise<SaveSector.Model> {
+  async add (sector: AddSector.Params): Promise<AddSector.Model> {
     this.params = sector
     return this.model
   }

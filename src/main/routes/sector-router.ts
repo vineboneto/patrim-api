@@ -1,6 +1,6 @@
 import { adaptRoute } from '@/main/adapters'
 import {
-  makeSaveSectorController,
+  makeAddSectorController,
   makeDeleteSectorController,
   makeLoadSectorsController,
   makeUpdateSectorController
@@ -10,7 +10,7 @@ import { auth, checkSectorId as checkId } from '@/main/middlewares'
 import { Router } from 'express'
 
 export default (router: Router): void => {
-  router.post('/sectors', auth, adaptRoute(makeSaveSectorController()))
+  router.post('/sectors', auth, adaptRoute(makeAddSectorController()))
   router.put('/sectors/:id', auth, adaptRoute(makeUpdateSectorController()))
   router.get('/sectors', auth, adaptRoute(makeLoadSectorsController()))
   router.delete('/sectors/:id', auth, checkId, adaptRoute(makeDeleteSectorController()))
