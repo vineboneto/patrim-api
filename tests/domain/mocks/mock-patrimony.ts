@@ -1,5 +1,5 @@
 import { PatrimonyModel } from '@/domain/models'
-import { CheckPatrimonyById, LoadPatrimonyByOwnerId, AddPatrimony, UpdatePatrimony } from '@/domain/usecases'
+import { CheckPatrimonyById, LoadPatrimonyByOwnerId, AddPatrimony, UpdatePatrimony, DeletePatrimony } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -44,6 +44,10 @@ export const mockAddUpdatePatrimonyParams = (): AddPatrimony.Params => ({
   categoryId: faker.datatype.number(),
   ownerId: faker.datatype.number(),
   placeId: faker.datatype.number()
+})
+
+export const mockDeletePatrimonyParams = (): DeletePatrimony.Params => ({
+  id: faker.datatype.number()
 })
 
 export const mockCheckPatrimonyByIdParams = (): CheckPatrimonyById.Params => ({

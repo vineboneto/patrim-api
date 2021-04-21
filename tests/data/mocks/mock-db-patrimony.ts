@@ -5,6 +5,7 @@ import {
   CheckPatrimonyByNumberRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByPlaceIdRepository,
+  DeletePatrimonyRepository,
   LoadPatrimonyByOwnerIdRepository,
   LoadPatrimonyNumberByIdRepository,
   UpdatePatrimonyRepository
@@ -12,6 +13,7 @@ import {
 import {
   mockAddUpdatePatrimonyParams,
   mockCheckPatrimonyByIdParams,
+  mockDeletePatrimonyParams,
   mockPatrimonyModel,
   mockUpdatePatrimonyParams
 } from '@/tests/domain/mocks'
@@ -27,6 +29,9 @@ UpdatePatrimonyRepository.Params => mockUpdatePatrimonyParams()
 export const mockCheckPatrimonyByIdRepositoryParams = ():
 CheckPatrimonyByIdRepository.Params => mockCheckPatrimonyByIdParams()
 
+export const mockDeletePatrimonyRepositoryParams = ():
+DeletePatrimonyRepository.Params => mockDeletePatrimonyParams()
+
 export class AddPatrimonyRepositorySpy implements AddPatrimonyRepository {
   params: AddPatrimonyRepository.Params
   model = mockPatrimonyModel()
@@ -40,6 +45,15 @@ export class UpdatePatrimonyRepositorySpy implements UpdatePatrimonyRepository {
   params: UpdatePatrimonyRepository.Params
   model = mockPatrimonyModel()
   async update (params: UpdatePatrimonyRepository.Params): Promise<UpdatePatrimonyRepository.Model> {
+    this.params = params
+    return this.model
+  }
+}
+
+export class DeletePatrimonyRepositorySpy implements DeletePatrimonyRepository {
+  model = mockPatrimonyModel()
+  params: DeletePatrimonyRepository.Params
+  async delete (params: DeletePatrimonyRepository.Params): Promise<DeletePatrimonyRepository.Model> {
     this.params = params
     return this.model
   }
