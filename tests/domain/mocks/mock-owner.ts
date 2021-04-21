@@ -1,4 +1,4 @@
-import { CheckOwnerById, DeleteOwner, LoadOwners, SaveOwner, UpdateOwner } from '@/domain/usecases'
+import { CheckOwnerById, DeleteOwner, LoadOwners, AddOwner, UpdateOwner } from '@/domain/usecases'
 import { OwnerModel } from '@/domain/models'
 
 import faker from 'faker'
@@ -18,7 +18,7 @@ export const mockOwnersModel = (): OwnerModel[] => ([
   mockOwnerModel()
 ])
 
-export const mockAddOwnerParams = (): SaveOwner.Params => ({
+export const mockAddOwnerParams = (): AddOwner.Params => ({
   name: faker.name.findName(),
   sectorId: faker.datatype.number()
 })
@@ -45,17 +45,17 @@ export const mockLoadOwnersParams = (): LoadOwners.Params => ({
 export class UpdateOwnerSpy implements UpdateOwner {
   params: UpdateOwner.Params
   model = mockOwnerModel()
-  async update (sector: UpdateOwner.Params): Promise<UpdateOwner.Model> {
-    this.params = sector
+  async update (params: UpdateOwner.Params): Promise<UpdateOwner.Model> {
+    this.params = params
     return this.model
   }
 }
 
-export class SaveOwnerSpy implements SaveOwner {
-  params: SaveOwner.Params
+export class AddOwnerSpy implements AddOwner {
+  params: AddOwner.Params
   model = mockOwnerModel()
-  async save (owner: SaveOwner.Params): Promise<SaveOwner.Model> {
-    this.params = owner
+  async add (params: AddOwner.Params): Promise<AddOwner.Model> {
+    this.params = params
     return this.model
   }
 }

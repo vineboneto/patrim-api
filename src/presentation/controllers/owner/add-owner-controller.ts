@@ -1,25 +1,26 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
-import { SaveOwner } from '@/domain/usecases'
+import { AddOwner } from '@/domain/usecases'
 import { InvalidParamError } from '@/presentation/errors'
 
-export class SaveOwnerController implements Controller {
+export class AddOwnerController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly saveOwner: SaveOwner
+    private readonly checkExist: CheckExist,
+    private readonly addOwner: AddOwner
   ) {}
 
-  async handle (request: SaveOwnerController.Request): Promise<HttpResponse> {
+  async handle (request: AddOwnerController.Request): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
-      const owner = await this.saveOwner.save({
-        id: Number(request.id),
-        name: request.name,
-        sectorId: Number(request.sectorId)
-      })
+      const checkError = await this.checkExist.check(request)
+      if (checkError) {
+        return forbidden(checkError)
+      }
+      const owner = await this.addOwner.add(request)
       if (!owner) {
         return forbidden(new InvalidParamError('sectorId'))
       }
@@ -30,9 +31,8 @@ export class SaveOwnerController implements Controller {
   }
 }
 
-export namespace SaveOwnerController {
+export namespace AddOwnerController {
   export type Request = {
-    id?: number
     name: string
     sectorId: number
   }

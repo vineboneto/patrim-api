@@ -1,12 +1,11 @@
 import { OwnerModel } from '@/domain/models'
 
-export interface SaveOwner {
-  save (params: SaveOwner.Params): Promise<SaveOwner.Model>
+export interface AddOwner {
+  add (params: AddOwner.Params): Promise<AddOwner.Model>
 }
 
-export namespace SaveOwner {
+export namespace AddOwner {
   export type Params = {
-    id?: number
     name: string
     sectorId: number
   }
