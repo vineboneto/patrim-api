@@ -8,6 +8,7 @@ import {
   UpdatePlaceRepository
 } from '@/data/protocols'
 import {
+  mockAddPlaceParams,
   mockCheckPlaceByIdParams,
   mockDeletePlaceParams,
   mockLoadPlacesParams,
@@ -16,11 +17,7 @@ import {
   mockUpdatePlaceParams
 } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
-export const mockAddPlaceRepositoryParams = (): AddPlaceRepository.Params => ({
-  name: faker.name.findName()
-})
+export const mockAddPlaceRepositoryParams = (): AddPlaceRepository.Params => mockAddPlaceParams()
 
 export const mockUpdatePlaceRepositoryParams = (): UpdatePlaceRepository.Params => mockUpdatePlaceParams()
 

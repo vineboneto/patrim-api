@@ -1,34 +1,33 @@
-import { SavePlaceController } from '@/presentation/controllers'
+import { AddPlaceController } from '@/presentation/controllers'
 import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { SavePlaceSpy } from '@/tests/domain/mocks'
+import { AddPlaceSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-const mockRequest = (): SavePlaceController.Request => ({
-  id: faker.datatype.number(),
+const mockRequest = (): AddPlaceController.Request => ({
   name: faker.name.findName()
 })
 
 type SutTypes = {
-  sut: SavePlaceController
+  sut: AddPlaceController
   validationSpy: ValidationSpy
-  savePlaceSpy: SavePlaceSpy
+  addPlaceSpy: AddPlaceSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const savePlaceSpy = new SavePlaceSpy()
-  const sut = new SavePlaceController(validationSpy, savePlaceSpy)
+  const addPlaceSpy = new AddPlaceSpy()
+  const sut = new AddPlaceController(validationSpy, addPlaceSpy)
   return {
     sut,
     validationSpy,
-    savePlaceSpy
+    addPlaceSpy
   }
 }
 
-describe('SavePlaceController', () => {
+describe('AddPlaceController', () => {
   test('Should call Validation with correct value', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()
@@ -43,30 +42,30 @@ describe('SavePlaceController', () => {
     expect(httpResponse).toEqual(badRequest(new Error()))
   })
 
-  test('Should call SavePlace with correct value', async () => {
-    const { sut, savePlaceSpy } = makeSut()
+  test('Should call AddPlace with correct value', async () => {
+    const { sut, addPlaceSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(savePlaceSpy.params).toEqual(request)
+    expect(addPlaceSpy.params).toEqual(request)
   })
 
-  test('Should return 422 if SavePlace returns null', async () => {
-    const { sut, savePlaceSpy } = makeSut()
-    savePlaceSpy.model = null
+  test('Should return 422 if AddPlace returns null', async () => {
+    const { sut, addPlaceSpy } = makeSut()
+    addPlaceSpy.model = null
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.name)))
   })
 
   test('Should return 200 on success', async () => {
-    const { sut, savePlaceSpy } = makeSut()
+    const { sut, addPlaceSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(savePlaceSpy.model))
+    expect(httpResponse).toEqual(ok(addPlaceSpy.model))
   })
 
-  test('Should return 500 if SavePlace throws', async () => {
-    const { sut, savePlaceSpy } = makeSut()
-    jest.spyOn(savePlaceSpy, 'save').mockRejectedValueOnce(new Error())
+  test('Should return 500 if AddPlace throws', async () => {
+    const { sut, addPlaceSpy } = makeSut()
+    jest.spyOn(addPlaceSpy, 'add').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })

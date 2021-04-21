@@ -1,21 +1,21 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
-import { SavePlace } from '@/domain/usecases'
+import { AddPlace } from '@/domain/usecases'
 import { AlreadyExistsError } from '@/presentation/errors'
 
-export class SavePlaceController implements Controller {
+export class AddPlaceController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly savePlace: SavePlace
+    private readonly savePlace: AddPlace
   ) {}
 
-  async handle (request: SavePlaceController.Request): Promise<HttpResponse> {
+  async handle (request: AddPlaceController.Request): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
-      const placeModel = await this.savePlace.save(request)
+      const placeModel = await this.savePlace.add(request)
       if (!placeModel) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
       }
@@ -26,9 +26,8 @@ export class SavePlaceController implements Controller {
   }
 }
 
-export namespace SavePlaceController {
+export namespace AddPlaceController {
   export type Request = {
-    id?: number
     name: string
   }
 }

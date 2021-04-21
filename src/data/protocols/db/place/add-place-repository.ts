@@ -1,12 +1,10 @@
-import { SavePlace } from '@/domain/usecases'
+import { AddPlace } from '@/domain/usecases'
 
 export interface AddPlaceRepository {
   add (params: AddPlaceRepository.Params): Promise<AddPlaceRepository.Model>
 }
 
 export namespace AddPlaceRepository {
-  export type Params = {
-    name: string
-  }
-  export type Model = SavePlace.Model
+  export type Params = AddPlace.Params
+  export type Model = AddPlace.Model
 }

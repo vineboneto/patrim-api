@@ -1,5 +1,5 @@
 import { PlaceModel } from '@/domain/models'
-import { CheckPlaceById, DeletePlace, LoadPlaces, SavePlace, UpdatePlace } from '@/domain/usecases'
+import { CheckPlaceById, DeletePlace, LoadPlaces, AddPlace, UpdatePlace } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -13,6 +13,10 @@ export const mockPlacesModel = (): PlaceModel[] => ([
   mockPlaceModel(),
   mockPlaceModel()
 ])
+
+export const mockAddPlaceParams = (): AddPlace.Params => ({
+  name: faker.name.findName()
+})
 
 export const mockUpdatePlaceParams = (): UpdatePlace.Params => ({
   id: faker.datatype.number(),
@@ -32,10 +36,10 @@ export const mockLoadPlacesParams = (): LoadPlaces.Params => ({
   take: faker.datatype.number()
 })
 
-export class SavePlaceSpy implements SavePlace {
-  params: SavePlace.Params
+export class AddPlaceSpy implements AddPlace {
+  params: AddPlace.Params
   model = mockPlaceModel()
-  async save (place: SavePlace.Params): Promise<SavePlace.Model> {
+  async add (place: AddPlace.Params): Promise<AddPlace.Model> {
     this.params = place
     return this.model
   }

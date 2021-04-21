@@ -28,7 +28,6 @@ export class AddSectorController implements Controller {
 
 export namespace AddSectorController {
   export type Request = {
-    id?: number
     name: string
   }
 }
