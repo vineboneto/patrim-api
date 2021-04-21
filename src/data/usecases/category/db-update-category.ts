@@ -13,10 +13,12 @@ export class DbUpdateCategory implements UpdateCategory {
   ) {}
 
   async update (params: UpdateCategory.Params): Promise<UpdateCategory.Model> {
-    await this.loadCategoryNameByIdRepository.loadNameById(params.id)
-    const exists = await this.checkCategoryByNameRepository.checkByName(params.name)
-    if (exists) {
-      return null
+    const { name } = await this.loadCategoryNameByIdRepository.loadNameById(params.id)
+    if (name !== params.name) {
+      const exists = await this.checkCategoryByNameRepository.checkByName(params.name)
+      if (exists) {
+        return null
+      }
     }
     return this.updateCategoryRepository.update(params)
   }
