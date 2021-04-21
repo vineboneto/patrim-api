@@ -99,7 +99,7 @@ export class PatrimonyPostgresRepository implements
       },
       include: this.includesData()
     })
-    return PrismaHelper.adaptPatrimony(patrimony)
+    return patrimony ? PrismaHelper.adaptPatrimony(patrimony) : null
   }
 
   async loadNumberById (id: number): Promise<LoadPatrimonyNumberByIdRepository.Model> {
