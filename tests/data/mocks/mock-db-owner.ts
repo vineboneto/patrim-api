@@ -12,10 +12,9 @@ import {
   mockDeleteOwnerParams,
   mockLoadOwnersParams,
   mockOwnerModel,
-  mockOwnersModel
+  mockOwnersModel,
+  mockUpdateOwnerParams
 } from '@/tests/domain/mocks'
-
-import faker from 'faker'
 
 export const mockAddOwnerRepositoryParams = (): AddOwnerRepository.Params => mockAddOwnerParams()
 
@@ -25,11 +24,7 @@ export const mockDeleteOwnerRepositoryParams = (): DeleteOwnerRepository.Params 
 
 export const mockLoadOwnersRepositoryParams = (): LoadOwnersRepository.Params => mockLoadOwnersParams()
 
-export const mockUpdateOwnerRepositoryParams = (): UpdateOwnerRepository.Params => ({
-  id: faker.datatype.number(),
-  name: faker.name.findName(),
-  sectorId: faker.datatype.number()
-})
+export const mockUpdateOwnerRepositoryParams = (): UpdateOwnerRepository.Params => mockUpdateOwnerParams()
 
 export class AddOwnerRepositorySpy implements AddOwnerRepository {
   params: AddOwnerRepository.Params
