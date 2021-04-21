@@ -1,6 +1,7 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, serverError, unprocessableEntity } from '@/presentation/helper'
 import { UpdateCategory } from '@/domain/usecases'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 export class UpdateCategoryController implements Controller {
   constructor (
@@ -19,7 +20,10 @@ export class UpdateCategoryController implements Controller {
       if (checkError) {
         return forbidden(checkError)
       }
-      await this.updateCategory.update(request)
+      const categoryModel = await this.updateCategory.update(request)
+      if (!categoryModel) {
+        return unprocessableEntity(new AlreadyExistsError(request.name))
+      }
       return null
     } catch (error) {
       return serverError(error)
