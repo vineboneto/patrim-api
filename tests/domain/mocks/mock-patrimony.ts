@@ -83,6 +83,15 @@ export class AddPatrimonySpy implements AddPatrimony {
   }
 }
 
+export class LoadPatrimoniesSpy implements LoadPatrimonies {
+  models = mockPatrimoniesModel()
+  params: LoadPatrimonies.Params
+  async load (params: LoadPatrimonies.Params): Promise<LoadPatrimonies.Model> {
+    this.params = params
+    return this.models
+  }
+}
+
 export class DeletePatrimonySpy implements DeletePatrimony {
   params: DeletePatrimony.Params
   model = mockPatrimonyModel()
