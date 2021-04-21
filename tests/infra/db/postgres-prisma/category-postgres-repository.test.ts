@@ -42,18 +42,18 @@ describe('CategoryPostgresRepository', () => {
     })
   })
 
-  describe('checkByName()', () => {
-    test('Should return false if category name do not exist', async () => {
+  describe('loadNameById()', () => {
+    test('Should return name category on success', async () => {
       const sut = makeSut()
-      const result = await sut.checkByName(faker.name.findName())
-      expect(result).toBeFalsy()
+      const { id, name } = await Helper.makeCategory()
+      const categoryName = await sut.loadNameById(id)
+      expect(categoryName).toEqual({ name })
     })
 
-    test('Should return true if category name already exists', async () => {
+    test('Should return null on fails', async () => {
       const sut = makeSut()
-      const { name } = await Helper.makeCategory()
-      const result = await sut.checkByName(name)
-      expect(result).toBeTruthy()
+      const categoryName = await sut.loadNameById(faker.datatype.number())
+      expect(categoryName).toBe(null)
     })
   })
 
@@ -80,6 +80,21 @@ describe('CategoryPostgresRepository', () => {
       const sut = makeSut()
       const dataResponse = await sut.loadAll({ skip: NaN, take: faker.datatype.number() })
       expect(dataResponse).toEqual([])
+    })
+  })
+
+  describe('checkByName()', () => {
+    test('Should return false if category name do not exist', async () => {
+      const sut = makeSut()
+      const result = await sut.checkByName(faker.name.findName())
+      expect(result).toBeFalsy()
+    })
+
+    test('Should return true if category name already exists', async () => {
+      const sut = makeSut()
+      const { name } = await Helper.makeCategory()
+      const result = await sut.checkByName(name)
+      expect(result).toBeTruthy()
     })
   })
 
