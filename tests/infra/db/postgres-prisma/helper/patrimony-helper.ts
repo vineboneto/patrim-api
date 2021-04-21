@@ -20,9 +20,35 @@ export const makePatrimony = async (): Promise<PatrimonyModel> => {
     },
     include: {
       Category: true,
-      Owner: true,
+      Owner: {
+        include: {
+          Sector: true
+        }
+      },
       Place: true
     }
   })
+  return PrismaHelper.adaptPatrimony(patrimony)
+}
+
+export const findPatrimonyById = async (id: number): Promise<PatrimonyModel> => {
+  const prismaClient = PrismaHelper.getConnection()
+  const patrimony = await prismaClient.patrimony.findFirst({
+    where: {
+      id: Number(id)
+    },
+    include: {
+      Category: true,
+      Owner: {
+        include: {
+          Sector: true
+        }
+      },
+      Place: true
+    }
+  })
+  if (!patrimony) {
+    return null
+  }
   return PrismaHelper.adaptPatrimony(patrimony)
 }
