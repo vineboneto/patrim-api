@@ -42,18 +42,29 @@ describe('SectorPostgresRepository', () => {
     })
   })
 
-  describe('checkByName()', () => {
-    test('Should return true if sector name exists', async () => {
+  describe('delete()', () => {
+    test('Should return sector on delete success', async () => {
       const sut = makeSut()
-      const { name } = await Helper.makeSector()
-      const isValid = await sut.checkByName(name)
-      expect(isValid).toBe(true)
+      const { id, name } = await Helper.makeSector()
+      const sectorDeleted = await sut.delete({ id })
+      const searchSectorDeleted = await Helper.findSectorById(id)
+      expect(sectorDeleted).toEqual({ id: id, name })
+      expect(searchSectorDeleted).toBeFalsy()
+    })
+  })
+
+  describe('loadNameById()', () => {
+    test('Should return name sector on success', async () => {
+      const sut = makeSut()
+      const { id, name } = await Helper.makeSector()
+      const sectorName = await sut.loadNameById(id)
+      expect(sectorName).toEqual({ name })
     })
 
-    test('Should return false if sector name does not exists', async () => {
+    test('Should return null on fails', async () => {
       const sut = makeSut()
-      const isValid = await sut.checkByName(faker.name.findName())
-      expect(isValid).toBe(false)
+      const sectorName = await sut.loadNameById(faker.datatype.number())
+      expect(sectorName).toBe(null)
     })
   })
 
@@ -83,6 +94,21 @@ describe('SectorPostgresRepository', () => {
     })
   })
 
+  describe('checkByName()', () => {
+    test('Should return true if sector name exists', async () => {
+      const sut = makeSut()
+      const { name } = await Helper.makeSector()
+      const isValid = await sut.checkByName(name)
+      expect(isValid).toBe(true)
+    })
+
+    test('Should return false if sector name does not exists', async () => {
+      const sut = makeSut()
+      const isValid = await sut.checkByName(faker.name.findName())
+      expect(isValid).toBe(false)
+    })
+  })
+
   describe('checkById()', () => {
     test('Should return true on success', async () => {
       const sut = makeSut()
@@ -95,17 +121,6 @@ describe('SectorPostgresRepository', () => {
       const sut = makeSut()
       const result = await sut.checkById(mockCheckSectorByIdRepositoryParams())
       expect(result).toBe(false)
-    })
-  })
-
-  describe('delete()', () => {
-    test('Should return sector on delete success', async () => {
-      const sut = makeSut()
-      const { id, name } = await Helper.makeSector()
-      const sectorDeleted = await sut.delete({ id })
-      const searchSectorDeleted = await Helper.findSectorById(id)
-      expect(sectorDeleted).toEqual({ id: id, name })
-      expect(searchSectorDeleted).toBeFalsy()
     })
   })
 })
