@@ -25,4 +25,11 @@ describe('DbUpdateCategory', () => {
     await sut.update(category)
     expect(updateCategoryRepositorySpy.params).toEqual(category)
   })
+
+  test('Should return null if UpdateCategoryRepository returns null', async () => {
+    const { sut, updateCategoryRepositorySpy } = makeSut()
+    updateCategoryRepositorySpy.model = null
+    const result = await sut.update(mockUpdateCategoryRepositoryParams())
+    expect(result).toBe(null)
+  })
 })
