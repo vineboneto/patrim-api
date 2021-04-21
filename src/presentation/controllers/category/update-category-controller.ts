@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, serverError } from '@/presentation/helper'
 
 export class UpdateCategoryController implements Controller {
   constructor (
@@ -8,15 +8,19 @@ export class UpdateCategoryController implements Controller {
   ) {}
 
   async handle (request: UpdateCategoryController.Request): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
+      const checkError = await this.checkExist.check(request)
+      if (checkError) {
+        return forbidden(checkError)
+      }
+      return null
+    } catch (error) {
+      return serverError(error)
     }
-    const checkError = await this.checkExist.check(request)
-    if (checkError) {
-      return forbidden(checkError)
-    }
-    return null
   }
 }
 
