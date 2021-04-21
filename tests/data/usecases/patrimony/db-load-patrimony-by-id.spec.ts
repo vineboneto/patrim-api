@@ -29,4 +29,10 @@ describe('DbLoadPatrimonyById', () => {
     const data = await sut.loadById(mockLoadPatrimonyByIdRepository())
     expect(data).toBe(null)
   })
+
+  test('Should return patrimony on success', async () => {
+    const { sut, loadPatrimonyByIdRepositorySpy } = makeSut()
+    const data = await sut.loadById(mockLoadPatrimonyByIdRepository())
+    expect(data).toEqual(loadPatrimonyByIdRepositorySpy.model)
+  })
 })
