@@ -1,5 +1,6 @@
 import { LoadPatrimonyByIdController } from '@/presentation/controllers'
-import { badRequest } from '@/presentation/helper'
+import { InvalidParamError } from '@/presentation/errors'
+import { badRequest, forbidden } from '@/presentation/helper'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -45,5 +46,12 @@ describe('LoadPatrimonyByIdController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(checkExistSpy.input).toEqual(request)
+  })
+
+  test('Should return 403 if CheckExists fails', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    checkExistSpy.result = new InvalidParamError('id')
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
   })
 })
