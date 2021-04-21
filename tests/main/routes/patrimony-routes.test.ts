@@ -73,4 +73,23 @@ describe('Patrimony Routes', () => {
         .expect(200)
     })
   })
+
+  describe('DELETE /patrimonies/:id', () => {
+    test('Should return patrimony deleted on delete success', async () => {
+      const accessToken = await makeAccessToken()
+      const { id } = await Helper.makePatrimony()
+      await request(app)
+        .delete(`/api/patrimonies/${id}`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 403 if patrimony not exists patrimony', async () => {
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .delete(`/api/patrimonies/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .expect(403)
+    })
+  })
 })
