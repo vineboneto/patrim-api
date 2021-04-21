@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { LoadPatrimonyById } from '@/domain/usecases'
 
 export class LoadPatrimonyByIdController implements Controller {
@@ -19,8 +19,8 @@ export class LoadPatrimonyByIdController implements Controller {
       if (checkError) {
         return forbidden(checkError)
       }
-      await this.loadPatrimonyById.loadById(request)
-      return null
+      const patrimonyModel = await this.loadPatrimonyById.loadById(request)
+      return ok(patrimonyModel)
     } catch (error) {
       return serverError(error)
     }
