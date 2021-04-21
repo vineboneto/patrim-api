@@ -2,6 +2,7 @@ import { LoadPatrimonyByIdController } from '@/presentation/controllers'
 import { InvalidParamError } from '@/presentation/errors'
 import { badRequest, forbidden, serverError } from '@/presentation/helper'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
+import { LoadPatrimonyByIdSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -13,16 +14,19 @@ type SutTypes = {
   sut: LoadPatrimonyByIdController
   validationSpy: ValidationSpy
   checkExistSpy: CheckExistSpy
+  loadPatrimonyByIdSpy: LoadPatrimonyByIdSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const checkExistSpy = new CheckExistSpy()
-  const sut = new LoadPatrimonyByIdController(validationSpy, checkExistSpy)
+  const loadPatrimonyByIdSpy = new LoadPatrimonyByIdSpy()
+  const sut = new LoadPatrimonyByIdController(validationSpy, checkExistSpy, loadPatrimonyByIdSpy)
   return {
     sut,
     validationSpy,
-    checkExistSpy
+    checkExistSpy,
+    loadPatrimonyByIdSpy
   }
 }
 
@@ -60,5 +64,12 @@ describe('LoadPatrimonyByIdController', () => {
     jest.spyOn(checkExistSpy, 'check').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should call LoadPatrimonyById with correct values', async () => {
+    const { sut, loadPatrimonyByIdSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(loadPatrimonyByIdSpy.params).toEqual(request)
   })
 })
