@@ -92,6 +92,12 @@ describe('PatrimonyPostgresRepository', () => {
       const patrimony = await sut.loadById({ id: patrimonyModel.id })
       expect(patrimony).toEqual(patrimonyModel)
     })
+
+    test('Should return null on patrimony not exist', async () => {
+      const sut = makeSut()
+      const patrimony = await sut.loadById({ id: faker.datatype.number() })
+      expect(patrimony).toBe(null)
+    })
   })
 
   describe('loadAll()', () => {
