@@ -1,5 +1,5 @@
 import { PatrimonyModel } from '@/domain/models'
-import { CheckPatrimonyById, LoadPatrimonyByOwnerId, AddPatrimony, UpdatePatrimony, DeletePatrimony, LoadPatrimonies, LoadPatrimonyById } from '@/domain/usecases'
+import { CheckPatrimonyById, LoadPatrimoniesByOwnerId, AddPatrimony, UpdatePatrimony, DeletePatrimony, LoadPatrimonies, LoadPatrimonyById } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -69,6 +69,10 @@ export const mockLoadPatrimonyById = (): LoadPatrimonyById.Params => ({
   id: faker.datatype.number()
 })
 
+export const mockLoadPatrimoniesByOwnerIdParams = (): LoadPatrimoniesByOwnerId.Params => ({
+  ownerId: faker.datatype.number()
+})
+
 export class UpdatePatrimonySpy implements UpdatePatrimony {
   params: UpdatePatrimony.Params
   model = mockPatrimonyModel()
@@ -123,14 +127,11 @@ export class CheckPatrimonyByIdSpy implements CheckPatrimonyById {
   }
 }
 
-export class LoadPatrimonyByOwnerIdSpy implements LoadPatrimonyByOwnerId {
-  params: LoadPatrimonyByOwnerId.Params
-  model = {
-    id: faker.datatype.number(),
-    number: faker.datatype.uuid()
-  }
+export class LoadPatrimoniesByOwnerIdSpy implements LoadPatrimoniesByOwnerId {
+  params: LoadPatrimoniesByOwnerId.Params
+  model = mockPatrimoniesModel()
 
-  async loadByOwnerId (params: LoadPatrimonyByOwnerId.Params): Promise<LoadPatrimonyByOwnerId.Model> {
+  async loadByOwnerId (params: LoadPatrimoniesByOwnerId.Params): Promise<LoadPatrimoniesByOwnerId.Model> {
     this.params = params
     return this.model
   }

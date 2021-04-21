@@ -73,18 +73,6 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
-  describe('loadByOwnerId()', () => {
-    test('Should return patrimony on success', async () => {
-      const sut = makeSut()
-      const { owner, id, number } = await Helper.makePatrimony()
-      const patrimony = await sut.loadByOwnerId({ ownerId: owner.id })
-      expect(patrimony).toEqual({
-        id,
-        number
-      })
-    })
-  })
-
   describe('loadById()', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
@@ -123,6 +111,22 @@ describe('PatrimonyPostgresRepository', () => {
     test('Should return empty array if load patrimonies is empty', async () => {
       const sut = makeSut()
       const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
+      expect(dataResponse).toEqual([])
+    })
+  })
+
+  describe('loadByOwnerId()', () => {
+    test('Should return all patrimonies on success', async () => {
+      const sut = makeSut()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadByOwnerId({ ownerId: patrimonies[0].owner.id })
+      expect(dataResponse).toEqual(patrimonies)
+      expect(dataResponse.length).toBe(3)
+    })
+
+    test('Should return empty array if load patrimonies is empty', async () => {
+      const sut = makeSut()
+      const dataResponse = await sut.loadByOwnerId({ ownerId: faker.datatype.number() })
       expect(dataResponse).toEqual([])
     })
   })

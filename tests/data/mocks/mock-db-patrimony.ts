@@ -6,9 +6,9 @@ import {
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByPlaceIdRepository,
   DeletePatrimonyRepository,
+  LoadPatrimoniesByOwnerIdRepository,
   LoadPatrimoniesRepository,
   LoadPatrimonyByIdRepository,
-  LoadPatrimonyByOwnerIdRepository,
   LoadPatrimonyNumberByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
@@ -16,14 +16,13 @@ import {
   mockAddUpdatePatrimonyParams,
   mockCheckPatrimonyByIdParams,
   mockDeletePatrimonyParams,
+  mockLoadPatrimoniesByOwnerIdParams,
   mockLoadPatrimoniesParams,
   mockLoadPatrimonyById,
   mockPatrimoniesModel,
   mockPatrimonyModel,
   mockUpdatePatrimonyParams
 } from '@/tests/domain/mocks'
-
-import faker from 'faker'
 
 export const mockAddPatrimonyRepositoryParams = ():
 AddPatrimonyRepository.Params => mockAddUpdatePatrimonyParams()
@@ -42,6 +41,9 @@ LoadPatrimoniesRepository.Params => mockLoadPatrimoniesParams()
 
 export const mockLoadPatrimonyByIdRepository = ():
 LoadPatrimonyByIdRepository.Params => mockLoadPatrimonyById()
+
+export const mockLoadPatrimoniesByOwnerIdRepositoryParams = ():
+LoadPatrimoniesByOwnerIdRepository.Params => mockLoadPatrimoniesByOwnerIdParams()
 
 export class AddPatrimonyRepositorySpy implements AddPatrimonyRepository {
   params: AddPatrimonyRepository.Params
@@ -97,15 +99,12 @@ export class LoadPatrimonyNumberByIdRepositorySpy implements LoadPatrimonyNumber
   }
 }
 
-export class LoadPatrimonyByOwnerIdRepositorySpy implements LoadPatrimonyByOwnerIdRepository {
-  params: LoadPatrimonyByOwnerIdRepository.Params
-  model = {
-    id: faker.datatype.number(),
-    number: faker.datatype.uuid()
-  }
+export class LoadPatrimoniesByOwnerIdRepositorySpy implements LoadPatrimoniesByOwnerIdRepository {
+  params: LoadPatrimoniesByOwnerIdRepository.Params
+  model = mockPatrimoniesModel()
 
-  async loadByOwnerId (params: LoadPatrimonyByOwnerIdRepository.Params):
-  Promise<LoadPatrimonyByOwnerIdRepository.Model> {
+  async loadByOwnerId (params: LoadPatrimoniesByOwnerIdRepository.Params):
+  Promise<LoadPatrimoniesByOwnerIdRepository.Model> {
     this.params = params
     return this.model
   }
