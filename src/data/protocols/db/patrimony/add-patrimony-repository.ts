@@ -1,10 +1,10 @@
-import { SavePatrimony } from '@/domain/usecases'
+import { AddPatrimony } from '@/domain/usecases'
 
 export interface AddPatrimonyRepository {
   add (params: AddPatrimonyRepository.Params): Promise<AddPatrimonyRepository.Model>
 }
 
 export namespace AddPatrimonyRepository {
-  export type Params = Omit<SavePatrimony.Params, 'id'>
-  export type Model = SavePatrimony.Model
+  export type Params = AddPatrimony.Params
+  export type Model = AddPatrimony.Model
 }

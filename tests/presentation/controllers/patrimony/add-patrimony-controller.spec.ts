@@ -1,13 +1,12 @@
-import { SavePatrimonyController } from '@/presentation/controllers'
+import { AddPatrimonyController } from '@/presentation/controllers'
 import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
-import { SavePatrimonySpy } from '@/tests/domain/mocks'
+import { AddPatrimonySpy } from '@/tests/domain/mocks'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
-const mockRequest = (): SavePatrimonyController.Request => ({
-  id: faker.datatype.number(),
+const mockRequest = (): AddPatrimonyController.Request => ({
   brand: faker.random.word(),
   number: faker.datatype.number().toString(),
   description: faker.random.words(),
@@ -17,26 +16,26 @@ const mockRequest = (): SavePatrimonyController.Request => ({
 })
 
 type SutTypes = {
-  sut: SavePatrimonyController
+  sut: AddPatrimonyController
   validationSpy: ValidationSpy
   checkExistSpy: CheckExistSpy
-  savePatrimonySpy: SavePatrimonySpy
+  addPatrimonySpy: AddPatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const checkExistSpy = new CheckExistSpy()
-  const savePatrimonySpy = new SavePatrimonySpy()
-  const sut = new SavePatrimonyController(validationSpy, checkExistSpy, savePatrimonySpy)
+  const addPatrimonySpy = new AddPatrimonySpy()
+  const sut = new AddPatrimonyController(validationSpy, checkExistSpy, addPatrimonySpy)
   return {
     sut,
     validationSpy,
-    savePatrimonySpy,
+    addPatrimonySpy,
     checkExistSpy
   }
 }
 
-describe('SavePatrimonyController', () => {
+describe('AddPatrimonyController', () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()
@@ -65,30 +64,30 @@ describe('SavePatrimonyController', () => {
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('categoryId')))
   })
 
-  test('Should call SavePatrimony with correct values', async () => {
-    const { sut, savePatrimonySpy } = makeSut()
+  test('Should call AddPatrimony with correct values', async () => {
+    const { sut, addPatrimonySpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(savePatrimonySpy.params).toEqual(request)
+    expect(addPatrimonySpy.params).toEqual(request)
   })
 
-  test('Should return 403 if SavePatrimony fails', async () => {
-    const { sut, savePatrimonySpy } = makeSut()
-    savePatrimonySpy.model = null
+  test('Should return 403 if AddPatrimony fails', async () => {
+    const { sut, addPatrimonySpy } = makeSut()
+    addPatrimonySpy.model = null
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.number)))
   })
 
   test('Should return 200 on success', async () => {
-    const { sut, savePatrimonySpy } = makeSut()
+    const { sut, addPatrimonySpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(savePatrimonySpy.model))
+    expect(httpResponse).toEqual(ok(addPatrimonySpy.model))
   })
 
-  test('Should return 500 if SavePatrimony throws', async () => {
-    const { sut, savePatrimonySpy } = makeSut()
-    jest.spyOn(savePatrimonySpy, 'save').mockRejectedValueOnce(new Error())
+  test('Should return 500 if AddPatrimony throws', async () => {
+    const { sut, addPatrimonySpy } = makeSut()
+    jest.spyOn(addPatrimonySpy, 'add').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })

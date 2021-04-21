@@ -1,16 +1,16 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
-import { SavePatrimony } from '@/domain/usecases'
 import { AlreadyExistsError } from '@/presentation/errors'
+import { AddPatrimony } from '@/domain/usecases'
 
-export class SavePatrimonyController implements Controller {
+export class AddPatrimonyController implements Controller {
   constructor (
     private readonly validation: Validation,
     private readonly checkExist: CheckExist,
-    private readonly savePatrimony: SavePatrimony
+    private readonly addPatrimony: AddPatrimony
   ) {}
 
-  async handle (request: SavePatrimonyController.Request): Promise<HttpResponse> {
+  async handle (request: AddPatrimonyController.Request): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
       if (error) {
@@ -20,7 +20,7 @@ export class SavePatrimonyController implements Controller {
       if (checkError) {
         return forbidden(checkError)
       }
-      const patrimonyModel = await this.savePatrimony.save(request)
+      const patrimonyModel = await this.addPatrimony.add(request)
       if (!patrimonyModel) {
         return unprocessableEntity(new AlreadyExistsError(request.number))
       }
@@ -31,9 +31,8 @@ export class SavePatrimonyController implements Controller {
   }
 }
 
-export namespace SavePatrimonyController {
+export namespace AddPatrimonyController {
   export type Request = {
-    id?: number
     number: string
     brand: string
     description?: string

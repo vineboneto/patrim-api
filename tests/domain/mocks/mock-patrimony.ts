@@ -1,8 +1,9 @@
-import { CheckPatrimonyById, LoadPatrimonyByOwnerId, SavePatrimony, UpdatePatrimony } from '@/domain/usecases'
+import { PatrimonyModel } from '@/domain/models'
+import { CheckPatrimonyById, LoadPatrimonyByOwnerId, AddPatrimony, UpdatePatrimony } from '@/domain/usecases'
 
 import faker from 'faker'
 
-export const mockPatrimonyModel = (): SavePatrimony.Model => ({
+export const mockPatrimonyModel = (): PatrimonyModel => ({
   id: faker.datatype.number(),
   brand: faker.random.word(),
   number: faker.datatype.number().toString(),
@@ -36,6 +37,15 @@ export const mockUpdatePatrimonyParams = (): UpdatePatrimony.Params => ({
 
 })
 
+export const mockAddUpdatePatrimonyParams = (): AddPatrimony.Params => ({
+  number: faker.datatype.number().toString(),
+  brand: faker.random.word(),
+  description: faker.random.words(),
+  categoryId: faker.datatype.number(),
+  ownerId: faker.datatype.number(),
+  placeId: faker.datatype.number()
+})
+
 export const mockCheckPatrimonyByIdParams = (): CheckPatrimonyById.Params => ({
   id: faker.datatype.number()
 })
@@ -43,16 +53,16 @@ export const mockCheckPatrimonyByIdParams = (): CheckPatrimonyById.Params => ({
 export class UpdatePatrimonySpy implements UpdatePatrimony {
   params: UpdatePatrimony.Params
   model = mockPatrimonyModel()
-  async update (patrimony: UpdatePatrimony.Params): Promise<SavePatrimony.Model> {
+  async update (patrimony: UpdatePatrimony.Params): Promise<AddPatrimony.Model> {
     this.params = patrimony
     return this.model
   }
 }
 
-export class SavePatrimonySpy implements SavePatrimony {
-  params: SavePatrimony.Params
+export class AddPatrimonySpy implements AddPatrimony {
+  params: AddPatrimony.Params
   model = mockPatrimonyModel()
-  async save (patrimony: SavePatrimony.Params): Promise<SavePatrimony.Model> {
+  async add (patrimony: AddPatrimony.Params): Promise<AddPatrimony.Model> {
     this.params = patrimony
     return this.model
   }

@@ -9,22 +9,23 @@ import {
   LoadPatrimonyNumberByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
-import { mockCheckPatrimonyByIdParams, mockPatrimonyModel, mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
+import {
+  mockAddUpdatePatrimonyParams,
+  mockCheckPatrimonyByIdParams,
+  mockPatrimonyModel,
+  mockUpdatePatrimonyParams
+} from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-export const mockAddPatrimonyRepositoryParams = (): AddPatrimonyRepository.Params => ({
-  brand: faker.random.word(),
-  number: faker.datatype.number().toString(),
-  description: faker.random.words(),
-  categoryId: faker.datatype.number(),
-  ownerId: faker.datatype.number(),
-  placeId: faker.datatype.number()
-})
+export const mockAddPatrimonyRepositoryParams = ():
+AddPatrimonyRepository.Params => mockAddUpdatePatrimonyParams()
 
-export const mockUpdatePatrimonyRepositoryParams = (): UpdatePatrimonyRepository.Params => mockUpdatePatrimonyParams()
+export const mockUpdatePatrimonyRepositoryParams = ():
+UpdatePatrimonyRepository.Params => mockUpdatePatrimonyParams()
 
-export const mockCheckPatrimonyByIdRepositoryParams = (): CheckPatrimonyByIdRepository.Params => mockCheckPatrimonyByIdParams()
+export const mockCheckPatrimonyByIdRepositoryParams = ():
+CheckPatrimonyByIdRepository.Params => mockCheckPatrimonyByIdParams()
 
 export class AddPatrimonyRepositorySpy implements AddPatrimonyRepository {
   params: AddPatrimonyRepository.Params

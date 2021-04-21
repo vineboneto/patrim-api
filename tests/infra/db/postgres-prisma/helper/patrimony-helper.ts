@@ -1,10 +1,10 @@
-import { SavePatrimony } from '@/domain/usecases'
+import { PatrimonyModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeOwner, makeCategory, makePlace } from '@/tests/infra/db/postgres-prisma/helper'
 
 import faker from 'faker'
 
-export const makePatrimony = async (): Promise<SavePatrimony.Model> => {
+export const makePatrimony = async (): Promise<PatrimonyModel> => {
   const prismaClient = PrismaHelper.getConnection()
   const { id: ownerId } = await makeOwner()
   const { id: categoryId } = await makeCategory()

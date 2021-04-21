@@ -2,7 +2,7 @@ import { makeDbCheckCategoryById, makeDbCheckOwnerById, makeDbCheckPlaceById } f
 import { CheckExist } from '@/presentation/protocols'
 import { CheckExistCategoryId, CheckExistComposite, CheckExistOwnerId, CheckExistPlaceId } from '@/validation/checks'
 
-export const makeSaveToAddPatrimonyCheckExist = (): CheckExist => {
+export const makeAddPatrimonyCheckExist = (): CheckExist => {
   const checkExists: CheckExist[] = []
   checkExists.push(new CheckExistOwnerId(makeDbCheckOwnerById(), 'ownerId'))
   checkExists.push(new CheckExistPlaceId(makeDbCheckPlaceById(), 'placeId'))
