@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, serverError, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { UpdateCategory } from '@/domain/usecases'
 import { AlreadyExistsError } from '@/presentation/errors'
 
@@ -24,7 +24,7 @@ export class UpdateCategoryController implements Controller {
       if (!categoryModel) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
       }
-      return null
+      return ok(categoryModel)
     } catch (error) {
       return serverError(error)
     }
