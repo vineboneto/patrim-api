@@ -8,7 +8,7 @@ export class CheckFieldIsNumberValidation implements Validation {
 
   validate (input: object): Error {
     const validNumber = Number(input[this.fieldName])
-    if (isNaN(validNumber) && input[this.fieldName] !== undefined) {
+    if (isNaN(validNumber)) {
       return new InvalidParamError(this.fieldName)
     }
     return null

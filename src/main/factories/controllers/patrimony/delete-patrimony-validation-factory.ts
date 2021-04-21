@@ -3,7 +3,7 @@ import { CheckFieldIsNumberValidation, RequiredFieldValidation, ValidationCompos
 
 export const makeDeletePatrimonyValidation = (): Validation => {
   const validations: Validation[] = []
-  for (const field of ['id', 'ownerId', 'categoryId', 'placeId']) {
+  for (const field of ['id']) {
     validations.push(new RequiredFieldValidation(field))
     validations.push(new CheckFieldIsNumberValidation(field))
   }

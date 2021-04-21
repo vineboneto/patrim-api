@@ -22,6 +22,7 @@ export class DeletePatrimonyController implements Controller {
       const patrimonyDeleted = await this.deletePatrimony.delete(request)
       return ok(patrimonyDeleted)
     } catch (error) {
+      console.log(error)
       return serverError(error)
     }
   }
