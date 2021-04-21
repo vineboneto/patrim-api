@@ -1,6 +1,6 @@
 import { LoadPatrimonyByIdController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helper'
-import { ValidationSpy } from '@/tests/presentation/mocks'
+import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -11,14 +11,17 @@ const mockRequest = (): LoadPatrimonyByIdController.Request => ({
 type SutTypes = {
   sut: LoadPatrimonyByIdController
   validationSpy: ValidationSpy
+  checkExistSpy: CheckExistSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new LoadPatrimonyByIdController(validationSpy)
+  const checkExistSpy = new CheckExistSpy()
+  const sut = new LoadPatrimonyByIdController(validationSpy, checkExistSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    checkExistSpy
   }
 }
 
@@ -35,5 +38,12 @@ describe('LoadPatrimonyByIdController', () => {
     validationSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call CheckExist with correct values', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkExistSpy.input).toEqual(request)
   })
 })
