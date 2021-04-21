@@ -8,7 +8,6 @@ export class DbUpdateCategory implements UpdateCategory {
 
   async update (category: UpdateCategory.Params): Promise<UpdateCategory.Model> {
     const { id, name } = category
-    await this.updateCategoryRepository.update({ id, name })
-    return null
+    return this.updateCategoryRepository.update({ id, name })
   }
 }
