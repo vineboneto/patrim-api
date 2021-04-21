@@ -1,7 +1,7 @@
 import { auth, adminAuth } from '@/main/middlewares'
 import { adaptRoute } from '@/main/adapters'
 import {
-  makeSaveCategoryController,
+  makeAddCategoryController,
   makeDeleteCategoryController,
   makeLoadCategoriesController,
   makeUpdateCategoryController
@@ -10,7 +10,7 @@ import {
 import { Router } from 'express'
 
 export default (router: Router): void => {
-  router.post('/categories', auth, adaptRoute(makeSaveCategoryController()))
+  router.post('/categories', auth, adaptRoute(makeAddCategoryController()))
   router.put('/categories/:id', auth, adaptRoute(makeUpdateCategoryController()))
   router.get('/categories', auth, adaptRoute(makeLoadCategoriesController()))
   router.delete('/categories/:id', adminAuth, adaptRoute(makeDeleteCategoryController()))

@@ -3,7 +3,7 @@ import {
   CheckCategoryById,
   DeleteCategory,
   LoadCategories,
-  SaveCategory,
+  AddCategory,
   UpdateCategory
 } from '@/domain/usecases'
 
@@ -20,7 +20,7 @@ export const mockCategoriesModel = (): CategoryModel[] => ([
   mockCategoryModel()
 ])
 
-export const mockAddCategoryParams = (): SaveCategory.Params => ({
+export const mockAddCategoryParams = (): AddCategory.Params => ({
   name: faker.name.findName()
 })
 
@@ -69,10 +69,10 @@ export class DeleteCategorySpy implements DeleteCategory {
   }
 }
 
-export class SaveCategorySpy implements SaveCategory {
-  params: SaveCategory.Params
+export class AddCategorySpy implements AddCategory {
+  params: AddCategory.Params
   model = mockCategoryModel()
-  async save (category: SaveCategory.Params): Promise<SaveCategory.Model> {
+  async add (category: AddCategory.Params): Promise<AddCategory.Model> {
     this.params = category
     return this.model
   }
