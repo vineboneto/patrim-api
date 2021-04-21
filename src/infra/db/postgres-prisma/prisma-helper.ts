@@ -1,8 +1,13 @@
-import { OwnerModel } from '@/domain/models'
-import { SavePatrimony } from '@/domain/usecases'
+import { OwnerModel, PatrimonyModel } from '@/domain/models'
 import { Category, Owner, Patrimony, Place, PrismaClient, Sector } from '@prisma/client'
 
-type PatrimonyPrisma = Patrimony & { Category: Category, Owner: Owner, Place: Place }
+type PatrimonyPrisma = Patrimony & {
+  Category: Category
+  Owner: Owner & {
+    Sector: Sector
+  }
+  Place: Place
+}
 type OwnerPrisma = Owner & { Sector: Sector }
 
 export const PrismaHelper = {
@@ -21,7 +26,7 @@ export const PrismaHelper = {
     return this.client
   },
 
-  adaptPatrimony (patrimony: PatrimonyPrisma): SavePatrimony.Model {
+  adaptPatrimony (patrimony: PatrimonyPrisma): PatrimonyModel {
     return {
       id: patrimony.id,
       number: patrimony.number,
@@ -35,8 +40,8 @@ export const PrismaHelper = {
         id: patrimony.Owner.id,
         name: patrimony.Owner.name,
         sector: {
-          id: patrimony.Owner.id,
-          name: patrimony.Owner.name
+          id: patrimony.Owner.Sector.id,
+          name: patrimony.Owner.Sector.name
         }
       },
       place: {

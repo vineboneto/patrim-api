@@ -9,12 +9,14 @@ import {
   AddPatrimonyRepository,
   UpdatePatrimonyRepository,
   CheckPatrimonyByIdRepository,
-  LoadPatrimonyNumberByIdRepository
+  LoadPatrimonyNumberByIdRepository,
+  DeletePatrimonyRepository
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
   AddPatrimonyRepository,
   UpdatePatrimonyRepository,
+  DeletePatrimonyRepository,
   CheckPatrimonyByNumberRepository,
   LoadPatrimonyByOwnerIdRepository,
   LoadPatrimonyNumberByIdRepository,
@@ -35,7 +37,11 @@ export class PatrimonyPostgresRepository implements
       },
       include: {
         Category: true,
-        Owner: true,
+        Owner: {
+          include: {
+            Sector: true
+          }
+        },
         Place: true
       }
     })
@@ -58,7 +64,30 @@ export class PatrimonyPostgresRepository implements
       },
       include: {
         Category: true,
-        Owner: true,
+        Owner: {
+          include: {
+            Sector: true
+          }
+        },
+        Place: true
+      }
+    })
+    return PrismaHelper.adaptPatrimony(patrimony)
+  }
+
+  async delete (params: DeletePatrimonyRepository.Params): Promise<DeletePatrimonyRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const patrimony = await prismaClient.patrimony.delete({
+      where: {
+        id: Number(params.id)
+      },
+      include: {
+        Category: true,
+        Owner: {
+          include: {
+            Sector: true
+          }
+        },
         Place: true
       }
     })
