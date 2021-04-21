@@ -80,7 +80,6 @@ export class CheckPatrimonyByIdRepositorySpy implements CheckPatrimonyByIdReposi
 export class CheckPatrimonyByNumberRepositorySpy implements CheckPatrimonyByNumberRepository {
   number: string
   result = false
-
   async checkByNumber (number: string): Promise<boolean> {
     this.number = number
     return this.result

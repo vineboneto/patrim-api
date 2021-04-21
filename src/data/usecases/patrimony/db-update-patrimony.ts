@@ -16,10 +16,9 @@ export class DbUpdatePatrimony implements UpdatePatrimony {
     const { number } = await this.loadPatrimonyNumberByIdRepository.loadNumberById(params.id)
     if (number !== params.number) {
       const exists = await this.checkPatrimonyByNumberRepository.checkByNumber(params.number)
-      if (!exists) {
-        return this.updatePatrimonyRepository.update(params)
+      if (exists) {
+        return null
       }
-      return null
     }
     return this.updatePatrimonyRepository.update(params)
   }

@@ -65,6 +65,15 @@ describe('DbUpdatePatrimony', () => {
     expect(loadPatrimonyNumberByIdRepositorySpy.id).toEqual(params.id)
   })
 
+  test('Should return null if LoadPatrimonyNumberByIdRepository return different number', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
+    loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
+    checkPatrimonyByNumberRepositorySpy.result = true
+    const params = mockUpdatePatrimonyRepositoryParams()
+    const data = await sut.update(params)
+    expect(data).toBe(null)
+  })
+
   test('Should throws if LoadPatrimonyNumberByIdRepository throw', async () => {
     const { sut, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
     jest.spyOn(loadPatrimonyNumberByIdRepositorySpy, 'loadNumberById').mockRejectedValueOnce(new Error())

@@ -65,6 +65,14 @@ describe('DbUpdateCategory', () => {
     expect(loadCategoryNameByIdRepositorySpy.id).toEqual(params.id)
   })
 
+  test('Should return null if LoadCategoryNameByIdRepository returns different name', async () => {
+    const { sut, loadCategoryNameByIdRepositorySpy, checkCategoryByNameRepositorySpy } = makeSut()
+    checkCategoryByNameRepositorySpy.result = true
+    loadCategoryNameByIdRepositorySpy.model.name = 'differentName'
+    const data = await sut.update(mockUpdateCategoryRepositoryParams())
+    expect(data).toBe(null)
+  })
+
   test('Should throws if LoadCategoryNameByIdRepository throw', async () => {
     const { sut, loadCategoryNameByIdRepositorySpy } = makeSut()
     jest.spyOn(loadCategoryNameByIdRepositorySpy, 'loadNameById').mockRejectedValueOnce(new Error())
