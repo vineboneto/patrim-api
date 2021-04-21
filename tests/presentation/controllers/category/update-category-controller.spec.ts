@@ -1,7 +1,7 @@
 import { UpdateCategorySpy } from '@/../tests/domain/mocks'
 import { UpdateCategoryController } from '@/presentation/controllers/'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
-import { badRequest, forbidden, serverError, unprocessableEntity } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -80,5 +80,11 @@ describe('UpdateCategoryController', () => {
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.name)))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut, updateCategorySpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(updateCategorySpy.model))
   })
 })
