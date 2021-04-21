@@ -56,4 +56,11 @@ describe('DbUpdateCategory', () => {
     await sut.update(params)
     expect(loadCategoryNameByIdRepositorySpy.id).toEqual(params.id)
   })
+
+  test('Should throws if LoadCategoryNameByIdRepository throw', async () => {
+    const { sut, loadCategoryNameByIdRepositorySpy } = makeSut()
+    jest.spyOn(loadCategoryNameByIdRepositorySpy, 'loadNameById').mockRejectedValueOnce(new Error())
+    const promise = sut.update(mockUpdateCategoryRepositoryParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
