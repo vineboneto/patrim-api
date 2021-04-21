@@ -1,4 +1,4 @@
-import { PrismaHelper, PatrimonyPrisma } from '@/infra/db/postgres-prisma'
+import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import {
   CheckPatrimonyByOwnerIdRepository,
   LoadPatrimonyByOwnerIdRepository,
@@ -11,7 +11,8 @@ import {
   CheckPatrimonyByIdRepository,
   LoadPatrimonyNumberByIdRepository,
   DeletePatrimonyRepository,
-  LoadPatrimoniesRepository
+  LoadPatrimoniesRepository,
+  LoadPatrimonyByIdRepository
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
@@ -21,13 +22,14 @@ export class PatrimonyPostgresRepository implements
   CheckPatrimonyByNumberRepository,
   LoadPatrimonyByOwnerIdRepository,
   LoadPatrimonyNumberByIdRepository,
+  LoadPatrimonyByIdRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByPlaceIdRepository,
   CheckPlaceByIdRepository {
   async add (params: AddPatrimonyRepository.Params): Promise<AddPatrimonyRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const patrimony = await prismaClient.patrimony.create({
+    const patrimony: any = await prismaClient.patrimony.create({
       data: {
         number: params.number,
         brand: params.brand,
@@ -36,22 +38,14 @@ export class PatrimonyPostgresRepository implements
         placeId: Number(params.placeId),
         categoryId: Number(params.categoryId)
       },
-      include: {
-        Category: true,
-        Owner: {
-          include: {
-            Sector: true
-          }
-        },
-        Place: true
-      }
+      include: this.includesData()
     })
     return PrismaHelper.adaptPatrimony(patrimony)
   }
 
   async update (params: UpdatePatrimonyRepository.Params): Promise<UpdatePatrimonyRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const patrimony = await prismaClient.patrimony.update({
+    const patrimony: any = await prismaClient.patrimony.update({
       where: {
         id: Number(params.id)
       },
@@ -63,34 +57,18 @@ export class PatrimonyPostgresRepository implements
         placeId: Number(params.placeId),
         categoryId: Number(params.categoryId)
       },
-      include: {
-        Category: true,
-        Owner: {
-          include: {
-            Sector: true
-          }
-        },
-        Place: true
-      }
+      include: this.includesData()
     })
     return PrismaHelper.adaptPatrimony(patrimony)
   }
 
   async delete (params: DeletePatrimonyRepository.Params): Promise<DeletePatrimonyRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const patrimony = await prismaClient.patrimony.delete({
+    const patrimony: any = await prismaClient.patrimony.delete({
       where: {
         id: Number(params.id)
       },
-      include: {
-        Category: true,
-        Owner: {
-          include: {
-            Sector: true
-          }
-        },
-        Place: true
-      }
+      include: this.includesData()
     })
     return PrismaHelper.adaptPatrimony(patrimony)
   }
@@ -98,35 +76,30 @@ export class PatrimonyPostgresRepository implements
   async loadAll (params: LoadPatrimoniesRepository.Params): Promise<LoadPatrimoniesRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { skip, take } = params
-    let patrimonies: PatrimonyPrisma[]
+    let patrimonies: any
     if (isNaN(skip) || isNaN(take)) {
       patrimonies = await prismaClient.patrimony.findMany({
-        include: {
-          Category: true,
-          Owner: {
-            include: {
-              Sector: true
-            }
-          },
-          Place: true
-        }
+        include: this.includesData()
       })
     } else {
       patrimonies = await prismaClient.patrimony.findMany({
-        include: {
-          Category: true,
-          Owner: {
-            include: {
-              Sector: true
-            }
-          },
-          Place: true
-        },
+        include: this.includesData(),
         skip: Number(skip),
         take: Number(take)
       })
     }
     return patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+  }
+
+  async loadById (params: LoadPatrimonyByIdRepository.Params): Promise<LoadPatrimonyByIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const patrimony: any = await prismaClient.patrimony.findFirst({
+      where: {
+        id: Number(params.id)
+      },
+      include: this.includesData()
+    })
+    return PrismaHelper.adaptPatrimony(patrimony)
   }
 
   async loadNumberById (id: number): Promise<LoadPatrimonyNumberByIdRepository.Model> {
@@ -227,5 +200,17 @@ export class PatrimonyPostgresRepository implements
       }
     })
     return patrimony !== null
+  }
+
+  private includesData (): any {
+    return {
+      Category: true,
+      Owner: {
+        include: {
+          Sector: true
+        }
+      },
+      Place: true
+    }
   }
 }
