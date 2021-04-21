@@ -35,4 +35,11 @@ describe('DbLoadPatrimonyById', () => {
     const data = await sut.loadById(mockLoadPatrimonyByIdRepository())
     expect(data).toEqual(loadPatrimonyByIdRepositorySpy.model)
   })
+
+  test('Should throws if LoadPatrimonyByIdRepository throw', async () => {
+    const { sut, loadPatrimonyByIdRepositorySpy } = makeSut()
+    jest.spyOn(loadPatrimonyByIdRepositorySpy, 'loadById').mockRejectedValueOnce(new Error())
+    const promise = sut.loadById(mockLoadPatrimonyByIdRepository())
+    await expect(promise).rejects.toThrow()
+  })
 })
