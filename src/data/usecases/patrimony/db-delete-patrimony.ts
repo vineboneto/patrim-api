@@ -7,7 +7,6 @@ export class DbDeletePatrimony implements DeletePatrimony {
   ) {}
 
   async delete (params: DeletePatrimony.Params): Promise<DeletePatrimony.Model> {
-    await this.deletePatrimonyRepository.delete(params)
-    return null
+    return this.deletePatrimonyRepository.delete(params)
   }
 }
