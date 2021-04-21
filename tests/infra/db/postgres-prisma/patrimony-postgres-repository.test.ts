@@ -73,7 +73,7 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
-  describe('loadByPatrimonyId()', () => {
+  describe('loadByOwnerId()', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
       const { owner, id, number } = await Helper.makePatrimony()
@@ -82,6 +82,15 @@ describe('PatrimonyPostgresRepository', () => {
         id,
         number
       })
+    })
+  })
+
+  describe('loadById()', () => {
+    test('Should return patrimony on success', async () => {
+      const sut = makeSut()
+      const patrimonyModel = await Helper.makePatrimony()
+      const patrimony = await sut.loadById({ id: patrimonyModel.id })
+      expect(patrimony).toEqual(patrimonyModel)
     })
   })
 
