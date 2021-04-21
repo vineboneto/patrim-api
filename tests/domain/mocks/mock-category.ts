@@ -42,6 +42,15 @@ export const mockLoadCategoriesParams = (): LoadCategories.Params => ({
   take: faker.datatype.number()
 })
 
+export class UpdateCategorySpy implements UpdateCategory {
+  params: UpdateCategory.Params
+  model = mockCategoryModel()
+  async update (category: UpdateCategory.Params): Promise<UpdateCategory.Model> {
+    this.params = category
+    return this.model
+  }
+}
+
 export class LoadCategoriesSpy implements LoadCategories {
   categoriesModel = mockCategoriesModel()
   params: LoadCategories.Params

@@ -1,3 +1,4 @@
+import { UpdateCategorySpy } from '@/../tests/domain/mocks'
 import { UpdateCategoryController } from '@/presentation/controllers/'
 import { InvalidParamError } from '@/presentation/errors'
 import { badRequest, forbidden, serverError } from '@/presentation/helper'
@@ -14,16 +15,19 @@ type SutTypes = {
   validationSpy: ValidationSpy
   sut: UpdateCategoryController
   checkExistSpy: CheckExistSpy
+  updateCategorySpy: UpdateCategorySpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const checkExistSpy = new CheckExistSpy()
-  const sut = new UpdateCategoryController(validationSpy, checkExistSpy)
+  const updateCategorySpy = new UpdateCategorySpy()
+  const sut = new UpdateCategoryController(validationSpy, checkExistSpy, updateCategorySpy)
   return {
     sut,
     validationSpy,
-    checkExistSpy
+    checkExistSpy,
+    updateCategorySpy
   }
 }
 
@@ -61,5 +65,12 @@ describe('UpdateCategoryController', () => {
     jest.spyOn(checkExistSpy, 'check').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should call UpdateCategory with correct values', async () => {
+    const { sut, updateCategorySpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(updateCategorySpy.params).toEqual(request)
   })
 })
