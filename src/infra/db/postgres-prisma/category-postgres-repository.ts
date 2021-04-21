@@ -4,7 +4,8 @@ import {
   DeleteCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
-  CheckCategoryByIdRepository
+  CheckCategoryByIdRepository,
+  LoadCategoryNameByIdRepository
 } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
@@ -13,6 +14,7 @@ export class CategoryPostgresRepository implements
   UpdateCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
+  LoadCategoryNameByIdRepository,
   CheckCategoryByIdRepository,
   DeleteCategoryRepository {
   async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Model> {
@@ -60,18 +62,6 @@ export class CategoryPostgresRepository implements
     return category !== null
   }
 
-  async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
-    const prismaClient = PrismaHelper.getConnection()
-    const { skip, take } = params
-    if (isNaN(skip) || isNaN(take)) {
-      return await prismaClient.category.findMany()
-    }
-    return await prismaClient.category.findMany({
-      skip: Number(skip),
-      take: Number(take)
-    })
-  }
-
   async checkById (params: CheckCategoryByIdRepository.Params): Promise<CheckCategoryByIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
     const { id } = params
@@ -84,5 +74,30 @@ export class CategoryPostgresRepository implements
       }
     })
     return categoryWithOnlyId !== null
+  }
+
+  async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const { skip, take } = params
+    if (isNaN(skip) || isNaN(take)) {
+      return await prismaClient.category.findMany()
+    }
+    return await prismaClient.category.findMany({
+      skip: Number(skip),
+      take: Number(take)
+    })
+  }
+
+  async loadNameById (id: number): Promise<LoadCategoryNameByIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const category = await prismaClient.category.findFirst({
+      where: {
+        id: Number(id)
+      },
+      select: {
+        name: true
+      }
+    })
+    return category
   }
 }
