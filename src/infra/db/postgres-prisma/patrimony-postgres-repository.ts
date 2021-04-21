@@ -1,4 +1,4 @@
-import { PrismaHelper } from '@/infra/db/postgres-prisma'
+import { PrismaHelper, PatrimonyPrisma } from '@/infra/db/postgres-prisma'
 import {
   CheckPatrimonyByOwnerIdRepository,
   LoadPatrimonyByOwnerIdRepository,
@@ -10,7 +10,8 @@ import {
   UpdatePatrimonyRepository,
   CheckPatrimonyByIdRepository,
   LoadPatrimonyNumberByIdRepository,
-  DeletePatrimonyRepository
+  DeletePatrimonyRepository,
+  LoadPatrimoniesRepository
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
@@ -92,6 +93,40 @@ export class PatrimonyPostgresRepository implements
       }
     })
     return PrismaHelper.adaptPatrimony(patrimony)
+  }
+
+  async loadAll (params: LoadPatrimoniesRepository.Params): Promise<LoadPatrimoniesRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const { skip, take } = params
+    let patrimonies: PatrimonyPrisma[]
+    if (isNaN(skip) || isNaN(take)) {
+      patrimonies = await prismaClient.patrimony.findMany({
+        include: {
+          Category: true,
+          Owner: {
+            include: {
+              Sector: true
+            }
+          },
+          Place: true
+        }
+      })
+    } else {
+      patrimonies = await prismaClient.patrimony.findMany({
+        include: {
+          Category: true,
+          Owner: {
+            include: {
+              Sector: true
+            }
+          },
+          Place: true
+        },
+        skip: Number(skip),
+        take: Number(take)
+      })
+    }
+    return patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
   }
 
   async loadNumberById (id: number): Promise<LoadPatrimonyNumberByIdRepository.Model> {

@@ -1,7 +1,7 @@
 import { OwnerModel, PatrimonyModel } from '@/domain/models'
 import { Category, Owner, Patrimony, Place, PrismaClient, Sector } from '@prisma/client'
 
-type PatrimonyPrisma = Patrimony & {
+export type PatrimonyPrisma = Patrimony & {
   Category: Category
   Owner: Owner & {
     Sector: Sector
