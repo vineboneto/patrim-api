@@ -87,4 +87,11 @@ describe('UpdateCategoryController', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(updateCategorySpy.model))
   })
+
+  test('Should return 500 if UpdateCategory throws', async () => {
+    const { sut, updateCategorySpy } = makeSut()
+    jest.spyOn(updateCategorySpy, 'update').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
 })
