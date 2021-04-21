@@ -35,4 +35,11 @@ describe('DbDeletePatrimony', () => {
     const data = await sut.delete(mockDeletePatrimonyRepositoryParams())
     expect(data).toEqual(deletePatrimonyRepositorySpy.model)
   })
+
+  test('Should throw if DeletePatrimonyRepository throws', async () => {
+    const { sut, deletePatrimonyRepositorySpy } = makeSut()
+    jest.spyOn(deletePatrimonyRepositorySpy, 'delete').mockRejectedValueOnce(new Error())
+    const promise = sut.delete(mockDeletePatrimonyRepositoryParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
