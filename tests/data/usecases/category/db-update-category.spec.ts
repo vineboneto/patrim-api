@@ -33,22 +33,22 @@ const makeSut = (): SutTypes => {
 describe('DbUpdateCategory', () => {
   test('Should call UpdateCategoryRepository with correct value', async () => {
     const { sut, updateCategoryRepositorySpy } = makeSut()
-    const category = mockUpdateCategoryRepositoryParams()
-    await sut.update(category)
-    expect(updateCategoryRepositorySpy.params).toEqual(category)
+    const params = mockUpdateCategoryRepositoryParams()
+    await sut.update(params)
+    expect(updateCategoryRepositorySpy.params).toEqual(params)
   })
 
   test('Should return null if UpdateCategoryRepository returns null', async () => {
     const { sut, updateCategoryRepositorySpy } = makeSut()
     updateCategoryRepositorySpy.model = null
-    const result = await sut.update(mockUpdateCategoryRepositoryParams())
-    expect(result).toBe(null)
+    const data = await sut.update(mockUpdateCategoryRepositoryParams())
+    expect(data).toBe(null)
   })
 
   test('Should return category on success', async () => {
     const { sut, updateCategoryRepositorySpy } = makeSut()
-    const model = await sut.update(mockUpdateCategoryRepositoryParams())
-    expect(model).toEqual(updateCategoryRepositorySpy.model)
+    const data = await sut.update(mockUpdateCategoryRepositoryParams())
+    expect(data).toEqual(updateCategoryRepositorySpy.model)
   })
 
   test('Should throw if UpdateCategoryRepository throws', async () => {
