@@ -1,5 +1,11 @@
 import { CategoryModel } from '@/domain/models'
-import { CheckCategoryById, DeleteCategory, LoadCategories, SaveCategory } from '@/domain/usecases'
+import {
+  CheckCategoryById,
+  DeleteCategory,
+  LoadCategories,
+  SaveCategory,
+  UpdateCategory
+} from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -15,6 +21,11 @@ export const mockCategoriesModel = (): CategoryModel[] => ([
 ])
 
 export const mockAddCategoryParams = (): SaveCategory.Params => ({
+  name: faker.name.findName()
+})
+
+export const mockUpdateCategoryParams = (): UpdateCategory.Params => ({
+  id: faker.datatype.number(),
   name: faker.name.findName()
 })
 
