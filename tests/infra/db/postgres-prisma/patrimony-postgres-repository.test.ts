@@ -85,6 +85,33 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
+  describe('loadAll()', () => {
+    test('Should return all patrimonies if take and skip is NaN', async () => {
+      const sut = makeSut()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadAll({ skip: Number('adfavzv'), take: Number('adfasdf') })
+      expect(dataResponse).toEqual(patrimonies)
+      expect(dataResponse.length).toBe(3)
+    })
+
+    test('Should return the correctly number of patrimonies if take and skip not undefined', async () => {
+      const sut = makeSut()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadAll({ skip: 0, take: 3 })
+      expect(dataResponse[0]).toEqual(patrimonies[0])
+      expect(dataResponse[1]).toEqual(patrimonies[1])
+      expect(dataResponse[2]).toEqual(patrimonies[2])
+      expect(dataResponse[3]).toBe(undefined)
+      expect(dataResponse.length).toBe(3)
+    })
+
+    test('Should return empty array if load patrimonies is empty', async () => {
+      const sut = makeSut()
+      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
+      expect(dataResponse).toEqual([])
+    })
+  })
+
   describe('loadNumberById()', () => {
     test('Should return number patrimony on success', async () => {
       const sut = makeSut()
