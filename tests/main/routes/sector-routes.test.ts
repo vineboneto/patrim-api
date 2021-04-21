@@ -91,14 +91,6 @@ describe('Sector Routes', () => {
         .expect(200)
     })
 
-    test('Should return 404 on update sector with invalid id', async () => {
-      const accessToken = await makeAccessToken()
-      await request(app)
-        .delete(`/api/sectors/${faker.datatype.number()}`)
-        .set('x-access-token', accessToken)
-        .expect(404)
-    })
-
     test('Should return 403 if owners exists', async () => {
       const { sector } = await Helper.makeOwner()
       const accessToken = await makeAccessToken()
