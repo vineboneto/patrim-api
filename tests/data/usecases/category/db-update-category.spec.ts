@@ -1,5 +1,6 @@
 import { DbUpdateCategory } from '@/data/usecases'
 import {
+  CheckCategoryByNameRepositorySpy,
   LoadCategoryNameByIdRepositorySpy,
   mockUpdateCategoryRepositoryParams,
   UpdateCategoryRepositorySpy
@@ -9,16 +10,23 @@ type SutTypes = {
   sut: DbUpdateCategory
   updateCategoryRepositorySpy: UpdateCategoryRepositorySpy
   loadCategoryNameByIdRepositorySpy: LoadCategoryNameByIdRepositorySpy
+  checkCategoryByNameRepositorySpy: CheckCategoryByNameRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const updateCategoryRepositorySpy = new UpdateCategoryRepositorySpy()
   const loadCategoryNameByIdRepositorySpy = new LoadCategoryNameByIdRepositorySpy()
-  const sut = new DbUpdateCategory(updateCategoryRepositorySpy, loadCategoryNameByIdRepositorySpy)
+  const checkCategoryByNameRepositorySpy = new CheckCategoryByNameRepositorySpy()
+  const sut = new DbUpdateCategory(
+    updateCategoryRepositorySpy,
+    loadCategoryNameByIdRepositorySpy,
+    checkCategoryByNameRepositorySpy
+  )
   return {
     sut,
     updateCategoryRepositorySpy,
-    loadCategoryNameByIdRepositorySpy
+    loadCategoryNameByIdRepositorySpy,
+    checkCategoryByNameRepositorySpy
   }
 }
 
@@ -62,5 +70,12 @@ describe('DbUpdateCategory', () => {
     jest.spyOn(loadCategoryNameByIdRepositorySpy, 'loadNameById').mockRejectedValueOnce(new Error())
     const promise = sut.update(mockUpdateCategoryRepositoryParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CheckCategoryByNameRepository with correct value', async () => {
+    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
+    const params = mockUpdateCategoryRepositoryParams()
+    await sut.update(params)
+    expect(checkCategoryByNameRepositorySpy.name).toEqual(params.name)
   })
 })
