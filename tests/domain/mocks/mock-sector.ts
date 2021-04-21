@@ -36,12 +36,12 @@ export const mockLoadSectorsParams = (): LoadSectors.Params => ({
   take: faker.datatype.number()
 })
 
-export class LoadSectorsSpy implements LoadSectors {
-  models = mockSectorsModel()
-  params: LoadSectors.Params
-  async load (params: LoadSectors.Params): Promise<LoadSectors.Model> {
-    this.params = params
-    return this.models
+export class UpdateSectorSpy implements UpdateSector {
+  params: UpdateSector.Params
+  model = mockSectorModel()
+  async update (sector: UpdateSector.Params): Promise<UpdateSector.Model> {
+    this.params = sector
+    return this.model
   }
 }
 
@@ -51,6 +51,15 @@ export class DeleteSectorSpy implements DeleteSector {
   async delete (params: DeleteSector.Params): Promise<DeleteSector.Model> {
     this.params = params
     return this.model
+  }
+}
+
+export class LoadSectorsSpy implements LoadSectors {
+  models = mockSectorsModel()
+  params: LoadSectors.Params
+  async load (params: LoadSectors.Params): Promise<LoadSectors.Model> {
+    this.params = params
+    return this.models
   }
 }
 

@@ -1,37 +1,37 @@
-import { UpdateCategoryController } from '@/presentation/controllers/'
+import { UpdateSectorController } from '@/presentation/controllers/'
 import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
 import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
-import { UpdateCategorySpy } from '@/tests/domain/mocks'
+import { UpdateSectorSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-const mockRequest = (): UpdateCategoryController.Request => ({
+const mockRequest = (): UpdateSectorController.Request => ({
   id: faker.datatype.number(),
   name: faker.name.jobArea()
 })
 
 type SutTypes = {
   validationSpy: ValidationSpy
-  sut: UpdateCategoryController
+  sut: UpdateSectorController
   checkExistSpy: CheckExistSpy
-  updateCategorySpy: UpdateCategorySpy
+  updateSectorSpy: UpdateSectorSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const checkExistSpy = new CheckExistSpy()
-  const updateCategorySpy = new UpdateCategorySpy()
-  const sut = new UpdateCategoryController(validationSpy, checkExistSpy, updateCategorySpy)
+  const updateSectorSpy = new UpdateSectorSpy()
+  const sut = new UpdateSectorController(validationSpy, checkExistSpy, updateSectorSpy)
   return {
     sut,
     validationSpy,
     checkExistSpy,
-    updateCategorySpy
+    updateSectorSpy
   }
 }
 
-describe('UpdateCategoryController', () => {
+describe('UpdateSectorController', () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()
@@ -67,30 +67,30 @@ describe('UpdateCategoryController', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('Should call UpdateCategory with correct values', async () => {
-    const { sut, updateCategorySpy } = makeSut()
+  test('Should call UpdateSector with correct values', async () => {
+    const { sut, updateSectorSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(updateCategorySpy.params).toEqual(request)
+    expect(updateSectorSpy.params).toEqual(request)
   })
 
-  test('Should return 403 if UpdateCategory fails', async () => {
-    const { sut, updateCategorySpy } = makeSut()
-    updateCategorySpy.model = null
+  test('Should return 403 if UpdateSector fails', async () => {
+    const { sut, updateSectorSpy } = makeSut()
+    updateSectorSpy.model = null
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(unprocessableEntity(new AlreadyExistsError(request.name)))
   })
 
   test('Should return 200 on success', async () => {
-    const { sut, updateCategorySpy } = makeSut()
+    const { sut, updateSectorSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(updateCategorySpy.model))
+    expect(httpResponse).toEqual(ok(updateSectorSpy.model))
   })
 
-  test('Should return 500 if UpdateCategory throws', async () => {
-    const { sut, updateCategorySpy } = makeSut()
-    jest.spyOn(updateCategorySpy, 'update').mockRejectedValueOnce(new Error())
+  test('Should return 500 if UpdateSector throws', async () => {
+    const { sut, updateSectorSpy } = makeSut()
+    jest.spyOn(updateSectorSpy, 'update').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
