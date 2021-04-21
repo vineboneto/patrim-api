@@ -3,6 +3,7 @@ import {
   CheckSectorByIdRepository,
   CheckSectorByNameRepository,
   DeleteSectorRepository,
+  LoadSectorNameByIdRepository,
   LoadSectorsRepository,
   UpdateSectorRepository
 } from '@/data/protocols'
@@ -14,7 +15,8 @@ export class SectorPostgresRepository implements
   DeleteSectorRepository,
   CheckSectorByNameRepository,
   CheckSectorByIdRepository,
-  LoadSectorsRepository {
+  LoadSectorsRepository,
+  LoadSectorNameByIdRepository {
   async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     const { name } = sector
     const prismaClient = PrismaHelper.getConnection()
@@ -50,6 +52,31 @@ export class SectorPostgresRepository implements
     return sectorDeleted
   }
 
+  async loadNameById (id: number): Promise<LoadSectorNameByIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const sector = prismaClient.sector.findFirst({
+      where: {
+        id: Number(id)
+      },
+      select: {
+        name: true
+      }
+    })
+    return sector
+  }
+
+  async loadAll (params: LoadSectorsRepository.Params): Promise<LoadSectorsRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const { skip, take } = params
+    if (isNaN(skip) || isNaN(take)) {
+      return await prismaClient.sector.findMany()
+    }
+    return await prismaClient.sector.findMany({
+      skip: Number(skip),
+      take: Number(take)
+    })
+  }
+
   async checkByName (name: string): Promise<boolean> {
     const prismaClient = PrismaHelper.getConnection()
     const sector = await prismaClient.sector.findFirst({
@@ -75,17 +102,5 @@ export class SectorPostgresRepository implements
       }
     })
     return sectorWithOnlyId !== null
-  }
-
-  async loadAll (params: LoadSectorsRepository.Params): Promise<LoadSectorsRepository.Model> {
-    const prismaClient = PrismaHelper.getConnection()
-    const { skip, take } = params
-    if (isNaN(skip) || isNaN(take)) {
-      return await prismaClient.sector.findMany()
-    }
-    return await prismaClient.sector.findMany({
-      skip: Number(skip),
-      take: Number(take)
-    })
   }
 }
