@@ -78,4 +78,11 @@ describe('LoadPatrimonyByIdController', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(loadPatrimonyByIdSpy.model))
   })
+
+  test('Should return 500 if LoadPatrimonyById throws', async () => {
+    const { sut, loadPatrimonyByIdSpy } = makeSut()
+    jest.spyOn(loadPatrimonyByIdSpy, 'loadById').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
 })
