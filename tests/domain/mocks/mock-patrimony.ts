@@ -72,6 +72,15 @@ export class AddPatrimonySpy implements AddPatrimony {
   }
 }
 
+export class DeletePatrimonySpy implements DeletePatrimony {
+  params: DeletePatrimony.Params
+  model = mockPatrimonyModel()
+  async delete (params: DeletePatrimony.Params): Promise<DeletePatrimony.Model> {
+    this.params = params
+    return this.model
+  }
+}
+
 export class CheckPatrimonyByIdSpy implements CheckPatrimonyById {
   params: CheckPatrimonyById.Params
   result = true
