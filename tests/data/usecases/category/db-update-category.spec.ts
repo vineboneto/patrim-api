@@ -32,4 +32,10 @@ describe('DbUpdateCategory', () => {
     const result = await sut.update(mockUpdateCategoryRepositoryParams())
     expect(result).toBe(null)
   })
+
+  test('Should return category on success', async () => {
+    const { sut, updateCategoryRepositorySpy } = makeSut()
+    const model = await sut.update(mockUpdateCategoryRepositoryParams())
+    expect(model).toEqual(updateCategoryRepositorySpy.model)
+  })
 })
