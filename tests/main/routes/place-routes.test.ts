@@ -66,14 +66,6 @@ describe('Place Routes', () => {
         .expect(200)
     })
 
-    test('Should return 404 on update place with invalid id', async () => {
-      const accessToken = await makeAccessToken()
-      await request(app)
-        .delete(`/api/places/${faker.datatype.number()}`)
-        .set('x-access-token', accessToken)
-        .expect(404)
-    })
-
     test('Should return 403 if patrimony exists', async () => {
       const { place } = await Helper.makePatrimony()
       const accessToken = await makeAccessToken()

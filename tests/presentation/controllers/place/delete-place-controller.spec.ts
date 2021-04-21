@@ -1,7 +1,8 @@
 import { DeletePlaceController } from '@/presentation/controllers'
-import { LinkedDataError } from '@/presentation/errors'
-import { forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { InvalidParamError, LinkedDataError } from '@/presentation/errors'
 import { DeletePlaceSpy } from '@/tests/domain/mocks'
+import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -12,33 +13,67 @@ const mockRequest = (): DeletePlaceController.Request => ({
 type SutTypes = {
   sut: DeletePlaceController
   deletePlaceSpy: DeletePlaceSpy
+  validationSpy: ValidationSpy
+  checkExistSpy: CheckExistSpy
 }
 
 const makeSut = (): SutTypes => {
   const deletePlaceSpy = new DeletePlaceSpy()
-  const sut = new DeletePlaceController(deletePlaceSpy)
+  const validationSpy = new ValidationSpy()
+  const checkExistSpy = new CheckExistSpy()
+  const sut = new DeletePlaceController(deletePlaceSpy, checkExistSpy, validationSpy)
   return {
     sut,
-    deletePlaceSpy
+    deletePlaceSpy,
+    checkExistSpy,
+    validationSpy
   }
 }
 
 describe('DeletePlaceController', () => {
-  test('Should calls DeletePlace with correct values', async () => {
-    const { sut, deletePlaceSpy } = makeSut()
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(deletePlaceSpy.params).toEqual(request)
+    expect(validationSpy.input).toEqual(request)
   })
 
-  test('Should return 403 if DeletePlace with returns null', async () => {
+  test('Should return 400 if Validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new Error()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call CheckExist with correct values', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkExistSpy.input).toEqual(request)
+  })
+
+  test('Should return 403 if CheckExists fails', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    checkExistSpy.result = new InvalidParamError('id')
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
+  })
+
+  test('Should call DeletePlace with correct value', async () => {
+    const { sut, deletePlaceSpy } = makeSut()
+    const params = mockRequest()
+    await sut.handle(params)
+    expect(deletePlaceSpy.params).toEqual(params)
+  })
+
+  test('Should return 403 if DeletePlace return null', async () => {
     const { sut, deletePlaceSpy } = makeSut()
     deletePlaceSpy.model = null
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new LinkedDataError('patrimonies')))
   })
 
-  test('Should return 200 on success', async () => {
+  test('Should return 200 with placeDeleted if DeletePlace succeeds', async () => {
     const { sut, deletePlaceSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(deletePlaceSpy.model))
@@ -46,7 +81,15 @@ describe('DeletePlaceController', () => {
 
   test('Should return 500 if DeletePlace throws', async () => {
     const { sut, deletePlaceSpy } = makeSut()
-    jest.spyOn(deletePlaceSpy, 'delete').mockRejectedValueOnce(new Error())
+    const error = new Error()
+    jest.spyOn(deletePlaceSpy, 'delete').mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(error))
+  })
+
+  test('Should return 500 if CheckExists  throws', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    jest.spyOn(checkExistSpy, 'check').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
