@@ -78,4 +78,13 @@ describe('DbUpdateCategory', () => {
     await sut.update(params)
     expect(checkCategoryByNameRepositorySpy.name).toEqual(params.name)
   })
+
+  test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
+    const { sut, checkCategoryByNameRepositorySpy, loadCategoryNameByIdRepositorySpy } = makeSut()
+    loadCategoryNameByIdRepositorySpy.model.name = 'differentName'
+    checkCategoryByNameRepositorySpy.result = true
+    const params = mockUpdateCategoryRepositoryParams()
+    const data = await sut.update(params)
+    expect(data).toBe(null)
+  })
 })
