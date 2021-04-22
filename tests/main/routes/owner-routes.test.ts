@@ -89,6 +89,34 @@ describe('Owner Routes', () => {
     })
   })
 
+  describe('GET /owners/:id/patrimonies', () => {
+    test('Should return 200 on load patrimonies by owner id', async () => {
+      const accessToken = await makeAccessToken()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      await request(app)
+        .get(`/api/owners/${patrimonies[0].id}/patrimonies`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    // test('Should return 200 on load patrimonies by load id with take and skip', async () => {
+    //   const accessToken = await makeAccessToken()
+    //   await Helper.makeManyOwners()
+    //   await request(app)
+    //     .get('/api/owners?take=3&skip=0')
+    //     .set('x-access-token', accessToken)
+    //     .expect(200)
+    // })
+
+    test('Should return 204 on load owner return empty array', async () => {
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .get(`/api/owners/${faker.datatype.number()}/patrimonies`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+  })
+
   describe('DELETE /owners', () => {
     test('Should return owner deleted on success', async () => {
       const { id } = await Helper.makeOwner()

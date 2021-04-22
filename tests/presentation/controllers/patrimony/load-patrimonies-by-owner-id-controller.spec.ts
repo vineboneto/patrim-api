@@ -6,7 +6,7 @@ import { ValidationSpy } from '@/tests/presentation/mocks'
 import faker from 'faker'
 
 const mockRequest = (): LoadPatrimoniesByOwnerIdController.Request => ({
-  ownerId: faker.datatype.number()
+  id: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -45,7 +45,7 @@ describe('LoadPatrimoniesByOwnerIdController', () => {
     const { sut, loadPatrimoniesByOwnerIdSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(loadPatrimoniesByOwnerIdSpy.params).toEqual(request)
+    expect(loadPatrimoniesByOwnerIdSpy.params).toEqual({ ownerId: request.id })
   })
 
   test('Should return 204 if LoadPatrimoniesByOwnerId return empty array', async () => {
