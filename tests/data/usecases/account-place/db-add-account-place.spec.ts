@@ -22,4 +22,11 @@ describe('DbAddAccountPlace', () => {
     await sut.add(params)
     expect(addAccountPlaceRepositorySpy.params).toEqual(params)
   })
+
+  test('Should return null AddAccountPlaceRepository return null', async () => {
+    const { sut, addAccountPlaceRepositorySpy } = makeSut()
+    addAccountPlaceRepositorySpy.model = null
+    const data = await sut.add(mockAddAccountPlaceRepositoryParams())
+    expect(data).toBe(null)
+  })
 })
