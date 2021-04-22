@@ -1,5 +1,5 @@
 import { HttpResponse, Middleware } from '@/presentation/protocols'
-import { forbidden, noContent, serverError } from '@/presentation/helper'
+import { forbidden, ok, serverError } from '@/presentation/helper'
 import { AccessDeniedError } from '@/presentation/errors'
 import { LoadAccountByToken } from '@/domain/usecases'
 
@@ -16,7 +16,7 @@ export class AuthMiddleware implements Middleware {
       if (!account) {
         return forbidden(new AccessDeniedError())
       }
-      return noContent()
+      return ok({ accountId: account.id })
     } catch (error) {
       return serverError(error)
     }

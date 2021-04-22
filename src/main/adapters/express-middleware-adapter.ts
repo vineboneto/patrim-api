@@ -6,14 +6,12 @@ export const adaptMiddleware = (middleware: Middleware) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const request = {
       accessToken: req.headers?.['x-access-token'],
-      ...(req.headers || {}),
-      id: req.params?.id
+      ...(req.headers || {})
     }
     const httpResponse = await middleware.handle(request)
-    if (httpResponse.statusCode === 204) {
+    if (httpResponse.statusCode === 200) {
+      Object.assign(req, httpResponse.body)
       next()
-    } else if (httpResponse.statusCode === 404) {
-      res.status(404).send()
     } else {
       res.status(httpResponse.statusCode).json({ error: httpResponse.body?.message })
     }
