@@ -140,3 +140,13 @@ export class LoadPatrimoniesByOwnerIdSpy implements LoadPatrimoniesByOwnerId {
     return this.model
   }
 }
+
+export class LoadPatrimoniesByCategoryIdSpy implements LoadPatrimoniesByCategoryId {
+  params: LoadPatrimoniesByCategoryId.Params
+  model = mockPatrimoniesModel()
+
+  async loadByCategoryId (params: LoadPatrimoniesByCategoryId.Params): Promise<LoadPatrimoniesByCategoryId.Model> {
+    this.params = params
+    return this.model
+  }
+}
