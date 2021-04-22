@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, serverError } from '@/presentation/helper'
 import { AddAccountPlace } from '@/domain/usecases'
 
 export class AddAccountPlaceController implements Controller {
@@ -10,16 +10,20 @@ export class AddAccountPlaceController implements Controller {
   ) {}
 
   async handle (request: AddAccountPlaceController.Request): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
+      const checkError = await this.checkExist.check(request)
+      if (checkError) {
+        return forbidden(checkError)
+      }
+      await this.addAccountPlace.add(request)
+      return null
+    } catch (error) {
+      return serverError(error)
     }
-    const checkError = await this.checkExist.check(request)
-    if (checkError) {
-      return forbidden(checkError)
-    }
-    await this.addAccountPlace.add(request)
-    return null
   }
 }
 
