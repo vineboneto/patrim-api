@@ -12,7 +12,8 @@ import {
   LoadPatrimonyNumberByIdRepository,
   DeletePatrimonyRepository,
   LoadPatrimoniesRepository,
-  LoadPatrimonyByIdRepository
+  LoadPatrimonyByIdRepository,
+  LoadPatrimoniesByCategoryIdRepository
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
@@ -21,6 +22,7 @@ export class PatrimonyPostgresRepository implements
   DeletePatrimonyRepository,
   CheckPatrimonyByNumberRepository,
   LoadPatrimoniesByOwnerIdRepository,
+  LoadPatrimoniesByCategoryIdRepository,
   LoadPatrimonyNumberByIdRepository,
   LoadPatrimonyByIdRepository,
   CheckPatrimonyByOwnerIdRepository,
@@ -127,6 +129,26 @@ export class PatrimonyPostgresRepository implements
     } else {
       patrimonies = await prismaClient.patrimony.findMany({
         where: { ownerId: Number(params.ownerId) },
+        include: this.includesData(),
+        skip: Number(params.skip),
+        take: Number(params.take)
+      })
+    }
+    return patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+  }
+
+  async loadByCategoryId (params: LoadPatrimoniesByCategoryIdRepository.Params):
+  Promise<LoadPatrimoniesByCategoryIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    let patrimonies: any
+    if (isNaN(params.skip) || isNaN(params.take)) {
+      patrimonies = await prismaClient.patrimony.findMany({
+        where: { categoryId: Number(params.categoryId) },
+        include: this.includesData()
+      })
+    } else {
+      patrimonies = await prismaClient.patrimony.findMany({
+        where: { categoryId: Number(params.categoryId) },
         include: this.includesData(),
         skip: Number(params.skip),
         take: Number(params.take)
