@@ -1,7 +1,7 @@
 import { AddAccountPlaceSpy } from '@/../tests/domain/mocks'
 import { AddAccountPlaceController } from '@/presentation/controllers'
 import { InvalidParamError } from '@/presentation/errors'
-import { badRequest, forbidden } from '@/presentation/helper'
+import { badRequest, forbidden, serverError } from '@/presentation/helper'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -58,6 +58,13 @@ describe('AddAccountPlaceController', () => {
     checkExistSpy.result = new InvalidParamError('id')
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
+  })
+
+  test('Should return 500 if CheckExists throws', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    jest.spyOn(checkExistSpy, 'check').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should call AddAccountPlace with correct value', async () => {
