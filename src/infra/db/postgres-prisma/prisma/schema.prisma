@@ -7,14 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Owner {
-  id           Int    @id @default(autoincrement())
-  name         String
-  Sector       Sector    @relation(fields: [sectorId], references: [id])
-  sectorId     Int
-  Patrimony    Patrimony[]
-}
-
 model Patrimony {
   id           Int    @id @default(autoincrement())
   number       String  @unique
@@ -28,10 +20,12 @@ model Patrimony {
   placeId      Int
 }
 
-model Place {
-  id          Int     @id @default(autoincrement())
-  name        String  @unique
-  Patrimony   Patrimony[]
+model Owner {
+  id           Int    @id @default(autoincrement())
+  name         String
+  Sector       Sector    @relation(fields: [sectorId], references: [id])
+  sectorId     Int
+  Patrimony    Patrimony[]
 }
 
 model Sector {
@@ -46,6 +40,13 @@ model Category {
   Patrimony    Patrimony[]
 }
 
+model Place {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  Patrimony   Patrimony[]
+  Place       UserPlace[]
+}
+
 model User {
   id          Int     @id @default(autoincrement())
   name        String
@@ -53,6 +54,15 @@ model User {
   accessToken String?
   role        String?
   email       String
+  User        UserPlace[]
+}
+
+model UserPlace {
+  id          Int     @id @default(autoincrement())
+  placeId     Int     
+  Place       Place   @relation(fields: [placeId], references: [id])
+  userId      Int  
+  User        User    @relation(fields: [userId], references: [id])
 }
 
 model LogError {
