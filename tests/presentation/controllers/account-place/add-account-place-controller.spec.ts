@@ -1,3 +1,4 @@
+import { AddAccountPlaceSpy } from '@/../tests/domain/mocks'
 import { AddAccountPlaceController } from '@/presentation/controllers'
 import { InvalidParamError } from '@/presentation/errors'
 import { badRequest, forbidden } from '@/presentation/helper'
@@ -14,16 +15,19 @@ type SutTypes = {
   sut: AddAccountPlaceController
   validationSpy: ValidationSpy
   checkExistSpy: CheckExistSpy
+  addAccountPlaceSpy: AddAccountPlaceSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const checkExistSpy = new CheckExistSpy()
-  const sut = new AddAccountPlaceController(validationSpy, checkExistSpy)
+  const addAccountPlaceSpy = new AddAccountPlaceSpy()
+  const sut = new AddAccountPlaceController(validationSpy, checkExistSpy, addAccountPlaceSpy)
   return {
     sut,
     validationSpy,
-    checkExistSpy
+    checkExistSpy,
+    addAccountPlaceSpy
   }
 }
 
@@ -54,5 +58,12 @@ describe('AddAccountPlaceController', () => {
     checkExistSpy.result = new InvalidParamError('id')
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
+  })
+
+  test('Should call AddAccountPlace with correct value', async () => {
+    const { sut, addAccountPlaceSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(addAccountPlaceSpy.params).toEqual(request)
   })
 })
