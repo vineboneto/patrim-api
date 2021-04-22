@@ -6,6 +6,7 @@ import {
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByPlaceIdRepository,
   DeletePatrimonyRepository,
+  LoadPatrimoniesByCategoryIdRepository,
   LoadPatrimoniesByOwnerIdRepository,
   LoadPatrimoniesRepository,
   LoadPatrimonyByIdRepository,
@@ -16,6 +17,7 @@ import {
   mockAddUpdatePatrimonyParams,
   mockCheckPatrimonyByIdParams,
   mockDeletePatrimonyParams,
+  mockLoadPatrimoniesByCategoryIdParams,
   mockLoadPatrimoniesByOwnerIdParams,
   mockLoadPatrimoniesParams,
   mockLoadPatrimonyById,
@@ -44,6 +46,9 @@ LoadPatrimonyByIdRepository.Params => mockLoadPatrimonyById()
 
 export const mockLoadPatrimoniesByOwnerIdRepositoryParams = ():
 LoadPatrimoniesByOwnerIdRepository.Params => mockLoadPatrimoniesByOwnerIdParams()
+
+export const mockLoadPatrimoniesByCategoryIdRepositoryParams = ():
+LoadPatrimoniesByCategoryIdRepository.Params => mockLoadPatrimoniesByCategoryIdParams()
 
 export class AddPatrimonyRepositorySpy implements AddPatrimonyRepository {
   params: AddPatrimonyRepository.Params
@@ -105,6 +110,17 @@ export class LoadPatrimoniesByOwnerIdRepositorySpy implements LoadPatrimoniesByO
 
   async loadByOwnerId (params: LoadPatrimoniesByOwnerIdRepository.Params):
   Promise<LoadPatrimoniesByOwnerIdRepository.Model> {
+    this.params = params
+    return this.model
+  }
+}
+
+export class LoadPatrimoniesByCategoryIdRepositorySpy implements LoadPatrimoniesByCategoryIdRepository {
+  params: LoadPatrimoniesByCategoryIdRepository.Params
+  model = mockPatrimoniesModel()
+
+  async loadByCategoryId (params: LoadPatrimoniesByCategoryIdRepository.Params):
+  Promise<LoadPatrimoniesByCategoryIdRepository.Model> {
     this.params = params
     return this.model
   }
