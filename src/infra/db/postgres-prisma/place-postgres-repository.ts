@@ -20,7 +20,9 @@ export class PlacePostgresRepository implements
   async add (params: AddPlaceRepository.Params): Promise<AddPlaceRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const placeModel = await prismaClient.place.create({
-      data: params
+      data: {
+        name: params.name
+      }
     })
     return placeModel
   }
