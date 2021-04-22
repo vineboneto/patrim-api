@@ -7,6 +7,8 @@ export interface LoadPatrimoniesByOwnerId {
 export namespace LoadPatrimoniesByOwnerId {
   export type Params = {
     ownerId: number
+    skip?: number
+    take?: number
   }
   export type Model = PatrimonyModel[]
 }

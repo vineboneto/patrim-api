@@ -118,12 +118,20 @@ export class PatrimonyPostgresRepository implements
   async loadByOwnerId (params: LoadPatrimoniesByOwnerIdRepository.Params):
   Promise<LoadPatrimoniesByOwnerIdRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const patrimonies: any = await prismaClient.patrimony.findMany({
-      where: {
-        ownerId: Number(params.ownerId)
-      },
-      include: this.includesData()
-    })
+    let patrimonies: any
+    if (isNaN(params.skip) || isNaN(params.take)) {
+      patrimonies = await prismaClient.patrimony.findMany({
+        where: { ownerId: Number(params.ownerId) },
+        include: this.includesData()
+      })
+    } else {
+      patrimonies = await prismaClient.patrimony.findMany({
+        where: { ownerId: Number(params.ownerId) },
+        include: this.includesData(),
+        skip: Number(params.skip),
+        take: Number(params.take)
+      })
+    }
     return patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
   }
 
