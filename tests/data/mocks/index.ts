@@ -1,6 +1,7 @@
 export * from './mock-db-category'
 export * from './mock-db-sector'
 export * from './mock-db-account'
+export * from './mock-db-account-place'
 export * from './mock-db-category'
 export * from './mock-criptography'
 export * from './mock-db-owner'
