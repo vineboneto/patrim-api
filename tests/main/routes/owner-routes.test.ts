@@ -99,7 +99,7 @@ describe('Owner Routes', () => {
         .expect(200)
     })
 
-    test('Should return 200 on load patrimonies by load id with take and skip', async () => {
+    test('Should return 200 on load patrimonies by load ownerId with take and skip', async () => {
       const accessToken = await makeAccessToken()
       const patrimonies = await Helper.makeManyPatrimonies()
       await request(app)
@@ -108,7 +108,7 @@ describe('Owner Routes', () => {
         .expect(200)
     })
 
-    test('Should return 204 on load owner return empty array', async () => {
+    test('Should return 204 on load by ownerId return empty array', async () => {
       const accessToken = await makeAccessToken()
       await request(app)
         .get(`/api/owners/${faker.datatype.number()}/patrimonies`)

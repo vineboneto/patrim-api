@@ -81,6 +81,34 @@ describe('Category Routes', () => {
     })
   })
 
+  describe('GET /categories/:id/patrimonies', () => {
+    test('Should return 200 on load patrimonies by category id', async () => {
+      const accessToken = await makeAccessToken()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      await request(app)
+        .get(`/api/categories/${patrimonies[0].id}/patrimonies`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 200 on load patrimonies by load categoryId with take and skip', async () => {
+      const accessToken = await makeAccessToken()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      await request(app)
+        .get(`/api/categories/${patrimonies[0].id}/patrimonies?take=2&skip=0`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 204 on load patrimonies by categoryId return empty array', async () => {
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .get(`/api/categories/${faker.datatype.number()}/patrimonies`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+  })
+
   describe('DELETE /categories/:id', () => {
     test('Should return category deleted on delete success', async () => {
       const accessToken = await makeAccessToken()
