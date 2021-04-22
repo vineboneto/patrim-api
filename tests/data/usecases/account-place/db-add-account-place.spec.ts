@@ -35,4 +35,11 @@ describe('DbAddAccountPlace', () => {
     const data = await sut.add(mockAddAccountPlaceRepositoryParams())
     expect(data).toEqual(addAccountPlaceRepositorySpy.model)
   })
+
+  test('Should throw if AddAccountPlaceRepository throws', async () => {
+    const { sut, addAccountPlaceRepositorySpy } = makeSut()
+    jest.spyOn(addAccountPlaceRepositorySpy, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockAddAccountPlaceRepositoryParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
