@@ -99,14 +99,14 @@ describe('Owner Routes', () => {
         .expect(200)
     })
 
-    // test('Should return 200 on load patrimonies by load id with take and skip', async () => {
-    //   const accessToken = await makeAccessToken()
-    //   await Helper.makeManyOwners()
-    //   await request(app)
-    //     .get('/api/owners?take=3&skip=0')
-    //     .set('x-access-token', accessToken)
-    //     .expect(200)
-    // })
+    test('Should return 200 on load patrimonies by load id with take and skip', async () => {
+      const accessToken = await makeAccessToken()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      await request(app)
+        .get(`/api/owners/${patrimonies[0].id}/patrimonies?take=2&skip=0`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
 
     test('Should return 204 on load owner return empty array', async () => {
       const accessToken = await makeAccessToken()
