@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { AddAccountPlace } from '@/domain/usecases'
 
 export class AddAccountPlaceController implements Controller {
@@ -19,8 +19,8 @@ export class AddAccountPlaceController implements Controller {
       if (checkError) {
         return forbidden(checkError)
       }
-      await this.addAccountPlace.add(request)
-      return null
+      const accountPlace = await this.addAccountPlace.add(request)
+      return ok(accountPlace)
     } catch (error) {
       return serverError(error)
     }
