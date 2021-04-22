@@ -145,6 +145,36 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
+  describe('loadByCategoryId()', () => {
+    test('Should return all patrimonies on success', async () => {
+      const sut = makeSut()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadByCategoryId({ categoryId: patrimonies[0].category.id })
+      expect(dataResponse).toEqual(patrimonies)
+      expect(dataResponse.length).toBe(3)
+    })
+
+    test('Should return the correctly number of patrimonies if take and skip not undefined', async () => {
+      const sut = makeSut()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadByCategoryId({
+        categoryId: patrimonies[0].category.id,
+        skip: 0,
+        take: 2
+      })
+      expect(dataResponse[0]).toEqual(patrimonies[0])
+      expect(dataResponse[1]).toEqual(patrimonies[1])
+      expect(dataResponse[2]).toBe(undefined)
+      expect(dataResponse.length).toBe(2)
+    })
+
+    test('Should return empty array if load patrimonies is empty', async () => {
+      const sut = makeSut()
+      const dataResponse = await sut.loadByCategoryId({ categoryId: faker.datatype.number() })
+      expect(dataResponse).toEqual([])
+    })
+  })
+
   describe('loadNumberById()', () => {
     test('Should return number patrimony on success', async () => {
       const sut = makeSut()
