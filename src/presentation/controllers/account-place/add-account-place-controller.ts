@@ -1,10 +1,12 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden } from '@/presentation/helper'
+import { AddAccountPlace } from '@/domain/usecases'
 
 export class AddAccountPlaceController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly checkExist: CheckExist
+    private readonly checkExist: CheckExist,
+    private readonly addAccountPlace: AddAccountPlace
   ) {}
 
   async handle (request: AddAccountPlaceController.Request): Promise<HttpResponse> {
@@ -16,6 +18,7 @@ export class AddAccountPlaceController implements Controller {
     if (checkError) {
       return forbidden(checkError)
     }
+    await this.addAccountPlace.add(request)
     return null
   }
 }
