@@ -79,4 +79,11 @@ describe('AddAccountPlaceController', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(addAccountPlaceSpy.model))
   })
+
+  test('Should return 500 if AddAccountPlace throws', async () => {
+    const { sut, addAccountPlaceSpy } = makeSut()
+    jest.spyOn(addAccountPlaceSpy, 'add').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
 })
