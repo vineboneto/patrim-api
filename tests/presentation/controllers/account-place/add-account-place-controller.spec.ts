@@ -1,7 +1,7 @@
 import { AddAccountPlaceSpy } from '@/../tests/domain/mocks'
 import { AddAccountPlaceController } from '@/presentation/controllers'
 import { InvalidParamError } from '@/presentation/errors'
-import { badRequest, forbidden, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -72,5 +72,11 @@ describe('AddAccountPlaceController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(addAccountPlaceSpy.params).toEqual(request)
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut, addAccountPlaceSpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(addAccountPlaceSpy.model))
   })
 })
