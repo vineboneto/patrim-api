@@ -1,6 +1,6 @@
 import { AddAccountPlaceController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helper'
-import { ValidationSpy } from '@/tests/presentation/mocks'
+import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -12,14 +12,17 @@ const mockRequest = (): AddAccountPlaceController.Request => ({
 type SutTypes = {
   sut: AddAccountPlaceController
   validationSpy: ValidationSpy
+  checkExistSpy: CheckExistSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new AddAccountPlaceController(validationSpy)
+  const checkExistSpy = new CheckExistSpy()
+  const sut = new AddAccountPlaceController(validationSpy, checkExistSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    checkExistSpy
   }
 }
 
@@ -36,5 +39,12 @@ describe('AddAccountPlaceController', () => {
     validationSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call CheckExist with correct value', async () => {
+    const { sut, checkExistSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(checkExistSpy.input).toEqual(request)
   })
 })
