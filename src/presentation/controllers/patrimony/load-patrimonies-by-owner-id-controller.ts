@@ -14,7 +14,7 @@ export class LoadPatrimoniesByOwnerIdController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const httpResponse = await this.loadPatrimoniesByOwnerId.loadByOwnerId(request)
+      const httpResponse = await this.loadPatrimoniesByOwnerId.loadByOwnerId({ ownerId: request.id })
       return httpResponse.length ? ok(httpResponse) : noContent()
     } catch (error) {
       return serverError(error)
@@ -24,6 +24,6 @@ export class LoadPatrimoniesByOwnerIdController implements Controller {
 
 export namespace LoadPatrimoniesByOwnerIdController {
   export type Request = {
-    ownerId: number
+    id: number
   }
 }

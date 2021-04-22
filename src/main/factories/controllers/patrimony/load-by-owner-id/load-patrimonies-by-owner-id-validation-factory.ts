@@ -3,7 +3,7 @@ import { CheckFieldIsNumberValidation, RequiredFieldValidation, ValidationCompos
 
 export const makeLoadPatrimoniesByOwnerIdValidation = (): Validation => {
   const validations: Validation[] = []
-  validations.push(new RequiredFieldValidation('ownerId'))
-  validations.push(new CheckFieldIsNumberValidation('ownerId'))
+  validations.push(new RequiredFieldValidation('id'))
+  validations.push(new CheckFieldIsNumberValidation('id'))
   return new ValidationComposite(validations)
 }
