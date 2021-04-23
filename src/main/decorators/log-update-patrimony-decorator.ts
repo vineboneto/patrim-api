@@ -17,7 +17,6 @@ export class LogUpdatePatrimonyDecorator implements UpdatePatrimony {
         patrimonyId: params.id
       })
     }
-    await this.updatePatrimony.update(params)
-    return null
+    return this.updatePatrimony.update(params)
   }
 }
