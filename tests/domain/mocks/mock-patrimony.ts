@@ -1,5 +1,5 @@
 import { PatrimonyModel } from '@/domain/models'
-import { CheckPatrimonyById, LoadPatrimoniesByOwnerId, AddPatrimony, UpdatePatrimony, DeletePatrimony, LoadPatrimonies, LoadPatrimonyById, LoadPatrimoniesByCategoryId } from '@/domain/usecases'
+import { CheckPatrimonyById, LoadPatrimoniesByOwnerId, AddPatrimony, UpdatePatrimony, DeletePatrimony, LoadPatrimonies, LoadPatrimonyById, LoadPatrimoniesByCategoryId, LoadPatrimonyByNumber } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -96,6 +96,15 @@ export class LoadPatrimonyByIdSpy implements LoadPatrimonyById {
   params: LoadPatrimonyById.Params
   async loadById (params: LoadPatrimonyById.Params): Promise<LoadPatrimonyById.Model> {
     this.params = params
+    return this.model
+  }
+}
+
+export class LoadPatrimonyByNumberSpy implements LoadPatrimonyByNumber {
+  model = mockPatrimonyModel()
+  number: string
+  async loadByNumber (number: string): Promise<LoadPatrimonyByNumber.Model> {
+    this.number = number
     return this.model
   }
 }
