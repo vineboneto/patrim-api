@@ -113,7 +113,7 @@ describe('Patrimony Routes', () => {
     })
   })
 
-  describe('GET /patrimonies', () => {
+  describe('GET /patrimonies/:id', () => {
     test('Should return 204 if patrimony not exist', async () => {
       const accessToken = await makeAccessToken()
       await request(app)
@@ -135,6 +135,32 @@ describe('Patrimony Routes', () => {
       const { id } = await Helper.makePatrimony()
       await request(app)
         .get(`/api/patrimonies/${id}`)
+        .expect(403)
+    })
+  })
+
+  describe('GET /patrimonies/:number/number', () => {
+    test('Should return 204 if patrimony not exist', async () => {
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .get(`/api/patrimonies/${faker.datatype.number()}/number`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+
+    test('Should return 200 on success', async () => {
+      const accessToken = await makeAccessToken()
+      const { number } = await Helper.makePatrimony()
+      await request(app)
+        .get(`/api/patrimonies/${number}/number`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 403 on load without accessToken', async () => {
+      const { number } = await Helper.makePatrimony()
+      await request(app)
+        .get(`/api/patrimonies/${number}`)
         .expect(403)
     })
   })
