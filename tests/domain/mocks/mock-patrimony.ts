@@ -19,10 +19,6 @@ export const mockPatrimonyModel = (): PatrimonyModel => ({
       id: faker.datatype.number(),
       name: faker.name.findName()
     }
-  },
-  place: {
-    id: faker.datatype.number(),
-    name: faker.name.findName()
   }
 })
 
@@ -39,7 +35,7 @@ export const mockUpdatePatrimonyParams = (): UpdatePatrimony.Params => ({
   description: faker.random.words(),
   categoryId: faker.datatype.number(),
   ownerId: faker.datatype.number(),
-  placeId: faker.datatype.number()
+  accountId: faker.datatype.number()
 
 })
 
@@ -49,7 +45,7 @@ export const mockAddUpdatePatrimonyParams = (): AddPatrimony.Params => ({
   description: faker.random.words(),
   categoryId: faker.datatype.number(),
   ownerId: faker.datatype.number(),
-  placeId: faker.datatype.number()
+  accountId: faker.datatype.number()
 })
 
 export const mockDeletePatrimonyParams = (): DeletePatrimony.Params => ({

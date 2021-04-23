@@ -12,7 +12,7 @@ const mockRequest = (): UpdatePatrimonyController.Request => ({
   number: faker.datatype.number().toString(),
   description: faker.random.words(),
   categoryId: faker.datatype.number(),
-  placeId: faker.datatype.number(),
+  accountId: faker.datatype.number(),
   ownerId: faker.datatype.number()
 })
 

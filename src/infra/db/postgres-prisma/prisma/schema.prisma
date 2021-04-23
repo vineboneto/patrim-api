@@ -16,8 +16,8 @@ model Patrimony {
   categoryId   Int
   Owner        Owner     @relation(fields: [ownerId], references: [id])
   ownerId      Int
-  Place        Place     @relation(fields: [placeId], references: [id])
-  placeId      Int
+  User        User     @relation(fields: [userId], references: [id])
+  userId      Int
 }
 
 model Owner {
@@ -40,13 +40,6 @@ model Category {
   Patrimony    Patrimony[]
 }
 
-model Place {
-  id          Int     @id @default(autoincrement())
-  name        String  @unique
-  Patrimony   Patrimony[]
-  Place       UserPlace[]
-}
-
 model User {
   id          Int     @id @default(autoincrement())
   name        String
@@ -54,15 +47,7 @@ model User {
   accessToken String?
   role        String?
   email       String
-  User        UserPlace[]
-}
-
-model UserPlace {
-  id          Int     @id @default(autoincrement())
-  placeId     Int     
-  Place       Place   @relation(fields: [placeId], references: [id])
-  userId      Int  
-  User        User    @relation(fields: [userId], references: [id])
+  User        Patrimony[]
 }
 
 model LogError {

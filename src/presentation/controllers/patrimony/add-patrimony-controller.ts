@@ -37,7 +37,7 @@ export namespace AddPatrimonyController {
     brand: string
     description?: string
     categoryId: number
-    placeId: number
+    accountId: number
     ownerId: number
   }
 }

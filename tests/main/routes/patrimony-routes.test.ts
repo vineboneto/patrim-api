@@ -25,7 +25,6 @@ describe('Patrimony Routes', () => {
       const accessToken = await makeAccessToken()
       const { id: ownerId } = await Helper.makeOwner()
       const { id: categoryId } = await Helper.makeCategory()
-      const { id: placeId } = await Helper.makePlace()
       await request(app)
         .post('/api/patrimonies')
         .set('x-access-token', accessToken)
@@ -33,8 +32,7 @@ describe('Patrimony Routes', () => {
           number: faker.datatype.number().toString(),
           brand: faker.random.word(),
           ownerId,
-          categoryId,
-          placeId
+          categoryId
         })
         .expect(200)
     })
@@ -42,15 +40,13 @@ describe('Patrimony Routes', () => {
     test('Should return 403 on add without accessToken', async () => {
       const { id: ownerId } = await Helper.makeOwner()
       const { id: categoryId } = await Helper.makeCategory()
-      const { id: placeId } = await Helper.makePlace()
       await request(app)
         .post('/api/patrimonies')
         .send({
           number: faker.datatype.number().toString(),
           brand: faker.random.word(),
           ownerId,
-          categoryId,
-          placeId
+          categoryId
         })
         .expect(403)
     })
@@ -59,7 +55,7 @@ describe('Patrimony Routes', () => {
   describe('PUT /patrimonies', () => {
     test('Should return 200 on update category', async () => {
       const accessToken = await makeAccessToken()
-      const { id, category, place, owner } = await Helper.makePatrimony()
+      const { id, category, owner } = await Helper.makePatrimony()
       await request(app)
         .put(`/api/patrimonies/${id}`)
         .set('x-access-token', accessToken)
@@ -67,8 +63,7 @@ describe('Patrimony Routes', () => {
           number: faker.datatype.number().toString(),
           brand: faker.random.word(),
           ownerId: category.id,
-          categoryId: owner.id,
-          placeId: place.id
+          categoryId: owner.id
         })
         .expect(200)
     })

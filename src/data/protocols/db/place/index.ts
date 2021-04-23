@@ -1,7 +1,0 @@
-export * from './add-place-repository'
-export * from './update-place-repository'
-export * from './check-place-by-name-repository'
-export * from './check-place-by-id-repository'
-export * from './delete-place-repository'
-export * from './load-places-repository'
-export * from './load-place-name-by-id-repository'

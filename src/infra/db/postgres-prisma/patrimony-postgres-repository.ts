@@ -3,9 +3,7 @@ import {
   CheckPatrimonyByOwnerIdRepository,
   LoadPatrimoniesByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
-  CheckPatrimonyByPlaceIdRepository,
   CheckPatrimonyByNumberRepository,
-  CheckPlaceByIdRepository,
   AddPatrimonyRepository,
   UpdatePatrimonyRepository,
   CheckPatrimonyByIdRepository,
@@ -26,9 +24,7 @@ export class PatrimonyPostgresRepository implements
   LoadPatrimonyNumberByIdRepository,
   LoadPatrimonyByIdRepository,
   CheckPatrimonyByOwnerIdRepository,
-  CheckPatrimonyByCategoryIdRepository,
-  CheckPatrimonyByPlaceIdRepository,
-  CheckPlaceByIdRepository {
+  CheckPatrimonyByCategoryIdRepository {
   async add (params: AddPatrimonyRepository.Params): Promise<AddPatrimonyRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const patrimony: any = await prismaClient.patrimony.create({
@@ -37,7 +33,7 @@ export class PatrimonyPostgresRepository implements
         brand: params.brand,
         description: params.description,
         ownerId: Number(params.ownerId),
-        placeId: Number(params.placeId),
+        userId: Number(params.accountId),
         categoryId: Number(params.categoryId)
       },
       include: this.includesData()
@@ -56,7 +52,7 @@ export class PatrimonyPostgresRepository implements
         brand: params.brand,
         description: params.description,
         ownerId: Number(params.ownerId),
-        placeId: Number(params.placeId),
+        userId: Number(params.accountId),
         categoryId: Number(params.categoryId)
       },
       include: this.includesData()
@@ -214,21 +210,6 @@ export class PatrimonyPostgresRepository implements
     return patrimony !== null
   }
 
-  async checkByPlaceId (params: CheckPatrimonyByPlaceIdRepository.Params):
-  Promise<CheckPatrimonyByPlaceIdRepository.Result> {
-    const prismaClient = PrismaHelper.getConnection()
-    const { placeId } = params
-    const patrimony = await prismaClient.patrimony.findFirst({
-      select: {
-        id: true
-      },
-      where: {
-        categoryId: Number(placeId)
-      }
-    })
-    return patrimony !== null
-  }
-
   private includesData (): any {
     return {
       Category: true,
@@ -236,8 +217,7 @@ export class PatrimonyPostgresRepository implements
         include: {
           Sector: true
         }
-      },
-      Place: true
+      }
     }
   }
 }

@@ -1,12 +1,11 @@
 import { OwnerModel, PatrimonyModel } from '@/domain/models'
-import { Category, Owner, Patrimony, Place, PrismaClient, Sector } from '@prisma/client'
+import { Category, Owner, Patrimony, PrismaClient, Sector } from '@prisma/client'
 
 export type PatrimonyPrisma = Patrimony & {
   Category: Category
   Owner: Owner & {
     Sector: Sector
   }
-  Place: Place
 }
 type OwnerPrisma = Owner & { Sector: Sector }
 
@@ -43,10 +42,6 @@ export const PrismaHelper = {
           id: patrimony.Owner.Sector.id,
           name: patrimony.Owner.Sector.name
         }
-      },
-      place: {
-        id: patrimony.Owner.id,
-        name: patrimony.Owner.name
       }
     }
   },

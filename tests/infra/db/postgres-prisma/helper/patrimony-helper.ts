@@ -1,7 +1,6 @@
-import { AddPatrimonyRepository } from '@/data/protocols'
 import { PatrimonyModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
-import { makeOwner, makeCategory, makePlace } from '@/tests/infra/db/postgres-prisma/helper'
+import { makeOwner, makeCategory, makeUser } from '@/tests/infra/db/postgres-prisma/helper'
 
 import faker from 'faker'
 
@@ -9,7 +8,7 @@ export const makePatrimony = async (): Promise<PatrimonyModel> => {
   const prismaClient = PrismaHelper.getConnection()
   const { id: ownerId } = await makeOwner()
   const { id: categoryId } = await makeCategory()
-  const { id: placeId } = await makePlace()
+  const { id: userId } = await makeUser()
   const patrimony = await prismaClient.patrimony.create({
     data: {
       brand: faker.random.word(),
@@ -17,7 +16,7 @@ export const makePatrimony = async (): Promise<PatrimonyModel> => {
       number: faker.datatype.uuid(),
       ownerId,
       categoryId,
-      placeId
+      userId
     },
     include: {
       Category: true,
@@ -25,8 +24,7 @@ export const makePatrimony = async (): Promise<PatrimonyModel> => {
         include: {
           Sector: true
         }
-      },
-      Place: true
+      }
     }
   })
   return PrismaHelper.adaptPatrimony(patrimony)
@@ -41,7 +39,6 @@ export const makeManyPatrimonies = async (): Promise<PatrimonyModel[]> => {
   const patrimoniesPrisma = await prismaClient.patrimony.findMany({
     include: {
       Category: true,
-      Place: true,
       Owner: {
         include: {
           Sector: true
@@ -64,8 +61,7 @@ export const findPatrimonyById = async (id: number): Promise<PatrimonyModel> => 
         include: {
           Sector: true
         }
-      },
-      Place: true
+      }
     }
   })
   if (!patrimony) {
@@ -74,10 +70,10 @@ export const findPatrimonyById = async (id: number): Promise<PatrimonyModel> => 
   return PrismaHelper.adaptPatrimony(patrimony)
 }
 
-const patrimonies = async (): Promise<AddPatrimonyRepository.Params[]> => {
+const patrimonies = async (): Promise<any> => {
   const { id: ownerId } = await makeOwner()
   const { id: categoryId } = await makeCategory()
-  const { id: placeId } = await makePlace()
+  const { id: userId } = await makeUser()
   return [
     {
       brand: faker.random.word(),
@@ -85,7 +81,7 @@ const patrimonies = async (): Promise<AddPatrimonyRepository.Params[]> => {
       number: '123',
       ownerId,
       categoryId,
-      placeId
+      userId
     },
     {
       brand: faker.random.word(),
@@ -93,7 +89,7 @@ const patrimonies = async (): Promise<AddPatrimonyRepository.Params[]> => {
       number: '456',
       ownerId,
       categoryId,
-      placeId
+      userId
     },
     {
       brand: faker.random.word(),
@@ -101,7 +97,7 @@ const patrimonies = async (): Promise<AddPatrimonyRepository.Params[]> => {
       number: '789',
       ownerId,
       categoryId,
-      placeId
+      userId
     }
   ]
 }

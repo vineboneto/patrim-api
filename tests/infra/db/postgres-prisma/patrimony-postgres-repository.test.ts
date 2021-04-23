@@ -22,7 +22,7 @@ describe('PatrimonyPostgresRepository', () => {
   describe('add()', () => {
     test('Should return patrimony on add success', async () => {
       const sut = makeSut()
-      const { id: placeId } = await Helper.makePlace()
+      const { id: accountId } = await Helper.makeUser()
       const { id: ownerId } = await Helper.makeOwner()
       const { id: categoryId } = await Helper.makeCategory()
       const data = await sut.add({
@@ -31,11 +31,10 @@ describe('PatrimonyPostgresRepository', () => {
         description: faker.random.words(),
         categoryId,
         ownerId,
-        placeId
+        accountId
       })
       expect(data).toBeTruthy()
       expect(data.category.id).toBe(categoryId)
-      expect(data.place.id).toBe(placeId)
       expect(data.owner.id).toBe(ownerId)
     })
   })
@@ -43,20 +42,20 @@ describe('PatrimonyPostgresRepository', () => {
   describe('update()', () => {
     test('Should return patrimony on update success', async () => {
       const sut = makeSut()
-      const { id, description, owner, place, category } = await Helper.makePatrimony()
+      const { id: accountId } = await Helper.makeUser()
+      const { id, description, owner, category } = await Helper.makePatrimony()
       const data = await sut.update({
         id,
         brand: 'new_brand',
         number: 'new_number',
         ownerId: owner.id,
-        placeId: place.id,
-        categoryId: category.id
+        categoryId: category.id,
+        accountId
       })
       expect(data.brand).toBe('new_brand')
       expect(data.number).toBe('new_number')
       expect(data.description).toBe(description)
       expect(data.owner.id).toBe(owner.id)
-      expect(data.place.id).toBe(place.id)
       expect(data.category.id).toBe(category.id)
     })
   })
@@ -246,21 +245,6 @@ describe('PatrimonyPostgresRepository', () => {
     test('Should return false if not exists patrimony', async () => {
       const sut = makeSut()
       const exists = await sut.checkByCategoryId({ categoryId: faker.datatype.number() })
-      expect(exists).toBe(false)
-    })
-  })
-
-  describe('checkByPlaceId()', () => {
-    test('Should return true if exists patrimony', async () => {
-      const sut = makeSut()
-      const { place } = await Helper.makePatrimony()
-      const exists = await sut.checkByPlaceId({ placeId: place.id })
-      expect(exists).toBe(true)
-    })
-
-    test('Should return false if not exists patrimony', async () => {
-      const sut = makeSut()
-      const exists = await sut.checkByPlaceId({ placeId: faker.datatype.number() })
       expect(exists).toBe(false)
     })
   })

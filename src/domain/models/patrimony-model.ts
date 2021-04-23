@@ -1,4 +1,4 @@
-import { CategoryModel, OwnerModel, PlaceModel } from '@/domain/models'
+import { CategoryModel, OwnerModel } from '@/domain/models'
 
 export type PatrimonyModel = {
   id: number
@@ -7,5 +7,4 @@ export type PatrimonyModel = {
   description: string
   category: CategoryModel
   owner: OwnerModel
-  place: PlaceModel
 }

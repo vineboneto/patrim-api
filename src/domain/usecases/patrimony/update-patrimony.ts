@@ -12,7 +12,7 @@ export namespace UpdatePatrimony {
     description?: string
     categoryId: number
     ownerId: number
-    placeId: number
+    accountId: number
   }
   export type Model = PatrimonyModel
 }
