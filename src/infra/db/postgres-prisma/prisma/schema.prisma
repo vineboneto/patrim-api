@@ -8,40 +8,43 @@ datasource db {
 }
 
 model Patrimony {
-  id           Int    @id @default(autoincrement())
-  number       String  @unique
-  brand        String 
-  description  String?
-  Category     Category  @relation(fields: [categoryId], references: [id])
-  categoryId   Int
-  Owner        Owner     @relation(fields: [ownerId], references: [id])
-  ownerId      Int
-  User        User     @relation(fields: [userId], references: [id])
-  userId      Int
+  id            Int             @id @default(autoincrement())
+  number        String          @unique
+  brand         String
+  description   String?
+  categoryId    Int
+  ownerId       Int
+  userId        Int
+  Category      Category        @relation(fields: [categoryId], references: [id])
+  Owner         Owner           @relation(fields: [ownerId], references: [id])
+  User          User            @relation(fields: [userId], references: [id])
+  SwapPatrimony SwapPatrimony[]
 }
 
 model Owner {
-  id           Int    @id @default(autoincrement())
-  name         String
-  Sector       Sector    @relation(fields: [sectorId], references: [id])
-  sectorId     Int
-  Patrimony    Patrimony[]
+  id                                            Int             @id @default(autoincrement())
+  name                                          String
+  sectorId                                      Int
+  Sector                                        Sector          @relation(fields: [sectorId], references: [id])
+  Patrimony                                     Patrimony[]
+  SwapPatrimony_OwnerToSwapPatrimony_newOwnerId SwapPatrimony[] @relation("OwnerToSwapPatrimony_newOwnerId")
+  SwapPatrimony_OwnerToSwapPatrimony_oldOwnerId SwapPatrimony[] @relation("OwnerToSwapPatrimony_oldOwnerId")
 }
 
 model Sector {
-  id           Int    @id @default(autoincrement())
-  name         String @unique
-  Owner        Owner[]
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  Owner Owner[]
 }
 
 model Category {
-  id           Int    @id @default(autoincrement())
-  name         String @unique
-  Patrimony    Patrimony[]
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  Patrimony Patrimony[]
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   password    String
   accessToken String?
@@ -51,7 +54,18 @@ model User {
 }
 
 model LogError {
-  id          Int     @id @default(autoincrement())
-  stack       String
-  date        DateTime 
+  id    Int      @id @default(autoincrement())
+  date  DateTime
+  stack String
+}
+
+model SwapPatrimony {
+  id                                    Int       @id @default(autoincrement())
+  oldOwnerId                            Int
+  newOwnerId                            Int
+  patrimonyId                           Int
+  date                                  DateTime  @db.Date
+  Owner_OwnerToSwapPatrimony_newOwnerId Owner     @relation("OwnerToSwapPatrimony_newOwnerId", fields: [newOwnerId], references: [id])
+  Owner_OwnerToSwapPatrimony_oldOwnerId Owner     @relation("OwnerToSwapPatrimony_oldOwnerId", fields: [oldOwnerId], references: [id])
+  Patrimony                             Patrimony @relation(fields: [patrimonyId], references: [id])
 }
