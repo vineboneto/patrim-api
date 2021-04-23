@@ -4,7 +4,8 @@ import { LoadPatrimonyOwnerIdByIdRepository, LogSwapPatrimonyRepository } from '
 export class LogUpdatePatrimonyDecorator implements UpdatePatrimony {
   constructor (
     private readonly loadPatrimonyOwnerIdByIdRepository: LoadPatrimonyOwnerIdByIdRepository,
-    private readonly logSwapPatrimonyRepository: LogSwapPatrimonyRepository
+    private readonly logSwapPatrimonyRepository: LogSwapPatrimonyRepository,
+    private readonly updatePatrimony: UpdatePatrimony
   ) {}
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
@@ -16,6 +17,7 @@ export class LogUpdatePatrimonyDecorator implements UpdatePatrimony {
         patrimonyId: params.id
       })
     }
+    await this.updatePatrimony.update(params)
     return null
   }
 }
