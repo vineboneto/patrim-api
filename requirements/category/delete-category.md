@@ -13,6 +13,7 @@
 
 1. [x] Retorna erro **404** se a API não existir
 2. [x] Retorna erro **403** se não for um usuário
-3. [x] Retorna erro **400** se id não for fornecidos pelo client
-4. [x] Retorna erro **400** se o id não for valído
-5. [x] Retorna erro **500** se der erro ao tentar remover o categoria
+3. [x] Retorna erro **403** se o id não for valído
+4. [x] Retorna erro **400** se id não for fornecidos pelo client
+5. [x] Retorna erro **400** se o id não for um número
+6. [x] Retorna erro **500** se der erro ao tentar remover o categoria

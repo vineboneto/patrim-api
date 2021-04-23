@@ -10,9 +10,9 @@
 
 > ## Exceções
 
-1. [x] Retorna erro **403** se não for um usuário
-2. [x] retorna error **403** se o id na rota não for um número
-3. [x] Retorna erro **404** se o id na rota não for encontrado
-4. [x] Retorna error **403** se o sectorId não for válido
+1. [x] Retorna erro **404** se API não existir
+2. [x] Retorna erro **403** se não for um usuário
+3. [x] Retorna error **403** se o sectorId ou id não for válido
+4. [x] retorna error **400** se o id na rota não for um número
 5. [x] Retorna erro **400** se name ou sectorId não forem fornecidos pelo client
 6. [x] Retorna erro **500** se der erro ao tentar criar o proprietário

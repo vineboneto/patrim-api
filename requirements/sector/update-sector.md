@@ -12,9 +12,10 @@
 
 > ## Exceções
 
-1. [x] Retorna erro **403** se o id na rota não fora um número
-2. [x] Retorna erro **404** se o id na rota não for encontrado
+1. [x] Retorna erro **404** se a API não existir
+2. [x] Retorna erro **403** se id for inválido
 3. [x] Retorna erro **403** se não for um usuário
 4. [x] Retorna erro **422** se o name já existir
-5. [x] Retorna erro **400** se name não for fornecidos pelo client
-6. [x] Retorna erro **500** se der erro ao tentar atualizar o setor
+5. [x] Retorna erro **400** se id não for um número
+6. [x] Retorna erro **400** se name não for fornecidos pelo client
+7. [x] Retorna erro **500** se der erro ao tentar atualizar o setor

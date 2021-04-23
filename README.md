@@ -21,10 +21,17 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
   9. [Remover Categoria](./requirements/category/delete-category.md)
   10. [Atualizar Categoria](./requirements/category/update-category.md)
   11. [Listar Categorias](./requirements/category/load-categories.md)
-  12. [Criar Localidades](./requirements/place/add-place.md)
-  13. [Atualizar Localidades](./requirements/place/update-place.md)
-  14. [Atualizar Localidades](./requirements/place/update-place.md)
-  15. [Listar Localidades](./requirements/place/load-places.md)
+  12. [Criar Proprietários](./requirements/owner/add-owner.md)
+  13. [Remove Proprietário](./requirements/owner/delete-owner.md)
+  14. [Atualizar Proprietário](./requirements/owner/update-owner.md.md)
+  15. [Lista Proprietário](./requirements/owner/load-owners.md)
+  16. [Criar Patrimônio](./requirements/patrimony/add-patrimonies.md)
+  17. [Remover Patrimônio](./requirements/patrimony/delete-patrimony.md)
+  18. [Atualizar Patrimônio](./requirements/patrimony/update-patrimonies.md)
+  19. [Listar Patrimônio](./requirements/patrimony/load-patrimonies.md)
+  20. [Listar pelo Id](./requirements/patrimony/load-patrimony-by-id.md)
+  21. [Listar pelo categoria](./requirements/patrimony/load-patrimonies-by-categories.md)
+  22. [Listar pelo proprietários](./requirements/patrimony/load-patrimonies-by-owners.md)
 
 > ### Metodologia de Design
 
