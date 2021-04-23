@@ -76,4 +76,10 @@ describe('LogUpdatePatrimonyDecorator', () => {
     await sut.update(params)
     expect(updatePatrimonySpy.params).toEqual(params)
   })
+
+  test('Should return patrimony on success', async () => {
+    const { sut, updatePatrimonySpy } = makeSut()
+    const data = await sut.update(mockUpdatePatrimonyRepositoryParams())
+    expect(data).toEqual(updatePatrimonySpy.model)
+  })
 })
