@@ -46,8 +46,11 @@ describe('DbUpdateCategory', () => {
   })
 
   test('Should return category on success', async () => {
-    const { sut, updateCategoryRepositorySpy } = makeSut()
-    const data = await sut.update(mockUpdateCategoryRepositoryParams())
+    const { sut, updateCategoryRepositorySpy, loadCategoryNameByIdRepositorySpy } = makeSut()
+    const params = mockUpdateCategoryRepositoryParams()
+    loadCategoryNameByIdRepositorySpy.model.name = 'name'
+    params.name = 'name'
+    const data = await sut.update(params)
     expect(data).toEqual(updateCategoryRepositorySpy.model)
   })
 

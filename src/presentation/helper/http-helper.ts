@@ -16,11 +16,6 @@ export const forbidden = (error: Error): HttpResponse => ({
   statusCode: 403
 })
 
-export const notFound = (): HttpResponse => ({
-  body: null,
-  statusCode: 404
-})
-
 export const unprocessableEntity = (error: Error): HttpResponse => ({
   body: error,
   statusCode: 422

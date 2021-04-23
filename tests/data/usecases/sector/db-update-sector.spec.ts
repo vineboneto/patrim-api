@@ -46,8 +46,11 @@ describe('DbUpdateSector', () => {
   })
 
   test('Should return sector on success', async () => {
-    const { sut, updateSectorRepositorySpy } = makeSut()
-    const data = await sut.update(mockUpdateSectorRepositoryParams())
+    const { sut, updateSectorRepositorySpy, loadSectorNameByIdRepositorySpy } = makeSut()
+    const params = mockUpdateSectorRepositoryParams()
+    loadSectorNameByIdRepositorySpy.model.name = 'name'
+    params.name = 'name'
+    const data = await sut.update(params)
     expect(data).toEqual(updateSectorRepositorySpy.model)
   })
 
