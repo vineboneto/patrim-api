@@ -10,6 +10,7 @@ import {
   LoadPatrimoniesRepository,
   LoadPatrimonyByIdRepository,
   LoadPatrimonyNumberByIdRepository,
+  LoadPatrimonyOwnerIdByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
 import {
@@ -100,6 +101,15 @@ export class LoadPatrimonyNumberByIdRepositorySpy implements LoadPatrimonyNumber
   async loadNumberById (id: number): Promise<LoadPatrimonyNumberByIdRepository.Model> {
     this.id = id
     return this.model
+  }
+}
+
+export class LoadPatrimonyOwnerIdByIdRepositorySpy implements LoadPatrimonyOwnerIdByIdRepository {
+  id: number
+  ownerId = mockUpdatePatrimonyRepositoryParams().ownerId
+  async loadOwnerIdById (id: number): Promise<number> {
+    this.id = id
+    return this.ownerId
   }
 }
 
