@@ -9,6 +9,7 @@ import {
   LoadPatrimoniesByOwnerIdRepository,
   LoadPatrimoniesRepository,
   LoadPatrimonyByIdRepository,
+  LoadPatrimonyByNumberRepository,
   LoadPatrimonyNumberByIdRepository,
   LoadPatrimonyOwnerIdByIdRepository,
   UpdatePatrimonyRepository
@@ -91,6 +92,15 @@ export class LoadPatrimonyByIdRepositorySpy implements LoadPatrimonyByIdReposito
   model = mockPatrimonyModel()
   async loadById (params: LoadPatrimonyByIdRepository.Params): Promise<LoadPatrimonyByIdRepository.Model> {
     this.params = params
+    return this.model
+  }
+}
+
+export class LoadPatrimonyByNumberRepositorySpy implements LoadPatrimonyByNumberRepository {
+  number: string
+  model = mockPatrimonyModel()
+  async loadByNumber (number: string): Promise<LoadPatrimonyByNumberRepository.Model> {
+    this.number = number
     return this.model
   }
 }

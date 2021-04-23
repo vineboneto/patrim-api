@@ -87,6 +87,21 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
+  describe('loadByNumber()', () => {
+    test('Should return patrimony on success', async () => {
+      const sut = makeSut()
+      const patrimonyModel = await Helper.makePatrimony()
+      const patrimony = await sut.loadByNumber(patrimonyModel.number)
+      expect(patrimony).toEqual(patrimonyModel)
+    })
+
+    test('Should return null on patrimony not exist', async () => {
+      const sut = makeSut()
+      const patrimony = await sut.loadByNumber(faker.datatype.number().toString())
+      expect(patrimony).toBe(null)
+    })
+  })
+
   describe('loadAll()', () => {
     test('Should return all patrimonies if take and skip is NaN', async () => {
       const sut = makeSut()
