@@ -22,15 +22,37 @@ describe('LogPostgresRepository', () => {
     await Helper.deleteAll()
   })
 
-  test('Should save logError on success', async () => {
-    const sut = makeSut()
-    const stack = faker.random.words()
-    await sut.logError(stack)
-    const { _all } = await prismaClient.logError.count({
-      select: {
-        _all: true
-      }
+  describe('logError()', () => {
+    test('Should save logError on success', async () => {
+      const sut = makeSut()
+      const stack = faker.random.words()
+      await sut.logError(stack)
+      const { _all } = await prismaClient.logError.count({
+        select: {
+          _all: true
+        }
+      })
+      expect(_all).toBe(1)
     })
-    expect(_all).toBe(1)
+  })
+
+  describe('', () => {
+    test('Should save swapPatrimony on success', async () => {
+      const sut = makeSut()
+      const { id: newOwnerId } = await Helper.makeOwner()
+      const { id: oldOwnerId } = await Helper.makeOwner()
+      const { id: patrimonyId } = await Helper.makePatrimony()
+      await sut.logSwap({
+        newOwnerId,
+        oldOwnerId,
+        patrimonyId
+      })
+      const { _all } = await prismaClient.swapPatrimony.count({
+        select: {
+          _all: true
+        }
+      })
+      expect(_all).toBe(1)
+    })
   })
 })
