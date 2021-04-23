@@ -21,6 +21,5 @@ export namespace LoadPatrimoniesController {
   export type Request = {
     skip?: number
     take?: number
-    accountId: number
   }
 }

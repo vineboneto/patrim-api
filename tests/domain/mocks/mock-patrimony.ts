@@ -1,5 +1,15 @@
 import { PatrimonyModel } from '@/domain/models'
-import { CheckPatrimonyById, LoadPatrimoniesByOwnerId, AddPatrimony, UpdatePatrimony, DeletePatrimony, LoadPatrimonies, LoadPatrimonyById, LoadPatrimoniesByCategoryId, LoadPatrimonyByNumber } from '@/domain/usecases'
+import {
+  CheckPatrimonyById,
+  LoadPatrimoniesByOwnerId,
+  AddPatrimony,
+  UpdatePatrimony,
+  DeletePatrimony,
+  LoadPatrimonies,
+  LoadPatrimonyById,
+  LoadPatrimoniesByCategoryId,
+  LoadPatrimonyByNumber
+} from '@/domain/usecases'
 
 import faker from 'faker'
 
