@@ -47,11 +47,21 @@ describe('LogUpdatePatrimonyDecorator', () => {
     const { sut, logSwapPatrimonyRepositorySpy, loadPatrimonyOwnerIdByIdRepositorySpy } = makeSut()
     const params = mockUpdatePatrimonyRepositoryParams()
     loadPatrimonyOwnerIdByIdRepositorySpy.ownerId = 123
+    params.ownerId = 456
     await sut.update(params)
     expect(logSwapPatrimonyRepositorySpy.params).toEqual({
       oldOwnerId: 123,
       newOwnerId: params.ownerId,
       patrimonyId: params.id
     })
+  })
+
+  test('Should not call LogSwapPatrimonyRepository if equals ownerIds', async () => {
+    const { sut, logSwapPatrimonyRepositorySpy, loadPatrimonyOwnerIdByIdRepositorySpy } = makeSut()
+    const params = mockUpdatePatrimonyRepositoryParams()
+    loadPatrimonyOwnerIdByIdRepositorySpy.ownerId = 123
+    params.ownerId = 123
+    await sut.update(params)
+    expect(logSwapPatrimonyRepositorySpy.callsCount).toBe(0)
   })
 })
