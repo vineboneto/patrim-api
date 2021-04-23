@@ -1,9 +1,10 @@
-import { LogSwapPatrimonyRepository } from '@/data/protocols'
 import { LogUpdatePatrimonyDecorator } from '@/main/decorators'
+import { LogSwapPatrimonyRepository } from '@/data/protocols'
 import {
   LoadPatrimonyOwnerIdByIdRepositorySpy,
   mockUpdatePatrimonyRepositoryParams
 } from '@/tests/data/mocks'
+import { UpdatePatrimonySpy } from '@/tests/domain/mocks'
 
 class LogSwapPatrimonyRepositorySpy implements LogSwapPatrimonyRepository {
   params: LogSwapPatrimonyRepository.Params
@@ -19,19 +20,23 @@ type SutTypes = {
   sut: LogUpdatePatrimonyDecorator
   loadPatrimonyOwnerIdByIdRepositorySpy: LoadPatrimonyOwnerIdByIdRepositorySpy
   logSwapPatrimonyRepositorySpy: LogSwapPatrimonyRepositorySpy
+  updatePatrimonySpy: UpdatePatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
   const loadPatrimonyOwnerIdByIdRepositorySpy = new LoadPatrimonyOwnerIdByIdRepositorySpy()
   const logSwapPatrimonyRepositorySpy = new LogSwapPatrimonyRepositorySpy()
+  const updatePatrimonySpy = new UpdatePatrimonySpy()
   const sut = new LogUpdatePatrimonyDecorator(
     loadPatrimonyOwnerIdByIdRepositorySpy,
-    logSwapPatrimonyRepositorySpy
+    logSwapPatrimonyRepositorySpy,
+    updatePatrimonySpy
   )
   return {
     sut,
     loadPatrimonyOwnerIdByIdRepositorySpy,
-    logSwapPatrimonyRepositorySpy
+    logSwapPatrimonyRepositorySpy,
+    updatePatrimonySpy
   }
 }
 
@@ -63,5 +68,12 @@ describe('LogUpdatePatrimonyDecorator', () => {
     params.ownerId = 123
     await sut.update(params)
     expect(logSwapPatrimonyRepositorySpy.callsCount).toBe(0)
+  })
+
+  test('Should call UpdatePatrimony with correct value', async () => {
+    const { sut, updatePatrimonySpy } = makeSut()
+    const params = mockUpdatePatrimonyRepositoryParams()
+    await sut.update(params)
+    expect(updatePatrimonySpy.params).toEqual(params)
   })
 })
