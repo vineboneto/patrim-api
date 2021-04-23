@@ -189,6 +189,21 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
+  describe('loadOwnerIdById()', () => {
+    test('Should return ownerId on success', async () => {
+      const sut = makeSut()
+      const { id, owner } = await Helper.makePatrimony()
+      const ownerId = await sut.loadOwnerIdById(id)
+      expect(ownerId).toBe(owner.id)
+    })
+
+    test('Should return null on fails', async () => {
+      const sut = makeSut()
+      const ownerId = await sut.loadOwnerIdById(faker.datatype.number())
+      expect(ownerId).toBe(null)
+    })
+  })
+
   describe('checkById', () => {
     test('Should return true if id exists', async () => {
       const sut = makeSut()
