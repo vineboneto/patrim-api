@@ -8,12 +8,14 @@ export class LogUpdatePatrimonyDecorator implements UpdatePatrimony {
   ) {}
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
-    const oldOwnerId = await this.loadPatrimonyOwnerIdByIdRepository.loadOwnerIdById(params.id)
-    await this.logSwapPatrimonyRepository.logSwap({
-      oldOwnerId,
-      newOwnerId: params.ownerId,
-      patrimonyId: params.id
-    })
+    const ownerId = await this.loadPatrimonyOwnerIdByIdRepository.loadOwnerIdById(params.id)
+    if (ownerId !== params.ownerId) {
+      await this.logSwapPatrimonyRepository.logSwap({
+        oldOwnerId: ownerId,
+        newOwnerId: params.ownerId,
+        patrimonyId: params.id
+      })
+    }
     return null
   }
 }
