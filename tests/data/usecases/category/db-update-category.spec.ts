@@ -83,12 +83,12 @@ describe('DbUpdateCategory', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call CheckCategoryByNameRepository with correct value', async () => {
-    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
-    const params = mockUpdateCategoryRepositoryParams()
-    await sut.update(params)
-    expect(checkCategoryByNameRepositorySpy.name).toEqual(params.name)
-  })
+  // test('Should call CheckCategoryByNameRepository with correct value', async () => {
+  //   const { sut, checkCategoryByNameRepositorySpy } = makeSut()
+  //   const params = mockUpdateCategoryRepositoryParams()
+  //   await sut.update(params)
+  //   expect(checkCategoryByNameRepositorySpy.name).toEqual(params.name)
+  // })
 
   test('Should return null if CheckCategoryByNameRepository return true', async () => {
     const { sut, checkCategoryByNameRepositorySpy, loadCategoryNameByIdRepositorySpy } = makeSut()

@@ -5,7 +5,7 @@ import { AddCategory } from '@/domain/usecases'
 
 export class AddCategoryController implements Controller {
   constructor (
-    private readonly saveCategory: AddCategory,
+    private readonly addCategory: AddCategory,
     private readonly validation: Validation
   ) {}
 
@@ -15,7 +15,7 @@ export class AddCategoryController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const categoryModel = await this.saveCategory.add(request)
+      const categoryModel = await this.addCategory.add(request)
       if (!categoryModel) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
       }
@@ -29,5 +29,6 @@ export class AddCategoryController implements Controller {
 export namespace AddCategoryController {
   export type Request = {
     name: string
+    accountId: number
   }
 }

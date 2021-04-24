@@ -60,10 +60,10 @@ export class LoadCategoryNameByIdRepositorySpy implements LoadCategoryNameByIdRe
 }
 
 export class CheckCategoryByNameRepositorySpy implements CheckCategoryByNameRepository {
-  name: string
+  params: CheckCategoryByNameRepository.Params
   result = false
-  async checkByName (name: string): Promise<boolean> {
-    this.name = name
+  async checkByName (params: CheckCategoryByNameRepository.Params): Promise<boolean> {
+    this.params = params
     return this.result
   }
 }

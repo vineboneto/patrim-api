@@ -2,8 +2,7 @@ import { DbAddCategory } from '@/data/usecases'
 import {
   AddCategoryRepositorySpy,
   CheckCategoryByNameRepositorySpy,
-  mockAddCategoryRepositoryParams,
-  mockUpdateCategoryRepositoryParams
+  mockAddCategoryRepositoryParams
 } from '@/tests/data/mocks'
 
 type SutTypes = {
@@ -53,15 +52,15 @@ describe('DbAddCategory', () => {
 
   test('Should call CheckCategoryByNameRepository with correct value', async () => {
     const { sut, checkCategoryByNameRepositorySpy } = makeSut()
-    const category = mockUpdateCategoryRepositoryParams()
-    await sut.add(category)
-    expect(checkCategoryByNameRepositorySpy.name).toEqual(category.name)
+    const data = mockAddCategoryRepositoryParams()
+    await sut.add(data)
+    expect(checkCategoryByNameRepositorySpy.params).toEqual(data)
   })
 
   test('Should return null if CheckCategoryByNameRepository return true', async () => {
     const { sut, checkCategoryByNameRepositorySpy } = makeSut()
     checkCategoryByNameRepositorySpy.result = true
-    const model = await sut.add(mockUpdateCategoryRepositoryParams())
+    const model = await sut.add(mockAddCategoryRepositoryParams())
     expect(model).toBe(null)
   })
 

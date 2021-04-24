@@ -22,7 +22,7 @@ describe('Owner Routes', () => {
 
   describe('POST /owners', () => {
     test('Should return 200 on add owner', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       const { id: sectorId } = await Helper.makeSector()
       await request(app)
         .post('/api/owners')
@@ -48,7 +48,7 @@ describe('Owner Routes', () => {
 
   describe('PUT /owners', () => {
     test('Should return 200 on update owner', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       const { id, sector } = await Helper.makeOwner()
       await request(app)
         .put(`/api/owners/${id}`)
@@ -63,7 +63,7 @@ describe('Owner Routes', () => {
 
   describe('GET /owners', () => {
     test('Should return 200 on load owners', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await Helper.makeManyOwners()
       await request(app)
         .get('/api/owners')
@@ -72,7 +72,7 @@ describe('Owner Routes', () => {
     })
 
     test('Should return 200 on load owners with take and skip', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await Helper.makeManyOwners()
       await request(app)
         .get('/api/owners?take=3&skip=0')
@@ -81,7 +81,7 @@ describe('Owner Routes', () => {
     })
 
     test('Should return 204 on load owner return empty array', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .get('/api/owners')
         .set('x-access-token', accessToken)
@@ -91,7 +91,7 @@ describe('Owner Routes', () => {
 
   describe('GET /owners/:id/patrimonies', () => {
     test('Should return 200 on load patrimonies by owner id', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       const patrimonies = await Helper.makeManyPatrimonies()
       await request(app)
         .get(`/api/owners/${patrimonies[0].id}/patrimonies`)
@@ -100,7 +100,7 @@ describe('Owner Routes', () => {
     })
 
     test('Should return 200 on load patrimonies by load ownerId with take and skip', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       const patrimonies = await Helper.makeManyPatrimonies()
       await request(app)
         .get(`/api/owners/${patrimonies[0].id}/patrimonies?take=2&skip=0`)
@@ -109,7 +109,7 @@ describe('Owner Routes', () => {
     })
 
     test('Should return 204 on load by ownerId return empty array', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .get(`/api/owners/${faker.datatype.number()}/patrimonies`)
         .set('x-access-token', accessToken)
@@ -120,7 +120,7 @@ describe('Owner Routes', () => {
   describe('DELETE /owners', () => {
     test('Should return owner deleted on success', async () => {
       const { id } = await Helper.makeOwner()
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .delete(`/api/owners/${id}`)
         .set('x-access-token', accessToken)
@@ -129,7 +129,7 @@ describe('Owner Routes', () => {
 
     test('Should return 403 if patrimony exists', async () => {
       const { owner } = await Helper.makePatrimony()
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .delete(`/api/owners/${owner.id}`)
         .set('x-access-token', accessToken)

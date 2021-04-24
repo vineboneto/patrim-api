@@ -1,3 +1,10 @@
 export interface CheckCategoryByNameRepository {
-  checkByName (name: string): Promise<boolean>
+  checkByName (params: CheckCategoryByNameRepository.Params): Promise<boolean>
+}
+
+export namespace CheckCategoryByNameRepository {
+  export type Params = {
+    name: string
+    accountId: number
+  }
 }

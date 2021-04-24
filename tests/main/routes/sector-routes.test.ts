@@ -22,7 +22,7 @@ describe('Sector Routes', () => {
 
   describe('POST /sectors', () => {
     test('Should return 204 on add sector', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .post('/api/sectors')
         .set('x-access-token', accessToken)
@@ -44,7 +44,7 @@ describe('Sector Routes', () => {
 
   describe('PUT /sectors', () => {
     test('Should return 200 on update sector', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       const { id } = await Helper.makeSector()
       await request(app)
         .put(`/api/sectors/${id}`)
@@ -58,7 +58,7 @@ describe('Sector Routes', () => {
 
   describe('GET /sectors', () => {
     test('Should return empty array', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .get('/api/sectors')
         .set('x-access-token', accessToken)
@@ -66,7 +66,7 @@ describe('Sector Routes', () => {
     })
 
     test('Should return all sectors', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await Helper.makeManySectors()
       await request(app)
         .get('/api/sectors')
@@ -83,7 +83,7 @@ describe('Sector Routes', () => {
 
   describe('DELETE /sectors/:id', () => {
     test('Should return sector deleted on delete success', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       const { id } = await Helper.makeSector()
       await request(app)
         .delete(`/api/sectors/${id}`)
@@ -93,7 +93,7 @@ describe('Sector Routes', () => {
 
     test('Should return 403 if owners exists', async () => {
       const { sector } = await Helper.makeOwner()
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .delete(`/api/sectors/${sector.id}`)
         .set('x-access-token', accessToken)

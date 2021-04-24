@@ -18,11 +18,12 @@ export class CategoryPostgresRepository implements
   CheckCategoryByIdRepository,
   DeleteCategoryRepository {
   async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Model> {
-    const { name } = category
+    const { name, accountId } = category
     const prismaClient = PrismaHelper.getConnection()
     const categoryResult = await prismaClient.category.create({
       data: {
-        name
+        name,
+        userId: Number(accountId)
       }
     })
     return categoryResult
@@ -52,11 +53,12 @@ export class CategoryPostgresRepository implements
     return categoryDeleted
   }
 
-  async checkByName (name: string): Promise<boolean> {
+  async checkByName (params: CheckCategoryByNameRepository.Params): Promise<boolean> {
     const prismaClient = PrismaHelper.getConnection()
     const category = await prismaClient.category.findFirst({
       where: {
-        name
+        userId: Number(params.accountId),
+        name: params.name
       }
     })
     return category !== null

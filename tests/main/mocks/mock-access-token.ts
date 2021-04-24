@@ -4,7 +4,12 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { sign } from 'jsonwebtoken'
 import faker from 'faker'
 
-export const makeAccessToken = async (): Promise<string> => {
+type Model = {
+  accessToken: string
+  accountId: number
+}
+
+export const makeAccessToken = async (): Promise<Model> => {
   const prismaClient = PrismaHelper.getConnection()
   const name = faker.name.findName()
   const email = faker.internet.email()
@@ -26,5 +31,8 @@ export const makeAccessToken = async (): Promise<string> => {
       accessToken
     }
   })
-  return accessToken
+  return {
+    accountId: id,
+    accessToken: accessToken
+  }
 }

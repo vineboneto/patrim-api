@@ -8,7 +8,10 @@ export class DbAddCategory implements AddCategory {
   ) {}
 
   async add (params: AddCategory.Params): Promise<AddCategory.Model> {
-    const exists = await this.checkCategoryByNameRepository.checkByName(params.name)
+    const exists = await this.checkCategoryByNameRepository.checkByName({
+      name: params.name,
+      accountId: params.accountId
+    })
     if (!exists) {
       return this.addCategoryRepository.add(params)
     }

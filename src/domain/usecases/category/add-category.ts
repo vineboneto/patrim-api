@@ -7,6 +7,7 @@ export interface AddCategory {
 export namespace AddCategory {
   export type Params = {
     name: string
+    accountId: number
   }
 
   export type Model = CategoryModel

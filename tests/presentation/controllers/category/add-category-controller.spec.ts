@@ -7,7 +7,8 @@ import { AddCategorySpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): AddCategoryController.Request => ({
-  name: faker.name.jobArea()
+  name: faker.name.jobArea(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {
