@@ -13,7 +13,6 @@
 
 1. [ ] Retorna erro **404** se a API não existir
 2. [ ] Retorna erro **403** se não for um user
-3. [ ] Retorna erro **403** se o id passado na URL for inválido
-4. [ ] Retorna erro **403** se o number ou ip já estiver em uso
-5. [ ] Retorna erro **400** se o number, categoryId, ownerId ou brand  não forem fornecidos pelo client
-6. [ ] Retorna erro **500** se der erro ao tentar atualizar o patrimônio
+3. [ ] Retorna erro **422** se o id passado na URL for inválido
+4. [ ] Retorna erro **400** se o number, categoryId, ownerId ou brand  não forem fornecidos pelo client
+5. [ ] Retorna erro **500** se der erro ao tentar atualizar o patrimônio
