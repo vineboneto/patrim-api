@@ -35,5 +35,6 @@ export namespace UpdateCategoryController {
   export type Request = {
     id: number
     name: string
+    accountId: number
   }
 }

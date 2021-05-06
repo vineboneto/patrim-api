@@ -27,7 +27,8 @@ export const mockAddCategoryParams = (): AddCategory.Params => ({
 
 export const mockUpdateCategoryParams = (): UpdateCategory.Params => ({
   id: faker.datatype.number(),
-  name: faker.name.findName()
+  name: faker.name.findName(),
+  accountId: faker.datatype.number()
 })
 
 export const mockCheckCategoryByIdParams = (): CheckCategoryById.Params => ({

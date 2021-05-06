@@ -15,7 +15,10 @@ export class DbUpdateCategory implements UpdateCategory {
   async update (params: UpdateCategory.Params): Promise<UpdateCategory.Model> {
     const { name } = await this.loadCategoryNameByIdRepository.loadNameById(params.id)
     if (name !== params.name) {
-      const exists = await this.checkCategoryByNameRepository.checkByName(params.name)
+      const exists = await this.checkCategoryByNameRepository.checkByName({
+        accountId: params.accountId,
+        name: params.name
+      })
       if (exists) {
         return null
       }

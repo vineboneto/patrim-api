@@ -32,19 +32,20 @@ describe('CategoryPostgresRepository', () => {
     })
   })
 
-  // describe('update()', () => {
-  //   test('Should return true on update success', async () => {
-  //     const sut = makeSut()
-  //     const { id } = await Helper.makeCategory()
-  //     const model = await sut.update({
-  //       id: id,
-  //       name: 'new_name'
-  //     })
-  //     const { name } = await Helper.findCategoryById(id)
-  //     expect(model).toBeTruthy()
-  //     expect(name).toBe('new_name')
-  //   })
-  // })
+  describe('update()', () => {
+    test('Should return true on update success', async () => {
+      const sut = makeSut()
+      const { id, userId } = await Helper.makeCategory()
+      const model = await sut.update({
+        id: id,
+        name: 'new_name',
+        accountId: userId
+      })
+      const { name } = await Helper.findCategoryById(id, userId)
+      expect(model).toBeTruthy()
+      expect(name).toBe('new_name')
+    })
+  })
 
   describe('loadNameById()', () => {
     test('Should return name category on success', async () => {

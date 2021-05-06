@@ -8,7 +8,6 @@ import {
   LoadCategoryNameByIdRepository
 } from '@/data/protocols'
 import {
-  mockAddCategoryParams,
   mockCategoriesModel,
   mockCategoryModel,
   mockCheckCategoryByIdParams,
@@ -16,9 +15,6 @@ import {
   mockLoadCategoriesParams,
   mockUpdateCategoryParams
 } from '@/tests/domain/mocks'
-
-export const mockAddCategoryRepositoryParams = ():
-AddCategoryRepository.Params => mockAddCategoryParams()
 
 export const mockCheckCategoryByIdRepositoryParams = ():
 CheckCategoryByIdRepository.Params => mockCheckCategoryByIdParams()
@@ -28,9 +24,6 @@ DeleteCategoryRepository.Params => mockDeleteCategoryParams()
 
 export const mockLoadCategoriesRepositoryParams = ():
 LoadCategoriesRepository.Params => mockLoadCategoriesParams()
-
-export const mockUpdateCategoryRepositoryParams = ():
-UpdateCategoryRepository.Params => mockUpdateCategoryParams()
 
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
   params: AddCategoryRepository.Params
@@ -52,7 +45,7 @@ export class UpdateCategoryRepositorySpy implements UpdateCategoryRepository {
 
 export class LoadCategoryNameByIdRepositorySpy implements LoadCategoryNameByIdRepository {
   id: number
-  model = { name: mockUpdateCategoryRepositoryParams().name }
+  model = { name: mockUpdateCategoryParams().name }
   async loadNameById (id: number): Promise<LoadCategoryNameByIdRepository.Model> {
     this.id = id
     return this.model

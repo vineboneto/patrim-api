@@ -8,7 +8,8 @@ import faker from 'faker'
 
 const mockRequest = (): UpdateCategoryController.Request => ({
   id: faker.datatype.number(),
-  name: faker.name.jobArea()
+  name: faker.name.jobArea(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {
