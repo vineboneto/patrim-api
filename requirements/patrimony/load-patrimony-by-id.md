@@ -11,6 +11,6 @@
 > ## Exceções
 
 1. [x] Retorna erro **404** se a API não existir
-2. [x] Retorna erro **403** se não for um usuário
-3. [x] Retorna erro **403** se parâmetro patrimonyId for inválido
+2. [x] Retorna erro **400** se parâmetro id for inválido
+3. [x] Retorna erro **403** se não for um usuário
 4. [x] Retorna erro **500** se der erro ao tentar listar o patrimônio
