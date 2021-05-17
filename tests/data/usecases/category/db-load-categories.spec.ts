@@ -27,7 +27,7 @@ describe('DbLoadCategories', () => {
   test('Should returns categories on LoadCategoriesRepository success', async () => {
     const { sut, loadCategoriesRepositorySpy } = makeSut()
     const categories = await sut.load(mockLoadCategoriesParams())
-    expect(categories).toEqual(loadCategoriesRepositorySpy.models)
+    expect(categories.model).toEqual(loadCategoriesRepositorySpy.models)
   })
 
   test('Should throw if LoadCategoriesRepository throws', async () => {

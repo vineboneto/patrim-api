@@ -1,6 +1,5 @@
 import { PrismaHelper, CategoryPostgresRepository } from '@/infra/db/postgres-prisma'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
-import { mockCheckCategoryByIdRepositoryParams } from '@/tests/data/mocks'
 
 import faker from 'faker'
 
@@ -122,7 +121,7 @@ describe('CategoryPostgresRepository', () => {
 
     test('Should return false if category not exists', async () => {
       const sut = makeSut()
-      const result = await sut.checkById(mockCheckCategoryByIdRepositoryParams())
+      const result = await sut.checkById({ id: faker.datatype.number() })
       expect(result).toBe(false)
     })
   })

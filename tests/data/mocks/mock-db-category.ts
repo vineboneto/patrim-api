@@ -10,16 +10,8 @@ import {
 import {
   mockCategoriesModel,
   mockCategoryModel,
-  mockCheckCategoryByIdParams,
-  mockDeleteCategoryParams,
   mockUpdateCategoryParams
 } from '@/tests/domain/mocks'
-
-export const mockCheckCategoryByIdRepositoryParams = ():
-CheckCategoryByIdRepository.Params => mockCheckCategoryByIdParams()
-
-export const mockDeleteCategoryRepositoryParams = ():
-DeleteCategoryRepository.Params => mockDeleteCategoryParams()
 
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
   params: AddCategoryRepository.Params
@@ -72,7 +64,10 @@ export class LoadCategoriesRepositorySpy implements LoadCategoriesRepository {
 
   async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
     this.params = params
-    return this.models
+    return {
+      count: this.models.length,
+      model: this.models
+    }
   }
 }
 

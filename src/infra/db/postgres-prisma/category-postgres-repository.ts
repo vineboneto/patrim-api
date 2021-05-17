@@ -31,15 +31,14 @@ export class CategoryPostgresRepository implements
   }
 
   async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Model> {
-    const { id, name, accountId } = category
+    const { id, name } = category
     const prismaClient = PrismaHelper.getConnection()
     const categoryResult: any = await prismaClient.category.update({
       where: {
         id: Number(id)
       },
       data: {
-        name,
-        userId: Number(accountId)
+        name
       },
       select: this.selectData()
     })
