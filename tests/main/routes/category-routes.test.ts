@@ -125,7 +125,7 @@ describe('Category Routes', () => {
       await request(app)
         .delete(`/api/categories/${Category.id}`)
         .set('x-access-token', accessToken)
-        .expect(403)
+        .expect(422)
     })
   })
 })

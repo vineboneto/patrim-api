@@ -1,5 +1,5 @@
 import { DeleteOwnerController } from '@/presentation/controllers'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { InvalidParamError, LinkedDataError } from '@/presentation/errors'
 import { DeleteOwnerSpy } from '@/tests/domain/mocks'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
@@ -67,11 +67,11 @@ describe('DeleteOwnerController', () => {
     expect(deleteOwnerSpy.params).toEqual(params)
   })
 
-  test('Should return 403 if DeleteOwner return null', async () => {
+  test('Should return 422 if DeleteOwner return null', async () => {
     const { sut, deleteOwnerSpy } = makeSut()
     deleteOwnerSpy.model = null
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new LinkedDataError('patrimonies')))
+    expect(httpResponse).toEqual(unprocessableEntity(new LinkedDataError('patrimonies')))
   })
 
   test('Should return 200 with ownerDeleted if DeleteOwner succeeds', async () => {

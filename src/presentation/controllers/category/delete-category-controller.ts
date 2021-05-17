@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { LinkedDataError } from '@/presentation/errors'
 import { DeleteCategory } from '@/domain/usecases'
 
@@ -22,7 +22,7 @@ export class DeleteCategoryController implements Controller {
       }
       const categoryDeleted = await this.deleteCategory.delete(request)
       if (!categoryDeleted) {
-        return forbidden(new LinkedDataError('categories'))
+        return unprocessableEntity(new LinkedDataError('categories'))
       }
       return ok(categoryDeleted)
     } catch (error) {

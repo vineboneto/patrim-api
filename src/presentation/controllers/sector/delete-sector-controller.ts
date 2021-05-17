@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { LinkedDataError } from '@/presentation/errors'
 import { DeleteSector } from '@/domain/usecases'
 
@@ -22,7 +22,7 @@ export class DeleteSectorController implements Controller {
       }
       const sectorDeleted = await this.deleteSector.delete(request)
       if (!sectorDeleted) {
-        return forbidden(new LinkedDataError('owners'))
+        return unprocessableEntity(new LinkedDataError('owners'))
       }
       return ok(sectorDeleted)
     } catch (error) {

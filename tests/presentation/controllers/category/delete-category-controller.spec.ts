@@ -1,5 +1,5 @@
 import { DeleteCategoryController } from '@/presentation/controllers'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { InvalidParamError, LinkedDataError } from '@/presentation/errors'
 import { DeleteCategorySpy } from '@/tests/domain/mocks'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
@@ -67,11 +67,11 @@ describe('DeleteCategoryController', () => {
     expect(deleteCategorySpy.params).toEqual(params)
   })
 
-  test('Should return 403 if DeleteCategory return null', async () => {
+  test('Should return 422 if DeleteCategory return null', async () => {
     const { sut, deleteCategorySpy } = makeSut()
     deleteCategorySpy.model = null
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new LinkedDataError('categories')))
+    expect(httpResponse).toEqual(unprocessableEntity(new LinkedDataError('categories')))
   })
 
   test('Should return 200 with categoryDeleted if DeleteCategory succeeds', async () => {

@@ -1,5 +1,5 @@
 import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { LinkedDataError } from '@/presentation/errors'
 import { DeleteOwner } from '@/domain/usecases'
 
@@ -22,7 +22,7 @@ export class DeleteOwnerController implements Controller {
       }
       const categoryDeleted = await this.deleteOwner.delete(request)
       if (!categoryDeleted) {
-        return forbidden(new LinkedDataError('patrimonies'))
+        return unprocessableEntity(new LinkedDataError('patrimonies'))
       }
       return ok(categoryDeleted)
     } catch (error) {

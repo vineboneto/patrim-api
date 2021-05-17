@@ -97,7 +97,7 @@ describe('Sector Routes', () => {
       await request(app)
         .delete(`/api/sectors/${Sector.id}`)
         .set('x-access-token', accessToken)
-        .expect(403)
+        .expect(422)
     })
   })
 })

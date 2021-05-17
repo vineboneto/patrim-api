@@ -1,5 +1,5 @@
 import { DeleteSectorController } from '@/presentation/controllers'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { InvalidParamError, LinkedDataError } from '@/presentation/errors'
 import { DeleteSectorSpy } from '@/tests/domain/mocks'
 import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
@@ -67,11 +67,11 @@ describe('DeleteSectorController', () => {
     expect(deleteSectorSpy.params).toEqual(params)
   })
 
-  test('Should return 403 if DeleteSector return null', async () => {
+  test('Should return 422 if DeleteSector return null', async () => {
     const { sut, deleteSectorSpy } = makeSut()
     deleteSectorSpy.model = null
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new LinkedDataError('owners')))
+    expect(httpResponse).toEqual(unprocessableEntity(new LinkedDataError('owners')))
   })
 
   test('Should return 200 with sectorDeleted if DeleteSector succeeds', async () => {

@@ -133,7 +133,7 @@ describe('Owner Routes', () => {
       await request(app)
         .delete(`/api/owners/${Owner.id}`)
         .set('x-access-token', accessToken)
-        .expect(403)
+        .expect(422)
     })
   })
 })
