@@ -55,8 +55,12 @@ export class UpdateCategorySpy implements UpdateCategory {
 }
 
 export class LoadCategoriesSpy implements LoadCategories {
-  categoriesModel = mockCategoriesModel()
   params: LoadCategories.Params
+  categoriesModel = {
+    model: mockCategoriesModel(),
+    count: mockCategoriesModel().length
+  }
+
   async load (params: LoadCategories.Params): Promise<LoadCategories.Model> {
     this.params = params
     return this.categoriesModel

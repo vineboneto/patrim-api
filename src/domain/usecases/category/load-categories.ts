@@ -11,5 +11,8 @@ export namespace LoadCategories {
     take?: number
   }
 
-  export type Model = CategoryModel[]
+  export type Model = {
+    model: CategoryModel[]
+    count: number
+  }
 }

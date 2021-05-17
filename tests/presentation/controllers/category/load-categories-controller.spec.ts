@@ -34,7 +34,7 @@ describe('LoadCategoriesController', () => {
 
   test('Should return 204 if LoadCategories returns empty array', async () => {
     const { sut, loadCategoriesSpy } = makeSut()
-    loadCategoriesSpy.categoriesModel = []
+    loadCategoriesSpy.categoriesModel.model = []
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
   })

@@ -10,7 +10,7 @@ export class LoadCategoriesController implements Controller {
   async handle (request: LoadCategoriesController.Request): Promise<HttpResponse> {
     try {
       const httpResponse = await this.loadCategories.load(request)
-      return httpResponse.length ? ok(httpResponse) : noContent()
+      return httpResponse.model.length ? ok(httpResponse) : noContent()
     } catch (error) {
       return serverError(error)
     }

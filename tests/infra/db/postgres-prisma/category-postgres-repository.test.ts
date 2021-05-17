@@ -68,8 +68,8 @@ describe('CategoryPostgresRepository', () => {
       const categories = await Helper.makeManyCategories()
       const dataResponse = await sut.loadAll({ skip: NaN, take: NaN, accountId: categories[0].userId })
       const categoryWithoutUserId = categories.map((category) => ({ id: category.id, name: category.name }))
-      expect(dataResponse).toEqual(categoryWithoutUserId)
-      expect(dataResponse.length).toBe(3)
+      expect(dataResponse.model).toEqual(categoryWithoutUserId)
+      expect(dataResponse.count).toBe(3)
     })
 
     test('Should return the correctly number of categories if take and skip not undefined', async () => {
@@ -77,17 +77,17 @@ describe('CategoryPostgresRepository', () => {
       const categories = await Helper.makeManyCategories()
       const dataResponse = await sut.loadAll({ skip: 0, take: 2, accountId: categories[0].userId })
       const categoryWithoutUserId = categories.map((category) => ({ id: category.id, name: category.name }))
-      expect(dataResponse[0]).toEqual(categoryWithoutUserId[0])
-      expect(dataResponse[1]).toEqual(categoryWithoutUserId[1])
-      expect(dataResponse[2]).toBe(undefined)
-      expect(dataResponse.length).toBe(2)
+      expect(dataResponse.model[0]).toEqual(categoryWithoutUserId[0])
+      expect(dataResponse.model[1]).toEqual(categoryWithoutUserId[1])
+      expect(dataResponse.model[2]).toBe(undefined)
+      expect(dataResponse.count).toBe(2)
     })
 
     test('Should return empty array if load categories is empty', async () => {
       const sut = makeSut()
       const { id } = await Helper.makeUser()
       const dataResponse = await sut.loadAll({ skip: NaN, take: faker.datatype.number(), accountId: id })
-      expect(dataResponse).toEqual([])
+      expect(dataResponse.model).toEqual([])
     })
   })
 

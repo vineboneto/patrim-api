@@ -100,7 +100,10 @@ export class CategoryPostgresRepository implements
         select: this.selectData()
       })
     }
-    return categories
+    return {
+      model: categories,
+      count: categories.length
+    }
   }
 
   async loadNameById (id: number): Promise<LoadCategoryNameByIdRepository.Model> {
