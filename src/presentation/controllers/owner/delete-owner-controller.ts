@@ -34,5 +34,6 @@ export class DeleteOwnerController implements Controller {
 export namespace DeleteOwnerController {
   export type Request = {
     id: number
+    accountId: number
   }
 }

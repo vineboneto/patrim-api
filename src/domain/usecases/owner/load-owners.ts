@@ -6,9 +6,13 @@ export interface LoadOwners {
 
 export namespace LoadOwners {
   export type Params = {
+    accountId: number
     skip?: number
     take?: number
   }
 
-  export type Model = OwnerModel[]
+  export type Model = {
+    model: OwnerModel[]
+    count: number
+  }
 }

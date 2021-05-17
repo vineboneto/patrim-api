@@ -8,6 +8,7 @@ export namespace AddOwner {
   export type Params = {
     name: string
     sectorId: number
+    accountId: number
   }
 
   export type Model = OwnerModel

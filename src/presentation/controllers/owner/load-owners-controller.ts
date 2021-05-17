@@ -10,7 +10,7 @@ export class LoadOwnersController implements Controller {
   async handle (request: LoadOwnersController.Request): Promise<HttpResponse> {
     try {
       const owners = await this.loadOwner.load(request)
-      return owners.length ? ok(owners) : noContent()
+      return owners.model.length ? ok(owners) : noContent()
     } catch (error) {
       return serverError(error)
     }
@@ -19,6 +19,7 @@ export class LoadOwnersController implements Controller {
 
 export namespace LoadOwnersController {
   export type Request = {
+    accountId: number
     take?: number
     skip?: number
   }

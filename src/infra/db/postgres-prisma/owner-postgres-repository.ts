@@ -7,7 +7,6 @@ import {
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
-import { Owner, Sector } from '@prisma/client'
 
 export class OwnerPostgresRepository implements
   AddOwnerRepository,
@@ -18,15 +17,14 @@ export class OwnerPostgresRepository implements
   CheckOwnerBySectorIdRepository {
   async add (owner: AddOwnerRepository.Params): Promise<AddOwnerRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const { name, sectorId } = owner
-    const ownerModel = await prismaClient.owner.create({
+    const { name, sectorId, accountId } = owner
+    const ownerModel: any = await prismaClient.owner.create({
       data: {
         name,
-        sectorId: Number(sectorId)
+        sectorId: Number(sectorId),
+        userId: Number(accountId)
       },
-      include: {
-        Sector: true
-      }
+      include: { Sector: true }
     })
     return PrismaHelper.adaptOwner(ownerModel)
   }
@@ -34,7 +32,7 @@ export class OwnerPostgresRepository implements
   async update (owner: UpdateOwnerRepository.Params): Promise<UpdateOwnerRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { id, name, sectorId } = owner
-    const ownerModel = await prismaClient.owner.update({
+    const ownerModel: any = await prismaClient.owner.update({
       where: {
         id: Number(id)
       },
@@ -42,9 +40,7 @@ export class OwnerPostgresRepository implements
         name,
         sectorId: Number(sectorId)
       },
-      include: {
-        Sector: true
-      }
+      include: { Sector: true }
     })
     return PrismaHelper.adaptOwner(ownerModel)
   }
@@ -52,13 +48,11 @@ export class OwnerPostgresRepository implements
   async delete (params: DeleteOwnerRepository.Params): Promise<DeleteOwnerRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { id } = params
-    const ownerDeleted = await prismaClient.owner.delete({
+    const ownerDeleted: any = await prismaClient.owner.delete({
       where: {
         id: Number(id)
       },
-      include: {
-        Sector: true
-      }
+      include: { Sector: true }
     })
     return PrismaHelper.adaptOwner(ownerDeleted)
   }
@@ -70,45 +64,48 @@ export class OwnerPostgresRepository implements
       where: {
         id: Number(id)
       },
-      select: {
-        id: true
-      }
+      include: { Sector: true }
     })
     return ownerWithOnlyId !== null
   }
 
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const { skip, take } = params
-    let owners: Array<Owner & { Sector: Sector}>
+    const { skip, take, accountId } = params
+    let owners: any
     if (isNaN(skip) || isNaN(take)) {
       owners = await prismaClient.owner.findMany({
-        include: {
-          Sector: true
+        include: { Sector: true },
+        where: {
+          userId: Number(accountId)
         }
       })
     } else {
       owners = await prismaClient.owner.findMany({
         skip: Number(skip),
         take: Number(take),
-        include: {
-          Sector: true
+        include: { Sector: true },
+        where: {
+          userId: Number(accountId)
         }
       })
     }
-    return owners.map(owner => PrismaHelper.adaptOwner(owner))
+    const owners_ = owners.map(owner => PrismaHelper.adaptOwner(owner))
+    return {
+      model: owners_,
+      count: owners_.length
+    }
   }
 
   async checkBySectorId (params: CheckOwnerBySectorIdRepository.Params): Promise<CheckOwnerBySectorIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const { sectorId } = params
+    const { sectorId, accountId } = params
     const sectorWithOnlyId = await prismaClient.owner.findFirst({
       where: {
-        sectorId: Number(sectorId)
+        sectorId: Number(sectorId),
+        userId: Number(accountId)
       },
-      select: {
-        id: true
-      }
+      select: { id: true }
     })
     return sectorWithOnlyId !== null
   }

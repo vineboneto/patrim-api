@@ -210,14 +210,15 @@ export class PatrimonyPostgresRepository implements
 
   async checkByOwnerId (params: CheckPatrimonyByOwnerIdRepository.Params):
   Promise<CheckPatrimonyByOwnerIdRepository.Result> {
-    const { ownerId } = params
+    const { ownerId, accountId } = params
     const prismaClient = PrismaHelper.getConnection()
     const patrimony = await prismaClient.patrimony.findFirst({
       select: {
         id: true
       },
       where: {
-        ownerId: Number(ownerId)
+        ownerId: Number(ownerId),
+        userId: Number(accountId)
       }
     })
     return patrimony !== null

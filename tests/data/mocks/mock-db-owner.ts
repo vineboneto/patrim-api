@@ -6,25 +6,7 @@ import {
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
-import {
-  mockAddOwnerParams,
-  mockCheckOwnerByIdParams,
-  mockDeleteOwnerParams,
-  mockLoadOwnersParams,
-  mockOwnerModel,
-  mockOwnersModel,
-  mockUpdateOwnerParams
-} from '@/tests/domain/mocks'
-
-export const mockAddOwnerRepositoryParams = (): AddOwnerRepository.Params => mockAddOwnerParams()
-
-export const mockCheckOwnerByIdRepositoryParams = (): CheckOwnerByIdRepository.Params => mockCheckOwnerByIdParams()
-
-export const mockDeleteOwnerRepositoryParams = (): DeleteOwnerRepository.Params => mockDeleteOwnerParams()
-
-export const mockLoadOwnersRepositoryParams = (): LoadOwnersRepository.Params => mockLoadOwnersParams()
-
-export const mockUpdateOwnerRepositoryParams = (): UpdateOwnerRepository.Params => mockUpdateOwnerParams()
+import { mockOwnerModel, mockOwnersModel } from '@/tests/domain/mocks'
 
 export class AddOwnerRepositorySpy implements AddOwnerRepository {
   params: AddOwnerRepository.Params
@@ -54,11 +36,15 @@ export class CheckOwnerByIdRepositorySpy implements CheckOwnerByIdRepository {
 }
 
 export class LoadOwnersRepositorySpy implements LoadOwnersRepository {
-  models = mockOwnersModel()
   params: LoadOwnersRepository.Params
+  result = {
+    model: mockOwnersModel(),
+    count: mockOwnersModel().length
+  }
+
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     this.params = params
-    return this.models
+    return this.result
   }
 }
 

@@ -9,6 +9,7 @@ export namespace UpdateOwner {
     id: number
     name: string
     sectorId: number
+    accountId: number
   }
 
   export type Model = OwnerModel

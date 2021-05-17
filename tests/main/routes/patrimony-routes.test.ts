@@ -55,15 +55,15 @@ describe('Patrimony Routes', () => {
   describe('PUT /patrimonies', () => {
     test('Should return 200 on update category', async () => {
       const { accessToken } = await makeAccessToken()
-      const { id, category, owner } = await Helper.makePatrimony()
+      const { id, Category, Owner } = await Helper.makePatrimony()
       await request(app)
         .put(`/api/patrimonies/${id}`)
         .set('x-access-token', accessToken)
         .send({
           number: faker.datatype.number().toString(),
           brand: faker.random.word(),
-          ownerId: category.id,
-          categoryId: owner.id
+          ownerId: Category.id,
+          categoryId: Owner.id
         })
         .expect(200)
     })

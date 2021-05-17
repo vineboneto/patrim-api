@@ -35,5 +35,6 @@ export namespace AddOwnerController {
   export type Request = {
     name: string
     sectorId: number
+    accountId: number
   }
 }

@@ -1,61 +1,46 @@
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { AddOwnerRepository } from '@/data/protocols'
 import { OwnerModel } from '@/domain/models'
-import { makeSector } from '@/tests/infra/db/postgres-prisma/helper'
+import { makeSector, makeUser } from '@/tests/infra/db/postgres-prisma/helper'
 
+import { Sector } from '@prisma/client'
 import faker from 'faker'
 
-export const makeOwner = async (owner?: AddOwnerRepository.Params): Promise<OwnerModel> => {
-  const prismaClient = PrismaHelper.getConnection()
-  let ownerModel: any
-  if (owner) {
-    ownerModel = await prismaClient.owner.create({
-      data: {
-        name: owner.name,
-        sectorId: Number(owner.sectorId)
-      },
-      include: {
-        Sector: true
-      }
-    })
-  } else {
-    const { id: sectorId } = await makeSector()
-    ownerModel = await prismaClient.owner.create({
-      data: {
-        name: faker.name.findName(),
-        sectorId
-      },
-      include: {
-        Sector: true
-      }
-    })
-  }
-  return PrismaHelper.adaptOwner(ownerModel)
+type Props = {
+  id: number
+  name: string
+  userId: number
+  Sector: Sector
 }
 
-export const makeManyOwners = async (): Promise<OwnerModel []> => {
+export const makeOwner = async (owner?: AddOwnerRepository.Params): Promise<Props> => {
   const prismaClient = PrismaHelper.getConnection()
-  const { id: sectorId } = await makeSector()
-  const owner = {
-    name: faker.name.findName(),
-    sectorId
-  }
+  const ownerModel = await prismaClient.owner.create({
+    data: await dataOwner(owner?.name, owner?.sectorId),
+    include: { Sector: true }
+  })
+  return ownerModel
+}
+
+export const makeManyOwners = async (): Promise<Props []> => {
+  const prismaClient = PrismaHelper.getConnection()
+  const params = await dataOwner()
   await prismaClient.owner.createMany({
     data: [
-      owner,
-      owner,
-      owner,
-      owner,
-      owner,
-      owner
+      params,
+      params,
+      params,
+      params,
+      params,
+      params
     ]
   })
-  const owners = await prismaClient.owner.findMany({
+  const owners: any = await prismaClient.owner.findMany({
     include: {
       Sector: true
     }
   })
-  return owners.map(owner => PrismaHelper.adaptOwner(owner))
+  return owners
 }
 
 export const findOwnerById = async (id: number): Promise<OwnerModel> => {
@@ -72,4 +57,14 @@ export const findOwnerById = async (id: number): Promise<OwnerModel> => {
     return null
   }
   return PrismaHelper.adaptOwner(owner)
+}
+
+const dataOwner = async (name?: string, sectorId?: number): Promise<any> => {
+  const { id: userId } = await makeUser()
+  const { id: sectorId_ } = await makeSector()
+  return {
+    userId,
+    name: name || faker.name.findName(),
+    sectorId: sectorId || sectorId_
+  }
 }

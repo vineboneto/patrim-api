@@ -5,6 +5,7 @@ export interface CheckOwnerBySectorIdRepository {
 export namespace CheckOwnerBySectorIdRepository {
   export type Params = {
     sectorId: number
+    accountId: number
   }
   export type Result = boolean
 }

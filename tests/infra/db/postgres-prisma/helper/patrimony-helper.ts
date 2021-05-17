@@ -1,10 +1,23 @@
 import { PatrimonyModel } from '@/domain/models'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import { makeOwner, makeCategory, makeUser } from '@/tests/infra/db/postgres-prisma/helper'
+import { Category, Owner, Sector } from '@prisma/client'
 
 import faker from 'faker'
 
-export const makePatrimony = async (): Promise<PatrimonyModel> => {
+type Props = {
+  id: number
+  number: string
+  brand: string
+  description?: string
+  userId: number
+  Category: Category
+  Owner: Owner & {
+    Sector: Sector
+  }
+}
+
+export const makePatrimony = async (): Promise<Props> => {
   const prismaClient = PrismaHelper.getConnection()
   const { id: ownerId } = await makeOwner()
   const { id: categoryId } = await makeCategory()
@@ -27,7 +40,7 @@ export const makePatrimony = async (): Promise<PatrimonyModel> => {
       }
     }
   })
-  return PrismaHelper.adaptPatrimony(patrimony)
+  return patrimony
 }
 
 export const makeManyPatrimonies = async (): Promise<PatrimonyModel[]> => {

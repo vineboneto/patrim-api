@@ -92,10 +92,10 @@ describe('Sector Routes', () => {
     })
 
     test('Should return 403 if owners exists', async () => {
-      const { sector } = await Helper.makeOwner()
-      const { accessToken } = await makeAccessToken()
+      const { Sector, userId } = await Helper.makeOwner()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
-        .delete(`/api/sectors/${sector.id}`)
+        .delete(`/api/sectors/${Sector.id}`)
         .set('x-access-token', accessToken)
         .expect(403)
     })

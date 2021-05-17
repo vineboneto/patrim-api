@@ -20,13 +20,15 @@ export const mockOwnersModel = (): OwnerModel[] => ([
 
 export const mockAddOwnerParams = (): AddOwner.Params => ({
   name: faker.name.findName(),
-  sectorId: faker.datatype.number()
+  sectorId: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export const mockUpdateOwnerParams = (): UpdateOwner.Params => ({
   id: faker.datatype.number(),
   name: faker.name.findName(),
-  sectorId: faker.datatype.number()
+  sectorId: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export const mockCheckOwnerByIdParams = (): CheckOwnerById.Params => ({
@@ -34,12 +36,14 @@ export const mockCheckOwnerByIdParams = (): CheckOwnerById.Params => ({
 })
 
 export const mockDeleteOwnerParams = (): DeleteOwner.Params => ({
-  id: faker.datatype.number()
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export const mockLoadOwnersParams = (): LoadOwners.Params => ({
   skip: faker.datatype.number(),
-  take: faker.datatype.number()
+  take: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export class UpdateOwnerSpy implements UpdateOwner {
@@ -70,11 +74,15 @@ export class CheckOwnerByIdSpy implements CheckOwnerById {
 }
 
 export class LoadOwnersSpy implements LoadOwners {
-  model = mockOwnersModel()
   params: LoadOwners.Params
+  result = {
+    model: mockOwnersModel(),
+    count: mockOwnersModel().length
+  }
+
   async load (params: LoadOwners.Params): Promise<LoadOwners.Model> {
     this.params = params
-    return this.model
+    return this.result
   }
 }
 

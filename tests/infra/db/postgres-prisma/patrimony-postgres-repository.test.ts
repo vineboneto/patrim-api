@@ -43,20 +43,20 @@ describe('PatrimonyPostgresRepository', () => {
     test('Should return patrimony on update success', async () => {
       const sut = makeSut()
       const { id: accountId } = await Helper.makeUser()
-      const { id, description, owner, category } = await Helper.makePatrimony()
+      const { id, description, Owner, Category } = await Helper.makePatrimony()
       const data = await sut.update({
         id,
         brand: 'new_brand',
         number: 'new_number',
-        ownerId: owner.id,
-        categoryId: category.id,
+        ownerId: Owner.id,
+        categoryId: Category.id,
         accountId
       })
       expect(data.brand).toBe('new_brand')
       expect(data.number).toBe('new_number')
       expect(data.description).toBe(description)
-      expect(data.owner.id).toBe(owner.id)
-      expect(data.category.id).toBe(category.id)
+      expect(data.owner.id).toBe(Owner.id)
+      expect(data.category.id).toBe(Category.id)
     })
   })
 
@@ -75,9 +75,10 @@ describe('PatrimonyPostgresRepository', () => {
   describe('loadById()', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
-      const patrimonyModel = await Helper.makePatrimony()
+      const patrimonyModel: any = await Helper.makePatrimony()
       const patrimony = await sut.loadById({ id: patrimonyModel.id })
-      expect(patrimony).toEqual(patrimonyModel)
+      const patrimony_ = PrismaHelper.adaptPatrimony(patrimonyModel)
+      expect(patrimony).toEqual(patrimony_)
     })
 
     test('Should return null on patrimony not exist', async () => {
@@ -90,9 +91,10 @@ describe('PatrimonyPostgresRepository', () => {
   describe('loadByNumber()', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
-      const patrimonyModel = await Helper.makePatrimony()
+      const patrimonyModel: any = await Helper.makePatrimony()
       const patrimony = await sut.loadByNumber(patrimonyModel.number)
-      expect(patrimony).toEqual(patrimonyModel)
+      const patrimony_ = PrismaHelper.adaptPatrimony(patrimonyModel)
+      expect(patrimony).toEqual(patrimony_)
     })
 
     test('Should return null on patrimony not exist', async () => {
@@ -207,9 +209,9 @@ describe('PatrimonyPostgresRepository', () => {
   describe('loadOwnerIdById()', () => {
     test('Should return ownerId on success', async () => {
       const sut = makeSut()
-      const { id, owner } = await Helper.makePatrimony()
+      const { id, Owner } = await Helper.makePatrimony()
       const ownerId = await sut.loadOwnerIdById(id)
-      expect(ownerId).toBe(owner.id)
+      expect(ownerId).toBe(Owner.id)
     })
 
     test('Should return null on fails', async () => {
@@ -237,14 +239,17 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByOwnerId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { owner } = await Helper.makePatrimony()
-      const exists = await sut.checkByOwnerId({ ownerId: owner.id })
+      const { Owner, userId } = await Helper.makePatrimony()
+      const exists = await sut.checkByOwnerId({ ownerId: Owner.id, accountId: userId })
       expect(exists).toBe(true)
     })
 
     test('Should return false if not exists patrimony', async () => {
       const sut = makeSut()
-      const exists = await sut.checkByOwnerId({ ownerId: faker.datatype.number() })
+      const exists = await sut.checkByOwnerId({
+        ownerId: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
       expect(exists).toBe(false)
     })
   })
@@ -267,8 +272,8 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByOwnerId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { category } = await Helper.makePatrimony()
-      const exists = await sut.checkByCategoryId({ categoryId: category.id })
+      const { Category } = await Helper.makePatrimony()
+      const exists = await sut.checkByCategoryId({ categoryId: Category.id })
       expect(exists).toBe(true)
     })
 

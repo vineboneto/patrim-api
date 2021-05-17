@@ -23,8 +23,9 @@ describe('OwnerPostgresRepository', () => {
     test('Should return owner on add success', async () => {
       const sut = makeSut()
       const { id: sectorId, name: sectorName } = await Helper.makeSector()
+      const { id: accountId } = await Helper.makeUser()
       const name = faker.name.findName()
-      const owner = await sut.add({ name, sectorId: sectorId })
+      const owner = await sut.add({ name, sectorId, accountId })
       expect(owner).toBeTruthy()
       expect(owner.id).toBeTruthy()
       expect(owner.name).toBe(name)
@@ -36,11 +37,12 @@ describe('OwnerPostgresRepository', () => {
   describe('update()', () => {
     test('Should return owner on update success', async () => {
       const sut = makeSut()
-      const { id, sector } = await Helper.makeOwner()
+      const owner = await Helper.makeOwner()
       const ownerUpdated = await sut.update({
-        id,
+        id: owner.id,
         name: 'new_name',
-        sectorId: sector.id
+        sectorId: owner.Sector.id,
+        accountId: owner.userId
       })
       expect(ownerUpdated).toBeTruthy()
       expect(ownerUpdated.name).toBe('new_name')
@@ -66,45 +68,69 @@ describe('OwnerPostgresRepository', () => {
     test('Should return all owners if take and skip is NaN', async () => {
       const sut = makeSut()
       const owners = await Helper.makeManyOwners()
-      const dataResponse = await sut.loadAll({ skip: Number('adfavzv'), take: Number('adfasdf') })
-      expect(dataResponse).toEqual(owners)
-      expect(dataResponse.length).toBe(6)
+      const dataResponse = await sut.loadAll({
+        skip: Number('adfavzv'),
+        take: Number('adfasdf'),
+        accountId: owners[0].userId
+      })
+      const ownersWithoutUserId = owners.map((owner) => ({
+        id: owner.id,
+        name: owner.name,
+        sector: {
+          id: owner.Sector.id,
+          name: owner.Sector.name
+        }
+      }))
+      expect(dataResponse.model).toEqual(ownersWithoutUserId)
+      expect(dataResponse.count).toBe(6)
     })
 
     test('Should return the correctly number of owners if take and skip not undefined', async () => {
       const sut = makeSut()
       const owners = await Helper.makeManyOwners()
-      const dataResponse = await sut.loadAll({ skip: 0, take: 3 })
-      expect(dataResponse[0]).toEqual(owners[0])
-      expect(dataResponse[1]).toEqual(owners[1])
-      expect(dataResponse[2]).toEqual(owners[2])
-      expect(dataResponse[3]).toBe(undefined)
-      expect(dataResponse.length).toBe(3)
-      const dataResponse2 = await sut.loadAll({ skip: 3, take: 3 })
-      expect(dataResponse2[0]).toEqual(owners[3])
-      expect(dataResponse2[1]).toEqual(owners[4])
-      expect(dataResponse2[2]).toEqual(owners[5])
-      expect(dataResponse2[3]).toEqual(undefined)
-      expect(dataResponse2.length).toBe(3)
+      const dataResponse = await sut.loadAll({ skip: 0, take: 3, accountId: owners[0].userId })
+      const ownersWithoutUserId = owners.map((owner) => ({
+        id: owner.id,
+        name: owner.name,
+        sector: {
+          id: owner.Sector.id,
+          name: owner.Sector.name
+        }
+      }))
+      expect(dataResponse.model[0]).toEqual(ownersWithoutUserId[0])
+      expect(dataResponse.model[1]).toEqual(ownersWithoutUserId[1])
+      expect(dataResponse.model[2]).toEqual(ownersWithoutUserId[2])
+      expect(dataResponse.model[3]).toBe(undefined)
+      expect(dataResponse.count).toBe(3)
+      const dataResponse2 = await sut.loadAll({ skip: 3, take: 3, accountId: owners[0].userId })
+      expect(dataResponse2.model[0]).toEqual(ownersWithoutUserId[3])
+      expect(dataResponse2.model[1]).toEqual(ownersWithoutUserId[4])
+      expect(dataResponse2.model[2]).toEqual(ownersWithoutUserId[5])
+      expect(dataResponse2.model[3]).toEqual(undefined)
+      expect(dataResponse2.count).toBe(3)
     })
 
     test('Should return empty array if loadOwner is empty', async () => {
       const sut = makeSut()
-      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
-      expect(dataResponse).toEqual([])
+      const dataResponse = await sut.loadAll({
+        skip: NaN,
+        take: NaN,
+        accountId: faker.datatype.number()
+      })
+      expect(dataResponse.model).toEqual([])
     })
   })
 
   describe('delete()', () => {
     test('Should return owner on delete success', async () => {
       const sut = makeSut()
-      const { id, name, sector } = await Helper.makeOwner()
-      const sectorDeleted = await sut.delete({ id })
+      const { id, name, Sector, userId } = await Helper.makeOwner()
+      const sectorDeleted = await sut.delete({ id, accountId: userId })
       const searchOwnerDeleted = await Helper.findOwnerById(id)
       expect(sectorDeleted.id).toBe(id)
       expect(sectorDeleted.name).toBe(name)
-      expect(sectorDeleted.sector.id).toBe(sector.id)
-      expect(sectorDeleted.sector.name).toBe(sector.name)
+      expect(sectorDeleted.sector.id).toBe(Sector.id)
+      expect(sectorDeleted.sector.name).toBe(Sector.name)
       expect(searchOwnerDeleted).toBeFalsy()
     })
   })
@@ -112,14 +138,17 @@ describe('OwnerPostgresRepository', () => {
   describe('checkBySectorId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { sector } = await Helper.makeOwner()
-      const exists = await sut.checkBySectorId({ sectorId: sector.id })
+      const { Sector, userId } = await Helper.makeOwner()
+      const exists = await sut.checkBySectorId({ sectorId: Sector.id, accountId: userId })
       expect(exists).toBe(true)
     })
 
     test('Should return false if not exists patrimony', async () => {
       const sut = makeSut()
-      const exists = await sut.checkBySectorId({ sectorId: faker.datatype.number() })
+      const exists = await sut.checkBySectorId({
+        sectorId: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
       expect(exists).toBe(false)
     })
   })

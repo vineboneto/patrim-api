@@ -36,5 +36,6 @@ export namespace UpdateOwnerController {
     id: number
     name: string
     sectorId: number
+    accountId: number
   }
 }

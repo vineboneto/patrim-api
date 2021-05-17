@@ -49,13 +49,13 @@ describe('Owner Routes', () => {
   describe('PUT /owners', () => {
     test('Should return 200 on update owner', async () => {
       const { accessToken } = await makeAccessToken()
-      const { id, sector } = await Helper.makeOwner()
+      const { id, Sector } = await Helper.makeOwner()
       await request(app)
         .put(`/api/owners/${id}`)
         .set('x-access-token', accessToken)
         .send({
           name: 'new_value',
-          sectorId: sector.id
+          sectorId: Sector.id
         })
         .expect(200)
     })
@@ -63,8 +63,8 @@ describe('Owner Routes', () => {
 
   describe('GET /owners', () => {
     test('Should return 200 on load owners', async () => {
-      const { accessToken } = await makeAccessToken()
-      await Helper.makeManyOwners()
+      const owners = await Helper.makeManyOwners()
+      const { accessToken } = await makeAccessToken(owners[0].userId)
       await request(app)
         .get('/api/owners')
         .set('x-access-token', accessToken)
@@ -72,8 +72,8 @@ describe('Owner Routes', () => {
     })
 
     test('Should return 200 on load owners with take and skip', async () => {
-      const { accessToken } = await makeAccessToken()
-      await Helper.makeManyOwners()
+      const owners = await Helper.makeManyOwners()
+      const { accessToken } = await makeAccessToken(owners[0].userId)
       await request(app)
         .get('/api/owners?take=3&skip=0')
         .set('x-access-token', accessToken)
@@ -119,8 +119,8 @@ describe('Owner Routes', () => {
 
   describe('DELETE /owners', () => {
     test('Should return owner deleted on success', async () => {
-      const { id } = await Helper.makeOwner()
-      const { accessToken } = await makeAccessToken()
+      const { id, userId } = await Helper.makeOwner()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
         .delete(`/api/owners/${id}`)
         .set('x-access-token', accessToken)
@@ -128,10 +128,10 @@ describe('Owner Routes', () => {
     })
 
     test('Should return 403 if patrimony exists', async () => {
-      const { owner } = await Helper.makePatrimony()
-      const { accessToken } = await makeAccessToken()
+      const { Owner, userId } = await Helper.makePatrimony()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
-        .delete(`/api/owners/${owner.id}`)
+        .delete(`/api/owners/${Owner.id}`)
         .set('x-access-token', accessToken)
         .expect(403)
     })

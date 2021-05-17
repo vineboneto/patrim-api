@@ -27,6 +27,8 @@ model Owner {
   sectorId                                      Int
   Sector                                        Sector          @relation(fields: [sectorId], references: [id])
   Patrimony                                     Patrimony[]
+  userId                                        Int
+  User                                          User        @relation(fields: [userId], references: [id])  
   SwapPatrimony_OwnerToSwapPatrimony_newOwnerId SwapPatrimony[] @relation("OwnerToSwapPatrimony_newOwnerId")
   SwapPatrimony_OwnerToSwapPatrimony_oldOwnerId SwapPatrimony[] @relation("OwnerToSwapPatrimony_oldOwnerId")
 }
@@ -57,6 +59,7 @@ model User {
   User          Patrimony[]
   Category      Category[]
   Sector        Sector[]
+  Owner         Owner[]
 }
 
 model LogError {

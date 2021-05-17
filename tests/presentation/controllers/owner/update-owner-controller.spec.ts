@@ -9,7 +9,8 @@ import faker from 'faker'
 const mockRequest = (): UpdateOwnerController.Request => ({
   id: faker.datatype.number(),
   name: faker.name.findName(),
-  sectorId: faker.datatype.number()
+  sectorId: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {

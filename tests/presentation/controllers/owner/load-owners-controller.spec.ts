@@ -6,7 +6,8 @@ import faker from 'faker'
 
 const mockRequest = (): LoadOwnersController.Request => ({
   take: faker.datatype.number(),
-  skip: faker.datatype.number()
+  skip: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -33,7 +34,7 @@ describe('LoadOwnersController', () => {
 
   test('Should return 204 if LoadOwners return empty array', async () => {
     const { sut, loadOwnersSpy } = makeSut()
-    loadOwnersSpy.model = []
+    loadOwnersSpy.result.model = []
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
   })
@@ -41,7 +42,7 @@ describe('LoadOwnersController', () => {
   test('Should return 200 if LoadOwners return owners', async () => {
     const { sut, loadOwnersSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(loadOwnersSpy.model))
+    expect(httpResponse).toEqual(ok(loadOwnersSpy.result))
   })
 
   test('Should return 500 if LoadOwners throws', async () => {
