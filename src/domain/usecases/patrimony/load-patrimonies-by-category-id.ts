@@ -7,8 +7,12 @@ export interface LoadPatrimoniesByCategoryId {
 export namespace LoadPatrimoniesByCategoryId {
   export type Params = {
     categoryId: number
+    accountId: number
     skip?: number
     take?: number
   }
-  export type Model = PatrimonyModel[]
+  export type Model = {
+    model: PatrimonyModel[]
+    count: number
+  }
 }

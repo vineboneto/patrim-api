@@ -1,8 +1,6 @@
 import { DbLoadPatrimoniesByOwnerId } from '@/data/usecases'
-import {
-  LoadPatrimoniesByOwnerIdRepositorySpy,
-  mockLoadPatrimoniesByOwnerIdRepositoryParams
-} from '@/tests/data/mocks'
+import { LoadPatrimoniesByOwnerIdRepositorySpy } from '@/tests/data/mocks'
+import { mockLoadPatrimoniesByOwnerIdParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbLoadPatrimoniesByOwnerId
@@ -21,28 +19,28 @@ const makeSut = (): SutTypes => {
 describe('DbLoadPatrimoniesByOwnerId', () => {
   test('Should call LoadPatrimoniesByOwnerIdRepository with correct value', async () => {
     const { sut, loadPatrimoniesByOwnerIdRepositorySpy } = makeSut()
-    const params = mockLoadPatrimoniesByOwnerIdRepositoryParams()
+    const params = mockLoadPatrimoniesByOwnerIdParams()
     await sut.loadByOwnerId(params)
     expect(loadPatrimoniesByOwnerIdRepositorySpy.params).toEqual(params)
   })
 
   test('Should return [] if LoadPatrimoniesByOwnerIdRepository returns empty array', async () => {
     const { sut, loadPatrimoniesByOwnerIdRepositorySpy } = makeSut()
-    loadPatrimoniesByOwnerIdRepositorySpy.model = []
-    const data = await sut.loadByOwnerId(mockLoadPatrimoniesByOwnerIdRepositoryParams())
-    expect(data).toEqual([])
+    loadPatrimoniesByOwnerIdRepositorySpy.result.model = []
+    const data = await sut.loadByOwnerId(mockLoadPatrimoniesByOwnerIdParams())
+    expect(data.model).toEqual([])
   })
 
   test('Should return patrimony on success', async () => {
     const { sut, loadPatrimoniesByOwnerIdRepositorySpy } = makeSut()
-    const data = await sut.loadByOwnerId(mockLoadPatrimoniesByOwnerIdRepositoryParams())
-    expect(data).toEqual(loadPatrimoniesByOwnerIdRepositorySpy.model)
+    const data = await sut.loadByOwnerId(mockLoadPatrimoniesByOwnerIdParams())
+    expect(data.model).toEqual(loadPatrimoniesByOwnerIdRepositorySpy.result.model)
   })
 
   test('Should throw if LoadPatrimoniesByOwnerIdRepository throws', async () => {
     const { sut, loadPatrimoniesByOwnerIdRepositorySpy } = makeSut()
     jest.spyOn(loadPatrimoniesByOwnerIdRepositorySpy, 'loadByOwnerId').mockRejectedValueOnce(new Error())
-    const promise = sut.loadByOwnerId(mockLoadPatrimoniesByOwnerIdRepositoryParams())
+    const promise = sut.loadByOwnerId(mockLoadPatrimoniesByOwnerIdParams())
     await expect(promise).rejects.toThrow()
   })
 })

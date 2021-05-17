@@ -49,7 +49,7 @@ export const mockUpdatePatrimonyParams = (): UpdatePatrimony.Params => ({
 
 })
 
-export const mockAddUpdatePatrimonyParams = (): AddPatrimony.Params => ({
+export const mockAddPatrimonyParams = (): AddPatrimony.Params => ({
   number: faker.datatype.number().toString(),
   brand: faker.random.word(),
   description: faker.random.words(),
@@ -68,19 +68,28 @@ export const mockCheckPatrimonyByIdParams = (): CheckPatrimonyById.Params => ({
 
 export const mockLoadPatrimoniesParams = (): LoadPatrimonies.Params => ({
   skip: faker.datatype.number(),
-  take: faker.datatype.number()
+  take: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
-export const mockLoadPatrimonyById = (): LoadPatrimonyById.Params => ({
-  id: faker.datatype.number()
+export const mockLoadPatrimonyByIdParams = (): LoadPatrimonyById.Params => ({
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export const mockLoadPatrimoniesByOwnerIdParams = (): LoadPatrimoniesByOwnerId.Params => ({
-  ownerId: faker.datatype.number()
+  ownerId: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export const mockLoadPatrimoniesByCategoryIdParams = (): LoadPatrimoniesByCategoryId.Params => ({
-  categoryId: faker.datatype.number()
+  categoryId: faker.datatype.number(),
+  accountId: faker.datatype.number()
+})
+
+export const mockLoadPatrimonyByNumberParams = (): LoadPatrimonyByNumber.Params => ({
+  accountId: faker.datatype.number(),
+  number: faker.datatype.number().toString()
 })
 
 export class UpdatePatrimonySpy implements UpdatePatrimony {
@@ -112,19 +121,23 @@ export class LoadPatrimonyByIdSpy implements LoadPatrimonyById {
 
 export class LoadPatrimonyByNumberSpy implements LoadPatrimonyByNumber {
   model = mockPatrimonyModel()
-  number: string
-  async loadByNumber (number: string): Promise<LoadPatrimonyByNumber.Model> {
-    this.number = number
+  params: LoadPatrimonyByNumber.Params
+  async loadByNumber (params: LoadPatrimonyByNumber.Params): Promise<LoadPatrimonyByNumber.Model> {
+    this.params = params
     return this.model
   }
 }
 
 export class LoadPatrimoniesSpy implements LoadPatrimonies {
-  models = mockPatrimoniesModel()
   params: LoadPatrimonies.Params
+  result = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
+
   async load (params: LoadPatrimonies.Params): Promise<LoadPatrimonies.Model> {
     this.params = params
-    return this.models
+    return this.result
   }
 }
 
@@ -147,21 +160,27 @@ export class CheckPatrimonyByIdSpy implements CheckPatrimonyById {
 }
 
 export class LoadPatrimoniesByOwnerIdSpy implements LoadPatrimoniesByOwnerId {
-  params: LoadPatrimoniesByOwnerId.Params
-  model = mockPatrimoniesModel()
+  params: LoadPatrimonies.Params
+  result = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
 
   async loadByOwnerId (params: LoadPatrimoniesByOwnerId.Params): Promise<LoadPatrimoniesByOwnerId.Model> {
     this.params = params
-    return this.model
+    return this.result
   }
 }
 
 export class LoadPatrimoniesByCategoryIdSpy implements LoadPatrimoniesByCategoryId {
-  params: LoadPatrimoniesByCategoryId.Params
-  model = mockPatrimoniesModel()
+  params: LoadPatrimonies.Params
+  result = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
 
   async loadByCategoryId (params: LoadPatrimoniesByCategoryId.Params): Promise<LoadPatrimoniesByCategoryId.Model> {
     this.params = params
-    return this.model
+    return this.result
   }
 }

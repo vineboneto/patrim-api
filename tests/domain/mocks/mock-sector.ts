@@ -30,7 +30,8 @@ export const mockCheckSectorByIdParams = (): CheckSectorById.Params => ({
 })
 
 export const mockDeleteSectorParams = (): DeleteSector.Params => ({
-  id: faker.datatype.number()
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export const mockLoadSectorsParams = (): LoadSectors.Params => ({

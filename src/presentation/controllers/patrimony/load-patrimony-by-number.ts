@@ -9,7 +9,7 @@ export class LoadPatrimonyByNumberController implements Controller {
 
   async handle (request: LoadPatrimonyByNumberController.Request): Promise<HttpResponse> {
     try {
-      const patrimonyModel = await this.loadPatrimonyByNumber.loadByNumber(request.number)
+      const patrimonyModel = await this.loadPatrimonyByNumber.loadByNumber(request)
       return patrimonyModel ? ok(patrimonyModel) : noContent()
     } catch (error) {
       return serverError(error)
@@ -20,5 +20,6 @@ export class LoadPatrimonyByNumberController implements Controller {
 export namespace LoadPatrimonyByNumberController {
   export type Request = {
     number: string
+    accountId: number
   }
 }

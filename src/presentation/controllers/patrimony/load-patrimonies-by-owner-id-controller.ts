@@ -17,9 +17,10 @@ export class LoadPatrimoniesByOwnerIdController implements Controller {
       const httpResponse = await this.loadPatrimoniesByOwnerId.loadByOwnerId({
         ownerId: request.id,
         skip: request.skip,
-        take: request.take
+        take: request.take,
+        accountId: request.accountId
       })
-      return httpResponse.length ? ok(httpResponse) : noContent()
+      return httpResponse.model.length ? ok(httpResponse) : noContent()
     } catch (error) {
       return serverError(error)
     }
@@ -29,6 +30,7 @@ export class LoadPatrimoniesByOwnerIdController implements Controller {
 export namespace LoadPatrimoniesByOwnerIdController {
   export type Request = {
     id: number
+    accountId: number
     skip?: number
     take?: number
   }

@@ -6,7 +6,7 @@ export class DbLoadPatrimonyByNumber implements LoadPatrimonyByNumber {
     private readonly loadPatrimonyByNumberRepository: LoadPatrimonyByNumberRepository
   ) {}
 
-  async loadByNumber (number: string): Promise<LoadPatrimonyByNumber.Model> {
-    return this.loadPatrimonyByNumberRepository.loadByNumber(number)
+  async loadByNumber (params: LoadPatrimonyByNumber.Params): Promise<LoadPatrimonyByNumber.Model> {
+    return this.loadPatrimonyByNumberRepository.loadByNumber(params)
   }
 }

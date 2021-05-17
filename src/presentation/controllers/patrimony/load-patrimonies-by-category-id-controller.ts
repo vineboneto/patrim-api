@@ -17,9 +17,10 @@ export class LoadPatrimoniesByCategoryIdController implements Controller {
       const httpResponse = await this.loadPatrimoniesByCategoryId.loadByCategoryId({
         categoryId: request.id,
         skip: request.skip,
-        take: request.take
+        take: request.take,
+        accountId: request.accountId
       })
-      return httpResponse.length ? ok(httpResponse) : noContent()
+      return httpResponse.model.length ? ok(httpResponse) : noContent()
     } catch (error) {
       return serverError(error)
     }
@@ -29,6 +30,7 @@ export class LoadPatrimoniesByCategoryIdController implements Controller {
 export namespace LoadPatrimoniesByCategoryIdController {
   export type Request = {
     id: number
+    accountId: number
     skip?: number
     take?: number
   }

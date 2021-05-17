@@ -15,41 +15,10 @@ import {
   UpdatePatrimonyRepository
 } from '@/data/protocols'
 import {
-  mockAddUpdatePatrimonyParams,
-  mockCheckPatrimonyByIdParams,
-  mockDeletePatrimonyParams,
-  mockLoadPatrimoniesByCategoryIdParams,
-  mockLoadPatrimoniesByOwnerIdParams,
-  mockLoadPatrimoniesParams,
-  mockLoadPatrimonyById,
   mockPatrimoniesModel,
   mockPatrimonyModel,
   mockUpdatePatrimonyParams
 } from '@/tests/domain/mocks'
-
-export const mockAddPatrimonyRepositoryParams = ():
-AddPatrimonyRepository.Params => mockAddUpdatePatrimonyParams()
-
-export const mockUpdatePatrimonyRepositoryParams = ():
-UpdatePatrimonyRepository.Params => mockUpdatePatrimonyParams()
-
-export const mockCheckPatrimonyByIdRepositoryParams = ():
-CheckPatrimonyByIdRepository.Params => mockCheckPatrimonyByIdParams()
-
-export const mockDeletePatrimonyRepositoryParams = ():
-DeletePatrimonyRepository.Params => mockDeletePatrimonyParams()
-
-export const mockLoadPatrimoniesRepositoryParams = ():
-LoadPatrimoniesRepository.Params => mockLoadPatrimoniesParams()
-
-export const mockLoadPatrimonyByIdRepository = ():
-LoadPatrimonyByIdRepository.Params => mockLoadPatrimonyById()
-
-export const mockLoadPatrimoniesByOwnerIdRepositoryParams = ():
-LoadPatrimoniesByOwnerIdRepository.Params => mockLoadPatrimoniesByOwnerIdParams()
-
-export const mockLoadPatrimoniesByCategoryIdRepositoryParams = ():
-LoadPatrimoniesByCategoryIdRepository.Params => mockLoadPatrimoniesByCategoryIdParams()
 
 export class AddPatrimonyRepositorySpy implements AddPatrimonyRepository {
   params: AddPatrimonyRepository.Params
@@ -79,11 +48,15 @@ export class DeletePatrimonyRepositorySpy implements DeletePatrimonyRepository {
 }
 
 export class LoadPatrimoniesRepositorySpy implements LoadPatrimoniesRepository {
-  models = mockPatrimoniesModel()
   params: LoadPatrimoniesRepository.Params
+  result = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
+
   async loadAll (params: LoadPatrimoniesRepository.Params): Promise<LoadPatrimoniesRepository.Model> {
     this.params = params
-    return this.models
+    return this.result
   }
 }
 
@@ -97,10 +70,10 @@ export class LoadPatrimonyByIdRepositorySpy implements LoadPatrimonyByIdReposito
 }
 
 export class LoadPatrimonyByNumberRepositorySpy implements LoadPatrimonyByNumberRepository {
-  number: string
+  params: LoadPatrimonyByNumberRepository.Params
   model = mockPatrimonyModel()
-  async loadByNumber (number: string): Promise<LoadPatrimonyByNumberRepository.Model> {
-    this.number = number
+  async loadByNumber (params: LoadPatrimonyByNumberRepository.Params): Promise<LoadPatrimonyByNumberRepository.Model> {
+    this.params = params
     return this.model
   }
 }
@@ -116,7 +89,7 @@ export class LoadPatrimonyNumberByIdRepositorySpy implements LoadPatrimonyNumber
 
 export class LoadPatrimonyOwnerIdByIdRepositorySpy implements LoadPatrimonyOwnerIdByIdRepository {
   id: number
-  ownerId = mockUpdatePatrimonyRepositoryParams().ownerId
+  ownerId = mockUpdatePatrimonyParams().ownerId
   async loadOwnerIdById (id: number): Promise<number> {
     this.id = id
     return this.ownerId
@@ -125,23 +98,29 @@ export class LoadPatrimonyOwnerIdByIdRepositorySpy implements LoadPatrimonyOwner
 
 export class LoadPatrimoniesByOwnerIdRepositorySpy implements LoadPatrimoniesByOwnerIdRepository {
   params: LoadPatrimoniesByOwnerIdRepository.Params
-  model = mockPatrimoniesModel()
+  result = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
 
   async loadByOwnerId (params: LoadPatrimoniesByOwnerIdRepository.Params):
   Promise<LoadPatrimoniesByOwnerIdRepository.Model> {
     this.params = params
-    return this.model
+    return this.result
   }
 }
 
 export class LoadPatrimoniesByCategoryIdRepositorySpy implements LoadPatrimoniesByCategoryIdRepository {
   params: LoadPatrimoniesByCategoryIdRepository.Params
-  model = mockPatrimoniesModel()
+  result = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
 
   async loadByCategoryId (params: LoadPatrimoniesByCategoryIdRepository.Params):
   Promise<LoadPatrimoniesByCategoryIdRepository.Model> {
     this.params = params
-    return this.model
+    return this.result
   }
 }
 
@@ -155,10 +134,10 @@ export class CheckPatrimonyByIdRepositorySpy implements CheckPatrimonyByIdReposi
 }
 
 export class CheckPatrimonyByNumberRepositorySpy implements CheckPatrimonyByNumberRepository {
-  number: string
+  params: CheckPatrimonyByNumberRepository.Params
   result = false
-  async checkByNumber (number: string): Promise<boolean> {
-    this.number = number
+  async checkByNumber (params: CheckPatrimonyByNumberRepository.Params): Promise<boolean> {
+    this.params = params
     return this.result
   }
 }

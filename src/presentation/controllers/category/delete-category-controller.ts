@@ -34,5 +34,6 @@ export class DeleteCategoryController implements Controller {
 export namespace DeleteCategoryController {
   export type Request = {
     id: number
+    accountId: number
   }
 }

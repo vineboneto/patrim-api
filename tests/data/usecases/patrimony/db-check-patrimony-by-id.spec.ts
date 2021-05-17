@@ -1,5 +1,6 @@
 import { DbCheckPatrimonyById } from '@/data/usecases'
-import { CheckPatrimonyByIdRepositorySpy, mockCheckPatrimonyByIdRepositoryParams } from '@/tests/data/mocks'
+import { CheckPatrimonyByIdRepositorySpy } from '@/tests/data/mocks'
+import { mockCheckPatrimonyByIdParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbCheckPatrimonyById
@@ -18,7 +19,7 @@ const makeSut = (): SutTypes => {
 describe('DbCheckPatrimonyById', () => {
   test('Should call CheckPatrimonyByIdRepository with correct value', async () => {
     const { sut, checkPatrimonyByIdRepositorySpy } = makeSut()
-    const params = mockCheckPatrimonyByIdRepositoryParams()
+    const params = mockCheckPatrimonyByIdParams()
     await sut.checkById(params)
     expect(checkPatrimonyByIdRepositorySpy.params).toEqual(params)
   })
@@ -26,20 +27,20 @@ describe('DbCheckPatrimonyById', () => {
   test('Should return false if CheckPatrimonyByIdRepository returns false', async () => {
     const { sut, checkPatrimonyByIdRepositorySpy } = makeSut()
     checkPatrimonyByIdRepositorySpy.result = false
-    const data = await sut.checkById(mockCheckPatrimonyByIdRepositoryParams())
+    const data = await sut.checkById(mockCheckPatrimonyByIdParams())
     expect(data).toBe(false)
   })
 
   test('Should return true if CheckPatrimonyByIdRepository returns true', async () => {
     const { sut } = makeSut()
-    const data = await sut.checkById(mockCheckPatrimonyByIdRepositoryParams())
+    const data = await sut.checkById(mockCheckPatrimonyByIdParams())
     expect(data).toBe(true)
   })
 
   test('Should throw CheckPatrimonyByIdRepository throws', async () => {
     const { sut, checkPatrimonyByIdRepositorySpy } = makeSut()
     jest.spyOn(checkPatrimonyByIdRepositorySpy, 'checkById').mockRejectedValueOnce(new Error())
-    const promise = sut.checkById(mockCheckPatrimonyByIdRepositoryParams())
+    const promise = sut.checkById(mockCheckPatrimonyByIdParams())
     await expect(promise).rejects.toThrow()
   })
 })

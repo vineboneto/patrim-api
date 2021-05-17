@@ -98,8 +98,8 @@ describe('Patrimony Routes', () => {
     })
 
     test('Should return all patrimonies', async () => {
-      const { accessToken } = await makeAccessToken()
-      await Helper.makeManyPatrimonies()
+      const patrimonies = await Helper.makeManyPatrimonies()
+      const { accessToken } = await makeAccessToken(patrimonies[0].userId)
       await request(app)
         .get('/api/patrimonies')
         .set('x-access-token', accessToken)
@@ -123,8 +123,8 @@ describe('Patrimony Routes', () => {
     })
 
     test('Should return 200 on success', async () => {
-      const { accessToken } = await makeAccessToken()
-      const { id } = await Helper.makePatrimony()
+      const { id, userId } = await Helper.makePatrimony()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
         .get(`/api/patrimonies/${id}`)
         .set('x-access-token', accessToken)
@@ -149,8 +149,8 @@ describe('Patrimony Routes', () => {
     })
 
     test('Should return 200 on success', async () => {
-      const { accessToken } = await makeAccessToken()
-      const { number } = await Helper.makePatrimony()
+      const { number, userId } = await Helper.makePatrimony()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
         .get(`/api/patrimonies/${number}/number`)
         .set('x-access-token', accessToken)

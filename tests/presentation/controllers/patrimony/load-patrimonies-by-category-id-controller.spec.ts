@@ -6,7 +6,8 @@ import { ValidationSpy } from '@/tests/presentation/mocks'
 import faker from 'faker'
 
 const mockRequest = (): LoadPatrimoniesByCategoryIdController.Request => ({
-  id: faker.datatype.number()
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -45,12 +46,12 @@ describe('LoadPatrimoniesByCategoryIdController', () => {
     const { sut, loadPatrimoniesByCategoryIdSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(loadPatrimoniesByCategoryIdSpy.params).toEqual({ categoryId: request.id })
+    expect(loadPatrimoniesByCategoryIdSpy.params).toEqual({ categoryId: request.id, accountId: request.accountId })
   })
 
   test('Should return 204 if LoadPatrimoniesByCategoryId return empty array', async () => {
     const { sut, loadPatrimoniesByCategoryIdSpy } = makeSut()
-    loadPatrimoniesByCategoryIdSpy.model = []
+    loadPatrimoniesByCategoryIdSpy.result.model = []
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
   })
@@ -58,7 +59,7 @@ describe('LoadPatrimoniesByCategoryIdController', () => {
   test('Should return 200 if LoadPatrimoniesByCategoryId return patrimonies', async () => {
     const { sut, loadPatrimoniesByCategoryIdSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(loadPatrimoniesByCategoryIdSpy.model))
+    expect(httpResponse).toEqual(ok(loadPatrimoniesByCategoryIdSpy.result))
   })
 
   test('Should return 500 if LoadPatrimoniesByCategoryId throws', async () => {

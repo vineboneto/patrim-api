@@ -20,7 +20,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbDeleteCategory', () => {
-  test('Should call CheckPatrimonyByCategoryIdRepository with correct value', async () => {
+  test('Should call DeleteCategoryRepository with correct value', async () => {
     const { sut, deleteCategoryRepositorySpy } = makeSut()
     const params = mockDeleteCategoryParams()
     await sut.delete(params)
@@ -31,7 +31,10 @@ describe('DbDeleteCategory', () => {
     const { sut, checkPatrimonyByCategoryIdRepositorySpy } = makeSut()
     const params = mockDeleteCategoryParams()
     await sut.delete(params)
-    expect(checkPatrimonyByCategoryIdRepositorySpy.params).toEqual({ categoryId: params.id })
+    expect(checkPatrimonyByCategoryIdRepositorySpy.params).toEqual({
+      categoryId: params.id,
+      accountId: params.accountId
+    })
   })
 
   test('Should return null if CheckPatrimonyByCategoryIdRepository return true', async () => {

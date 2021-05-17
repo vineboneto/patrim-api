@@ -43,7 +43,7 @@ export const makePatrimony = async (): Promise<Props> => {
   return patrimony
 }
 
-export const makeManyPatrimonies = async (): Promise<PatrimonyModel[]> => {
+export const makeManyPatrimonies = async (): Promise<Props[]> => {
   const prismaClient = PrismaHelper.getConnection()
   const patrimoniesArray = await patrimonies()
   await prismaClient.patrimony.createMany({
@@ -59,7 +59,7 @@ export const makeManyPatrimonies = async (): Promise<PatrimonyModel[]> => {
       }
     }
   })
-  return patrimoniesPrisma.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+  return patrimoniesPrisma
 }
 
 export const findPatrimonyById = async (id: number): Promise<PatrimonyModel> => {

@@ -25,5 +25,6 @@ export class LoadPatrimonyByIdController implements Controller {
 export namespace LoadPatrimonyByIdController {
   export type Request = {
     id: number
+    accountId: number
   }
 }

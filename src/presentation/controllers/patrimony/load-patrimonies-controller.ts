@@ -10,7 +10,7 @@ export class LoadPatrimoniesController implements Controller {
   async handle (request: LoadPatrimoniesController.Request): Promise<HttpResponse> {
     try {
       const httpResponse = await this.loadPatrimonies.load(request)
-      return httpResponse.length ? ok(httpResponse) : noContent()
+      return httpResponse.model.length ? ok(httpResponse) : noContent()
     } catch (error) {
       return serverError(error)
     }
@@ -19,6 +19,7 @@ export class LoadPatrimoniesController implements Controller {
 
 export namespace LoadPatrimoniesController {
   export type Request = {
+    accountId: number
     skip?: number
     take?: number
   }

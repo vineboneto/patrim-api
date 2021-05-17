@@ -8,7 +8,10 @@ export class DbAddPatrimony implements AddPatrimony {
   ) {}
 
   async add (params: AddPatrimony.Params): Promise<AddPatrimony.Model> {
-    const exists = await this.checkPatrimonyByNumberRepository.checkByNumber(params.number)
+    const exists = await this.checkPatrimonyByNumberRepository.checkByNumber({
+      number: params.number,
+      accountId: params.accountId
+    })
     if (!exists) {
       return this.addPatrimonyRepository.add(params)
     }

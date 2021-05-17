@@ -77,38 +77,47 @@ export class PatrimonyPostgresRepository implements
 
   async loadAll (params: LoadPatrimoniesRepository.Params): Promise<LoadPatrimoniesRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const { skip, take } = params
+    const { skip, take, accountId } = params
     let patrimonies: any
     if (isNaN(skip) || isNaN(take)) {
       patrimonies = await prismaClient.patrimony.findMany({
-        include: this.includesData()
+        include: this.includesData(),
+        where: {
+          userId: Number(accountId)
+        }
       })
     } else {
       patrimonies = await prismaClient.patrimony.findMany({
         include: this.includesData(),
         skip: Number(skip),
-        take: Number(take)
+        take: Number(take),
+        where: {
+          userId: Number(accountId)
+        }
       })
     }
-    return patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+    const total = await prismaClient.patrimony.count()
+    return this.adaptModel(patrimonies, total)
   }
 
   async loadById (params: LoadPatrimonyByIdRepository.Params): Promise<LoadPatrimonyByIdRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const patrimony: any = await prismaClient.patrimony.findFirst({
       where: {
-        id: Number(params.id)
+        id: Number(params.id),
+        userId: Number(params.accountId)
       },
       include: this.includesData()
     })
     return patrimony ? PrismaHelper.adaptPatrimony(patrimony) : null
   }
 
-  async loadByNumber (number: string): Promise<LoadPatrimonyByNumberRepository.Model> {
+  async loadByNumber (params: LoadPatrimonyByNumberRepository.Params): Promise<LoadPatrimonyByNumberRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const patrimony: any = await prismaClient.patrimony.findFirst({
       where: {
-        number
+        number: params.number,
+        userId: Number(params.accountId)
       },
       include: this.includesData()
     })
@@ -144,41 +153,51 @@ export class PatrimonyPostgresRepository implements
   async loadByOwnerId (params: LoadPatrimoniesByOwnerIdRepository.Params):
   Promise<LoadPatrimoniesByOwnerIdRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
+    const whereData = {
+      ownerId: Number(params.ownerId),
+      userId: Number(params.accountId)
+    }
     let patrimonies: any
     if (isNaN(params.skip) || isNaN(params.take)) {
       patrimonies = await prismaClient.patrimony.findMany({
-        where: { ownerId: Number(params.ownerId) },
+        where: whereData,
         include: this.includesData()
       })
     } else {
       patrimonies = await prismaClient.patrimony.findMany({
-        where: { ownerId: Number(params.ownerId) },
+        where: whereData,
         include: this.includesData(),
         skip: Number(params.skip),
         take: Number(params.take)
       })
     }
-    return patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+    const total = await prismaClient.patrimony.count({ where: whereData })
+    return this.adaptModel(patrimonies, total)
   }
 
   async loadByCategoryId (params: LoadPatrimoniesByCategoryIdRepository.Params):
   Promise<LoadPatrimoniesByCategoryIdRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
+    const whereData = {
+      categoryId: Number(params.categoryId),
+      userId: Number(params.accountId)
+    }
     let patrimonies: any
     if (isNaN(params.skip) || isNaN(params.take)) {
       patrimonies = await prismaClient.patrimony.findMany({
-        where: { categoryId: Number(params.categoryId) },
+        where: whereData,
         include: this.includesData()
       })
     } else {
       patrimonies = await prismaClient.patrimony.findMany({
-        where: { categoryId: Number(params.categoryId) },
+        where: whereData,
         include: this.includesData(),
         skip: Number(params.skip),
         take: Number(params.take)
       })
     }
-    return patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+    const total = await prismaClient.patrimony.count({ where: whereData })
+    return this.adaptModel(patrimonies, total)
   }
 
   async checkById (params: CheckPatrimonyByIdRepository.Params): Promise<CheckPatrimonyByIdRepository.Result> {
@@ -195,14 +214,15 @@ export class PatrimonyPostgresRepository implements
     return patrimony !== null
   }
 
-  async checkByNumber (number: string): Promise<boolean> {
+  async checkByNumber (params: CheckPatrimonyByNumberRepository.Params): Promise<boolean> {
     const prismaClient = PrismaHelper.getConnection()
     const patrimony = await prismaClient.patrimony.findFirst({
       select: {
         id: true
       },
       where: {
-        number
+        number: params.number,
+        userId: params.accountId
       }
     })
     return patrimony !== null
@@ -227,16 +247,24 @@ export class PatrimonyPostgresRepository implements
   async checkByCategoryId (params: CheckPatrimonyByCategoryIdRepository.Params):
   Promise<CheckPatrimonyByCategoryIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const { categoryId } = params
+    const { categoryId, accountId } = params
     const patrimony = await prismaClient.patrimony.findFirst({
       select: {
         id: true
       },
       where: {
-        categoryId: Number(categoryId)
+        categoryId: Number(categoryId),
+        userId: Number(accountId)
       }
     })
     return patrimony !== null
+  }
+
+  private adaptModel (patrimonies: any, total: any): any {
+    return {
+      model: patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony)),
+      count: total
+    }
   }
 
   private includesData (): any {

@@ -76,14 +76,17 @@ describe('PatrimonyPostgresRepository', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
       const patrimonyModel: any = await Helper.makePatrimony()
-      const patrimony = await sut.loadById({ id: patrimonyModel.id })
+      const patrimony = await sut.loadById({ id: patrimonyModel.id, accountId: patrimonyModel.userId })
       const patrimony_ = PrismaHelper.adaptPatrimony(patrimonyModel)
       expect(patrimony).toEqual(patrimony_)
     })
 
     test('Should return null on patrimony not exist', async () => {
       const sut = makeSut()
-      const patrimony = await sut.loadById({ id: faker.datatype.number() })
+      const patrimony = await sut.loadById({
+        id: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
       expect(patrimony).toBe(null)
     })
   })
@@ -92,14 +95,20 @@ describe('PatrimonyPostgresRepository', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
       const patrimonyModel: any = await Helper.makePatrimony()
-      const patrimony = await sut.loadByNumber(patrimonyModel.number)
+      const patrimony = await sut.loadByNumber({
+        number: patrimonyModel.number,
+        accountId: patrimonyModel.userId
+      })
       const patrimony_ = PrismaHelper.adaptPatrimony(patrimonyModel)
       expect(patrimony).toEqual(patrimony_)
     })
 
     test('Should return null on patrimony not exist', async () => {
       const sut = makeSut()
-      const patrimony = await sut.loadByNumber(faker.datatype.number().toString())
+      const patrimony = await sut.loadByNumber({
+        number: faker.datatype.number().toString(),
+        accountId: faker.datatype.number()
+      })
       expect(patrimony).toBe(null)
     })
   })
@@ -107,87 +116,121 @@ describe('PatrimonyPostgresRepository', () => {
   describe('loadAll()', () => {
     test('Should return all patrimonies if take and skip is NaN', async () => {
       const sut = makeSut()
-      const patrimonies = await Helper.makeManyPatrimonies()
-      const dataResponse = await sut.loadAll({ skip: Number('adfavzv'), take: Number('adfasdf') })
-      expect(dataResponse).toEqual(patrimonies)
-      expect(dataResponse.length).toBe(3)
+      const patrimonies: any = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadAll({
+        skip: Number('adfavzv'),
+        take: Number('adfasdf'),
+        accountId: patrimonies[0].userId
+      })
+      const patrimonies_ = patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+      expect(dataResponse.model).toEqual(patrimonies_)
+      expect(dataResponse.count).toBe(3)
     })
 
     test('Should return the correctly number of patrimonies if take and skip not undefined', async () => {
       const sut = makeSut()
-      const patrimonies = await Helper.makeManyPatrimonies()
-      const dataResponse = await sut.loadAll({ skip: 0, take: 3 })
-      expect(dataResponse[0]).toEqual(patrimonies[0])
-      expect(dataResponse[1]).toEqual(patrimonies[1])
-      expect(dataResponse[2]).toEqual(patrimonies[2])
-      expect(dataResponse[3]).toBe(undefined)
-      expect(dataResponse.length).toBe(3)
+      const patrimonies: any = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadAll({
+        skip: 0,
+        take: 3,
+        accountId: patrimonies[0].userId
+      })
+      const patrimonies_ = patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+      expect(dataResponse.model[0]).toEqual(patrimonies_[0])
+      expect(dataResponse.model[1]).toEqual(patrimonies_[1])
+      expect(dataResponse.model[2]).toEqual(patrimonies_[2])
+      expect(dataResponse.model[3]).toBe(undefined)
+      expect(dataResponse.count).toBe(3)
     })
 
     test('Should return empty array if load patrimonies is empty', async () => {
       const sut = makeSut()
-      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
-      expect(dataResponse).toEqual([])
+      const dataResponse = await sut.loadAll({
+        skip: NaN,
+        take: NaN,
+        accountId: faker.datatype.number()
+      })
+      expect(dataResponse.model).toEqual([])
     })
   })
 
   describe('loadByOwnerId()', () => {
     test('Should return all patrimonies on success', async () => {
       const sut = makeSut()
-      const patrimonies = await Helper.makeManyPatrimonies()
-      const dataResponse = await sut.loadByOwnerId({ ownerId: patrimonies[0].owner.id })
-      expect(dataResponse).toEqual(patrimonies)
-      expect(dataResponse.length).toBe(3)
+      const patrimonies: any = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadByOwnerId({
+        ownerId: patrimonies[0].Owner.id,
+        accountId: patrimonies[0].userId
+      })
+      const patrimonies_ = patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+      expect(dataResponse.model).toEqual(patrimonies_)
+      expect(dataResponse.count).toBe(3)
     })
 
     test('Should return the correctly number of patrimonies if take and skip not undefined', async () => {
       const sut = makeSut()
-      const patrimonies = await Helper.makeManyPatrimonies()
+      const patrimonies: any = await Helper.makeManyPatrimonies()
       const dataResponse = await sut.loadByOwnerId({
-        ownerId: patrimonies[0].owner.id,
+        ownerId: patrimonies[0].Owner.id,
         skip: 0,
-        take: 2
+        take: 2,
+        accountId: patrimonies[0].userId
       })
-      expect(dataResponse[0]).toEqual(patrimonies[0])
-      expect(dataResponse[1]).toEqual(patrimonies[1])
-      expect(dataResponse[2]).toBe(undefined)
-      expect(dataResponse.length).toBe(2)
+      const patrimonies_ = patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+      expect(dataResponse.model[0]).toEqual(patrimonies_[0])
+      expect(dataResponse.model[1]).toEqual(patrimonies_[1])
+      expect(dataResponse.model[2]).toBe(undefined)
+      expect(dataResponse.model.length).toBe(2)
+      expect(dataResponse.count).toBe(3)
     })
 
     test('Should return empty array if load patrimonies is empty', async () => {
       const sut = makeSut()
-      const dataResponse = await sut.loadByOwnerId({ ownerId: faker.datatype.number() })
-      expect(dataResponse).toEqual([])
+      const dataResponse = await sut.loadByOwnerId({
+        ownerId: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
+      expect(dataResponse.model).toEqual([])
     })
   })
 
   describe('loadByCategoryId()', () => {
     test('Should return all patrimonies on success', async () => {
       const sut = makeSut()
-      const patrimonies = await Helper.makeManyPatrimonies()
-      const dataResponse = await sut.loadByCategoryId({ categoryId: patrimonies[0].category.id })
-      expect(dataResponse).toEqual(patrimonies)
-      expect(dataResponse.length).toBe(3)
+      const patrimonies: any = await Helper.makeManyPatrimonies()
+      const dataResponse = await sut.loadByCategoryId({
+        categoryId: patrimonies[0].Category.id,
+        accountId: patrimonies[0].userId
+      })
+      const patrimonies_ = patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+      expect(dataResponse.model).toEqual(patrimonies_)
+      expect(dataResponse.count).toBe(3)
     })
 
     test('Should return the correctly number of patrimonies if take and skip not undefined', async () => {
       const sut = makeSut()
-      const patrimonies = await Helper.makeManyPatrimonies()
+      const patrimonies: any = await Helper.makeManyPatrimonies()
       const dataResponse = await sut.loadByCategoryId({
-        categoryId: patrimonies[0].category.id,
+        categoryId: patrimonies[0].Category.id,
         skip: 0,
-        take: 2
+        take: 2,
+        accountId: patrimonies[0].userId
       })
-      expect(dataResponse[0]).toEqual(patrimonies[0])
-      expect(dataResponse[1]).toEqual(patrimonies[1])
-      expect(dataResponse[2]).toBe(undefined)
-      expect(dataResponse.length).toBe(2)
+      const patrimonies_ = patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+      expect(dataResponse.model[0]).toEqual(patrimonies_[0])
+      expect(dataResponse.model[1]).toEqual(patrimonies_[1])
+      expect(dataResponse.model[2]).toBe(undefined)
+      expect(dataResponse.model.length).toBe(2)
+      expect(dataResponse.count).toBe(3)
     })
 
     test('Should return empty array if load patrimonies is empty', async () => {
       const sut = makeSut()
-      const dataResponse = await sut.loadByCategoryId({ categoryId: faker.datatype.number() })
-      expect(dataResponse).toEqual([])
+      const dataResponse = await sut.loadByCategoryId({
+        categoryId: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
+      expect(dataResponse.model).toEqual([])
     })
   })
 
@@ -257,14 +300,20 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByNumber()', () => {
     test('Should return true if exists number patrimony', async () => {
       const sut = makeSut()
-      const { number } = await Helper.makePatrimony()
-      const exists = await sut.checkByNumber(number)
+      const { number, userId } = await Helper.makePatrimony()
+      const exists = await sut.checkByNumber({
+        number,
+        accountId: userId
+      })
       expect(exists).toBe(true)
     })
 
     test('Should return false if not exists number patrimony', async () => {
       const sut = makeSut()
-      const exists = await sut.checkByNumber(faker.datatype.number().toString())
+      const exists = await sut.checkByNumber({
+        number: faker.datatype.number().toString(),
+        accountId: faker.datatype.number()
+      })
       expect(exists).toBe(false)
     })
   })
@@ -272,14 +321,20 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByOwnerId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { Category } = await Helper.makePatrimony()
-      const exists = await sut.checkByCategoryId({ categoryId: Category.id })
+      const { Category, userId } = await Helper.makePatrimony()
+      const exists = await sut.checkByCategoryId({
+        categoryId: Category.id,
+        accountId: userId
+      })
       expect(exists).toBe(true)
     })
 
     test('Should return false if not exists patrimony', async () => {
       const sut = makeSut()
-      const exists = await sut.checkByCategoryId({ categoryId: faker.datatype.number() })
+      const exists = await sut.checkByCategoryId({
+        categoryId: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
       expect(exists).toBe(false)
     })
   })

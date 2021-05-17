@@ -5,7 +5,8 @@ import { LoadPatrimonyByNumberSpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): LoadPatrimonyByNumberController.Request => ({
-  number: faker.datatype.number().toString()
+  number: faker.datatype.number().toString(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -27,7 +28,7 @@ describe('LoadPatrimonyByNumberController', () => {
     const { sut, loadPatrimonyByNumberSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(loadPatrimonyByNumberSpy.number).toBe(request.number)
+    expect(loadPatrimonyByNumberSpy.params).toBe(request)
   })
 
   test('Should return 200 on success', async () => {

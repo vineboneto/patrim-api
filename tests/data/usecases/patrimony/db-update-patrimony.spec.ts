@@ -2,9 +2,9 @@ import { DbUpdatePatrimony } from '@/data/usecases'
 import {
   CheckPatrimonyByNumberRepositorySpy,
   LoadPatrimonyNumberByIdRepositorySpy,
-  mockUpdatePatrimonyRepositoryParams,
   UpdatePatrimonyRepositorySpy
 } from '@/tests/data/mocks'
+import { mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbUpdatePatrimony
@@ -33,7 +33,7 @@ const makeSut = (): SutTypes => {
 describe('DbUpdatePatrimony', () => {
   test('Should call UpdatePatrimonyRepository with correct values', async () => {
     const { sut, updatePatrimonyRepositorySpy } = makeSut()
-    const params = mockUpdatePatrimonyRepositoryParams()
+    const params = mockUpdatePatrimonyParams()
     await sut.update(params)
     expect(updatePatrimonyRepositorySpy.params).toEqual(params)
   })
@@ -41,26 +41,26 @@ describe('DbUpdatePatrimony', () => {
   test('Should return null if UpdatePatrimonyRepository return null', async () => {
     const { sut, updatePatrimonyRepositorySpy } = makeSut()
     updatePatrimonyRepositorySpy.model = null
-    const data = await sut.update(mockUpdatePatrimonyRepositoryParams())
+    const data = await sut.update(mockUpdatePatrimonyParams())
     expect(data).toBe(null)
   })
 
   test('Should return patrimony on success', async () => {
     const { sut, updatePatrimonyRepositorySpy } = makeSut()
-    const data = await sut.update(mockUpdatePatrimonyRepositoryParams())
+    const data = await sut.update(mockUpdatePatrimonyParams())
     expect(data).toEqual(updatePatrimonyRepositorySpy.model)
   })
 
   test('Should throws if UpdatePatrimonyRepository throw', async () => {
     const { sut, updatePatrimonyRepositorySpy } = makeSut()
     jest.spyOn(updatePatrimonyRepositorySpy, 'update').mockRejectedValueOnce(new Error())
-    const promise = sut.update(mockUpdatePatrimonyRepositoryParams())
+    const promise = sut.update(mockUpdatePatrimonyParams())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call LoadPatrimonyNumberByIdRepository with correct values', async () => {
     const { sut, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
-    const params = mockUpdatePatrimonyRepositoryParams()
+    const params = mockUpdatePatrimonyParams()
     await sut.update(params)
     expect(loadPatrimonyNumberByIdRepositorySpy.id).toEqual(params.id)
   })
@@ -69,7 +69,7 @@ describe('DbUpdatePatrimony', () => {
     const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
     loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
     checkPatrimonyByNumberRepositorySpy.result = true
-    const params = mockUpdatePatrimonyRepositoryParams()
+    const params = mockUpdatePatrimonyParams()
     const data = await sut.update(params)
     expect(data).toBe(null)
   })
@@ -77,23 +77,26 @@ describe('DbUpdatePatrimony', () => {
   test('Should throws if LoadPatrimonyNumberByIdRepository throw', async () => {
     const { sut, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
     jest.spyOn(loadPatrimonyNumberByIdRepositorySpy, 'loadNumberById').mockRejectedValueOnce(new Error())
-    const promise = sut.update(mockUpdatePatrimonyRepositoryParams())
+    const promise = sut.update(mockUpdatePatrimonyParams())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call CheckPatrimonyByNumberRepository with correct values', async () => {
     const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
     loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
-    const params = mockUpdatePatrimonyRepositoryParams()
+    const params = mockUpdatePatrimonyParams()
     await sut.update(params)
-    expect(checkPatrimonyByNumberRepositorySpy.number).toBe(params.number)
+    expect(checkPatrimonyByNumberRepositorySpy.params).toEqual({
+      accountId: params.accountId,
+      number: params.number
+    })
   })
 
   test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
     const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
     loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
     checkPatrimonyByNumberRepositorySpy.result = true
-    const params = mockUpdatePatrimonyRepositoryParams()
+    const params = mockUpdatePatrimonyParams()
     const data = await sut.update(params)
     expect(data).toBe(null)
   })
@@ -102,7 +105,7 @@ describe('DbUpdatePatrimony', () => {
     const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
     loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
     jest.spyOn(checkPatrimonyByNumberRepositorySpy, 'checkByNumber').mockRejectedValueOnce(new Error())
-    const promise = sut.update(mockUpdatePatrimonyRepositoryParams())
+    const promise = sut.update(mockUpdatePatrimonyParams())
     await expect(promise).rejects.toThrow()
   })
 })

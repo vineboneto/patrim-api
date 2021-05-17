@@ -7,6 +7,7 @@ export interface LoadPatrimonyById {
 export namespace LoadPatrimonyById {
   export type Params = {
     id: number
+    accountId: number
   }
   export type Model = PatrimonyModel
 }

@@ -83,8 +83,8 @@ describe('Category Routes', () => {
 
   describe('GET /categories/:id/patrimonies', () => {
     test('Should return 200 on load patrimonies by category id', async () => {
-      const { accessToken } = await makeAccessToken()
       const patrimonies = await Helper.makeManyPatrimonies()
+      const { accessToken } = await makeAccessToken(patrimonies[0].userId)
       await request(app)
         .get(`/api/categories/${patrimonies[0].id}/patrimonies`)
         .set('x-access-token', accessToken)
@@ -92,8 +92,8 @@ describe('Category Routes', () => {
     })
 
     test('Should return 200 on load patrimonies by load categoryId with take and skip', async () => {
-      const { accessToken } = await makeAccessToken()
       const patrimonies = await Helper.makeManyPatrimonies()
+      const { accessToken } = await makeAccessToken(patrimonies[0].userId)
       await request(app)
         .get(`/api/categories/${patrimonies[0].id}/patrimonies?take=2&skip=0`)
         .set('x-access-token', accessToken)
@@ -111,8 +111,8 @@ describe('Category Routes', () => {
 
   describe('DELETE /categories/:id', () => {
     test('Should return category deleted on delete success', async () => {
-      const { accessToken } = await makeAccessToken()
-      const { id } = await Helper.makeCategory()
+      const { id, userId } = await Helper.makeCategory()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
         .delete(`/api/categories/${id}`)
         .set('x-access-token', accessToken)

@@ -6,9 +6,13 @@ export interface LoadPatrimonies {
 
 export namespace LoadPatrimonies {
   export type Params = {
+    accountId: number
     skip?: number
     take?: number
   }
 
-  export type Model = PatrimonyModel[]
+  export type Model = {
+    model: PatrimonyModel[]
+    count: number
+  }
 }

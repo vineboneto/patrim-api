@@ -91,8 +91,8 @@ describe('Owner Routes', () => {
 
   describe('GET /owners/:id/patrimonies', () => {
     test('Should return 200 on load patrimonies by owner id', async () => {
-      const { accessToken } = await makeAccessToken()
       const patrimonies = await Helper.makeManyPatrimonies()
+      const { accessToken } = await makeAccessToken(patrimonies[0].userId)
       await request(app)
         .get(`/api/owners/${patrimonies[0].id}/patrimonies`)
         .set('x-access-token', accessToken)
@@ -100,8 +100,8 @@ describe('Owner Routes', () => {
     })
 
     test('Should return 200 on load patrimonies by load ownerId with take and skip', async () => {
-      const { accessToken } = await makeAccessToken()
       const patrimonies = await Helper.makeManyPatrimonies()
+      const { accessToken } = await makeAccessToken(patrimonies[0].userId)
       await request(app)
         .get(`/api/owners/${patrimonies[0].id}/patrimonies?take=2&skip=0`)
         .set('x-access-token', accessToken)

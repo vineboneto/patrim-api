@@ -6,7 +6,8 @@ import { LoadPatrimonyByIdSpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): LoadPatrimonyByIdController.Request => ({
-  id: faker.datatype.number()
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {

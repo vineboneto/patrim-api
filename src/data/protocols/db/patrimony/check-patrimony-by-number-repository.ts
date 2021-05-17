@@ -1,3 +1,10 @@
 export interface CheckPatrimonyByNumberRepository {
-  checkByNumber (number: string): Promise<boolean>
+  checkByNumber (params: CheckPatrimonyByNumberRepository.Params): Promise<boolean>
+}
+
+export namespace CheckPatrimonyByNumberRepository {
+  export type Params = {
+    number: string
+    accountId: number
+  }
 }
