@@ -49,6 +49,10 @@ export class CategoryPostgresRepository implements
     const categoryDeleted = await prismaClient.category.delete({
       where: {
         id: Number(params.id)
+      },
+      select: {
+        id: true,
+        name: true
       }
     })
     return categoryDeleted
@@ -81,9 +85,13 @@ export class CategoryPostgresRepository implements
 
   async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const { skip, take } = params
+    const { skip, take, accountId } = params
     if (isNaN(skip) || isNaN(take)) {
-      return await prismaClient.category.findMany()
+      return await prismaClient.category.findMany({
+        where: {
+          userId: Number(accountId)
+        }
+      })
     }
     return await prismaClient.category.findMany({
       skip: Number(skip),

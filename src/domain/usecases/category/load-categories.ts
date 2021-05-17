@@ -6,6 +6,7 @@ export interface LoadCategories {
 
 export namespace LoadCategories {
   export type Params = {
+    accountId: number
     skip?: number
     take?: number
   }

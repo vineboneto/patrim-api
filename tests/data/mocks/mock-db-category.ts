@@ -12,7 +12,6 @@ import {
   mockCategoryModel,
   mockCheckCategoryByIdParams,
   mockDeleteCategoryParams,
-  mockLoadCategoriesParams,
   mockUpdateCategoryParams
 } from '@/tests/domain/mocks'
 
@@ -21,9 +20,6 @@ CheckCategoryByIdRepository.Params => mockCheckCategoryByIdParams()
 
 export const mockDeleteCategoryRepositoryParams = ():
 DeleteCategoryRepository.Params => mockDeleteCategoryParams()
-
-export const mockLoadCategoriesRepositoryParams = ():
-LoadCategoriesRepository.Params => mockLoadCategoriesParams()
 
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
   params: AddCategoryRepository.Params

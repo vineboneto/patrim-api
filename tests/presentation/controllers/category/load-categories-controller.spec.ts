@@ -6,7 +6,8 @@ import faker from 'faker'
 
 const mockRequest = (): LoadCategoriesController.Request => ({
   take: faker.datatype.number(),
-  skip: faker.datatype.number()
+  skip: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {

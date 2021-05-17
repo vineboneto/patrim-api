@@ -40,6 +40,7 @@ export const mockDeleteCategoryParams = (): DeleteCategory.Params => ({
 })
 
 export const mockLoadCategoriesParams = (): LoadCategories.Params => ({
+  accountId: faker.datatype.number(),
   skip: faker.datatype.number(),
   take: faker.datatype.number()
 })

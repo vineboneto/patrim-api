@@ -11,17 +11,16 @@ export const makeCategory = async (name?: string): Promise<Category> => {
   }))
 }
 
-export const findCategoryById = async (id: number, userId: number): Promise<Category> => {
+export const findCategoryById = async (id: number): Promise<Category> => {
   const prismaClient = PrismaHelper.getConnection()
   return await prismaClient.category.findFirst({
     where: {
-      id,
-      userId
+      id
     }
   })
 }
 
-export const makeManyCategories = async (): Promise<Category[]> => {
+export const makeManyCategories = async (accountId?: number): Promise<Category[]> => {
   const prismaClient = PrismaHelper.getConnection()
   const params = await dataCategory()
   await prismaClient.category.createMany({

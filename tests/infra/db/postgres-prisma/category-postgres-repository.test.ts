@@ -41,7 +41,7 @@ describe('CategoryPostgresRepository', () => {
         name: 'new_name',
         accountId: userId
       })
-      const { name } = await Helper.findCategoryById(id, userId)
+      const { name } = await Helper.findCategoryById(id)
       expect(model).toBeTruthy()
       expect(name).toBe('new_name')
     })
@@ -66,7 +66,7 @@ describe('CategoryPostgresRepository', () => {
     test('Should return all categories if take and skip is NaN', async () => {
       const sut = makeSut()
       const categories = await Helper.makeManyCategories()
-      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN })
+      const dataResponse = await sut.loadAll({ skip: NaN, take: NaN, accountId: categories[0].userId })
       expect(dataResponse).toEqual(categories)
       expect(dataResponse.length).toBe(3)
     })
@@ -74,7 +74,7 @@ describe('CategoryPostgresRepository', () => {
     test('Should return the correctly number of categories if take and skip not undefined', async () => {
       const sut = makeSut()
       const categories = await Helper.makeManyCategories()
-      const dataResponse = await sut.loadAll({ skip: 0, take: 2 })
+      const dataResponse = await sut.loadAll({ skip: 0, take: 2, accountId: categories[0].userId })
       expect(dataResponse[0]).toEqual(categories[0])
       expect(dataResponse[1]).toEqual(categories[1])
       expect(dataResponse[2]).toBe(undefined)
@@ -83,7 +83,8 @@ describe('CategoryPostgresRepository', () => {
 
     test('Should return empty array if load categories is empty', async () => {
       const sut = makeSut()
-      const dataResponse = await sut.loadAll({ skip: NaN, take: faker.datatype.number() })
+      const { id } = await Helper.makeUser()
+      const dataResponse = await sut.loadAll({ skip: NaN, take: faker.datatype.number(), accountId: id })
       expect(dataResponse).toEqual([])
     })
   })
@@ -124,14 +125,14 @@ describe('CategoryPostgresRepository', () => {
     })
   })
 
-  // describe('delete()', () => {
-  //   test('Should return category on delete success', async () => {
-  //     const sut = makeSut()
-  //     const { id, name } = await Helper.makeCategory()
-  //     const categoryDeleted = await sut.delete({ id })
-  //     const searchCategoryDeleted = await Helper.findCategoryById(id)
-  //     expect(categoryDeleted).toEqual({ id: id, name })
-  //     expect(searchCategoryDeleted).toBeFalsy()
-  //   })
-  // })
+  describe('delete()', () => {
+    test('Should return category on delete success', async () => {
+      const sut = makeSut()
+      const { id, name } = await Helper.makeCategory()
+      const categoryDeleted = await sut.delete({ id })
+      const searchCategoryDeleted = await Helper.findCategoryById(id)
+      expect(categoryDeleted).toEqual({ id: id, name })
+      expect(searchCategoryDeleted).toBeFalsy()
+    })
+  })
 })

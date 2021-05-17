@@ -9,12 +9,12 @@ type Model = {
   accountId: number
 }
 
-export const makeAccessToken = async (): Promise<Model> => {
+export const makeAccessToken = async (accountId?: number): Promise<Model> => {
   const prismaClient = PrismaHelper.getConnection()
   const name = faker.name.findName()
   const email = faker.internet.email()
   const password = faker.internet.password()
-  const { id } = await prismaClient.user.create({
+  const { id: userId } = await prismaClient.user.create({
     data: {
       name,
       email,
@@ -22,6 +22,7 @@ export const makeAccessToken = async (): Promise<Model> => {
       role: 'admin'
     }
   })
+  const id = accountId || userId
   const accessToken = sign({ id: id.toString() }, env.jwtSecret)
   await prismaClient.user.update({
     where: {
