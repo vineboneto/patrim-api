@@ -7,5 +7,6 @@ export namespace LogSwapPatrimonyRepository {
     oldOwnerId: number
     newOwnerId: number
     patrimonyId: number
+    accountId: number
   }
 }

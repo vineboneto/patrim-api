@@ -19,7 +19,8 @@ export class LogPostgresRepository implements LogErrorRepository, LogSwapPatrimo
         date: new Date(),
         newOwnerId: Number(params.newOwnerId),
         oldOwnerId: Number(params.oldOwnerId),
-        patrimonyId: Number(params.patrimonyId)
+        patrimonyId: Number(params.patrimonyId),
+        userId: Number(params.accountId)
       }
     })
   }

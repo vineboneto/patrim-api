@@ -5,11 +5,10 @@ import { UpdatePatrimonyController } from '@/presentation/controllers'
 import { Controller } from '@/presentation/protocols'
 
 export const makeUpdatePatrimonyController = (): Controller => {
-  const updatePatrimony = makeDbUpdatePatrimony()
   const controller = new UpdatePatrimonyController(
     makeUpdatePatrimonyValidation(),
     makeUpdatePatrimonyCheckExist(),
-    makeUpdatePatrimonyDecorator(updatePatrimony)
+    makeUpdatePatrimonyDecorator(makeDbUpdatePatrimony())
   )
   return makeLogControllerDecorator(controller)
 }

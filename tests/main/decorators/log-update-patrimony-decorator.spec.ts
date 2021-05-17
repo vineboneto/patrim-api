@@ -54,7 +54,8 @@ describe('LogUpdatePatrimonyDecorator', () => {
     expect(logSwapPatrimonyRepositorySpy.params).toEqual({
       oldOwnerId: 123,
       newOwnerId: params.ownerId,
-      patrimonyId: params.id
+      patrimonyId: params.id,
+      accountId: params.accountId
     })
   })
 

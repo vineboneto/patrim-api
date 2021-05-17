@@ -42,10 +42,12 @@ describe('LogPostgresRepository', () => {
       const { id: newOwnerId } = await Helper.makeOwner()
       const { id: oldOwnerId } = await Helper.makeOwner()
       const { id: patrimonyId } = await Helper.makePatrimony()
+      const { id: userId } = await Helper.makeUser()
       await sut.logSwap({
         newOwnerId,
         oldOwnerId,
-        patrimonyId
+        patrimonyId,
+        accountId: userId
       })
       const { _all } = await prismaClient.swapPatrimony.count({
         select: {

@@ -14,7 +14,8 @@ export class LogUpdatePatrimonyDecorator implements UpdatePatrimony {
       await this.logSwapPatrimonyRepository.logSwap({
         oldOwnerId: ownerId,
         newOwnerId: params.ownerId,
-        patrimonyId: params.id
+        patrimonyId: params.id,
+        accountId: params.accountId
       })
     }
     return this.updatePatrimony.update(params)
