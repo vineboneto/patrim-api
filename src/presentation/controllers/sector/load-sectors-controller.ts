@@ -10,7 +10,7 @@ export class LoadSectorsController implements Controller {
   async handle (request: LoadSectorsController.Request): Promise<HttpResponse> {
     try {
       const sectors = await this.loadSectors.load(request)
-      return sectors.length ? ok(sectors) : noContent()
+      return sectors.model.length ? ok(sectors) : noContent()
     } catch (error) {
       return serverError(error)
     }
@@ -19,6 +19,7 @@ export class LoadSectorsController implements Controller {
 
 export namespace LoadSectorsController {
   export type Request = {
+    accountId: number
     take?: number
     skip?: number
   }

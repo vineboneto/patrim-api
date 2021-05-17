@@ -8,7 +8,10 @@ export class DbAddSector implements AddSector {
   ) {}
 
   async add (params: AddSector.Params): Promise<AddSector.Model> {
-    const exists = await this.checkSectorByNameRepository.checkByName(params.name)
+    const exists = await this.checkSectorByNameRepository.checkByName({
+      name: params.name,
+      accountId: params.accountId
+    })
     if (!exists) {
       return this.addSectorRepository.add(params)
     }

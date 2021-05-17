@@ -1,5 +1,6 @@
 import { DbCheckSectorById } from '@/data/usecases'
-import { CheckSectorByIdRepositorySpy, mockCheckSectorByIdRepositoryParams } from '@/tests/data/mocks'
+import { CheckSectorByIdRepositorySpy } from '@/tests/data/mocks'
+import { mockCheckSectorByIdParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbCheckSectorById
@@ -18,28 +19,28 @@ const makeSut = (): SutTypes => {
 describe('DbCheckSectorById', () => {
   test('Should call CheckSectorByIdRepository with correct value', async () => {
     const { sut, checkSectorByIdRepositorySpy } = makeSut()
-    const params = mockCheckSectorByIdRepositoryParams()
+    const params = mockCheckSectorByIdParams()
     await sut.checkById(params)
     expect(checkSectorByIdRepositorySpy.params).toEqual(params)
   })
 
   test('Should return true if CheckSectorByIdRepository return true', async () => {
     const { sut } = makeSut()
-    const check = await sut.checkById(mockCheckSectorByIdRepositoryParams())
+    const check = await sut.checkById(mockCheckSectorByIdParams())
     expect(check).toBe(true)
   })
 
   test('Should return false if CheckSectorByIdRepository return false', async () => {
     const { sut, checkSectorByIdRepositorySpy } = makeSut()
     checkSectorByIdRepositorySpy.result = false
-    const check = await sut.checkById(mockCheckSectorByIdRepositoryParams())
+    const check = await sut.checkById(mockCheckSectorByIdParams())
     expect(check).toBe(false)
   })
 
   test('Should throws if CheckSectorByIdRepository throws', async () => {
     const { sut, checkSectorByIdRepositorySpy } = makeSut()
     jest.spyOn(checkSectorByIdRepositorySpy, 'checkById').mockRejectedValueOnce(new Error())
-    const promise = sut.checkById(mockCheckSectorByIdRepositoryParams())
+    const promise = sut.checkById(mockCheckSectorByIdParams())
     await expect(promise).rejects.toThrow()
   })
 })

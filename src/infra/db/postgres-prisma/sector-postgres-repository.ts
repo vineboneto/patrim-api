@@ -18,12 +18,14 @@ export class SectorPostgresRepository implements
   LoadSectorsRepository,
   LoadSectorNameByIdRepository {
   async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
-    const { name } = sector
+    const { name, accountId } = sector
     const prismaClient = PrismaHelper.getConnection()
-    const sectorModel = await prismaClient.sector.create({
+    const sectorModel: any = await prismaClient.sector.create({
       data: {
-        name
-      }
+        name,
+        userId: Number(accountId)
+      },
+      select: this.selectData()
     })
     return sectorModel
   }
@@ -31,23 +33,25 @@ export class SectorPostgresRepository implements
   async update (sector: UpdateSectorRepository.Params): Promise<UpdateSectorRepository.Model> {
     const { id, name } = sector
     const prismaClient = PrismaHelper.getConnection()
-    const sectorModel = await prismaClient.sector.update({
+    const sectorModel: any = await prismaClient.sector.update({
       where: {
         id: Number(id)
       },
       data: {
         name
-      }
+      },
+      select: this.selectData()
     })
     return sectorModel
   }
 
   async delete (params: DeleteSectorRepository.Params): Promise<DeleteSectorRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const sectorDeleted = await prismaClient.sector.delete({
+    const sectorDeleted: any = await prismaClient.sector.delete({
       where: {
         id: Number(params.id)
-      }
+      },
+      select: this.selectData()
     })
     return sectorDeleted
   }
@@ -67,21 +71,37 @@ export class SectorPostgresRepository implements
 
   async loadAll (params: LoadSectorsRepository.Params): Promise<LoadSectorsRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const { skip, take } = params
+    const { skip, take, accountId } = params
+    let sectors: any
     if (isNaN(skip) || isNaN(take)) {
-      return await prismaClient.sector.findMany()
+      sectors = await prismaClient.sector.findMany({
+        select: this.selectData(),
+        where: {
+          userId: Number(accountId)
+        }
+      })
+    } else {
+      sectors = await prismaClient.sector.findMany({
+        skip: Number(skip),
+        take: Number(take),
+        where: {
+          userId: Number(accountId)
+        },
+        select: this.selectData()
+      })
     }
-    return await prismaClient.sector.findMany({
-      skip: Number(skip),
-      take: Number(take)
-    })
+    return {
+      model: sectors,
+      count: sectors.length
+    }
   }
 
-  async checkByName (name: string): Promise<boolean> {
+  async checkByName (params: CheckSectorByNameRepository.Params): Promise<boolean> {
     const prismaClient = PrismaHelper.getConnection()
     const sector = await prismaClient.sector.findFirst({
       where: {
-        name: name
+        name: params.name,
+        userId: Number(params.accountId)
       },
       select: {
         id: true
@@ -102,5 +122,12 @@ export class SectorPostgresRepository implements
       }
     })
     return sectorWithOnlyId !== null
+  }
+
+  private selectData (): any {
+    return {
+      id: true,
+      name: true
+    }
   }
 }

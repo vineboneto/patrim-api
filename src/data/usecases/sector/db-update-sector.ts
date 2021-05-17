@@ -15,7 +15,10 @@ export class DbUpdateSector implements UpdateSector {
   async update (params: UpdateSector.Params): Promise<UpdateSector.Model> {
     const { name } = await this.loadSectorNameByIdRepository.loadNameById(params.id)
     if (name !== params.name) {
-      const exists = await this.checkSectorByNameRepository.checkByName(params.name)
+      const exists = await this.checkSectorByNameRepository.checkByName({
+        name: params.name,
+        accountId: params.accountId
+      })
       if (exists) {
         return null
       }

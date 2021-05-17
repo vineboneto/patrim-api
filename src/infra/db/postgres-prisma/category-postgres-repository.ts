@@ -96,6 +96,9 @@ export class CategoryPostgresRepository implements
       categories = await prismaClient.category.findMany({
         skip: Number(skip),
         take: Number(take),
+        where: {
+          userId: Number(accountId)
+        },
         select: this.selectData()
       })
     }

@@ -66,8 +66,8 @@ describe('Sector Routes', () => {
     })
 
     test('Should return all sectors', async () => {
-      const { accessToken } = await makeAccessToken()
-      await Helper.makeManySectors()
+      const sectors = await Helper.makeManySectors()
+      const { accessToken } = await makeAccessToken(sectors[0].id)
       await request(app)
         .get('/api/sectors')
         .set('x-access-token', accessToken)

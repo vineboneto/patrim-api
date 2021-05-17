@@ -8,24 +8,10 @@ import {
   LoadSectorNameByIdRepository
 } from '@/data/protocols'
 import {
-  mockAddSectorParams,
-  mockCheckSectorByIdParams,
-  mockDeleteSectorParams,
-  mockLoadSectorsParams,
   mockSectorModel,
   mockSectorsModel,
-  mockUpdateSectorParams
+  mockUpdateCategoryParams
 } from '@/tests/domain/mocks'
-
-export const mockAddSectorRepositoryParams = (): AddSectorRepository.Params => mockAddSectorParams()
-
-export const mockUpdateSectorRepositoryParams = (): UpdateSectorRepository.Params => mockUpdateSectorParams()
-
-export const mockCheckSectorByIdRepositoryParams = (): CheckSectorByIdRepository.Params => mockCheckSectorByIdParams()
-
-export const mockDeleteSectorRepositoryParams = (): DeleteSectorRepository.Params => mockDeleteSectorParams()
-
-export const mockLoadSectorsRepositoryParams = (): LoadSectorsRepository.Params => mockLoadSectorsParams()
 
 export class AddSectorRepositorySpy implements AddSectorRepository {
   params: AddSectorRepository.Params
@@ -56,7 +42,7 @@ export class DeleteSectorRepositorySpy implements DeleteSectorRepository {
 
 export class LoadSectorNameByIdRepositorySpy implements LoadSectorNameByIdRepository {
   id: number
-  model = { name: mockUpdateSectorRepositoryParams().name }
+  model = { name: mockUpdateCategoryParams().name }
   async loadNameById (id: number): Promise<LoadSectorNameByIdRepository.Model> {
     this.id = id
     return this.model
@@ -68,16 +54,19 @@ export class LoadSectorsRepositorySpy implements LoadSectorsRepository {
   params: LoadSectorsRepository.Params
   async loadAll (params: LoadSectorsRepository.Params): Promise<LoadSectorsRepository.Model> {
     this.params = params
-    return this.models
+    return {
+      model: this.models,
+      count: this.models.length
+    }
   }
 }
 
 export class CheckSectorByNameRepositorySpy implements CheckSectorByNameRepository {
-  name: string
+  params: CheckSectorByNameRepository.Params
   result = false
 
-  async checkByName (name: string): Promise<boolean> {
-    this.name = name
+  async checkByName (params: CheckSectorByNameRepository.Params): Promise<boolean> {
+    this.params = params
     return this.result
   }
 }

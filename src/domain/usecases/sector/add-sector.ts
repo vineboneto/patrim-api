@@ -7,6 +7,7 @@ export interface AddSector {
 export namespace AddSector {
   export type Params = {
     name: string
+    accountId: number
   }
 
   export type Model = SectorModel

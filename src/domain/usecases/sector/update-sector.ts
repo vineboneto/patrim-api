@@ -8,6 +8,7 @@ export namespace UpdateSector {
   export type Params = {
     id: number
     name: string
+    accountId: number
   }
 
   export type Model = SectorModel

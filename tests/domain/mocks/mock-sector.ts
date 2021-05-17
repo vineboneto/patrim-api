@@ -15,12 +15,14 @@ export const mockSectorsModel = (): SectorModel[] => ([
 ])
 
 export const mockAddSectorParams = (): AddSector.Params => ({
-  name: faker.name.findName()
+  name: faker.name.findName(),
+  accountId: faker.datatype.number()
 })
 
 export const mockUpdateSectorParams = (): UpdateSector.Params => ({
   id: faker.datatype.number(),
-  name: faker.name.findName()
+  name: faker.name.findName(),
+  accountId: faker.datatype.number()
 })
 
 export const mockCheckSectorByIdParams = (): CheckSectorById.Params => ({
@@ -33,7 +35,8 @@ export const mockDeleteSectorParams = (): DeleteSector.Params => ({
 
 export const mockLoadSectorsParams = (): LoadSectors.Params => ({
   skip: faker.datatype.number(),
-  take: faker.datatype.number()
+  take: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export class UpdateSectorSpy implements UpdateSector {
@@ -55,11 +58,15 @@ export class DeleteSectorSpy implements DeleteSector {
 }
 
 export class LoadSectorsSpy implements LoadSectors {
-  models = mockSectorsModel()
   params: LoadSectors.Params
+  result = {
+    model: mockSectorsModel(),
+    count: mockSectorsModel().length
+  }
+
   async load (params: LoadSectors.Params): Promise<LoadSectors.Model> {
     this.params = params
-    return this.models
+    return this.result
   }
 }
 

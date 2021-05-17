@@ -6,9 +6,13 @@ export interface LoadSectors {
 
 export namespace LoadSectors {
   export type Params = {
+    accountId: number
     skip?: number
     take?: number
   }
 
-  export type Model = SectorModel[]
+  export type Model = {
+    model: SectorModel[]
+    count: number
+  }
 }
