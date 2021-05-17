@@ -20,11 +20,12 @@ export class CategoryPostgresRepository implements
   async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Model> {
     const { name, accountId } = category
     const prismaClient = PrismaHelper.getConnection()
-    const categoryResult = await prismaClient.category.create({
+    const categoryResult: any = await prismaClient.category.create({
       data: {
         name,
         userId: Number(accountId)
-      }
+      },
+      select: this.selectData()
     })
     return categoryResult
   }
@@ -32,28 +33,26 @@ export class CategoryPostgresRepository implements
   async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Model> {
     const { id, name, accountId } = category
     const prismaClient = PrismaHelper.getConnection()
-    const categoryResult = await prismaClient.category.update({
+    const categoryResult: any = await prismaClient.category.update({
       where: {
         id: Number(id)
       },
       data: {
         name,
         userId: Number(accountId)
-      }
+      },
+      select: this.selectData()
     })
     return categoryResult
   }
 
   async delete (params: DeleteCategoryRepository.Params): Promise<DeleteCategoryRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const categoryDeleted = await prismaClient.category.delete({
+    const categoryDeleted: any = await prismaClient.category.delete({
       where: {
         id: Number(params.id)
       },
-      select: {
-        id: true,
-        name: true
-      }
+      select: this.selectData()
     })
     return categoryDeleted
   }
@@ -86,17 +85,22 @@ export class CategoryPostgresRepository implements
   async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { skip, take, accountId } = params
+    let categories: any
     if (isNaN(skip) || isNaN(take)) {
-      return await prismaClient.category.findMany({
+      categories = await prismaClient.category.findMany({
         where: {
           userId: Number(accountId)
-        }
+        },
+        select: this.selectData()
+      })
+    } else {
+      categories = await prismaClient.category.findMany({
+        skip: Number(skip),
+        take: Number(take),
+        select: this.selectData()
       })
     }
-    return await prismaClient.category.findMany({
-      skip: Number(skip),
-      take: Number(take)
-    })
+    return categories
   }
 
   async loadNameById (id: number): Promise<LoadCategoryNameByIdRepository.Model> {
@@ -110,5 +114,12 @@ export class CategoryPostgresRepository implements
       }
     })
     return category
+  }
+
+  private selectData (): any {
+    return {
+      id: true,
+      name: true
+    }
   }
 }
