@@ -6,7 +6,7 @@
 2. [x] Valida se a requisição foi feita por um **usuário**
 3. [x] Retorna **200** com todos os dados se skip e take não forem definidos
 4. [x] Retorna **204** se não tiver nenhum proprietário
-5. [x] Retorna **200** com os dados dos proprietários
+5. [x] Retorna **200** com os dados dos proprietários e total de dados
 
 > ## Exceções
 

@@ -6,7 +6,7 @@
 2. [x] Valida se a requisição foi feita por um **usuário**
 3. [x] Valida se o id é valido
 4. [x] Retorna **204** se não tiver nenhum patrimônio
-5. [x] Retorna **200** com os dados dos patrimônios
+5. [x] Retorna **200** com os dados dos patrimônios eo total de dados
 
 > ## Exceções
 

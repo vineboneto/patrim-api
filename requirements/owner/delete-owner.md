@@ -12,9 +12,9 @@
 > ## Exceções
 
 1. [x] Retorna erro **404** se a API não existir
-2. [x] Retorna erro **403** se não for um admin
+2. [x] Retorna erro **403** se não for um usuário
 2. [x] Retorna erro **403** se o id não for valido
-3. [x] Retorna erro **403** se possuir patrimônios com chave estrangeira
+3. [x] Retorna erro **422** se possuir patrimônios vinculados
 4. [x] Retorna erro **400** se id não for fornecidos pelo client
 5. [x] Retorna erro **400** se o id não for um número
 6. [x] Retorna erro **500** se der erro ao tentar remover o proprietário

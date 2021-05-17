@@ -6,7 +6,7 @@
 2. [x] Valida se a requisição foi feita por um **usuário**
 3. [x] Retorna **200** com todos os dados se skip e take não forem definidos
 4. [x] Retorna **204** se não tiver nenhum setor
-5. [x] Retorna **200** com os dados dos setores
+5. [x] Retorna **200** com os dados dos setores e o total de dados
 
 > ## Exceções
 

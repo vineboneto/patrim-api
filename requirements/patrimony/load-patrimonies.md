@@ -5,7 +5,7 @@
 1. [x] Recebe uma requisição do tipo **GET** na rota **/api/patrimonies?take=#&skip=#**
 2. [x] Valida se a requisição foi feita por um **usuário**
 4. [x] Retorna **204** se não tiver nenhum patrimônio
-5. [x] Retorna **200** com os dados dos patrimônios
+5. [x] Retorna **200** com os dados dos patrimônios e total de dados
 
 > ## Exceções
 
