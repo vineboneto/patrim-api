@@ -79,7 +79,8 @@ describe('CategoryPostgresRepository', () => {
       expect(dataResponse.model[0]).toEqual(categoryWithoutUserId[0])
       expect(dataResponse.model[1]).toEqual(categoryWithoutUserId[1])
       expect(dataResponse.model[2]).toBe(undefined)
-      expect(dataResponse.count).toBe(2)
+      expect(dataResponse.count).toBe(3)
+      expect(dataResponse.model.length).toBe(2)
     })
 
     test('Should return empty array if load categories is empty', async () => {
@@ -129,8 +130,8 @@ describe('CategoryPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return category on delete success', async () => {
       const sut = makeSut()
-      const { id, name } = await Helper.makeCategory()
-      const categoryDeleted = await sut.delete({ id })
+      const { id, name, userId } = await Helper.makeCategory()
+      const categoryDeleted = await sut.delete({ id, accountId: userId })
       const searchCategoryDeleted = await Helper.findCategoryById(id)
       expect(categoryDeleted).toEqual({ id: id, name })
       expect(searchCategoryDeleted).toBeFalsy()

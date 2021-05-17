@@ -101,13 +101,15 @@ describe('OwnerPostgresRepository', () => {
       expect(dataResponse.model[1]).toEqual(ownersWithoutUserId[1])
       expect(dataResponse.model[2]).toEqual(ownersWithoutUserId[2])
       expect(dataResponse.model[3]).toBe(undefined)
-      expect(dataResponse.count).toBe(3)
+      expect(dataResponse.count).toBe(6)
+      expect(dataResponse.model.length).toBe(3)
       const dataResponse2 = await sut.loadAll({ skip: 3, take: 3, accountId: owners[0].userId })
       expect(dataResponse2.model[0]).toEqual(ownersWithoutUserId[3])
       expect(dataResponse2.model[1]).toEqual(ownersWithoutUserId[4])
       expect(dataResponse2.model[2]).toEqual(ownersWithoutUserId[5])
       expect(dataResponse2.model[3]).toEqual(undefined)
-      expect(dataResponse2.count).toBe(3)
+      expect(dataResponse2.count).toBe(6)
+      expect(dataResponse2.model.length).toBe(3)
     })
 
     test('Should return empty array if loadOwner is empty', async () => {

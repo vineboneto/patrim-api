@@ -79,24 +79,23 @@ export class PatrimonyPostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const { skip, take, accountId } = params
     let patrimonies: any
+    const whereData = {
+      userId: Number(accountId)
+    }
     if (isNaN(skip) || isNaN(take)) {
       patrimonies = await prismaClient.patrimony.findMany({
         include: this.includesData(),
-        where: {
-          userId: Number(accountId)
-        }
+        where: whereData
       })
     } else {
       patrimonies = await prismaClient.patrimony.findMany({
         include: this.includesData(),
         skip: Number(skip),
         take: Number(take),
-        where: {
-          userId: Number(accountId)
-        }
+        where: whereData
       })
     }
-    const total = await prismaClient.patrimony.count()
+    const total = await prismaClient.patrimony.count({ where: whereData })
     return this.adaptModel(patrimonies, total)
   }
 

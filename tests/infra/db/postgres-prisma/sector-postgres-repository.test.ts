@@ -49,8 +49,8 @@ describe('SectorPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return sector on delete success', async () => {
       const sut = makeSut()
-      const { id, name } = await Helper.makeSector()
-      const sectorDeleted = await sut.delete({ id })
+      const { id, name, userId } = await Helper.makeSector()
+      const sectorDeleted = await sut.delete({ id, accountId: userId })
       const searchSectorDeleted = await Helper.findSectorById(id)
       expect(sectorDeleted).toEqual({ id: id, name })
       expect(searchSectorDeleted).toBeFalsy()
@@ -90,7 +90,8 @@ describe('SectorPostgresRepository', () => {
       expect(dataResponse.model[0]).toEqual(sectorWithoutUserId[0])
       expect(dataResponse.model[1]).toEqual(sectorWithoutUserId[1])
       expect(dataResponse.model[2]).toBe(undefined)
-      expect(dataResponse.count).toBe(2)
+      expect(dataResponse.count).toBe(3)
+      expect(dataResponse.model.length).toBe(2)
     })
 
     test('Should return empty array if load sectors is empty', async () => {

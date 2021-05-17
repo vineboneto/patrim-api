@@ -84,27 +84,27 @@ export class CategoryPostgresRepository implements
   async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { skip, take, accountId } = params
+    const where = {
+      userId: Number(accountId)
+    }
     let categories: any
     if (isNaN(skip) || isNaN(take)) {
       categories = await prismaClient.category.findMany({
-        where: {
-          userId: Number(accountId)
-        },
+        where,
         select: this.selectData()
       })
     } else {
       categories = await prismaClient.category.findMany({
         skip: Number(skip),
         take: Number(take),
-        where: {
-          userId: Number(accountId)
-        },
+        where,
         select: this.selectData()
       })
     }
+    const count = await prismaClient.category.count({ where })
     return {
       model: categories,
-      count: categories.length
+      count
     }
   }
 

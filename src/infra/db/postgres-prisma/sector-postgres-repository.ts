@@ -73,26 +73,26 @@ export class SectorPostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const { skip, take, accountId } = params
     let sectors: any
+    const where = {
+      userId: Number(accountId)
+    }
     if (isNaN(skip) || isNaN(take)) {
       sectors = await prismaClient.sector.findMany({
         select: this.selectData(),
-        where: {
-          userId: Number(accountId)
-        }
+        where
       })
     } else {
       sectors = await prismaClient.sector.findMany({
         skip: Number(skip),
         take: Number(take),
-        where: {
-          userId: Number(accountId)
-        },
+        where,
         select: this.selectData()
       })
     }
+    const count = await prismaClient.sector.count({ where })
     return {
       model: sectors,
-      count: sectors.length
+      count
     }
   }
 
