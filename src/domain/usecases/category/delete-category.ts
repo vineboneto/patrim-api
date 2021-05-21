@@ -7,7 +7,6 @@ export interface DeleteCategory {
 export namespace DeleteCategory {
   export type Params = {
     id: number
-    accountId: number
   }
 
   export type Model = CategoryModel

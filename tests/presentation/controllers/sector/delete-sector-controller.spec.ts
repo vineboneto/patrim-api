@@ -7,8 +7,7 @@ import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import faker from 'faker'
 
 const mockRequest = (): DeleteSectorController.Request => ({
-  id: faker.datatype.number(),
-  accountId: faker.datatype.number()
+  id: faker.datatype.number()
 })
 
 type SutTypes = {

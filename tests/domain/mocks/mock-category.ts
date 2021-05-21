@@ -36,8 +36,7 @@ export const mockCheckCategoryByIdParams = (): CheckCategoryById.Params => ({
 })
 
 export const mockDeleteCategoryParams = (): DeleteCategory.Params => ({
-  id: faker.datatype.number(),
-  accountId: faker.datatype.number()
+  id: faker.datatype.number()
 })
 
 export const mockLoadCategoriesParams = (): LoadCategories.Params => ({

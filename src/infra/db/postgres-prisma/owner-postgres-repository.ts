@@ -98,11 +98,10 @@ export class OwnerPostgresRepository implements
 
   async checkBySectorId (params: CheckOwnerBySectorIdRepository.Params): Promise<CheckOwnerBySectorIdRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
-    const { sectorId, accountId } = params
+    const { sectorId } = params
     const sectorWithOnlyId = await prismaClient.owner.findFirst({
       where: {
-        sectorId: Number(sectorId),
-        userId: Number(accountId)
+        sectorId: Number(sectorId)
       },
       select: { id: true }
     })

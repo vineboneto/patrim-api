@@ -282,16 +282,15 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByOwnerId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { Owner, userId } = await Helper.makePatrimony()
-      const exists = await sut.checkByOwnerId({ ownerId: Owner.id, accountId: userId })
+      const { Owner } = await Helper.makePatrimony()
+      const exists = await sut.checkByOwnerId({ ownerId: Owner.id })
       expect(exists).toBe(true)
     })
 
     test('Should return false if not exists patrimony', async () => {
       const sut = makeSut()
       const exists = await sut.checkByOwnerId({
-        ownerId: faker.datatype.number(),
-        accountId: faker.datatype.number()
+        ownerId: faker.datatype.number()
       })
       expect(exists).toBe(false)
     })
@@ -321,10 +320,9 @@ describe('PatrimonyPostgresRepository', () => {
   describe('checkByOwnerId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { Category, userId } = await Helper.makePatrimony()
+      const { Category } = await Helper.makePatrimony()
       const exists = await sut.checkByCategoryId({
-        categoryId: Category.id,
-        accountId: userId
+        categoryId: Category.id
       })
       expect(exists).toBe(true)
     })
@@ -332,8 +330,7 @@ describe('PatrimonyPostgresRepository', () => {
     test('Should return false if not exists patrimony', async () => {
       const sut = makeSut()
       const exists = await sut.checkByCategoryId({
-        categoryId: faker.datatype.number(),
-        accountId: faker.datatype.number()
+        categoryId: faker.datatype.number()
       })
       expect(exists).toBe(false)
     })

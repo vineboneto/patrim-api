@@ -34,6 +34,5 @@ export class DeleteSectorController implements Controller {
 export namespace DeleteSectorController {
   export type Request = {
     id: number
-    accountId: number
   }
 }

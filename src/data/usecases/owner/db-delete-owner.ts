@@ -8,13 +8,10 @@ export class DbDeleteOwner implements DeleteOwner {
   ) {}
 
   async delete (params: DeleteOwner.Params): Promise<DeleteOwner.Model> {
-    const { id, accountId } = params
-    const exists = await this.checkPatrimonyByOwnerIdRepository.checkByOwnerId({
-      ownerId: id,
-      accountId
-    })
+    const { id } = params
+    const exists = await this.checkPatrimonyByOwnerIdRepository.checkByOwnerId({ ownerId: id })
     if (!exists) {
-      return this.deleteOwnerRepository.delete({ id, accountId })
+      return this.deleteOwnerRepository.delete({ id })
     }
     return null
   }

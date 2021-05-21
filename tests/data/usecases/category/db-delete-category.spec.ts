@@ -32,8 +32,7 @@ describe('DbDeleteCategory', () => {
     const params = mockDeleteCategoryParams()
     await sut.delete(params)
     expect(checkPatrimonyByCategoryIdRepositorySpy.params).toEqual({
-      categoryId: params.id,
-      accountId: params.accountId
+      categoryId: params.id
     })
   })
 

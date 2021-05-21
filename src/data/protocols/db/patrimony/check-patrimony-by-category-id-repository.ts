@@ -6,7 +6,6 @@ export interface CheckPatrimonyByCategoryIdRepository {
 export namespace CheckPatrimonyByCategoryIdRepository {
   export type Params = {
     categoryId: number
-    accountId: number
   }
   export type Result = boolean
 }

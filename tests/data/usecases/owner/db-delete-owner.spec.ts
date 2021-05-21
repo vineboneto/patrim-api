@@ -52,8 +52,7 @@ describe('DbDeleteOwner', () => {
     const params = mockDeleteOwnerParams()
     await sut.delete(params)
     expect(checkPatrimonyByOwnerIdSpy.params).toEqual({
-      ownerId: params.id,
-      accountId: params.accountId
+      ownerId: params.id
     })
   })
 

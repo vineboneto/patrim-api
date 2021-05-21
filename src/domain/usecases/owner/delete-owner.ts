@@ -7,7 +7,6 @@ export interface DeleteOwner {
 export namespace DeleteOwner {
   export type Params = {
     id: number
-    accountId: number
   }
   export type Model = OwnerModel
 }

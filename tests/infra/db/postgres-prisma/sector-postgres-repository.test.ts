@@ -49,8 +49,8 @@ describe('SectorPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return sector on delete success', async () => {
       const sut = makeSut()
-      const { id, name, userId } = await Helper.makeSector()
-      const sectorDeleted = await sut.delete({ id, accountId: userId })
+      const { id, name } = await Helper.makeSector()
+      const sectorDeleted = await sut.delete({ id })
       const searchSectorDeleted = await Helper.findSectorById(id)
       expect(sectorDeleted).toEqual({ id: id, name })
       expect(searchSectorDeleted).toBeFalsy()

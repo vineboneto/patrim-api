@@ -5,7 +5,6 @@ export interface CheckPatrimonyByOwnerIdRepository {
 export namespace CheckPatrimonyByOwnerIdRepository {
   export type Params = {
     ownerId: number
-    accountId: number
   }
   export type Result = boolean
 }

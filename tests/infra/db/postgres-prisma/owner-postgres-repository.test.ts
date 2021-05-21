@@ -126,8 +126,8 @@ describe('OwnerPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return owner on delete success', async () => {
       const sut = makeSut()
-      const { id, name, Sector, userId } = await Helper.makeOwner()
-      const sectorDeleted = await sut.delete({ id, accountId: userId })
+      const { id, name, Sector } = await Helper.makeOwner()
+      const sectorDeleted = await sut.delete({ id })
       const searchOwnerDeleted = await Helper.findOwnerById(id)
       expect(sectorDeleted.id).toBe(id)
       expect(sectorDeleted.name).toBe(name)
@@ -140,16 +140,15 @@ describe('OwnerPostgresRepository', () => {
   describe('checkBySectorId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
-      const { Sector, userId } = await Helper.makeOwner()
-      const exists = await sut.checkBySectorId({ sectorId: Sector.id, accountId: userId })
+      const { Sector } = await Helper.makeOwner()
+      const exists = await sut.checkBySectorId({ sectorId: Sector.id })
       expect(exists).toBe(true)
     })
 
     test('Should return false if not exists patrimony', async () => {
       const sut = makeSut()
       const exists = await sut.checkBySectorId({
-        sectorId: faker.datatype.number(),
-        accountId: faker.datatype.number()
+        sectorId: faker.datatype.number()
       })
       expect(exists).toBe(false)
     })
