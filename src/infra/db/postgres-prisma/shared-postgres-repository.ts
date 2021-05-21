@@ -1,12 +1,13 @@
-import { CheckExistsIdRepository } from '@/data/protocols'
+import { CheckExistsUserIdRepository } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
-export class SharedPostgresRepository implements CheckExistsIdRepository {
-  async checkId (params: CheckExistsIdRepository.Params): Promise<CheckExistsIdRepository.Model> {
+export class SharedPostgresRepository implements CheckExistsUserIdRepository {
+  async checkUserId (params: CheckExistsUserIdRepository.Params): Promise<CheckExistsUserIdRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const exists = await prismaClient[params.fieldDatabase].findFirst({
+    const { id } = params
+    const exists = await prismaClient[params.database].findFirst({
       where: {
-        id: Number(params.id)
+        userId: Number(id)
       },
       select: {
         id: true

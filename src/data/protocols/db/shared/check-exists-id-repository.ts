@@ -1,11 +1,11 @@
-export interface CheckExistsIdRepository {
-  checkId (params: CheckExistsIdRepository.Params): Promise<CheckExistsIdRepository.Model>
+export interface CheckExistsUserIdRepository {
+  checkUserId (params: CheckExistsUserIdRepository.Params): Promise<CheckExistsUserIdRepository.Model>
 }
 
-export namespace CheckExistsIdRepository {
+export namespace CheckExistsUserIdRepository {
   export type Params = {
     id: number
-    fieldDatabase: string
+    database: string
   }
   export type Model = boolean
 }

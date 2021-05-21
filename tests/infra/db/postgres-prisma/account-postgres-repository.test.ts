@@ -24,21 +24,6 @@ describe('AccountPostgresRepository', () => {
     await Helper.deleteAll()
   })
 
-  describe('checkUserId', () => {
-    test('Should return true if category exists of userId', async () => {
-      const sut = makeSut()
-      const { userId } = await Helper.makeCategory()
-      const isValid = await sut.checkUserId({ id: userId, fieldDatabase: 'category' })
-      expect(isValid).toBe(true)
-    })
-
-    test('Should return false if category not exits userId', async () => {
-      const sut = makeSut()
-      const isValid = await sut.checkUserId({ id: faker.datatype.number(), fieldDatabase: 'category' })
-      expect(isValid).toBe(false)
-    })
-  })
-
   describe('add()', () => {
     test('Should return true on add success', async () => {
       const sut = makeSut()
