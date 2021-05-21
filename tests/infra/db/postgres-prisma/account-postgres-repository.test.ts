@@ -29,8 +29,13 @@ describe('AccountPostgresRepository', () => {
       const sut = makeSut()
       const { userId } = await Helper.makeCategory()
       const isValid = await sut.checkUserId({ id: userId, fieldDatabase: 'category' })
-      console.log(isValid)
       expect(isValid).toBe(true)
+    })
+
+    test('Should return false if category not exits userId', async () => {
+      const sut = makeSut()
+      const isValid = await sut.checkUserId({ id: faker.datatype.number(), fieldDatabase: 'category' })
+      expect(isValid).toBe(false)
     })
   })
 
