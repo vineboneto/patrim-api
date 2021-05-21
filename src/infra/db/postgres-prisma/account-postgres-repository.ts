@@ -3,7 +3,8 @@ import {
   CheckAccountByEmailRepository,
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository,
-  LoadAccountByTokenRepository
+  LoadAccountByTokenRepository,
+  CheckUserIdRepository
 } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 
@@ -12,7 +13,8 @@ export class AccountPostgresRepository implements
   CheckAccountByEmailRepository,
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository,
-  LoadAccountByTokenRepository {
+  LoadAccountByTokenRepository,
+  CheckUserIdRepository {
   async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const prismaClient = PrismaHelper.getConnection()
     const { name, email, password } = account
@@ -75,5 +77,19 @@ export class AccountPostgresRepository implements
         accessToken: token
       }
     })
+  }
+
+  async checkUserId (params: CheckUserIdRepository.Params): Promise<CheckUserIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const { id, fieldDatabase } = params
+    const exists = await prismaClient[fieldDatabase].findFirst({
+      where: {
+        userId: Number(id)
+      },
+      select: {
+        id: true
+      }
+    })
+    return exists !== null
   }
 }
