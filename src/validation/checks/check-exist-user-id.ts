@@ -1,20 +1,22 @@
 import { CheckExist } from '@/presentation/protocols'
-import { CheckExistsIdRepository } from '@/data/protocols'
-import { InvalidParamError } from '@/presentation/errors'
+import { CheckExistsUserIdRepository } from '@/data/protocols'
+import { AccessDeniedError } from '@/presentation/errors'
+
+const field = 'accountId'
 
 export class CheckExistUserId implements CheckExist {
   constructor (
-    private readonly checkExistsIdRepository: CheckExistsIdRepository,
-    private readonly fieldName: string
+    private readonly checkExistsIdRepository: CheckExistsUserIdRepository,
+    private readonly database: string
   ) {}
 
   async check (input: object): Promise<Error> {
-    const isValid = await this.checkExistsIdRepository.checkId({
-      id: input[this.fieldName],
-      fieldDatabase: this.fieldName
+    const isValid = await this.checkExistsIdRepository.checkUserId({
+      accountId: input[field],
+      database: this.database
     })
     if (!isValid) {
-      return new InvalidParamError(this.fieldName)
+      return new AccessDeniedError()
     }
     return null
   }

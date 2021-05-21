@@ -4,7 +4,7 @@ export interface CheckExistsUserIdRepository {
 
 export namespace CheckExistsUserIdRepository {
   export type Params = {
-    id: number
+    accountId: number
     database: string
   }
   export type Model = boolean

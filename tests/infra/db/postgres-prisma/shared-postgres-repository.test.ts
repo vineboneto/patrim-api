@@ -22,13 +22,13 @@ describe('SharedPostgresRepository', () => {
     test('Should return true if category exists of userId', async () => {
       const sut = makeSut()
       const { userId } = await Helper.makeCategory()
-      const isValid = await sut.checkUserId({ id: userId, database: 'category' })
+      const isValid = await sut.checkUserId({ accountId: userId, database: 'category' })
       expect(isValid).toBe(true)
     })
 
     test('Should return false if category not exits userId', async () => {
       const sut = makeSut()
-      const isValid = await sut.checkUserId({ id: faker.datatype.number(), database: 'category' })
+      const isValid = await sut.checkUserId({ accountId: faker.datatype.number(), database: 'category' })
       expect(isValid).toBe(false)
     })
   })
