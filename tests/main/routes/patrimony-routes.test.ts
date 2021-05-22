@@ -54,8 +54,8 @@ describe('Patrimony Routes', () => {
 
   describe('PUT /patrimonies', () => {
     test('Should return 200 on update category', async () => {
-      const { accessToken } = await makeAccessToken()
-      const { id, Category, Owner } = await Helper.makePatrimony()
+      const { id, Category, Owner, userId } = await Helper.makePatrimony()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
         .put(`/api/patrimonies/${id}`)
         .set('x-access-token', accessToken)
@@ -67,12 +67,27 @@ describe('Patrimony Routes', () => {
         })
         .expect(200)
     })
+
+    test('Should return 403 on update category of other user', async () => {
+      const { accessToken } = await makeAccessToken()
+      const { id, Category, Owner } = await Helper.makePatrimony()
+      await request(app)
+        .put(`/api/patrimonies/${id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          number: faker.datatype.number().toString(),
+          brand: faker.random.word(),
+          ownerId: Category.id,
+          categoryId: Owner.id
+        })
+        .expect(403)
+    })
   })
 
   describe('DELETE /patrimonies/:id', () => {
     test('Should return patrimony deleted on delete success', async () => {
-      const { accessToken } = await makeAccessToken()
-      const { id } = await Helper.makePatrimony()
+      const { id, userId } = await Helper.makePatrimony()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
         .delete(`/api/patrimonies/${id}`)
         .set('x-access-token', accessToken)
@@ -80,9 +95,19 @@ describe('Patrimony Routes', () => {
     })
 
     test('Should return 403 if patrimony not exists patrimony', async () => {
-      const { accessToken } = await makeAccessToken()
+      const { userId } = await Helper.makePatrimony()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
         .delete(`/api/patrimonies/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .expect(403)
+    })
+
+    test('Should return 403 if patrimony is other user', async () => {
+      const { accessToken } = await makeAccessToken()
+      const { id } = await Helper.makePatrimony()
+      await request(app)
+        .delete(`/api/patrimonies/${id}`)
         .set('x-access-token', accessToken)
         .expect(403)
     })
