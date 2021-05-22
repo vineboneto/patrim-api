@@ -1,5 +1,5 @@
 import { SectorModel } from '@/domain/models'
-import { LoadSectors, DeleteSector, AddSector, CheckSectorById, UpdateSector } from '@/domain/usecases'
+import { LoadSectors, DeleteSector, AddSector, CheckSectorById, UpdateSector, LoadSectorById } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -39,6 +39,11 @@ export const mockLoadSectorsParams = (): LoadSectors.Params => ({
   accountId: faker.datatype.number()
 })
 
+export const mockLoadSectorByIdParams = (): LoadSectorById.Params => ({
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
+})
+
 export class UpdateSectorSpy implements UpdateSector {
   params: UpdateSector.Params
   model = mockSectorModel()
@@ -67,6 +72,15 @@ export class LoadSectorsSpy implements LoadSectors {
   async load (params: LoadSectors.Params): Promise<LoadSectors.Model> {
     this.params = params
     return this.result
+  }
+}
+
+export class LoadSectorByIdSpy implements LoadSectorById {
+  model = mockSectorModel()
+  params: LoadSectorById.Params
+  async loadById (params: LoadSectorById.Params): Promise<LoadSectorById.Model> {
+    this.params = params
+    return this.model
   }
 }
 

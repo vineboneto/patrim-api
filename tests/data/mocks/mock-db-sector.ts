@@ -5,7 +5,8 @@ import {
   DeleteSectorRepository,
   CheckSectorByIdRepository,
   UpdateSectorRepository,
-  LoadSectorNameByIdRepository
+  LoadSectorNameByIdRepository,
+  LoadSectorByIdRepository
 } from '@/data/protocols'
 import {
   mockSectorModel,
@@ -26,6 +27,15 @@ export class UpdateSectorRepositorySpy implements UpdateSectorRepository {
   params: UpdateSectorRepository.Params
   model = mockSectorModel()
   async update (params: UpdateSectorRepository.Params): Promise<UpdateSectorRepository.Model> {
+    this.params = params
+    return this.model
+  }
+}
+
+export class LoadSectorByIdRepositorySpy implements LoadSectorByIdRepository {
+  params: LoadSectorByIdRepository.Params
+  model = mockSectorModel()
+  async loadById (params: LoadSectorByIdRepository.Params): Promise<LoadSectorByIdRepository.Model> {
     this.params = params
     return this.model
   }

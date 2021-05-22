@@ -3,6 +3,7 @@ import {
   CheckSectorByIdRepository,
   CheckSectorByNameRepository,
   DeleteSectorRepository,
+  LoadSectorByIdRepository,
   LoadSectorNameByIdRepository,
   LoadSectorsRepository,
   UpdateSectorRepository
@@ -16,7 +17,8 @@ export class SectorPostgresRepository implements
   CheckSectorByNameRepository,
   CheckSectorByIdRepository,
   LoadSectorsRepository,
-  LoadSectorNameByIdRepository {
+  LoadSectorNameByIdRepository,
+  LoadSectorByIdRepository {
   async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     const { name, accountId } = sector
     const prismaClient = PrismaHelper.getConnection()
@@ -94,6 +96,18 @@ export class SectorPostgresRepository implements
       model: sectors,
       count
     }
+  }
+
+  async loadById (params: LoadSectorByIdRepository.Params): Promise<LoadSectorByIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const sector: any = await prismaClient.sector.findFirst({
+      where: {
+        id: Number(params.id),
+        userId: Number(params.accountId)
+      },
+      select: this.selectData()
+    })
+    return sector
   }
 
   async checkByName (params: CheckSectorByNameRepository.Params): Promise<boolean> {

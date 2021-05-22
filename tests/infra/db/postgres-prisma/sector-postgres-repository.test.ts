@@ -57,6 +57,27 @@ describe('SectorPostgresRepository', () => {
     })
   })
 
+  describe('loadById()', () => {
+    test('Should return sector on success', async () => {
+      const sut = makeSut()
+      const data: any = await Helper.makeSector()
+      const sector = await sut.loadById({ id: data.id, accountId: data.userId })
+      expect(sector).toEqual({
+        id: data.id,
+        name: data.name
+      })
+    })
+
+    test('Should return null if sector not exist', async () => {
+      const sut = makeSut()
+      const sector = await sut.loadById({
+        id: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
+      expect(sector).toBe(null)
+    })
+  })
+
   describe('loadNameById()', () => {
     test('Should return name sector on success', async () => {
       const sut = makeSut()

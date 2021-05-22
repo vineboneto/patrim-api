@@ -2,6 +2,7 @@ import { adaptRoute } from '@/main/adapters'
 import {
   makeAddSectorController,
   makeDeleteSectorController,
+  makeLoadSectorByIdController,
   makeLoadSectorsController,
   makeUpdateSectorController
 } from '@/main/factories/controllers'
@@ -13,5 +14,6 @@ export default (router: Router): void => {
   router.post('/sectors', auth, adaptRoute(makeAddSectorController()))
   router.put('/sectors/:id', auth, adaptRoute(makeUpdateSectorController()))
   router.get('/sectors', auth, adaptRoute(makeLoadSectorsController()))
+  router.get('/sectors/:id', auth, adaptRoute(makeLoadSectorByIdController()))
   router.delete('/sectors/:id', auth, adaptRoute(makeDeleteSectorController()))
 }
