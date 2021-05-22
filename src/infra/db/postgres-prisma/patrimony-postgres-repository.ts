@@ -33,7 +33,7 @@ export class PatrimonyPostgresRepository implements
     const prismaClient = PrismaHelper.getConnection()
     const patrimony: any = await prismaClient.patrimony.create({
       data: {
-        number: params.number,
+        number: params?.number,
         brand: params.brand,
         description: params.description,
         ownerId: Number(params.ownerId),
@@ -52,7 +52,7 @@ export class PatrimonyPostgresRepository implements
         id: Number(params.id)
       },
       data: {
-        number: params.number,
+        number: params?.number,
         brand: params.brand,
         description: params.description,
         ownerId: Number(params.ownerId),

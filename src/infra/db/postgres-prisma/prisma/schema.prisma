@@ -9,7 +9,7 @@ datasource db {
 
 model Patrimony {
   id            Int             @id @default(autoincrement())
-  number        String          
+  number        String?
   brand         String
   description   String?
   categoryId    Int
@@ -25,41 +25,41 @@ model Owner {
   id                                            Int             @id @default(autoincrement())
   name                                          String
   sectorId                                      Int
-  Sector                                        Sector          @relation(fields: [sectorId], references: [id])
-  Patrimony                                     Patrimony[]
   userId                                        Int
-  User                                          User        @relation(fields: [userId], references: [id])  
+  Sector                                        Sector          @relation(fields: [sectorId], references: [id])
+  User                                          User            @relation(fields: [userId], references: [id])
+  Patrimony                                     Patrimony[]
   SwapPatrimony_OwnerToSwapPatrimony_newOwnerId SwapPatrimony[] @relation("OwnerToSwapPatrimony_newOwnerId")
   SwapPatrimony_OwnerToSwapPatrimony_oldOwnerId SwapPatrimony[] @relation("OwnerToSwapPatrimony_oldOwnerId")
 }
 
 model Sector {
-  id        Int     @id @default(autoincrement())
-  name      String
-  userId    Int
-  User      User        @relation(fields: [userId], references: [id])  
-  Owner     Owner[] 
+  id     Int     @id @default(autoincrement())
+  name   String
+  userId Int
+  User   User    @relation(fields: [userId], references: [id])
+  Owner  Owner[]
 }
 
 model Category {
   id        Int         @id @default(autoincrement())
   name      String
   userId    Int
-  User      User        @relation(fields: [userId], references: [id])     
+  User      User        @relation(fields: [userId], references: [id])
   Patrimony Patrimony[]
 }
 
 model User {
-  id            Int         @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   name          String
   password      String
   accessToken   String?
   role          String?
   email         String
-  User          Patrimony[]
   Category      Category[]
-  Sector        Sector[]
   Owner         Owner[]
+  User          Patrimony[]
+  Sector        Sector[]
   SwapPatrimony SwapPatrimony[]
 }
 
@@ -75,9 +75,9 @@ model SwapPatrimony {
   newOwnerId                            Int
   patrimonyId                           Int
   date                                  DateTime
+  userId                                Int
   Owner_OwnerToSwapPatrimony_newOwnerId Owner     @relation("OwnerToSwapPatrimony_newOwnerId", fields: [newOwnerId], references: [id])
   Owner_OwnerToSwapPatrimony_oldOwnerId Owner     @relation("OwnerToSwapPatrimony_oldOwnerId", fields: [oldOwnerId], references: [id])
   Patrimony                             Patrimony @relation(fields: [patrimonyId], references: [id])
-  userId    Int
-  User      User        @relation(fields: [userId], references: [id])  
+  User                                  User      @relation(fields: [userId], references: [id])
 }

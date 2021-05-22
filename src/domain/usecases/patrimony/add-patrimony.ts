@@ -6,7 +6,7 @@ export interface AddPatrimony {
 
 export namespace AddPatrimony {
   export type Params = {
-    number: string
+    number?: string
     brand: string
     description?: string
     categoryId: number

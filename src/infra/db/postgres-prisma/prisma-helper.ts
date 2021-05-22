@@ -28,7 +28,7 @@ export const PrismaHelper = {
   adaptPatrimony (patrimony: PatrimonyPrisma): PatrimonyModel {
     return {
       id: patrimony.id,
-      number: patrimony.number,
+      number: patrimony?.number,
       description: patrimony?.description,
       brand: patrimony.brand,
       category: {

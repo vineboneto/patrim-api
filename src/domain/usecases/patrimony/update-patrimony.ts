@@ -7,7 +7,7 @@ export interface UpdatePatrimony {
 export namespace UpdatePatrimony {
   export type Params = {
     id: number
-    number: string
+    number?: string
     brand: string
     description?: string
     categoryId: number
