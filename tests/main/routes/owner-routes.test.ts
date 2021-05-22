@@ -48,6 +48,18 @@ describe('Owner Routes', () => {
 
   describe('PUT /owners', () => {
     test('Should return 200 on update owner', async () => {
+      const { id, Sector, userId } = await Helper.makeOwner()
+      const { accessToken } = await makeAccessToken(userId)
+      await request(app)
+        .put(`/api/owners/${id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value',
+          sectorId: Sector.id
+        })
+        .expect(200)
+    })
+    test('Should return 200 on update owner', async () => {
       const { accessToken } = await makeAccessToken()
       const { id, Sector } = await Helper.makeOwner()
       await request(app)
@@ -57,7 +69,7 @@ describe('Owner Routes', () => {
           name: 'new_value',
           sectorId: Sector.id
         })
-        .expect(200)
+        .expect(403)
     })
   })
 
@@ -127,13 +139,14 @@ describe('Owner Routes', () => {
         .expect(200)
     })
 
-    test('Should return 403 if patrimony exists', async () => {
-      const { Owner, userId } = await Helper.makePatrimony()
+    test('Should return owner deleted on success', async () => {
+      const { id } = await Helper.makeOwner()
+      const { id: userId } = await Helper.makeUser()
       const { accessToken } = await makeAccessToken(userId)
       await request(app)
-        .delete(`/api/owners/${Owner.id}`)
+        .delete(`/api/owners/${id}`)
         .set('x-access-token', accessToken)
-        .expect(422)
+        .expect(403)
     })
   })
 })
