@@ -44,6 +44,17 @@ describe('Category Routes', () => {
 
   describe('PUT /categories', () => {
     test('Should return 200 on update category', async () => {
+      const { id, userId } = await Helper.makeCategory()
+      const { accessToken } = await makeAccessToken(userId)
+      await request(app)
+        .put(`/api/categories/${id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(200)
+    })
+    test('Should return 403 if category is other user', async () => {
       const { accessToken } = await makeAccessToken()
       const { id } = await Helper.makeCategory()
       await request(app)
@@ -52,7 +63,7 @@ describe('Category Routes', () => {
         .send({
           name: 'new_value'
         })
-        .expect(200)
+        .expect(403)
     })
   })
 
