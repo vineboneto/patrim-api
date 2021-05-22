@@ -7,7 +7,7 @@ import {
 
 export const makeUpdatePatrimonyValidation = (): Validation => {
   const validations: Validation[] = []
-  for (const field of ['id', 'number', 'brand', 'categoryId', 'ownerId']) {
+  for (const field of ['id', 'brand', 'categoryId', 'ownerId']) {
     validations.push(new RequiredFieldValidation(field))
   }
   for (const field of ['id', 'categoryId', 'ownerId']) {
