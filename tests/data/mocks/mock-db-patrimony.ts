@@ -135,8 +135,10 @@ export class CheckPatrimonyByIdRepositorySpy implements CheckPatrimonyByIdReposi
 
 export class CheckPatrimonyByNumberRepositorySpy implements CheckPatrimonyByNumberRepository {
   params: CheckPatrimonyByNumberRepository.Params
+  callsCount = 0
   result = false
   async checkByNumber (params: CheckPatrimonyByNumberRepository.Params): Promise<boolean> {
+    this.callsCount++
     this.params = params
     return this.result
   }

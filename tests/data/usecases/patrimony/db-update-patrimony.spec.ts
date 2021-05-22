@@ -93,6 +93,14 @@ describe('DbUpdatePatrimony', () => {
   })
 
   test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
+    const params = mockUpdatePatrimonyParams()
+    params.number = undefined
+    await sut.update(params)
+    expect(checkPatrimonyByNumberRepositorySpy.callsCount).toBe(0)
+  })
+
+  test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
     const { sut, checkPatrimonyByNumberRepositorySpy, loadPatrimonyNumberByIdRepositorySpy } = makeSut()
     loadPatrimonyNumberByIdRepositorySpy.model.number = 'differentNumber'
     checkPatrimonyByNumberRepositorySpy.result = true

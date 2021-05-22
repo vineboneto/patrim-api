@@ -54,6 +54,14 @@ describe('DbAddPatrimony', () => {
     expect(checkPatrimonyByNumberRepositorySpy.params.number).toBe(params.number)
   })
 
+  test('Should not call CheckPatrimonyByNumberRepository if number is null', async () => {
+    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
+    const params = mockAddPatrimonyParams()
+    params.number = undefined
+    await sut.add(params)
+    expect(checkPatrimonyByNumberRepositorySpy.callsCount).toBe(0)
+  })
+
   test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
     const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
     checkPatrimonyByNumberRepositorySpy.result = true
