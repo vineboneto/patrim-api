@@ -44,6 +44,18 @@ describe('Sector Routes', () => {
 
   describe('PUT /sectors', () => {
     test('Should return 200 on update sector', async () => {
+      const { id, userId } = await Helper.makeSector()
+      const { accessToken } = await makeAccessToken(userId)
+      await request(app)
+        .put(`/api/sectors/${id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'new_value'
+        })
+        .expect(200)
+    })
+
+    test('Should return 403 on update sector other user', async () => {
       const { accessToken } = await makeAccessToken()
       const { id } = await Helper.makeSector()
       await request(app)
@@ -52,7 +64,7 @@ describe('Sector Routes', () => {
         .send({
           name: 'new_value'
         })
-        .expect(200)
+        .expect(403)
     })
   })
 
@@ -83,21 +95,21 @@ describe('Sector Routes', () => {
 
   describe('DELETE /sectors/:id', () => {
     test('Should return sector deleted on delete success', async () => {
-      const { accessToken } = await makeAccessToken()
-      const { id } = await Helper.makeSector()
+      const { id, userId } = await Helper.makeSector()
+      const { accessToken } = await makeAccessToken(userId)
       await request(app)
         .delete(`/api/sectors/${id}`)
         .set('x-access-token', accessToken)
         .expect(200)
     })
 
-    test('Should return 403 if owners exists', async () => {
-      const { Sector, userId } = await Helper.makeOwner()
-      const { accessToken } = await makeAccessToken(userId)
+    test('Should return 403 if other user', async () => {
+      const { accessToken } = await makeAccessToken()
+      const { id } = await Helper.makeSector()
       await request(app)
-        .delete(`/api/sectors/${Sector.id}`)
+        .delete(`/api/sectors/${id}`)
         .set('x-access-token', accessToken)
-        .expect(422)
+        .expect(403)
     })
   })
 })
