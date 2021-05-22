@@ -7,7 +7,8 @@ import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import faker from 'faker'
 
 const mockRequest = (): DeleteCategoryController.Request => ({
-  id: faker.datatype.number()
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 type SutTypes = {
@@ -63,7 +64,7 @@ describe('DeleteCategoryController', () => {
     const { sut, deleteCategorySpy } = makeSut()
     const params = mockRequest()
     await sut.handle(params)
-    expect(deleteCategorySpy.params).toEqual(params)
+    expect(deleteCategorySpy.params).toEqual({ id: params.id })
   })
 
   test('Should return 422 if DeleteCategory return null', async () => {

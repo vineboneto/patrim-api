@@ -20,7 +20,9 @@ export class DeleteCategoryController implements Controller {
       if (existError) {
         return forbidden(existError)
       }
-      const categoryDeleted = await this.deleteCategory.delete(request)
+      const categoryDeleted = await this.deleteCategory.delete({
+        id: request.id
+      })
       if (!categoryDeleted) {
         return unprocessableEntity(new LinkedDataError('categories'))
       }
@@ -34,5 +36,6 @@ export class DeleteCategoryController implements Controller {
 export namespace DeleteCategoryController {
   export type Request = {
     id: number
+    accountId: number
   }
 }

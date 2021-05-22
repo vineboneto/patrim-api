@@ -6,16 +6,16 @@ const field = 'accountId'
 
 export class CheckExistUserId implements CheckExist {
   constructor (
-    private readonly checkExistsIdRepository: CheckExistsUserIdRepository,
+    private readonly checkExistsUserIdRepository: CheckExistsUserIdRepository,
     private readonly database: string
   ) {}
 
   async check (input: object): Promise<Error> {
-    const isValid = await this.checkExistsIdRepository.checkUserId({
+    const exists = await this.checkExistsUserIdRepository.checkUserId({
       accountId: input[field],
       database: this.database
     })
-    if (!isValid) {
+    if (!exists) {
       return new AccessDeniedError()
     }
     return null
