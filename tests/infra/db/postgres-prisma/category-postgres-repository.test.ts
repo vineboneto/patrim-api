@@ -46,6 +46,27 @@ describe('CategoryPostgresRepository', () => {
     })
   })
 
+  describe('loadById()', () => {
+    test('Should return category on success', async () => {
+      const sut = makeSut()
+      const data: any = await Helper.makeCategory()
+      const category = await sut.loadById({ id: data.id, accountId: data.userId })
+      expect(category).toEqual({
+        id: data.id,
+        name: data.name
+      })
+    })
+
+    test('Should return null if category not exist', async () => {
+      const sut = makeSut()
+      const category = await sut.loadById({
+        id: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
+      expect(category).toBe(null)
+    })
+  })
+
   describe('loadNameById()', () => {
     test('Should return name category on success', async () => {
       const sut = makeSut()

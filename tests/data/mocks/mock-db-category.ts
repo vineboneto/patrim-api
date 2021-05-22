@@ -5,7 +5,8 @@ import {
   LoadCategoriesRepository,
   CheckCategoryByIdRepository,
   UpdateCategoryRepository,
-  LoadCategoryNameByIdRepository
+  LoadCategoryNameByIdRepository,
+  LoadCategoryByIdRepository
 } from '@/data/protocols'
 import {
   mockCategoriesModel,
@@ -36,6 +37,15 @@ export class LoadCategoryNameByIdRepositorySpy implements LoadCategoryNameByIdRe
   model = { name: mockUpdateCategoryParams().name }
   async loadNameById (id: number): Promise<LoadCategoryNameByIdRepository.Model> {
     this.id = id
+    return this.model
+  }
+}
+
+export class LoadCategoryByIdRepositorySpy implements LoadCategoryByIdRepository {
+  params: LoadCategoryByIdRepository.Params
+  model = mockCategoryModel()
+  async loadById (params: LoadCategoryByIdRepository.Params): Promise<LoadCategoryByIdRepository.Model> {
+    this.params = params
     return this.model
   }
 }

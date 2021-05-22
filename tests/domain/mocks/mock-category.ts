@@ -4,7 +4,8 @@ import {
   DeleteCategory,
   LoadCategories,
   AddCategory,
-  UpdateCategory
+  UpdateCategory,
+  LoadCategoryById
 } from '@/domain/usecases'
 
 import faker from 'faker'
@@ -45,6 +46,11 @@ export const mockLoadCategoriesParams = (): LoadCategories.Params => ({
   take: faker.datatype.number()
 })
 
+export const mockLoadCategoryByIdParams = (): LoadCategoryById.Params => ({
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
+})
+
 export class UpdateCategorySpy implements UpdateCategory {
   params: UpdateCategory.Params
   model = mockCategoryModel()
@@ -64,6 +70,15 @@ export class LoadCategoriesSpy implements LoadCategories {
   async load (params: LoadCategories.Params): Promise<LoadCategories.Model> {
     this.params = params
     return this.categoriesModel
+  }
+}
+
+export class LoadCategoryByIdSpy implements LoadCategoryById {
+  model = mockCategoryModel()
+  params: LoadCategoryById.Params
+  async loadById (params: LoadCategoryById.Params): Promise<LoadCategoryById.Model> {
+    this.params = params
+    return this.model
   }
 }
 

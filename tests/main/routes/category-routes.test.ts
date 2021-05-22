@@ -120,6 +120,42 @@ describe('Category Routes', () => {
     })
   })
 
+  describe('GET /categories/:id', () => {
+    test('Should return 204 if category not exist', async () => {
+      const { accessToken } = await makeAccessToken()
+      await request(app)
+        .get(`/api/categories/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+
+    test('Should return 204 if category is other user', async () => {
+      const { userId } = await Helper.makeCategory()
+      const { accessToken } = await makeAccessToken(userId)
+      const { id } = await Helper.makeCategory()
+      await request(app)
+        .get(`/api/categories/${id}`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+
+    test('Should return 200 on success', async () => {
+      const { id, userId } = await Helper.makeCategory()
+      const { accessToken } = await makeAccessToken(userId)
+      await request(app)
+        .get(`/api/categories/${id}`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 403 on load without accessToken', async () => {
+      const { id } = await Helper.makeCategory()
+      await request(app)
+        .get(`/api/categories/${id}`)
+        .expect(403)
+    })
+  })
+
   describe('DELETE /categories/:id', () => {
     test('Should return category deleted on delete success', async () => {
       const { id, userId } = await Helper.makeCategory()
