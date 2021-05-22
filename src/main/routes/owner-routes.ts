@@ -4,13 +4,15 @@ import {
   makeLoadOwnersController,
   makeAddOwnerController,
   makeUpdateOwnerController,
-  makeLoadPatrimoniesByOwnerIdController
+  makeLoadPatrimoniesByOwnerIdController,
+  makeLoadOwnerByIdController
 } from '@/main/factories/controllers'
 import { auth } from '@/main/middlewares'
 
 import { Router } from 'express'
 
 export default (router: Router): void => {
+  router.get('/owners/:id', auth, adaptRoute(makeLoadOwnerByIdController()))
   router.get('/owners', auth, adaptRoute(makeLoadOwnersController()))
   router.get('/owners/:id/patrimonies', auth, adaptRoute(makeLoadPatrimoniesByOwnerIdController()))
   router.post('/owners', auth, adaptRoute(makeAddOwnerController()))

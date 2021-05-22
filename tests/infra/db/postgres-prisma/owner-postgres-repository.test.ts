@@ -64,6 +64,25 @@ describe('OwnerPostgresRepository', () => {
     })
   })
 
+  describe('loadById()', () => {
+    test('Should return owner on success', async () => {
+      const sut = makeSut()
+      const ownerModel: any = await Helper.makeOwner()
+      const owner = await sut.loadById({ id: ownerModel.id, accountId: ownerModel.userId })
+      const owner_ = PrismaHelper.adaptOwner(ownerModel)
+      expect(owner).toEqual(owner_)
+    })
+
+    test('Should return null on owner not exist', async () => {
+      const sut = makeSut()
+      const owner = await sut.loadById({
+        id: faker.datatype.number(),
+        accountId: faker.datatype.number()
+      })
+      expect(owner).toBe(null)
+    })
+  })
+
   describe('loadAll()', () => {
     test('Should return all owners if take and skip is NaN', async () => {
       const sut = makeSut()

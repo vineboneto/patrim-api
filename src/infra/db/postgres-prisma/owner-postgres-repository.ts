@@ -4,6 +4,7 @@ import {
   CheckOwnerByIdRepository,
   CheckOwnerBySectorIdRepository,
   DeleteOwnerRepository,
+  LoadOwnerByIdRepository,
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
@@ -94,6 +95,18 @@ export class OwnerPostgresRepository implements
       model: owners.map(owner => PrismaHelper.adaptOwner(owner)),
       count
     }
+  }
+
+  async loadById (params: LoadOwnerByIdRepository.Params): Promise<LoadOwnerByIdRepository.Model> {
+    const prismaClient = PrismaHelper.getConnection()
+    const owner = await prismaClient.owner.findFirst({
+      where: {
+        id: Number(params.id),
+        userId: Number(params.accountId)
+      },
+      include: { Sector: true }
+    })
+    return owner ? PrismaHelper.adaptOwner(owner) : null
   }
 
   async checkBySectorId (params: CheckOwnerBySectorIdRepository.Params): Promise<CheckOwnerBySectorIdRepository.Result> {

@@ -101,6 +101,42 @@ describe('Owner Routes', () => {
     })
   })
 
+  describe('GET /owners/:id', () => {
+    test('Should return 204 if category not exist', async () => {
+      const { accessToken } = await makeAccessToken()
+      await request(app)
+        .get(`/api/owners/${faker.datatype.number()}`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+
+    test('Should return 204 if category is other user', async () => {
+      const { userId } = await Helper.makeSector()
+      const { accessToken } = await makeAccessToken(userId)
+      const { id } = await Helper.makeOwner()
+      await request(app)
+        .get(`/api/owners/${id}`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+
+    test('Should return 200 on success', async () => {
+      const { id, userId } = await Helper.makeOwner()
+      const { accessToken } = await makeAccessToken(userId)
+      await request(app)
+        .get(`/api/owners/${id}`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 403 on load without accessToken', async () => {
+      const { id } = await Helper.makeOwner()
+      await request(app)
+        .get(`/api/owners/${id}`)
+        .expect(403)
+    })
+  })
+
   describe('GET /owners/:id/patrimonies', () => {
     test('Should return 200 on load patrimonies by owner id', async () => {
       const patrimonies = await Helper.makeManyPatrimonies()

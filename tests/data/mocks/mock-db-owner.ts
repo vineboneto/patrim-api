@@ -3,6 +3,7 @@ import {
   CheckOwnerByIdRepository,
   CheckOwnerBySectorIdRepository,
   DeleteOwnerRepository,
+  LoadOwnerByIdRepository,
   LoadOwnersRepository,
   UpdateOwnerRepository
 } from '@/data/protocols'
@@ -45,6 +46,15 @@ export class LoadOwnersRepositorySpy implements LoadOwnersRepository {
   async loadAll (params: LoadOwnersRepository.Params): Promise<LoadOwnersRepository.Model> {
     this.params = params
     return this.result
+  }
+}
+
+export class LoadOwnerByIdRepositorySpy implements LoadOwnerByIdRepository {
+  params: LoadOwnerByIdRepository.Params
+  model = mockOwnerModel()
+  async loadById (params: LoadOwnerByIdRepository.Params): Promise<LoadOwnerByIdRepository.Model> {
+    this.params = params
+    return this.model
   }
 }
 

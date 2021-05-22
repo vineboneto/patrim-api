@@ -1,4 +1,4 @@
-import { CheckOwnerById, DeleteOwner, LoadOwners, AddOwner, UpdateOwner } from '@/domain/usecases'
+import { CheckOwnerById, DeleteOwner, LoadOwners, AddOwner, UpdateOwner, LoadOwnerById } from '@/domain/usecases'
 import { OwnerModel } from '@/domain/models'
 
 import faker from 'faker'
@@ -45,6 +45,11 @@ export const mockLoadOwnersParams = (): LoadOwners.Params => ({
   accountId: faker.datatype.number()
 })
 
+export const mockLoadOwnerByIdParams = (): LoadOwnerById.Params => ({
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
+})
+
 export class UpdateOwnerSpy implements UpdateOwner {
   params: UpdateOwner.Params
   model = mockOwnerModel()
@@ -69,6 +74,15 @@ export class CheckOwnerByIdSpy implements CheckOwnerById {
   async checkById (params: CheckOwnerById.Params): Promise<CheckOwnerById.Result> {
     this.params = params
     return this.result
+  }
+}
+
+export class LoadOwnerByIdSpy implements LoadOwnerById {
+  model = mockOwnerModel()
+  params: LoadOwnerById.Params
+  async loadById (params: LoadOwnerById.Params): Promise<LoadOwnerById.Model> {
+    this.params = params
+    return this.model
   }
 }
 
