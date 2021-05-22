@@ -31,7 +31,7 @@ describe('DbDeleteSector', () => {
     const { sut, checkOwnerBySectorIdRepositorySpy } = makeSut()
     const params = mockDeleteSectorParams()
     await sut.delete(params)
-    expect(checkOwnerBySectorIdRepositorySpy.params).toEqual({ sectorId: params.id, accountId: params.accountId })
+    expect(checkOwnerBySectorIdRepositorySpy.params).toEqual({ sectorId: params.id })
   })
 
   test('Should return null if CheckOwnerBySectorIdRepository return true', async () => {
