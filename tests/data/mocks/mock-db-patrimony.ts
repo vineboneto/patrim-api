@@ -7,6 +7,7 @@ import {
   DeletePatrimonyRepository,
   LoadPatrimoniesByCategoryIdRepository,
   LoadPatrimoniesByOwnerIdRepository,
+  LoadPatrimoniesBySectorIdRepository,
   LoadPatrimoniesRepository,
   LoadPatrimonyByIdRepository,
   LoadPatrimonyByNumberRepository,
@@ -105,6 +106,20 @@ export class LoadPatrimoniesByOwnerIdRepositorySpy implements LoadPatrimoniesByO
 
   async loadByOwnerId (params: LoadPatrimoniesByOwnerIdRepository.Params):
   Promise<LoadPatrimoniesByOwnerIdRepository.Model> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class LoadPatrimoniesBySectorIdRepositorySpy implements LoadPatrimoniesBySectorIdRepository {
+  params: LoadPatrimoniesBySectorIdRepository.Params
+  result = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
+
+  async loadBySectorId (params: LoadPatrimoniesBySectorIdRepository.Params):
+  Promise<LoadPatrimoniesBySectorIdRepository.Model> {
     this.params = params
     return this.result
   }

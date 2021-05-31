@@ -8,7 +8,8 @@ import {
   LoadPatrimonies,
   LoadPatrimonyById,
   LoadPatrimoniesByCategoryId,
-  LoadPatrimonyByNumber
+  LoadPatrimonyByNumber,
+  LoadPatrimoniesBySectorId
 } from '@/domain/usecases'
 
 import faker from 'faker'
@@ -79,6 +80,11 @@ export const mockLoadPatrimonyByIdParams = (): LoadPatrimonyById.Params => ({
 
 export const mockLoadPatrimoniesByOwnerIdParams = (): LoadPatrimoniesByOwnerId.Params => ({
   ownerId: faker.datatype.number(),
+  accountId: faker.datatype.number()
+})
+
+export const mockLoadPatrimoniesBySectorIdParams = (): LoadPatrimoniesBySectorId.Params => ({
+  sectorId: faker.datatype.number(),
   accountId: faker.datatype.number()
 })
 
@@ -167,6 +173,19 @@ export class LoadPatrimoniesByOwnerIdSpy implements LoadPatrimoniesByOwnerId {
   }
 
   async loadByOwnerId (params: LoadPatrimoniesByOwnerId.Params): Promise<LoadPatrimoniesByOwnerId.Model> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class LoadPatrimoniesBySectorIdSpy implements LoadPatrimoniesBySectorId {
+  params: LoadPatrimonies.Params
+  result = {
+    model: mockPatrimoniesModel(),
+    count: mockPatrimoniesModel().length
+  }
+
+  async loadBySectorId (params: LoadPatrimoniesBySectorId.Params): Promise<LoadPatrimoniesBySectorId.Model> {
     this.params = params
     return this.result
   }
