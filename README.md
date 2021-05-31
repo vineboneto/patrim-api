@@ -32,6 +32,7 @@ Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkg
   20. [Listar pelo Id](./requirements/patrimony/load-patrimony-by-id.md)
   21. [Listar pelo categoria](./requirements/patrimony/load-patrimonies-by-categories.md)
   22. [Listar pelo proprietários](./requirements/patrimony/load-patrimonies-by-owners.md)
+  23. [Listar pelo setor](./requirements/patrimony/load-patrimonies-by-sectors.md)
 
 > ### Metodologia de Design
 
