@@ -129,6 +129,34 @@ describe('Sector Routes', () => {
     })
   })
 
+  describe('GET /sectors/:id/patrimonies', () => {
+    test('Should return 200 on load patrimonies by owner id', async () => {
+      const patrimonies = await Helper.makeManyPatrimonies()
+      const { accessToken } = await makeAccessToken(patrimonies[0].userId)
+      await request(app)
+        .get(`/api/sectors/${patrimonies[0].id}/patrimonies`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 200 on load patrimonies by load sectorId with take and skip', async () => {
+      const patrimonies = await Helper.makeManyPatrimonies()
+      const { accessToken } = await makeAccessToken(patrimonies[0].userId)
+      await request(app)
+        .get(`/api/sectors/${patrimonies[0].id}/patrimonies?take=2&skip=0`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+
+    test('Should return 204 on load by sectorId return empty array', async () => {
+      const { accessToken } = await makeAccessToken()
+      await request(app)
+        .get(`/api/sectors/${faker.datatype.number()}/patrimonies`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+  })
+
   describe('DELETE /sectors/:id', () => {
     test('Should return sector deleted on delete success', async () => {
       const { id, userId } = await Helper.makeSector()
