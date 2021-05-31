@@ -9,12 +9,12 @@ const scripts = [
   'npx husky add .config/husky/commit-msg ".git/hooks/commit-msg $1"'
 ]
 
-for (script of scripts) {
+for (const script of scripts) {
   try {
     console.log(script + '👀')
     execSync(script)
     console.log('✔')
   } catch (error) {
-    console.error
+    console.error()
   }
 }

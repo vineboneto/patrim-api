@@ -5,12 +5,12 @@ const scripts = [
   'npx prisma generate --schema=./src/infra/db/postgres-prisma/prisma/schema.prisma'
 ]
 
-for (script of scripts) {
+for (const script of scripts) {
   try {
     console.log(script + ' 👀')
     execSync(script)
     console.log('✔')
   } catch (error) {
-    console.error
+    console.error()
   }
 }

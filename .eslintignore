@@ -3,4 +3,3 @@ node_modules
 *.sql
 *.toml
 dist
-*.js
