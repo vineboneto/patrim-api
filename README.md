@@ -1,6 +1,7 @@
 # Patrim
 
 [![Coverage Status](https://coveralls.io/repos/github/vineboneto/patrim-api/badge.svg?branch=master)](https://coveralls.io/github/vineboneto/patrim-api?branch=master) [![Build Status](https://travis-ci.org/vineboneto/patrim-api.svg?branch=master)](https://travis-ci.com/vineboneto/patrim-api) [![Known Vulnerabilities](https://snyk.io/test/github/vineboneto/patrim-api/badge.svg)](https://snyk.io/test/github/vineboneto/patrim-api)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8fe302817f3841dcf505/maintainability)](https://codeclimate.com/github/vineboneto/patrim-api/maintainability)
 
 
 
