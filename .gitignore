@@ -3,3 +3,4 @@ coverage
 .config
 .env
 dist
+*.log
