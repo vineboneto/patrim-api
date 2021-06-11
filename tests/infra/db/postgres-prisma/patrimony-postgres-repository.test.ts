@@ -19,18 +19,6 @@ describe('PatrimonyPostgresRepository', () => {
     await Helper.deleteAll()
   })
 
-  describe('delete()', () => {
-    test('Should return patrimony deleted on success', async () => {
-      const sut = makeSut()
-      const { id, number } = await Helper.makePatrimony()
-      const patrimony = await sut.delete({ id })
-      const searchPatrimonyDeleted = await Helper.findPatrimonyById(id)
-      expect(patrimony.id).toBe(id)
-      expect(patrimony.number).toBe(number)
-      expect(searchPatrimonyDeleted).toBeFalsy()
-    })
-  })
-
   describe('loadById()', () => {
     test('Should return patrimony on success', async () => {
       const sut = makeSut()
