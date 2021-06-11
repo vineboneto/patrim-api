@@ -1,12 +1,13 @@
 import { makeUpdatePatrimonyDecorator } from '@/main/factories/decorators'
 import { DbUpdatePatrimony } from '@/data/usecases'
 import { UpdatePatrimony } from '@/domain/usecases'
-import { PatrimonyPostgresRepository } from '@/infra/db/postgres-prisma'
+import { PatrimonyPostgresRepository, UpdatePatrimonyPostgres } from '@/infra/db/postgres-prisma'
 
 export const makeDbUpdatePatrimony = (): UpdatePatrimony => {
   const patrimonyPostgresRepository = new PatrimonyPostgresRepository()
+  const updatePatrimonyPostgres = new UpdatePatrimonyPostgres()
   const dbUpdatePatrimony = new DbUpdatePatrimony(
-    patrimonyPostgresRepository,
+    updatePatrimonyPostgres,
     patrimonyPostgresRepository,
     patrimonyPostgresRepository
   )

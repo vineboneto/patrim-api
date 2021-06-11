@@ -5,20 +5,20 @@ import faker from 'faker'
 
 const makeSut = (): AddPatrimonyPostgres => new AddPatrimonyPostgres()
 
-beforeAll(() => {
-  PrismaHelper.connect()
-})
-
-afterAll(async () => {
-  await Helper.deleteAll()
-  PrismaHelper.disconnect()
-})
-
-beforeEach(async () => {
-  await Helper.deleteAll()
-})
-
 describe('add()', () => {
+  beforeAll(() => {
+    PrismaHelper.connect()
+  })
+
+  afterAll(async () => {
+    await Helper.deleteAll()
+    PrismaHelper.disconnect()
+  })
+
+  beforeEach(async () => {
+    await Helper.deleteAll()
+  })
+
   test('Should return patrimony on add success', async () => {
     const sut = makeSut()
     const { id: accountId } = await Helper.makeUser()

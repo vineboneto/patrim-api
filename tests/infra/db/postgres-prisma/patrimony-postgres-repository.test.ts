@@ -19,27 +19,6 @@ describe('PatrimonyPostgresRepository', () => {
     await Helper.deleteAll()
   })
 
-  describe('update()', () => {
-    test('Should return patrimony on update success', async () => {
-      const sut = makeSut()
-      const { id: accountId } = await Helper.makeUser()
-      const { id, description, Owner, Category } = await Helper.makePatrimony()
-      const data = await sut.update({
-        id,
-        brand: 'new_brand',
-        number: 'new_number',
-        ownerId: Owner.id,
-        categoryId: Category.id,
-        accountId
-      })
-      expect(data.brand).toBe('new_brand')
-      expect(data.number).toBe('new_number')
-      expect(data.description).toBe(description)
-      expect(data.owner.id).toBe(Owner.id)
-      expect(data.category.id).toBe(Category.id)
-    })
-  })
-
   describe('delete()', () => {
     test('Should return patrimony deleted on success', async () => {
       const sut = makeSut()

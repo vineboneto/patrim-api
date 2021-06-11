@@ -4,7 +4,6 @@ import {
   LoadPatrimoniesByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByNumberRepository,
-  UpdatePatrimonyRepository,
   CheckPatrimonyByIdRepository,
   LoadPatrimonyOwnerIdByIdRepository,
   LoadPatrimonyNumberByIdRepository,
@@ -17,7 +16,6 @@ import {
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
-  UpdatePatrimonyRepository,
   DeletePatrimonyRepository,
   CheckPatrimonyByNumberRepository,
   LoadPatrimoniesByOwnerIdRepository,
@@ -28,25 +26,6 @@ export class PatrimonyPostgresRepository implements
   LoadPatrimonyByIdRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository {
-  async update (params: UpdatePatrimonyRepository.Params): Promise<UpdatePatrimonyRepository.Model> {
-    const prismaClient = PrismaHelper.getConnection()
-    const patrimony: any = await prismaClient.patrimony.update({
-      where: {
-        id: Number(params.id)
-      },
-      data: {
-        number: params?.number,
-        brand: params.brand,
-        description: params.description,
-        ownerId: Number(params.ownerId),
-        userId: Number(params.accountId),
-        categoryId: Number(params.categoryId)
-      },
-      include: this.includesData()
-    })
-    return PrismaHelper.adaptPatrimony(patrimony)
-  }
-
   async delete (params: DeletePatrimonyRepository.Params): Promise<DeletePatrimonyRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const patrimony: any = await prismaClient.patrimony.delete({
