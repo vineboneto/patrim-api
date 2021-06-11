@@ -3,7 +3,7 @@ import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 const makeSut = (): DeletePatrimonyPostgres => new DeletePatrimonyPostgres()
 
-describe('add()', () => {
+describe('delete()', () => {
   beforeAll(() => {
     PrismaHelper.connect()
   })
