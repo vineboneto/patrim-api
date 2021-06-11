@@ -4,7 +4,6 @@ import {
   LoadPatrimoniesByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByNumberRepository,
-  AddPatrimonyRepository,
   UpdatePatrimonyRepository,
   CheckPatrimonyByIdRepository,
   LoadPatrimonyOwnerIdByIdRepository,
@@ -18,7 +17,6 @@ import {
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
-  AddPatrimonyRepository,
   UpdatePatrimonyRepository,
   DeletePatrimonyRepository,
   CheckPatrimonyByNumberRepository,
@@ -30,22 +28,6 @@ export class PatrimonyPostgresRepository implements
   LoadPatrimonyByIdRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository {
-  async add (params: AddPatrimonyRepository.Params): Promise<AddPatrimonyRepository.Model> {
-    const prismaClient = PrismaHelper.getConnection()
-    const patrimony: any = await prismaClient.patrimony.create({
-      data: {
-        number: params?.number,
-        brand: params.brand,
-        description: params.description,
-        ownerId: Number(params.ownerId),
-        userId: Number(params.accountId),
-        categoryId: Number(params.categoryId)
-      },
-      include: this.includesData()
-    })
-    return PrismaHelper.adaptPatrimony(patrimony)
-  }
-
   async update (params: UpdatePatrimonyRepository.Params): Promise<UpdatePatrimonyRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const patrimony: any = await prismaClient.patrimony.update({

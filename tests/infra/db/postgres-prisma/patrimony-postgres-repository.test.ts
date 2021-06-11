@@ -19,43 +19,6 @@ describe('PatrimonyPostgresRepository', () => {
     await Helper.deleteAll()
   })
 
-  describe('add()', () => {
-    test('Should return patrimony on add success', async () => {
-      const sut = makeSut()
-      const { id: accountId } = await Helper.makeUser()
-      const { id: ownerId } = await Helper.makeOwner()
-      const { id: categoryId } = await Helper.makeCategory()
-      const data = await sut.add({
-        number: faker.datatype.number().toString(),
-        brand: faker.random.word(),
-        description: faker.random.words(),
-        categoryId,
-        ownerId,
-        accountId
-      })
-      expect(data).toBeTruthy()
-      expect(data.category.id).toBe(categoryId)
-      expect(data.owner.id).toBe(ownerId)
-    })
-
-    test('Should return patrimony on add if number is null', async () => {
-      const sut = makeSut()
-      const { id: accountId } = await Helper.makeUser()
-      const { id: ownerId } = await Helper.makeOwner()
-      const { id: categoryId } = await Helper.makeCategory()
-      const data = await sut.add({
-        brand: faker.random.word(),
-        description: faker.random.words(),
-        categoryId,
-        ownerId,
-        accountId
-      })
-      expect(data).toBeTruthy()
-      expect(data.category.id).toBe(categoryId)
-      expect(data.owner.id).toBe(ownerId)
-    })
-  })
-
   describe('update()', () => {
     test('Should return patrimony on update success', async () => {
       const sut = makeSut()
