@@ -1,12 +1,12 @@
 import { PrismaHelper, adaptArrayPatrimony, loadPatrimoniesWhere } from '@/infra/db/postgres-prisma'
-import { LoadPatrimoniesByOwnerIdRepository } from '@/data/protocols'
+import { LoadPatrimoniesByCategoryIdRepository } from '@/data/protocols'
 
-export class LoadPatrimoniesByOwnerIdPostgres implements LoadPatrimoniesByOwnerIdRepository {
-  async loadByOwnerId (params: LoadPatrimoniesByOwnerIdRepository.Params):
-  Promise<LoadPatrimoniesByOwnerIdRepository.Model> {
+export class LoadPatrimoniesByCategoryIdPostgres implements LoadPatrimoniesByCategoryIdRepository {
+  async loadByCategoryId (params: LoadPatrimoniesByCategoryIdRepository.Params):
+  Promise<LoadPatrimoniesByCategoryIdRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const where = {
-      ownerId: Number(params.ownerId),
+      ownerId: Number(params.categoryId),
       userId: Number(params.accountId)
     }
     const patrimonies: any = await loadPatrimoniesWhere(where, params.skip, params.take)
