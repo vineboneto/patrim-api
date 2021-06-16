@@ -43,4 +43,11 @@ describe('DbCheckAccessData', () => {
     const data = await sut.checkAccess(mockCheckAccessDataParams())
     expect(data).toBe(true)
   })
+
+  test('Should CheckAccessDataRepository throws if CheckAccessDataRepository throws', async () => {
+    const { sut, checkAccessDataRepositorySpy } = makeSut()
+    jest.spyOn(checkAccessDataRepositorySpy, 'checkAccess').mockRejectedValueOnce(new Error())
+    const promise = sut.checkAccess(mockCheckAccessDataParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
