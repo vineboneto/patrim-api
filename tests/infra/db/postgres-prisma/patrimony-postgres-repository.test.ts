@@ -19,28 +19,6 @@ describe('PatrimonyPostgresRepository', () => {
     await Helper.deleteAll()
   })
 
-  describe('loadByNumber()', () => {
-    test('Should return patrimony on success', async () => {
-      const sut = makeSut()
-      const patrimonyModel: any = await Helper.makePatrimony()
-      const patrimony = await sut.loadByNumber({
-        number: patrimonyModel.number,
-        accountId: patrimonyModel.userId
-      })
-      const patrimony_ = PrismaHelper.adaptPatrimony(patrimonyModel)
-      expect(patrimony).toEqual(patrimony_)
-    })
-
-    test('Should return null on patrimony not exist', async () => {
-      const sut = makeSut()
-      const patrimony = await sut.loadByNumber({
-        number: faker.datatype.number().toString(),
-        accountId: faker.datatype.number()
-      })
-      expect(patrimony).toBe(null)
-    })
-  })
-
   describe('loadByOwnerId()', () => {
     test('Should return all patrimonies on success', async () => {
       const sut = makeSut()
