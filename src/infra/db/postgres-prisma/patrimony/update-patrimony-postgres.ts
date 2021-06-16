@@ -1,23 +1,16 @@
-import { PrismaHelper, includesDataPatrimony } from '@/infra/db/postgres-prisma'
+import { PrismaHelper, PatrimonyHelper } from '@/infra/db/postgres-prisma'
 import { UpdatePatrimonyRepository } from '@/data/protocols'
 
 export class UpdatePatrimonyPostgres implements UpdatePatrimonyRepository {
   async update (params: UpdatePatrimonyRepository.Params): Promise<UpdatePatrimonyRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
-    const patrimony: any = await prismaClient.patrimony.update({
+    const patrimony = await prismaClient.patrimony.update({
       where: {
         id: Number(params.id)
       },
-      data: {
-        number: params?.number,
-        brand: params.brand,
-        description: params.description,
-        ownerId: Number(params.ownerId),
-        userId: Number(params.accountId),
-        categoryId: Number(params.categoryId)
-      },
-      include: includesDataPatrimony()
+      data: PatrimonyHelper.dataToInsertOrUpdate(params),
+      include: PatrimonyHelper.includesDataPatrimony()
     })
-    return PrismaHelper.adaptPatrimony(patrimony)
+    return PatrimonyHelper.adaptPatrimony(patrimony)
   }
 }

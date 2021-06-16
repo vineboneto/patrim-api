@@ -1,12 +1,6 @@
-import { OwnerModel, PatrimonyModel } from '@/domain/models'
-import { Category, Owner, Patrimony, PrismaClient, Sector } from '@prisma/client'
+import { OwnerModel } from '@/domain/models'
+import { Owner, PrismaClient, Sector } from '@prisma/client'
 
-export type PatrimonyPrisma = Patrimony & {
-  Category: Category
-  Owner: Owner & {
-    Sector: Sector
-  }
-}
 type OwnerPrisma = Owner & { Sector: Sector }
 
 export const PrismaHelper = {
@@ -23,27 +17,6 @@ export const PrismaHelper = {
 
   getConnection (): PrismaClient {
     return this.client
-  },
-
-  adaptPatrimony (patrimony: PatrimonyPrisma): PatrimonyModel {
-    return {
-      id: patrimony.id,
-      number: patrimony?.number,
-      description: patrimony?.description,
-      brand: patrimony.brand,
-      category: {
-        id: patrimony.Category.id,
-        name: patrimony.Category.name
-      },
-      owner: {
-        id: patrimony.Owner.id,
-        name: patrimony.Owner.name,
-        sector: {
-          id: patrimony.Owner.Sector.id,
-          name: patrimony.Owner.Sector.name
-        }
-      }
-    }
   },
 
   adaptOwner (owner: OwnerPrisma): OwnerModel {

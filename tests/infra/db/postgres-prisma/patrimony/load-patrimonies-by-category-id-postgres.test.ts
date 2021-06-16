@@ -1,4 +1,4 @@
-import { LoadPatrimoniesByCategoryIdPostgres, PrismaHelper } from '@/infra/db/postgres-prisma'
+import { LoadPatrimoniesByCategoryIdPostgres, PrismaHelper, PatrimonyHelper } from '@/infra/db/postgres-prisma'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 import faker from 'faker'
@@ -26,7 +26,7 @@ describe('loadByCategoryId()', () => {
       categoryId: patrimonies[0].Category.id,
       accountId: patrimonies[0].userId
     })
-    const patrimonies_ = patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+    const patrimonies_ = patrimonies.map(patrimony => PatrimonyHelper.adaptPatrimony(patrimony))
     expect(dataResponse.model).toEqual(patrimonies_)
     expect(dataResponse.count).toBe(3)
   })
@@ -40,7 +40,7 @@ describe('loadByCategoryId()', () => {
       take: 2,
       accountId: patrimonies[0].userId
     })
-    const patrimonies_ = patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony))
+    const patrimonies_ = patrimonies.map(patrimony => PatrimonyHelper.adaptPatrimony(patrimony))
     expect(dataResponse.model[0]).toEqual(patrimonies_[0])
     expect(dataResponse.model[1]).toEqual(patrimonies_[1])
     expect(dataResponse.model[2]).toBe(undefined)

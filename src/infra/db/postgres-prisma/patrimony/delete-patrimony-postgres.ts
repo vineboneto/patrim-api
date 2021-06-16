@@ -1,4 +1,4 @@
-import { PrismaHelper, includesDataPatrimony } from '@/infra/db/postgres-prisma'
+import { PrismaHelper, PatrimonyHelper } from '@/infra/db/postgres-prisma'
 import { DeletePatrimonyRepository } from '@/data/protocols'
 
 export class DeletePatrimonyPostgres implements DeletePatrimonyRepository {
@@ -8,8 +8,8 @@ export class DeletePatrimonyPostgres implements DeletePatrimonyRepository {
       where: {
         id: Number(params.id)
       },
-      include: includesDataPatrimony()
+      include: PatrimonyHelper.includesDataPatrimony()
     })
-    return PrismaHelper.adaptPatrimony(patrimony)
+    return PatrimonyHelper.adaptPatrimony(patrimony)
   }
 }

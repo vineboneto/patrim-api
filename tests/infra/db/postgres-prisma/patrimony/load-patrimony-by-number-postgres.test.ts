@@ -1,4 +1,4 @@
-import { LoadPatrimonyByNumberPostgres, PrismaHelper } from '@/infra/db/postgres-prisma'
+import { LoadPatrimonyByNumberPostgres, PrismaHelper, PatrimonyHelper } from '@/infra/db/postgres-prisma'
 import * as Helper from '@/tests/infra/db/postgres-prisma/helper'
 
 import faker from 'faker'
@@ -26,7 +26,7 @@ describe('loadByNumber()', () => {
       number: patrimonyModel.number,
       accountId: patrimonyModel.userId
     })
-    const patrimony_ = PrismaHelper.adaptPatrimony(patrimonyModel)
+    const patrimony_ = PatrimonyHelper.adaptPatrimony(patrimonyModel)
     expect(patrimony).toEqual(patrimony_)
   })
 

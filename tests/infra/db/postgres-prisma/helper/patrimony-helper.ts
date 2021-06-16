@@ -1,5 +1,5 @@
 import { PatrimonyModel } from '@/domain/models'
-import { PrismaHelper } from '@/infra/db/postgres-prisma'
+import { PrismaHelper, PatrimonyHelper } from '@/infra/db/postgres-prisma'
 import { makeOwner, makeCategory, makeUser } from '@/tests/infra/db/postgres-prisma/helper'
 import { Category, Owner, Sector } from '@prisma/client'
 
@@ -80,7 +80,7 @@ export const findPatrimonyById = async (id: number): Promise<PatrimonyModel> => 
   if (!patrimony) {
     return null
   }
-  return PrismaHelper.adaptPatrimony(patrimony)
+  return PatrimonyHelper.adaptPatrimony(patrimony)
 }
 
 const patrimonies = async (): Promise<any> => {
