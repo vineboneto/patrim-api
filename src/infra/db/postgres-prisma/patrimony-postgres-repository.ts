@@ -1,7 +1,6 @@
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import {
   CheckPatrimonyByOwnerIdRepository,
-  LoadPatrimoniesByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByNumberRepository,
   CheckPatrimonyByIdRepository,
@@ -13,7 +12,6 @@ import {
 
 export class PatrimonyPostgresRepository implements
   CheckPatrimonyByNumberRepository,
-  LoadPatrimoniesByOwnerIdRepository,
   LoadPatrimoniesByCategoryIdRepository,
   LoadPatrimonyNumberByIdRepository,
   LoadPatrimonyOwnerIdByIdRepository,
@@ -43,31 +41,6 @@ export class PatrimonyPostgresRepository implements
       }
     })
     return patrimony?.ownerId || null
-  }
-
-  async loadByOwnerId (params: LoadPatrimoniesByOwnerIdRepository.Params):
-  Promise<LoadPatrimoniesByOwnerIdRepository.Model> {
-    const prismaClient = PrismaHelper.getConnection()
-    const whereData = {
-      ownerId: Number(params.ownerId),
-      userId: Number(params.accountId)
-    }
-    let patrimonies: any
-    if (isNaN(params.skip) || isNaN(params.take)) {
-      patrimonies = await prismaClient.patrimony.findMany({
-        where: whereData,
-        include: this.includesData()
-      })
-    } else {
-      patrimonies = await prismaClient.patrimony.findMany({
-        where: whereData,
-        include: this.includesData(),
-        skip: Number(params.skip),
-        take: Number(params.take)
-      })
-    }
-    const total = await prismaClient.patrimony.count({ where: whereData })
-    return this.adaptModel(patrimonies, total)
   }
 
   async loadBySectorId (params: LoadPatrimoniesBySectorIdRepository.Params):

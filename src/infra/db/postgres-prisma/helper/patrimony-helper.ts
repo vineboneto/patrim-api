@@ -15,3 +15,19 @@ export const includesDataPatrimony = (): any => ({
     }
   }
 })
+
+export const loadPatrimoniesByWhere = async (where: any, skip?: number, take?: number): Promise<any> => {
+  const prismaClient = PrismaHelper.getConnection()
+  if (isNaN(skip) || isNaN(take)) {
+    return Promise.resolve(prismaClient.patrimony.findMany({
+      where,
+      include: includesDataPatrimony()
+    }))
+  }
+  return Promise.resolve(prismaClient.patrimony.findMany({
+    where,
+    include: includesDataPatrimony(),
+    skip: Number(skip),
+    take: Number(take)
+  }))
+}
