@@ -37,4 +37,10 @@ describe('DbCheckAccessData', () => {
     const data = await sut.checkAccess(mockCheckAccessDataParams())
     expect(data).toBe(false)
   })
+
+  test('Should return true if CheckAccessDataRepository returns true', async () => {
+    const { sut } = makeSut()
+    const data = await sut.checkAccess(mockCheckAccessDataParams())
+    expect(data).toBe(true)
+  })
 })
