@@ -6,7 +6,7 @@ export class CheckAccessDataPostgres implements CheckAccessDataRepository {
     const prismaClient = PrismaHelper.getConnection()
     const access = await prismaClient[params.databaseName].findFirst({
       where: {
-        id: params.id,
+        id: Number(params.id),
         userId: Number(params.accountId)
       },
       select: {

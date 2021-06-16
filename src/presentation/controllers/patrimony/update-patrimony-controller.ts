@@ -1,12 +1,12 @@
-import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
-import { UpdatePatrimony } from '@/domain/usecases'
-import { AlreadyExistsError } from '@/presentation/errors'
+import { UpdatePatrimony, CheckAccessData } from '@/domain/usecases'
+import { AccessDeniedError, AlreadyExistsError } from '@/presentation/errors'
 
 export class UpdatePatrimonyController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly checkExist: CheckExist,
+    private readonly checkAccessData: CheckAccessData,
     private readonly updatePatrimony: UpdatePatrimony
   ) {}
 
@@ -16,10 +16,16 @@ export class UpdatePatrimonyController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const checkError = await this.checkExist.check(request)
-      if (checkError) {
-        return forbidden(checkError)
+
+      const ownAccess = await this.checkAccessData.checkAccess({
+        accountId: request.accountId,
+        dataAccess: this.adaptRequestVerifyAccess(request)
+      })
+
+      if (!ownAccess) {
+        return forbidden(new AccessDeniedError())
       }
+
       const patrimonyModel = await this.updatePatrimony.update(request)
       if (!patrimonyModel) {
         return unprocessableEntity(new AlreadyExistsError(request.number))
@@ -28,6 +34,19 @@ export class UpdatePatrimonyController implements Controller {
     } catch (error) {
       return serverError(error)
     }
+  }
+
+  private adaptRequestVerifyAccess (request: UpdatePatrimonyController.Request): CheckAccessData.DataAccess[] {
+    return [{
+      databaseName: 'patrimony',
+      id: request.id
+    }, {
+      databaseName: 'category',
+      id: request.categoryId
+    }, {
+      databaseName: 'owner',
+      id: request.ownerId
+    }]
   }
 }
 
