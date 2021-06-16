@@ -3,28 +3,13 @@ import {
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
   CheckPatrimonyByNumberRepository,
-  CheckPatrimonyByIdRepository,
-  LoadPatrimonyOwnerIdByIdRepository
+  CheckPatrimonyByIdRepository
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
   CheckPatrimonyByNumberRepository,
-  LoadPatrimonyOwnerIdByIdRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository {
-  async loadOwnerIdById (id: number): Promise<number> {
-    const prismaClient = PrismaHelper.getConnection()
-    const patrimony = await prismaClient.patrimony.findFirst({
-      select: {
-        ownerId: true
-      },
-      where: {
-        id: Number(id)
-      }
-    })
-    return patrimony?.ownerId || null
-  }
-
   async checkById (params: CheckPatrimonyByIdRepository.Params): Promise<CheckPatrimonyByIdRepository.Result> {
     const { id } = params
     const prismaClient = PrismaHelper.getConnection()
@@ -81,23 +66,5 @@ export class PatrimonyPostgresRepository implements
       }
     })
     return patrimony !== null
-  }
-
-  private adaptModel (patrimonies: any, total: any): any {
-    return {
-      model: patrimonies.map(patrimony => PrismaHelper.adaptPatrimony(patrimony)),
-      count: total
-    }
-  }
-
-  private includesData (): any {
-    return {
-      Category: true,
-      Owner: {
-        include: {
-          Sector: true
-        }
-      }
-    }
   }
 }

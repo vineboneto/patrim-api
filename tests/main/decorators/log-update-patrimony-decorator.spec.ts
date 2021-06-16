@@ -1,6 +1,6 @@
 import { LogUpdatePatrimonyDecorator } from '@/main/decorators'
 import { LogSwapPatrimonyRepository } from '@/data/protocols'
-import { LoadPatrimonyOwnerIdByIdRepositorySpy } from '@/tests/data/mocks'
+import { LoadPatrimonyFieldByIdRepositorySpy } from '@/tests/data/mocks'
 import { UpdatePatrimonySpy, mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
 
 class LogSwapPatrimonyRepositorySpy implements LogSwapPatrimonyRepository {
@@ -15,13 +15,13 @@ class LogSwapPatrimonyRepositorySpy implements LogSwapPatrimonyRepository {
 
 type SutTypes = {
   sut: LogUpdatePatrimonyDecorator
-  loadPatrimonyOwnerIdByIdRepositorySpy: LoadPatrimonyOwnerIdByIdRepositorySpy
+  loadPatrimonyOwnerIdByIdRepositorySpy: LoadPatrimonyFieldByIdRepositorySpy
   logSwapPatrimonyRepositorySpy: LogSwapPatrimonyRepositorySpy
   updatePatrimonySpy: UpdatePatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
-  const loadPatrimonyOwnerIdByIdRepositorySpy = new LoadPatrimonyOwnerIdByIdRepositorySpy()
+  const loadPatrimonyOwnerIdByIdRepositorySpy = new LoadPatrimonyFieldByIdRepositorySpy()
   const logSwapPatrimonyRepositorySpy = new LogSwapPatrimonyRepositorySpy()
   const updatePatrimonySpy = new UpdatePatrimonySpy()
   const sut = new LogUpdatePatrimonyDecorator(
@@ -48,7 +48,7 @@ describe('LogUpdatePatrimonyDecorator', () => {
   test('Should call LogSwapPatrimonyRepository with correct value', async () => {
     const { sut, logSwapPatrimonyRepositorySpy, loadPatrimonyOwnerIdByIdRepositorySpy } = makeSut()
     const params = mockUpdatePatrimonyParams()
-    loadPatrimonyOwnerIdByIdRepositorySpy.ownerId = 123
+    loadPatrimonyOwnerIdByIdRepositorySpy.data = 123
     params.ownerId = 456
     await sut.update(params)
     expect(logSwapPatrimonyRepositorySpy.params).toEqual({
@@ -62,7 +62,7 @@ describe('LogUpdatePatrimonyDecorator', () => {
   test('Should not call LogSwapPatrimonyRepository if equals ownerIds', async () => {
     const { sut, logSwapPatrimonyRepositorySpy, loadPatrimonyOwnerIdByIdRepositorySpy } = makeSut()
     const params = mockUpdatePatrimonyParams()
-    loadPatrimonyOwnerIdByIdRepositorySpy.ownerId = 123
+    loadPatrimonyOwnerIdByIdRepositorySpy.data = 123
     params.ownerId = 123
     await sut.update(params)
     expect(logSwapPatrimonyRepositorySpy.callsCount).toBe(0)
