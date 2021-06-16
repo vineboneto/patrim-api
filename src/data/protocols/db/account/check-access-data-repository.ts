@@ -4,7 +4,8 @@ export interface CheckAccessDataRepository {
 
 export namespace CheckAccessDataRepository {
   export type Params = {
-    id: number
     accountId: number
+    databaseName: string
+    id: number
   }
 }
