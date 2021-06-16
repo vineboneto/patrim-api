@@ -1,14 +1,14 @@
 import { UpdatePatrimony } from '@/domain/usecases'
 import {
   CheckPatrimonyByNumberRepository,
-  LoadPatrimonyNumberByIdRepository,
+  LoadPatrimonyFieldByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
 
 export class DbUpdatePatrimony implements UpdatePatrimony {
   constructor (
     private readonly updatePatrimonyRepository: UpdatePatrimonyRepository,
-    private readonly loadPatrimonyNumberByIdRepository: LoadPatrimonyNumberByIdRepository,
+    private readonly loadPatrimonyNumberByIdRepository: LoadPatrimonyFieldByIdRepository,
     private readonly checkPatrimonyByNumberRepository: CheckPatrimonyByNumberRepository
   ) {}
 
@@ -16,7 +16,7 @@ export class DbUpdatePatrimony implements UpdatePatrimony {
     if (!params.number) {
       return this.updatePatrimonyRepository.update(params)
     }
-    const { number } = await this.loadPatrimonyNumberByIdRepository.loadNumberById(params.id)
+    const number = await this.loadPatrimonyNumberByIdRepository.loadFieldById(params.id)
     if (number !== params.number) {
       const exists = await this.checkPatrimonyByNumberRepository.checkByNumber({
         number: params.number,
