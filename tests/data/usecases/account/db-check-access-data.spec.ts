@@ -30,4 +30,11 @@ describe('DbCheckAccessData', () => {
       id: params.dataAccess[0].id
     })
   })
+
+  test('Should return false if CheckAccessDataRepository returns false', async () => {
+    const { sut, checkAccessDataRepositorySpy } = makeSut()
+    checkAccessDataRepositorySpy.result = false
+    const data = await sut.checkAccess(mockCheckAccessDataParams())
+    expect(data).toBe(false)
+  })
 })
