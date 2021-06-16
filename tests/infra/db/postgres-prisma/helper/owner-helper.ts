@@ -13,10 +13,10 @@ type Props = {
   Sector: Sector
 }
 
-export const makeOwner = async (owner?: AddOwnerRepository.Params): Promise<Props> => {
+export const makeOwner = async (owner?: AddOwnerRepository.Params, userId?: any): Promise<Props> => {
   const prismaClient = PrismaHelper.getConnection()
   const ownerModel = await prismaClient.owner.create({
-    data: await dataOwner(owner?.name, owner?.sectorId),
+    data: await dataOwner(owner?.name, owner?.sectorId, userId),
     include: { Sector: true }
   })
   return ownerModel
@@ -59,11 +59,11 @@ export const findOwnerById = async (id: number): Promise<OwnerModel> => {
   return PrismaHelper.adaptOwner(owner)
 }
 
-const dataOwner = async (name?: string, sectorId?: number): Promise<any> => {
-  const { id: userId } = await makeUser()
+const dataOwner = async (name?: string, sectorId?: number, userId?: any): Promise<any> => {
+  const { id: accountId } = await makeUser()
   const { id: sectorId_ } = await makeSector()
   return {
-    userId,
+    userId: userId || accountId,
     name: name || faker.name.findName(),
     sectorId: sectorId || sectorId_
   }

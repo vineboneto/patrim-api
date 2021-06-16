@@ -19,9 +19,9 @@ type Props = {
 
 export const makePatrimony = async (): Promise<Props> => {
   const prismaClient = PrismaHelper.getConnection()
-  const { id: ownerId } = await makeOwner()
-  const { id: categoryId } = await makeCategory()
   const { id: userId } = await makeUser()
+  const { id: ownerId } = await makeOwner(null, userId)
+  const { id: categoryId } = await makeCategory(null, userId)
   const patrimony = await prismaClient.patrimony.create({
     data: {
       brand: faker.random.word(),

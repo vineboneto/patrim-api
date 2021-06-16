@@ -53,7 +53,7 @@ describe('Patrimony Routes', () => {
   })
 
   describe('PUT /patrimonies', () => {
-    test('Should return 200 on update category', async () => {
+    test('Should return 200 on update patrimony', async () => {
       const { id, Category, Owner, userId } = await Helper.makePatrimony()
       const { accessToken } = await makeAccessToken(userId)
       await request(app)
@@ -62,13 +62,13 @@ describe('Patrimony Routes', () => {
         .send({
           number: faker.datatype.number().toString(),
           brand: faker.random.word(),
-          ownerId: Category.id,
-          categoryId: Owner.id
+          ownerId: Owner.id,
+          categoryId: Category.id
         })
         .expect(200)
     })
 
-    test('Should return 403 on update category of other user', async () => {
+    test('Should return 403 on update patrimony of other user', async () => {
       const { accessToken } = await makeAccessToken()
       const { id, Category, Owner } = await Helper.makePatrimony()
       await request(app)
@@ -77,8 +77,8 @@ describe('Patrimony Routes', () => {
         .send({
           number: faker.datatype.number().toString(),
           brand: faker.random.word(),
-          ownerId: Category.id,
-          categoryId: Owner.id
+          ownerId: Owner.id,
+          categoryId: Category.id
         })
         .expect(403)
     })

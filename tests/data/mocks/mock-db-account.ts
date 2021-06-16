@@ -4,7 +4,8 @@ import {
   CheckAccountByEmailRepository,
   UpdateAccessTokenRepository,
   LoadAccountByTokenRepository,
-  Decrypter
+  Decrypter,
+  CheckAccessDataRepository
 } from '@/data/protocols'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 
@@ -78,5 +79,17 @@ export class DecrypterSpy implements Decrypter {
   async decrypt (token: string): Promise<string> {
     this.token = token
     return this.tokenDecrypted
+  }
+}
+
+export class CheckAccessDataRepositorySpy implements CheckAccessDataRepository {
+  params: CheckAccessDataRepository.Params
+  result = true
+  callsCount = 0
+
+  async checkAccess (params: CheckAccessDataRepository.Params): Promise<boolean> {
+    this.callsCount++
+    this.params = params
+    return this.result
   }
 }

@@ -1,8 +1,8 @@
 import { UpdatePatrimonyController } from '@/presentation/controllers'
-import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
+import { AccessDeniedError, AlreadyExistsError } from '@/presentation/errors'
 import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
-import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
-import { UpdatePatrimonySpy } from '@/tests/domain/mocks'
+import { ValidationSpy } from '@/tests/presentation/mocks'
+import { UpdatePatrimonySpy, CheckAccessDataSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -19,19 +19,19 @@ const mockRequest = (): UpdatePatrimonyController.Request => ({
 type SutTypes = {
   sut: UpdatePatrimonyController
   validationSpy: ValidationSpy
-  checkExistSpy: CheckExistSpy
+  checkAccessDataSpy: CheckAccessDataSpy
   updatePatrimonySpy: UpdatePatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const checkExistSpy = new CheckExistSpy()
+  const checkAccessDataSpy = new CheckAccessDataSpy()
   const updatePatrimonySpy = new UpdatePatrimonySpy()
-  const sut = new UpdatePatrimonyController(validationSpy, checkExistSpy, updatePatrimonySpy)
+  const sut = new UpdatePatrimonyController(validationSpy, checkAccessDataSpy, updatePatrimonySpy)
   return {
     sut,
     validationSpy,
-    checkExistSpy,
+    checkAccessDataSpy,
     updatePatrimonySpy
   }
 }
@@ -51,23 +51,35 @@ describe('UpdatePatrimonyController', () => {
     expect(httpResponse).toEqual(badRequest(new Error()))
   })
 
-  test('Should call CheckExist with correct values', async () => {
-    const { sut, checkExistSpy } = makeSut()
+  test('Should call checkAccessDataSpy with correct values', async () => {
+    const { sut, checkAccessDataSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(checkExistSpy.input).toEqual(request)
+    expect(checkAccessDataSpy.params).toEqual({
+      accountId: request.accountId,
+      dataAccess: [{
+        databaseName: 'patrimony',
+        id: request.id
+      }, {
+        databaseName: 'category',
+        id: request.categoryId
+      }, {
+        databaseName: 'owner',
+        id: request.ownerId
+      }]
+    })
   })
 
-  test('Should return 403 if CheckExists fails', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    checkExistSpy.result = new InvalidParamError('categoryId')
+  test('Should return 403 if checkAccessDataSpy fails', async () => {
+    const { sut, checkAccessDataSpy } = makeSut()
+    checkAccessDataSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('categoryId')))
+    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 
-  test('Should return 500 if CheckExists  throws', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    jest.spyOn(checkExistSpy, 'check').mockRejectedValueOnce(new Error())
+  test('Should return 500 if checkAccessDataSpy  throws', async () => {
+    const { sut, checkAccessDataSpy } = makeSut()
+    jest.spyOn(checkAccessDataSpy, 'checkAccess').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
