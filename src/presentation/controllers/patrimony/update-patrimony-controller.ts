@@ -51,13 +51,5 @@ export class UpdatePatrimonyController implements Controller {
 }
 
 export namespace UpdatePatrimonyController {
-  export type Request = {
-    id: number
-    number: string
-    brand: string
-    description?: string
-    categoryId: number
-    accountId: number
-    ownerId: number
-  }
+  export type Request = UpdatePatrimony.Params
 }
