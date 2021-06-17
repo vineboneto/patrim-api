@@ -101,7 +101,10 @@ export const mockLoadPatrimonyByNumberParams = (): LoadPatrimonyByNumber.Params 
 export class UpdatePatrimonySpy implements UpdatePatrimony {
   params: UpdatePatrimony.Params
   model = mockPatrimonyModel()
+  callsCount = 0
+
   async update (patrimony: UpdatePatrimony.Params): Promise<AddPatrimony.Model> {
+    this.callsCount++
     this.params = patrimony
     return this.model
   }

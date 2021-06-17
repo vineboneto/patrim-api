@@ -12,43 +12,59 @@ export class UpdatePatrimonyController implements Controller {
 
   async handle (request: UpdatePatrimonyController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
+      const resolvers = [
+        this.checkAccessDataResponse.bind(this),
+        this.validationDataResponse.bind(this),
+        this.updatePatrimonyResponse.bind(this)
+      ]
+      for (const resolver of resolvers) {
+        const response = await resolver(request)
+        if (response) {
+          return response
+        }
       }
-
-      const ownAccess = await this.checkAccessData.checkAccess({
-        accountId: request.accountId,
-        dataAccess: this.adaptRequestVerifyAccess(request)
-      })
-
-      if (!ownAccess) {
-        return forbidden(new AccessDeniedError())
-      }
-
-      const patrimonyModel = await this.updatePatrimony.update(request)
-      if (!patrimonyModel) {
-        return unprocessableEntity(new AlreadyExistsError(request.number))
-      }
-      return ok(patrimonyModel)
     } catch (error) {
+      console.log(error)
       return serverError(error)
     }
   }
 
-  private adaptRequestVerifyAccess (request: UpdatePatrimonyController.Request): CheckAccessData.DataAccess[] {
-    return [{
-      databaseName: 'patrimony',
-      id: request.id
-    }, {
-      databaseName: 'category',
-      id: request.categoryId
-    }, {
-      databaseName: 'owner',
-      id: request.ownerId
-    }]
+  private async updatePatrimonyResponse (request: UpdatePatrimonyController.Request): Promise<HttpResponse> {
+    const patrimonyModel = await this.updatePatrimony.update(request)
+    if (!patrimonyModel) {
+      return unprocessableEntity(new AlreadyExistsError(request.number))
+    }
+    return ok(patrimonyModel)
+  }
+
+  private async validationDataResponse (request: UpdatePatrimonyController.Request): Promise<HttpResponse> {
+    const error = this.validation.validate(request)
+    if (error) {
+      return badRequest(error)
+    }
+  }
+
+  private async checkAccessDataResponse (request: UpdatePatrimonyController.Request): Promise<HttpResponse> {
+    const ownAccess = await this.checkAccessData.checkAccess({
+      accountId: request.accountId,
+      dataAccess: dataAccess(request)
+    })
+    if (!ownAccess) {
+      return forbidden(new AccessDeniedError())
+    }
   }
 }
+
+const dataAccess = (request: any): CheckAccessData.DataAccess[] => ([{
+  databaseName: 'patrimony',
+  id: request.id
+}, {
+  databaseName: 'category',
+  id: request.categoryId
+}, {
+  databaseName: 'owner',
+  id: request.ownerId
+}])
 
 export namespace UpdatePatrimonyController {
   export type Request = UpdatePatrimony.Params

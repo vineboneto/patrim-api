@@ -71,9 +71,10 @@ describe('UpdatePatrimonyController', () => {
   })
 
   test('Should return 403 if checkAccessDataSpy fails', async () => {
-    const { sut, checkAccessDataSpy } = makeSut()
+    const { sut, checkAccessDataSpy, updatePatrimonySpy } = makeSut()
     checkAccessDataSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
+    expect(updatePatrimonySpy.callsCount).toBe(0)
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 
