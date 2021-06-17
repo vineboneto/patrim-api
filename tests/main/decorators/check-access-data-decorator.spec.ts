@@ -1,3 +1,5 @@
+import { AccessDeniedError } from '@/presentation/errors'
+import { forbidden } from '@/presentation/helper'
 import { CheckAccessDataDecorator } from '@/main/decorators'
 import { CheckAccessData } from '@/domain/usecases'
 import { ControllerSpy } from '@/tests/main/mocks'
@@ -68,5 +70,12 @@ describe('CheckAccessDataDecorator', () => {
       accountId: request.accountId,
       dataAccess: data
     })
+  })
+
+  test('Should return forbidden error if CheckAccessData returns false', async () => {
+    const { sut, checkAccessDataSpy } = makeSut()
+    checkAccessDataSpy.result = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 })
