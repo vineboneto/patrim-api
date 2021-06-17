@@ -6,8 +6,17 @@ import faker from 'faker'
 
 const mockRequest = (): any => ({
   id: faker.datatype.number(),
-  categoryId: faker.datatype.number()
+  categoryId: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
+
+const mockDataAccess = (request: any): CheckAccessData.DataAccess[] => ([{
+  databaseName: 'patrimony',
+  id: request.id
+}, {
+  databaseName: 'category',
+  id: request.categoryId
+}])
 
 export class CheckAccessDataSpy implements CheckAccessData {
   result = true
@@ -25,17 +34,10 @@ type SutTypes = {
   checkAccessDataSpy: CheckAccessDataSpy
 }
 
-const makeSut = (request = mockRequest()): SutTypes => {
+const makeSut = ({ request = mockRequest(), data = mockDataAccess(request) }: any = {}): SutTypes => {
   const checkAccessDataSpy = new CheckAccessDataSpy()
   const controllerSpy = new ControllerSpy()
-  const dataAccess: CheckAccessData.DataAccess[] = [{
-    databaseName: 'patrimony',
-    id: request.id
-  }, {
-    databaseName: 'category',
-    id: request.categoryId
-  }]
-  const sut = new CheckAccessDataDecorator(checkAccessDataSpy, dataAccess, controllerSpy)
+  const sut = new CheckAccessDataDecorator(checkAccessDataSpy, data, controllerSpy)
   return {
     sut,
     controllerSpy,
@@ -55,5 +57,16 @@ describe('CheckAccessDataDecorator', () => {
     const { sut, controllerSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(controllerSpy.httpResponse)
+  })
+
+  test('Should call CheckAccessData with correct value', async () => {
+    const request = mockRequest()
+    const data = mockDataAccess(request)
+    const { sut, checkAccessDataSpy } = makeSut({ request, data })
+    await sut.handle(request)
+    expect(checkAccessDataSpy.params).toEqual({
+      accountId: request.accountId,
+      dataAccess: data
+    })
   })
 })
