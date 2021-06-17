@@ -1,7 +1,7 @@
 import { LogControllerDecorator } from '@/main/decorators'
-import { ok, serverError } from '@/presentation/helper'
-import { Controller, HttpResponse } from '@/presentation/protocols'
+import { serverError } from '@/presentation/helper'
 import { LogErrorRepository } from '@/data/protocols'
+import { ControllerSpy } from '@/tests/main/mocks'
 
 import faker from 'faker'
 
@@ -15,15 +15,6 @@ class LogErrorRepositorySpy implements LogErrorRepository {
   async logError (stack: string): Promise<void> {
     this.stack = stack
     return Promise.resolve()
-  }
-}
-
-class ControllerSpy implements Controller {
-  request: any
-  httpResponse = ok(faker.datatype.uuid())
-  async handle (request: any): Promise<HttpResponse> {
-    this.request = request
-    return this.httpResponse
   }
 }
 
