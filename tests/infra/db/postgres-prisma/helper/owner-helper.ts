@@ -61,7 +61,7 @@ export const findOwnerById = async (id: number): Promise<OwnerModel> => {
 
 const dataOwner = async (name?: string, sectorId?: number, userId?: any): Promise<any> => {
   const { id: accountId } = await makeUser()
-  const { id: sectorId_ } = await makeSector()
+  const { id: sectorId_ } = await makeSector(null, accountId)
   return {
     userId: userId || accountId,
     name: name || faker.name.findName(),
