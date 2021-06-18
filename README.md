@@ -4,9 +4,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fe302817f3841dcf505/maintainability)](https://codeclimate.com/github/vineboneto/patrim-api/maintainability)
 
 
-
-Essa API está sendo desenvolvida como objeto de estudo e para utilização em uma aplicação de controle de patrimônio juntamente com [Ivo Melo](https://github.com/evil988)
-
 Acesse o projeto [aqui](https://drive.google.com/file/d/1fjLYJtOZnry36GtrmEzdqkgve9VvPRpA/view?usp=sharing)
 
 > ### API construidas
