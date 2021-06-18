@@ -2,7 +2,6 @@ import {
   AddPatrimonyRepository,
   CheckPatrimonyByFieldRepository,
   CheckPatrimonyByNumberRepository,
-  CheckPatrimonyByOwnerIdRepository,
   DeletePatrimonyRepository,
   LoadPatrimoniesByCategoryIdRepository,
   LoadPatrimoniesByOwnerIdRepository,
@@ -134,17 +133,6 @@ export class CheckPatrimonyByNumberRepositorySpy implements CheckPatrimonyByNumb
   result = false
   async checkByNumber (params: CheckPatrimonyByNumberRepository.Params): Promise<boolean> {
     this.callsCount++
-    this.params = params
-    return this.result
-  }
-}
-
-export class CheckPatrimonyByOwnerIdRepositorySpy implements CheckPatrimonyByOwnerIdRepository {
-  params: CheckPatrimonyByOwnerIdRepository.Params
-  result = false
-
-  async checkByOwnerId (params: CheckPatrimonyByOwnerIdRepository.Params):
-  Promise<CheckPatrimonyByOwnerIdRepository.Result> {
     this.params = params
     return this.result
   }

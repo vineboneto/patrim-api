@@ -19,23 +19,6 @@ describe('PatrimonyPostgresRepository', () => {
     await Helper.deleteAll()
   })
 
-  describe('checkByOwnerId()', () => {
-    test('Should return true if exists patrimony', async () => {
-      const sut = makeSut()
-      const { Owner } = await Helper.makePatrimony()
-      const exists = await sut.checkByOwnerId({ ownerId: Owner.id })
-      expect(exists).toBe(true)
-    })
-
-    test('Should return false if not exists patrimony', async () => {
-      const sut = makeSut()
-      const exists = await sut.checkByOwnerId({
-        ownerId: faker.datatype.number()
-      })
-      expect(exists).toBe(false)
-    })
-  })
-
   describe('checkByNumber()', () => {
     test('Should return true if exists number patrimony', async () => {
       const sut = makeSut()

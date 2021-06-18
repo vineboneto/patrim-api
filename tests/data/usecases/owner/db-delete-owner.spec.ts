@@ -1,21 +1,21 @@
 import { DbDeleteOwner } from '@/data/usecases'
-import { DeleteOwnerRepositorySpy, CheckPatrimonyByOwnerIdRepositorySpy } from '@/tests/data/mocks'
+import { DeleteOwnerRepositorySpy, CheckPatrimonyByFieldByIdRepositorySpy } from '@/tests/data/mocks'
 import { mockDeleteOwnerParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbDeleteOwner
   deleteOwnerRepositorySpy: DeleteOwnerRepositorySpy
-  checkPatrimonyByOwnerIdSpy: CheckPatrimonyByOwnerIdRepositorySpy
+  checkPatrimonyByFieldSpy: CheckPatrimonyByFieldByIdRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const deleteOwnerRepositorySpy = new DeleteOwnerRepositorySpy()
-  const checkPatrimonyByOwnerIdSpy = new CheckPatrimonyByOwnerIdRepositorySpy()
-  const sut = new DbDeleteOwner(deleteOwnerRepositorySpy, checkPatrimonyByOwnerIdSpy)
+  const checkPatrimonyByFieldSpy = new CheckPatrimonyByFieldByIdRepositorySpy()
+  const sut = new DbDeleteOwner(deleteOwnerRepositorySpy, checkPatrimonyByFieldSpy)
   return {
     sut,
     deleteOwnerRepositorySpy,
-    checkPatrimonyByOwnerIdSpy
+    checkPatrimonyByFieldSpy
   }
 }
 
@@ -47,25 +47,26 @@ describe('DbDeleteOwner', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call CheckPatrimonyByOwnerIdRepository with correct value', async () => {
-    const { sut, checkPatrimonyByOwnerIdSpy } = makeSut()
+  test('Should call CheckPatrimonyByFieldRepository with correct value', async () => {
+    const { sut, checkPatrimonyByFieldSpy } = makeSut()
     const params = mockDeleteOwnerParams()
     await sut.delete(params)
-    expect(checkPatrimonyByOwnerIdSpy.params).toEqual({
-      ownerId: params.id
+    expect(checkPatrimonyByFieldSpy.params).toEqual({
+      value: params.id,
+      accountId: params.accountId
     })
   })
 
-  test('Should return null if CheckPatrimonyByOwnerIdRepository returns false', async () => {
-    const { sut, checkPatrimonyByOwnerIdSpy } = makeSut()
-    checkPatrimonyByOwnerIdSpy.result = true
+  test('Should return null if CheckPatrimonyByFieldRepository returns false', async () => {
+    const { sut, checkPatrimonyByFieldSpy } = makeSut()
+    checkPatrimonyByFieldSpy.result = true
     const data = await sut.delete(mockDeleteOwnerParams())
     expect(data).toBe(null)
   })
 
-  test('Should throw if CheckPatrimonyByOwnerIdRepository throws', async () => {
-    const { sut, checkPatrimonyByOwnerIdSpy } = makeSut()
-    jest.spyOn(checkPatrimonyByOwnerIdSpy, 'checkByOwnerId').mockRejectedValueOnce(new Error())
+  test('Should throw if CheckPatrimonyByFieldRepository throws', async () => {
+    const { sut, checkPatrimonyByFieldSpy } = makeSut()
+    jest.spyOn(checkPatrimonyByFieldSpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.delete(mockDeleteOwnerParams())
     await expect(promise).rejects.toThrow()
   })

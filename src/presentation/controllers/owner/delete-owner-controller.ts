@@ -16,7 +16,10 @@ export class DeleteOwnerController implements Controller {
         return badRequest(error)
       }
 
-      const categoryDeleted = await this.deleteOwner.delete(request)
+      const categoryDeleted = await this.deleteOwner.delete({
+        id: Number(request.id),
+        accountId: request.accountId
+      })
       if (!categoryDeleted) {
         return unprocessableEntity(new LinkedDataError('patrimonies'))
       }
@@ -29,6 +32,7 @@ export class DeleteOwnerController implements Controller {
 
 export namespace DeleteOwnerController {
   export type Request = {
-    id: number
+    id: string
+    accountId: number
   }
 }

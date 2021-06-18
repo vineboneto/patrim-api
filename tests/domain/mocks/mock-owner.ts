@@ -32,7 +32,8 @@ export const mockUpdateOwnerParams = (): UpdateOwner.Params => ({
 })
 
 export const mockDeleteOwnerParams = (): DeleteOwner.Params => ({
-  id: faker.datatype.number()
+  id: faker.datatype.number(),
+  accountId: faker.datatype.number()
 })
 
 export const mockLoadOwnersParams = (): LoadOwners.Params => ({
