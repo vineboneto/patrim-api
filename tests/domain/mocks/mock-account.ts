@@ -58,13 +58,3 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
     return this.result
   }
 }
-
-export class CheckAccessDataSpy implements CheckAccessData {
-  result = true
-  params: CheckAccessData.Params
-
-  async checkAccess (params: CheckAccessData.Params): Promise<boolean> {
-    this.params = params
-    return this.result
-  }
-}

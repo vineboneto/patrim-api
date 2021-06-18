@@ -1,8 +1,8 @@
 import { UpdatePatrimonyController } from '@/presentation/controllers'
-import { AccessDeniedError, AlreadyExistsError } from '@/presentation/errors'
-import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { AlreadyExistsError } from '@/presentation/errors'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { UpdatePatrimonySpy, CheckAccessDataSpy } from '@/tests/domain/mocks'
+import { UpdatePatrimonySpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -19,19 +19,16 @@ const mockRequest = (): UpdatePatrimonyController.Request => ({
 type SutTypes = {
   sut: UpdatePatrimonyController
   validationSpy: ValidationSpy
-  checkAccessDataSpy: CheckAccessDataSpy
   updatePatrimonySpy: UpdatePatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const checkAccessDataSpy = new CheckAccessDataSpy()
   const updatePatrimonySpy = new UpdatePatrimonySpy()
-  const sut = new UpdatePatrimonyController(validationSpy, checkAccessDataSpy, updatePatrimonySpy)
+  const sut = new UpdatePatrimonyController(validationSpy, updatePatrimonySpy)
   return {
     sut,
     validationSpy,
-    checkAccessDataSpy,
     updatePatrimonySpy
   }
 }
@@ -49,40 +46,6 @@ describe('UpdatePatrimonyController', () => {
     validationSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
-  })
-
-  test('Should call checkAccessDataSpy with correct values', async () => {
-    const { sut, checkAccessDataSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(checkAccessDataSpy.params).toEqual({
-      accountId: request.accountId,
-      dataAccess: [{
-        databaseName: 'patrimony',
-        id: request.id
-      }, {
-        databaseName: 'category',
-        id: request.categoryId
-      }, {
-        databaseName: 'owner',
-        id: request.ownerId
-      }]
-    })
-  })
-
-  test('Should return 403 if checkAccessDataSpy fails', async () => {
-    const { sut, checkAccessDataSpy, updatePatrimonySpy } = makeSut()
-    checkAccessDataSpy.result = false
-    const httpResponse = await sut.handle(mockRequest())
-    expect(updatePatrimonySpy.callsCount).toBe(0)
-    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
-  })
-
-  test('Should return 500 if checkAccessDataSpy  throws', async () => {
-    const { sut, checkAccessDataSpy } = makeSut()
-    jest.spyOn(checkAccessDataSpy, 'checkAccess').mockRejectedValueOnce(new Error())
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should call UpdatePatrimony with correct values', async () => {

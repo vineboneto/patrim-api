@@ -1,19 +1,17 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
-import { UpdatePatrimony, CheckAccessData } from '@/domain/usecases'
-import { AccessDeniedError, AlreadyExistsError } from '@/presentation/errors'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { UpdatePatrimony } from '@/domain/usecases'
+import { AlreadyExistsError } from '@/presentation/errors'
 
 export class UpdatePatrimonyController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly checkAccessData: CheckAccessData,
     private readonly updatePatrimony: UpdatePatrimony
   ) {}
 
   async handle (request: UpdatePatrimonyController.Request): Promise<HttpResponse> {
     try {
       const resolvers = [
-        this.checkAccessDataResponse.bind(this),
         this.validationDataResponse.bind(this),
         this.updatePatrimonyResponse.bind(this)
       ]
@@ -24,7 +22,6 @@ export class UpdatePatrimonyController implements Controller {
         }
       }
     } catch (error) {
-      console.log(error)
       return serverError(error)
     }
   }
@@ -43,28 +40,7 @@ export class UpdatePatrimonyController implements Controller {
       return badRequest(error)
     }
   }
-
-  private async checkAccessDataResponse (request: UpdatePatrimonyController.Request): Promise<HttpResponse> {
-    const ownAccess = await this.checkAccessData.checkAccess({
-      accountId: request.accountId,
-      dataAccess: dataAccess(request)
-    })
-    if (!ownAccess) {
-      return forbidden(new AccessDeniedError())
-    }
-  }
 }
-
-const dataAccess = (request: any): CheckAccessData.DataAccess[] => ([{
-  databaseName: 'patrimony',
-  id: request.id
-}, {
-  databaseName: 'category',
-  id: request.categoryId
-}, {
-  databaseName: 'owner',
-  id: request.ownerId
-}])
 
 export namespace UpdatePatrimonyController {
   export type Request = UpdatePatrimony.Params
