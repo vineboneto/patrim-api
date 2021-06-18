@@ -1,7 +1,7 @@
 import { AddOwnerController } from '@/presentation/controllers'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
-import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
+import { ValidationSpy } from '@/tests/presentation/mocks'
 import { AddOwnerSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -15,20 +15,17 @@ const mockRequest = (): AddOwnerController.Request => ({
 type SutTypes = {
   sut: AddOwnerController
   validationSpy: ValidationSpy
-  checkExistSpy: CheckExistSpy
   addOwnerSpy: AddOwnerSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const addOwnerSpy = new AddOwnerSpy()
-  const checkExistSpy = new CheckExistSpy()
-  const sut = new AddOwnerController(validationSpy, checkExistSpy, addOwnerSpy)
+  const sut = new AddOwnerController(validationSpy, addOwnerSpy)
   return {
     sut,
     validationSpy,
-    addOwnerSpy,
-    checkExistSpy
+    addOwnerSpy
   }
 }
 
@@ -45,20 +42,6 @@ describe('AddOwnerController', () => {
     validationSpy.result = new MissingParamError('name')
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
-  })
-
-  test('Should call CheckExist with correct values', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(checkExistSpy.input).toEqual(request)
-  })
-
-  test('Should return 403 if CheckExists fails', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    checkExistSpy.result = new InvalidParamError('id')
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
   })
 
   test('Should call AddOwner with correct value', async () => {

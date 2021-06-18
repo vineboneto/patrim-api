@@ -22,8 +22,8 @@ describe('Owner Routes', () => {
 
   describe('POST /owners', () => {
     test('Should return 200 on add owner', async () => {
-      const { accessToken } = await makeAccessToken()
-      const { id: sectorId } = await Helper.makeSector()
+      const { accessToken, accountId } = await makeAccessToken()
+      const { id: sectorId } = await Helper.makeSector(null, accountId)
       await request(app)
         .post('/api/owners')
         .set('x-access-token', accessToken)

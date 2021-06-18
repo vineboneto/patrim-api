@@ -4,10 +4,10 @@ import { makeUser } from '@/tests/infra/db/postgres-prisma/helper'
 import { Sector } from '@prisma/client'
 import faker from 'faker'
 
-export const makeSector = async (name?: string): Promise<Sector> => {
+export const makeSector = async (name?: string, userId?: number): Promise<Sector> => {
   const prismaClient = PrismaHelper.getConnection()
   return Promise.resolve(prismaClient.sector.create({
-    data: await dataSector(name)
+    data: await dataSector(name, userId)
   }))
 }
 
@@ -33,10 +33,10 @@ export const makeManySectors = async (): Promise<Sector[]> => {
   return prismaClient.sector.findMany()
 }
 
-const dataSector = async (name?: string): Promise<any> => {
-  const { id: userId } = await makeUser()
+const dataSector = async (name?: string, userId?: number): Promise<any> => {
+  const { id: accountId } = await makeUser()
   return {
-    userId,
+    userId: userId || accountId,
     name: name || faker.name.findName()
   }
 }

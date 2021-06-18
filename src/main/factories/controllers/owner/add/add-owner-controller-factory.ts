@@ -1,15 +1,20 @@
-import { makeDbAddOwner, makeDbCheckSectorById } from '@/main/factories/usecases'
+import { makeDbAddOwner } from '@/main/factories/usecases'
+import { CheckAccessDataDecorator } from '@/main/decorators'
 import { makeAddOwnerValidation } from '@/main/factories/controllers'
-import { makeLogControllerDecorator } from '@/main/factories/decorators'
+import { makeCheckAccessDataDecorator, makeLogControllerDecorator } from '@/main/factories/decorators'
 import { AddOwnerController } from '@/presentation/controllers'
 import { Controller } from '@/presentation/protocols'
-import { CheckExistSectorId } from '@/validation/checks'
 
 export const makeAddOwnerController = (): Controller => {
   const controller = new AddOwnerController(
     makeAddOwnerValidation(),
-    new CheckExistSectorId(makeDbCheckSectorById(), 'sectorId'),
     makeDbAddOwner()
   )
-  return makeLogControllerDecorator(controller)
+  const checkAccess = makeCheckAccessDataDecorator(controller, templateDataAccess())
+  return makeLogControllerDecorator(checkAccess)
 }
+
+const templateDataAccess = (): CheckAccessDataDecorator.Template[] => ([{
+  databaseName: 'sector',
+  fieldName: 'sectorId'
+}])
