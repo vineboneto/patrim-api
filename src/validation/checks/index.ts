@@ -1,6 +1,0 @@
-export * from './check-exist-owner-id'
-export * from './check-exist-category-id'
-export * from './check-exist-composite'
-export * from './check-exist-patrimony-id'
-export * from './check-exist-sector-id'
-export * from './check-exist-user-id'

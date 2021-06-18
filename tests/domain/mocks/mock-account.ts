@@ -1,4 +1,4 @@
-import { AddAccount, Authentication, CheckAccessData, LoadAccountByToken } from '@/domain/usecases'
+import { AddAccount, Authentication, LoadAccountByToken } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -11,16 +11,6 @@ export const mockAddAccountParams = (): AddAccount.Params => ({
 export const mockAuthenticationParams = (): Authentication.Params => ({
   email: faker.internet.email(),
   password: faker.internet.password()
-})
-
-export const mockCheckAccessDataParams = (): CheckAccessData.Params => ({
-  accountId: faker.datatype.number(),
-  dataAccess: [
-    {
-      databaseName: faker.database.column(),
-      id: faker.datatype.number()
-    }
-  ]
 })
 
 export class AddAccountSpy implements AddAccount {
