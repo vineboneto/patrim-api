@@ -1,12 +1,11 @@
-import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { LinkedDataError } from '@/presentation/errors'
 import { DeleteCategory } from '@/domain/usecases'
 
 export class DeleteCategoryController implements Controller {
   constructor (
     private readonly deleteCategory: DeleteCategory,
-    private readonly checkExist: CheckExist,
     private readonly validation: Validation
   ) {}
 
@@ -15,10 +14,6 @@ export class DeleteCategoryController implements Controller {
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
-      }
-      const existError = await this.checkExist.check(request)
-      if (existError) {
-        return forbidden(existError)
       }
       const categoryDeleted = await this.deleteCategory.delete({
         id: request.id

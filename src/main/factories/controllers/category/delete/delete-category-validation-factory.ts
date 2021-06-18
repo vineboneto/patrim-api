@@ -2,8 +2,8 @@ import { Validation } from '@/presentation/protocols'
 import { CheckFieldIsNumberValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 
 export const makeDeleteCategoryValidation = (): Validation => {
-  const validations: Validation[] = []
-  validations.push(new RequiredFieldValidation('id'))
-  validations.push(new CheckFieldIsNumberValidation('id'))
-  return new ValidationComposite(validations)
+  return new ValidationComposite([
+    new RequiredFieldValidation('id'),
+    new CheckFieldIsNumberValidation('id')
+  ])
 }
