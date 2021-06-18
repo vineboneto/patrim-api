@@ -22,9 +22,9 @@ describe('Patrimony Routes', () => {
 
   describe('POST /patrimonies', () => {
     test('Should return 200 on add category', async () => {
-      const { accessToken } = await makeAccessToken()
-      const { id: ownerId } = await Helper.makeOwner()
-      const { id: categoryId } = await Helper.makeCategory()
+      const { accessToken, accountId } = await makeAccessToken()
+      const { id: ownerId } = await Helper.makeOwner(null, accountId)
+      const { id: categoryId } = await Helper.makeCategory(null, accountId)
       await request(app)
         .post('/api/patrimonies')
         .set('x-access-token', accessToken)
