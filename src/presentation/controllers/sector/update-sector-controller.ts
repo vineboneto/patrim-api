@@ -1,12 +1,11 @@
-import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { UpdateSector } from '@/domain/usecases'
 import { AlreadyExistsError } from '@/presentation/errors'
 
 export class UpdateSectorController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly checkExist: CheckExist,
     private readonly updateSector: UpdateSector
   ) {}
 
@@ -15,10 +14,6 @@ export class UpdateSectorController implements Controller {
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
-      }
-      const checkError = await this.checkExist.check(request)
-      if (checkError) {
-        return forbidden(checkError)
       }
       const sectorModel = await this.updateSector.update(request)
       if (!sectorModel) {

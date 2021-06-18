@@ -1,6 +1,6 @@
 import { makeLogControllerDecorator } from '@/main/factories/decorators'
 import { makeDbDeleteSector } from '@/main/factories/usecases'
-import { makeCheckExistSectorValidation } from '@/main/factories/controllers'
+import { makeCheckAccessDataSector } from '@/main/factories/controllers'
 import { makeValidationId } from '@/main/factories/validation'
 import { DeleteSectorController } from '@/presentation/controllers'
 import { Controller } from '@/presentation/protocols'
@@ -8,8 +8,7 @@ import { Controller } from '@/presentation/protocols'
 export const makeDeleteSectorController = (): Controller => {
   const controller = new DeleteSectorController(
     makeDbDeleteSector(),
-    makeCheckExistSectorValidation(),
     makeValidationId()
   )
-  return makeLogControllerDecorator(controller)
+  return makeLogControllerDecorator(makeCheckAccessDataSector(controller))
 }

@@ -1,7 +1,7 @@
 import { UpdateSectorController } from '@/presentation/controllers/'
-import { AlreadyExistsError, InvalidParamError } from '@/presentation/errors'
-import { badRequest, forbidden, ok, serverError, unprocessableEntity } from '@/presentation/helper'
-import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
+import { AlreadyExistsError } from '@/presentation/errors'
+import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateSectorSpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -15,19 +15,16 @@ const mockRequest = (): UpdateSectorController.Request => ({
 type SutTypes = {
   validationSpy: ValidationSpy
   sut: UpdateSectorController
-  checkExistSpy: CheckExistSpy
   updateSectorSpy: UpdateSectorSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const checkExistSpy = new CheckExistSpy()
   const updateSectorSpy = new UpdateSectorSpy()
-  const sut = new UpdateSectorController(validationSpy, checkExistSpy, updateSectorSpy)
+  const sut = new UpdateSectorController(validationSpy, updateSectorSpy)
   return {
     sut,
     validationSpy,
-    checkExistSpy,
     updateSectorSpy
   }
 }
@@ -45,27 +42,6 @@ describe('UpdateSectorController', () => {
     validationSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
-  })
-
-  test('Should call CheckExist with correct values', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(checkExistSpy.input).toEqual(request)
-  })
-
-  test('Should return 403 if CheckExists fails', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    checkExistSpy.result = new InvalidParamError('id')
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
-  })
-
-  test('Should return 500 if CheckExists throws', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    jest.spyOn(checkExistSpy, 'check').mockRejectedValueOnce(new Error())
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should call UpdateSector with correct values', async () => {

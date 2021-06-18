@@ -168,8 +168,8 @@ describe('Sector Routes', () => {
     })
 
     test('Should return 403 if other user', async () => {
-      const { accessToken } = await makeAccessToken()
       const { id } = await Helper.makeSector()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .delete(`/api/sectors/${id}`)
         .set('x-access-token', accessToken)
