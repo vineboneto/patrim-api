@@ -1,6 +1,5 @@
 import { CategoryModel } from '@/domain/models'
 import {
-  CheckCategoryById,
   DeleteCategory,
   LoadCategories,
   AddCategory,
@@ -30,10 +29,6 @@ export const mockUpdateCategoryParams = (): UpdateCategory.Params => ({
   id: faker.datatype.number(),
   name: faker.name.findName(),
   accountId: faker.datatype.number()
-})
-
-export const mockCheckCategoryByIdParams = (): CheckCategoryById.Params => ({
-  id: faker.datatype.number()
 })
 
 export const mockDeleteCategoryParams = (): DeleteCategory.Params => ({
@@ -97,14 +92,5 @@ export class AddCategorySpy implements AddCategory {
   async add (category: AddCategory.Params): Promise<AddCategory.Model> {
     this.params = category
     return this.model
-  }
-}
-
-export class CheckCategoryByIdSpy implements CheckCategoryById {
-  params: CheckCategoryById.Params
-  result = true
-  async checkById (params: CheckCategoryById.Params): Promise<CheckCategoryById.Result> {
-    this.params = params
-    return this.result
   }
 }

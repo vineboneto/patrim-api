@@ -3,7 +3,6 @@ import {
   CheckCategoryByNameRepository,
   DeleteCategoryRepository,
   LoadCategoriesRepository,
-  CheckCategoryByIdRepository,
   UpdateCategoryRepository,
   LoadCategoryNameByIdRepository,
   LoadCategoryByIdRepository
@@ -54,15 +53,6 @@ export class CheckCategoryByNameRepositorySpy implements CheckCategoryByNameRepo
   params: CheckCategoryByNameRepository.Params
   result = false
   async checkByName (params: CheckCategoryByNameRepository.Params): Promise<boolean> {
-    this.params = params
-    return this.result
-  }
-}
-
-export class CheckCategoryByIdRepositorySpy implements CheckCategoryByIdRepository {
-  params: CheckCategoryByIdRepository.Params
-  result = true
-  async checkById (params: CheckCategoryByIdRepository.Params): Promise<CheckCategoryByIdRepository.Result> {
     this.params = params
     return this.result
   }

@@ -1,6 +1,5 @@
 import { PatrimonyModel } from '@/domain/models'
 import {
-  CheckPatrimonyById,
   LoadPatrimoniesByOwnerId,
   AddPatrimony,
   UpdatePatrimony,
@@ -60,10 +59,6 @@ export const mockAddPatrimonyParams = (): AddPatrimony.Params => ({
 })
 
 export const mockDeletePatrimonyParams = (): DeletePatrimony.Params => ({
-  id: faker.datatype.number()
-})
-
-export const mockCheckPatrimonyByIdParams = (): CheckPatrimonyById.Params => ({
   id: faker.datatype.number()
 })
 
@@ -156,15 +151,6 @@ export class DeletePatrimonySpy implements DeletePatrimony {
   async delete (params: DeletePatrimony.Params): Promise<DeletePatrimony.Model> {
     this.params = params
     return this.model
-  }
-}
-
-export class CheckPatrimonyByIdSpy implements CheckPatrimonyById {
-  params: CheckPatrimonyById.Params
-  result = true
-  async checkById (params: CheckPatrimonyById.Params): Promise<CheckPatrimonyById.Result> {
-    this.params = params
-    return this.result
   }
 }
 

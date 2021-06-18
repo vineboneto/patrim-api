@@ -1,6 +1,5 @@
 import {
   AddOwnerRepository,
-  CheckOwnerByIdRepository,
   CheckOwnerBySectorIdRepository,
   DeleteOwnerRepository,
   LoadOwnerByIdRepository,
@@ -24,15 +23,6 @@ export class UpdateOwnerRepositorySpy implements UpdateOwnerRepository {
   async update (owner: UpdateOwnerRepository.Params): Promise<UpdateOwnerRepository.Model> {
     this.params = owner
     return this.model
-  }
-}
-
-export class CheckOwnerByIdRepositorySpy implements CheckOwnerByIdRepository {
-  params: CheckOwnerByIdRepository.Params
-  result = true
-  async checkById (params: CheckOwnerByIdRepository.Params): Promise<CheckOwnerByIdRepository.Result> {
-    this.params = params
-    return this.result
   }
 }
 

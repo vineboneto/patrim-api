@@ -2,28 +2,13 @@ import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import {
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository,
-  CheckPatrimonyByNumberRepository,
-  CheckPatrimonyByIdRepository
+  CheckPatrimonyByNumberRepository
 } from '@/data/protocols'
 
 export class PatrimonyPostgresRepository implements
   CheckPatrimonyByNumberRepository,
   CheckPatrimonyByOwnerIdRepository,
   CheckPatrimonyByCategoryIdRepository {
-  async checkById (params: CheckPatrimonyByIdRepository.Params): Promise<CheckPatrimonyByIdRepository.Result> {
-    const { id } = params
-    const prismaClient = PrismaHelper.getConnection()
-    const patrimony = await prismaClient.patrimony.findFirst({
-      select: {
-        id: true
-      },
-      where: {
-        id: Number(id)
-      }
-    })
-    return patrimony !== null
-  }
-
   async checkByNumber (params: CheckPatrimonyByNumberRepository.Params): Promise<boolean> {
     const prismaClient = PrismaHelper.getConnection()
     const patrimony = await prismaClient.patrimony.findFirst({

@@ -1,5 +1,4 @@
 export * from './db-add-owner-factory'
-export * from './db-check-owner-by-id-factory'
 export * from './db-load-owners-factory'
 export * from './db-delete-owner-factory'
 export * from './db-update-owner-factory'

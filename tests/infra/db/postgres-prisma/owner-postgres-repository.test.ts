@@ -49,21 +49,6 @@ describe('OwnerPostgresRepository', () => {
     })
   })
 
-  describe('checkById()', () => {
-    test('Should return owner on success', async () => {
-      const sut = makeSut()
-      const { id } = await Helper.makeOwner()
-      const result = await sut.checkById({ id })
-      expect(result).toBe(true)
-    })
-
-    test('Should return false if owner not exists', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById({ id: faker.datatype.number() })
-      expect(result).toBe(false)
-    })
-  })
-
   describe('loadById()', () => {
     test('Should return owner on success', async () => {
       const sut = makeSut()

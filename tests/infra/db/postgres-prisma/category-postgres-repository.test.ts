@@ -133,21 +133,6 @@ describe('CategoryPostgresRepository', () => {
     })
   })
 
-  describe('checkById()', () => {
-    test('Should return true if category exists', async () => {
-      const sut = makeSut()
-      const { id } = await Helper.makeCategory()
-      const result = await sut.checkById({ id })
-      expect(result).toBe(true)
-    })
-
-    test('Should return false if category not exists', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById({ id: faker.datatype.number() })
-      expect(result).toBe(false)
-    })
-  })
-
   describe('delete()', () => {
     test('Should return category on delete success', async () => {
       const sut = makeSut()

@@ -1,6 +1,5 @@
 export * from './db-load-patrimonies-by-owner-id'
 export * from './db-add-patrimony'
-export * from './db-check-patrimony-by-id'
 export * from './db-update-patrimony'
 export * from './db-delete-patrimony'
 export * from './db-load-patrimonies'

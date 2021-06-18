@@ -57,7 +57,7 @@ describe('PatrimonyPostgresRepository', () => {
     })
   })
 
-  describe('checkByOwnerId()', () => {
+  describe('checkByCategoryId()', () => {
     test('Should return true if exists patrimony', async () => {
       const sut = makeSut()
       const { Category } = await Helper.makePatrimony()

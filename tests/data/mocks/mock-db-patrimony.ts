@@ -1,7 +1,6 @@
 import {
   AddPatrimonyRepository,
   CheckPatrimonyByCategoryIdRepository,
-  CheckPatrimonyByIdRepository,
   CheckPatrimonyByNumberRepository,
   CheckPatrimonyByOwnerIdRepository,
   DeletePatrimonyRepository,
@@ -124,15 +123,6 @@ export class LoadPatrimoniesByCategoryIdRepositorySpy implements LoadPatrimonies
 
   async loadByCategoryId (params: LoadPatrimoniesByCategoryIdRepository.Params):
   Promise<LoadPatrimoniesByCategoryIdRepository.Model> {
-    this.params = params
-    return this.result
-  }
-}
-
-export class CheckPatrimonyByIdRepositorySpy implements CheckPatrimonyByIdRepository {
-  params: CheckPatrimonyByIdRepository.Params
-  result = true
-  async checkById (params: CheckPatrimonyByIdRepository.Params): Promise<CheckPatrimonyByIdRepository.Result> {
     this.params = params
     return this.result
   }

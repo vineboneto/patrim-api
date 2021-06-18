@@ -4,7 +4,6 @@ import {
   DeleteCategoryRepository,
   CheckCategoryByNameRepository,
   LoadCategoriesRepository,
-  CheckCategoryByIdRepository,
   LoadCategoryNameByIdRepository,
   LoadCategoryByIdRepository
 } from '@/data/protocols'
@@ -17,7 +16,6 @@ export class CategoryPostgresRepository implements
   LoadCategoriesRepository,
   LoadCategoryNameByIdRepository,
   LoadCategoryByIdRepository,
-  CheckCategoryByIdRepository,
   DeleteCategoryRepository {
   async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Model> {
     const { name, accountId } = category
@@ -67,20 +65,6 @@ export class CategoryPostgresRepository implements
       }
     })
     return category !== null
-  }
-
-  async checkById (params: CheckCategoryByIdRepository.Params): Promise<CheckCategoryByIdRepository.Result> {
-    const prismaClient = PrismaHelper.getConnection()
-    const { id } = params
-    const categoryWithOnlyId = await prismaClient.category.findFirst({
-      where: {
-        id: Number(id)
-      },
-      select: {
-        id: true
-      }
-    })
-    return categoryWithOnlyId !== null
   }
 
   async loadAll (params: LoadCategoriesRepository.Params): Promise<LoadCategoriesRepository.Model> {
