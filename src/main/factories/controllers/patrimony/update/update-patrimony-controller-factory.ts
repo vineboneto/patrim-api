@@ -18,7 +18,7 @@ export const makeUpdatePatrimonyController = (): Controller => {
   return makeLogControllerDecorator(checkAccessData)
 }
 
-export const templateDataAccess = (): CheckAccessDataDecorator.Template[] => ([{
+const templateDataAccess = (): CheckAccessDataDecorator.Template[] => ([{
   databaseName: 'patrimony',
   fieldName: 'id'
 }, {

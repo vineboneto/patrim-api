@@ -1,8 +1,7 @@
 import { DeletePatrimonyController } from '@/presentation/controllers'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
-import { InvalidParamError } from '@/presentation/errors'
+import { badRequest, ok, serverError } from '@/presentation/helper'
 import { DeletePatrimonySpy } from '@/tests/domain/mocks'
-import { CheckExistSpy, ValidationSpy } from '@/tests/presentation/mocks'
+import { ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -14,18 +13,15 @@ type SutTypes = {
   sut: DeletePatrimonyController
   deletePatrimonySpy: DeletePatrimonySpy
   validationSpy: ValidationSpy
-  checkExistSpy: CheckExistSpy
 }
 
 const makeSut = (): SutTypes => {
   const deletePatrimonySpy = new DeletePatrimonySpy()
   const validationSpy = new ValidationSpy()
-  const checkExistSpy = new CheckExistSpy()
-  const sut = new DeletePatrimonyController(deletePatrimonySpy, checkExistSpy, validationSpy)
+  const sut = new DeletePatrimonyController(deletePatrimonySpy, validationSpy)
   return {
     sut,
     deletePatrimonySpy,
-    checkExistSpy,
     validationSpy
   }
 }
@@ -43,20 +39,6 @@ describe('DeletePatrimonyController', () => {
     validationSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
-  })
-
-  test('Should call CheckExist with correct values', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(checkExistSpy.input).toEqual(request)
-  })
-
-  test('Should return 403 if CheckExists fails', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    checkExistSpy.result = new InvalidParamError('id')
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('id')))
   })
 
   test('Should call DeletePatrimony with correct value', async () => {
@@ -78,12 +60,5 @@ describe('DeletePatrimonyController', () => {
     jest.spyOn(deletePatrimonySpy, 'delete').mockRejectedValueOnce(error)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(error))
-  })
-
-  test('Should return 500 if CheckExists  throws', async () => {
-    const { sut, checkExistSpy } = makeSut()
-    jest.spyOn(checkExistSpy, 'check').mockRejectedValueOnce(new Error())
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })

@@ -1,11 +1,10 @@
-import { CheckExist, Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest, ok, serverError } from '@/presentation/helper'
 import { DeletePatrimony } from '@/domain/usecases'
 
 export class DeletePatrimonyController implements Controller {
   constructor (
     private readonly deletePatrimony: DeletePatrimony,
-    private readonly checkExist: CheckExist,
     private readonly validation: Validation
   ) {}
 
@@ -14,10 +13,6 @@ export class DeletePatrimonyController implements Controller {
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
-      }
-      const existError = await this.checkExist.check(request)
-      if (existError) {
-        return forbidden(existError)
       }
       const patrimonyDeleted = await this.deletePatrimony.delete(request)
       return ok(patrimonyDeleted)
