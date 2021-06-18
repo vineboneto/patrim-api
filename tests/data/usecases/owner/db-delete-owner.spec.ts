@@ -1,16 +1,16 @@
 import { DbDeleteOwner } from '@/data/usecases'
-import { DeleteOwnerRepositorySpy, CheckPatrimonyByFieldRepositorySpy } from '@/tests/data/mocks'
+import { DeleteOwnerRepositorySpy, CheckDataByFieldRepositorySpy } from '@/tests/data/mocks'
 import { mockDeleteOwnerParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbDeleteOwner
   deleteOwnerRepositorySpy: DeleteOwnerRepositorySpy
-  checkPatrimonyByFieldSpy: CheckPatrimonyByFieldRepositorySpy
+  checkPatrimonyByFieldSpy: CheckDataByFieldRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const deleteOwnerRepositorySpy = new DeleteOwnerRepositorySpy()
-  const checkPatrimonyByFieldSpy = new CheckPatrimonyByFieldRepositorySpy()
+  const checkPatrimonyByFieldSpy = new CheckDataByFieldRepositorySpy()
   const sut = new DbDeleteOwner(deleteOwnerRepositorySpy, checkPatrimonyByFieldSpy)
   return {
     sut,
@@ -47,7 +47,7 @@ describe('DbDeleteOwner', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call CheckPatrimonyByFieldRepository with correct value', async () => {
+  test('Should call CheckDataByFieldRepository with correct value', async () => {
     const { sut, checkPatrimonyByFieldSpy } = makeSut()
     const params = mockDeleteOwnerParams()
     await sut.delete(params)
@@ -57,14 +57,14 @@ describe('DbDeleteOwner', () => {
     })
   })
 
-  test('Should return null if CheckPatrimonyByFieldRepository returns false', async () => {
+  test('Should return null if CheckDataByFieldRepository returns false', async () => {
     const { sut, checkPatrimonyByFieldSpy } = makeSut()
     checkPatrimonyByFieldSpy.result = true
     const data = await sut.delete(mockDeleteOwnerParams())
     expect(data).toBe(null)
   })
 
-  test('Should throw if CheckPatrimonyByFieldRepository throws', async () => {
+  test('Should throw if CheckDataByFieldRepository throws', async () => {
     const { sut, checkPatrimonyByFieldSpy } = makeSut()
     jest.spyOn(checkPatrimonyByFieldSpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.delete(mockDeleteOwnerParams())

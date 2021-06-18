@@ -21,7 +21,7 @@ describe('Patrimony Routes', () => {
   })
 
   describe('POST /patrimonies', () => {
-    test('Should return 200 on add category', async () => {
+    test('Should return 200 on add patrimony', async () => {
       const { accessToken, accountId } = await makeAccessToken()
       const { id: ownerId } = await Helper.makeOwner(null, accountId)
       const { id: categoryId } = await Helper.makeCategory(null, accountId)

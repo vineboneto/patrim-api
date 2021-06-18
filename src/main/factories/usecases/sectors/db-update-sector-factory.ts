@@ -1,8 +1,9 @@
 import { DbUpdateSector } from '@/data/usecases'
 import { UpdateSector } from '@/domain/usecases'
-import { SectorPostgresRepository } from '@/infra/db/postgres-prisma'
+import { SectorPostgresRepository, CheckDataByFieldPostgres } from '@/infra/db/postgres-prisma'
 
 export const makeDbUpdateSector = (): UpdateSector => {
   const sectorPostgresRepository = new SectorPostgresRepository()
-  return new DbUpdateSector(sectorPostgresRepository, sectorPostgresRepository, sectorPostgresRepository)
+  const checkDataByFieldPostgres = new CheckDataByFieldPostgres('name', 'sector')
+  return new DbUpdateSector(sectorPostgresRepository, sectorPostgresRepository, checkDataByFieldPostgres)
 }

@@ -112,27 +112,6 @@ describe('CategoryPostgresRepository', () => {
     })
   })
 
-  describe('checkByName()', () => {
-    test('Should return false if category name do not exist', async () => {
-      const sut = makeSut()
-      const result = await sut.checkByName({
-        name: faker.name.findName(),
-        accountId: faker.datatype.number()
-      })
-      expect(result).toBeFalsy()
-    })
-
-    test('Should return true if category name already exists', async () => {
-      const sut = makeSut()
-      const { name, userId } = await Helper.makeCategory()
-      const result = await sut.checkByName({
-        name,
-        accountId: userId
-      })
-      expect(result).toBeTruthy()
-    })
-  })
-
   describe('delete()', () => {
     test('Should return category on delete success', async () => {
       const sut = makeSut()

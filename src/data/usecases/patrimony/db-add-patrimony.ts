@@ -1,10 +1,10 @@
 import { AddPatrimony } from '@/domain/usecases'
-import { AddPatrimonyRepository, CheckPatrimonyByFieldRepository } from '@/data/protocols'
+import { AddPatrimonyRepository, CheckDataByFieldRepository } from '@/data/protocols'
 
 export class DbAddPatrimony implements AddPatrimony {
   constructor (
     private readonly addPatrimonyRepository: AddPatrimonyRepository,
-    private readonly checkPatrimonyByFieldRepository: CheckPatrimonyByFieldRepository
+    private readonly checkPatrimonyByFieldRepository: CheckDataByFieldRepository
   ) {}
 
   async add (params: AddPatrimony.Params): Promise<AddPatrimony.Model> {

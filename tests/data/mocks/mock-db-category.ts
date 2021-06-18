@@ -1,6 +1,5 @@
 import {
   AddCategoryRepository,
-  CheckCategoryByNameRepository,
   DeleteCategoryRepository,
   LoadCategoriesRepository,
   UpdateCategoryRepository,
@@ -46,15 +45,6 @@ export class LoadCategoryByIdRepositorySpy implements LoadCategoryByIdRepository
   async loadById (params: LoadCategoryByIdRepository.Params): Promise<LoadCategoryByIdRepository.Model> {
     this.params = params
     return this.model
-  }
-}
-
-export class CheckCategoryByNameRepositorySpy implements CheckCategoryByNameRepository {
-  params: CheckCategoryByNameRepository.Params
-  result = false
-  async checkByName (params: CheckCategoryByNameRepository.Params): Promise<boolean> {
-    this.params = params
-    return this.result
   }
 }
 

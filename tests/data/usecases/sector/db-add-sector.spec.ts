@@ -1,21 +1,21 @@
 import { DbAddSector } from '@/data/usecases'
-import { CheckSectorByNameRepositorySpy, AddSectorRepositorySpy } from '@/tests/data/mocks'
+import { CheckDataByFieldRepositorySpy, AddSectorRepositorySpy } from '@/tests/data/mocks'
 import { mockAddSectorParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddSector
   addSectorRepositorySpy: AddSectorRepositorySpy
-  checkSectorByNameRepositorySpy: CheckSectorByNameRepositorySpy
+  checkDataByFieldRepositorySpy: CheckDataByFieldRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const checkSectorByNameRepositorySpy = new CheckSectorByNameRepositorySpy()
+  const checkDataByFieldRepositorySpy = new CheckDataByFieldRepositorySpy()
   const addSectorRepositorySpy = new AddSectorRepositorySpy()
-  const sut = new DbAddSector(addSectorRepositorySpy, checkSectorByNameRepositorySpy)
+  const sut = new DbAddSector(addSectorRepositorySpy, checkDataByFieldRepositorySpy)
   return {
     sut,
     addSectorRepositorySpy,
-    checkSectorByNameRepositorySpy
+    checkDataByFieldRepositorySpy
   }
 }
 
@@ -48,25 +48,25 @@ describe('DbAddSector', () => {
   })
 
   test('Should call CheckSectorByNameRepository with correct value', async () => {
-    const { sut, checkSectorByNameRepositorySpy } = makeSut()
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
     const params = mockAddSectorParams()
     await sut.add(params)
-    expect(checkSectorByNameRepositorySpy.params).toEqual({
-      name: params.name,
+    expect(checkDataByFieldRepositorySpy.params).toEqual({
+      value: params.name,
       accountId: params.accountId
     })
   })
 
   test('Should return false if CheckSectorByNameRepository return true', async () => {
-    const { sut, checkSectorByNameRepositorySpy } = makeSut()
-    checkSectorByNameRepositorySpy.result = true
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
+    checkDataByFieldRepositorySpy.result = true
     const data = await sut.add(mockAddSectorParams())
     expect(data).toBeFalsy()
   })
 
   test('Should throw if CheckSectorByNameRepository throws', async () => {
-    const { sut, checkSectorByNameRepositorySpy } = makeSut()
-    jest.spyOn(checkSectorByNameRepositorySpy, 'checkByName').mockRejectedValueOnce(new Error())
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
+    jest.spyOn(checkDataByFieldRepositorySpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.add(mockAddSectorParams())
     await expect(promise).rejects.toThrow()
   })

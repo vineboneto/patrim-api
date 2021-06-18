@@ -1,6 +1,5 @@
 import {
   AddSectorRepository,
-  CheckSectorByNameRepository,
   LoadSectorsRepository,
   DeleteSectorRepository,
   UpdateSectorRepository,
@@ -67,15 +66,5 @@ export class LoadSectorsRepositorySpy implements LoadSectorsRepository {
       model: this.models,
       count: this.models.length
     }
-  }
-}
-
-export class CheckSectorByNameRepositorySpy implements CheckSectorByNameRepository {
-  params: CheckSectorByNameRepository.Params
-  result = false
-
-  async checkByName (params: CheckSectorByNameRepository.Params): Promise<boolean> {
-    this.params = params
-    return this.result
   }
 }

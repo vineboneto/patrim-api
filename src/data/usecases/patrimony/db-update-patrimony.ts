@@ -1,6 +1,6 @@
 import { UpdatePatrimony } from '@/domain/usecases'
 import {
-  CheckPatrimonyByFieldRepository,
+  CheckDataByFieldRepository,
   LoadPatrimonyFieldByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
@@ -9,7 +9,7 @@ export class DbUpdatePatrimony implements UpdatePatrimony {
   constructor (
     private readonly updatePatrimonyRepository: UpdatePatrimonyRepository,
     private readonly loadPatrimonyNumberByIdRepository: LoadPatrimonyFieldByIdRepository,
-    private readonly checkPatrimonyByFieldRepository: CheckPatrimonyByFieldRepository
+    private readonly checkPatrimonyByFieldRepository: CheckDataByFieldRepository
   ) {}
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {

@@ -1,7 +1,6 @@
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
 import {
   AddOwnerRepository,
-  CheckOwnerBySectorIdRepository,
   DeleteOwnerRepository,
   LoadOwnerByIdRepository,
   LoadOwnersRepository,
@@ -12,8 +11,7 @@ export class OwnerPostgresRepository implements
   AddOwnerRepository,
   UpdateOwnerRepository,
   LoadOwnersRepository,
-  DeleteOwnerRepository,
-  CheckOwnerBySectorIdRepository {
+  DeleteOwnerRepository {
   async add (owner: AddOwnerRepository.Params): Promise<AddOwnerRepository.Model> {
     const prismaClient = PrismaHelper.getConnection()
     const { name, sectorId, accountId } = owner
@@ -93,17 +91,5 @@ export class OwnerPostgresRepository implements
       include: { Sector: true }
     })
     return owner ? PrismaHelper.adaptOwner(owner) : null
-  }
-
-  async checkBySectorId (params: CheckOwnerBySectorIdRepository.Params): Promise<CheckOwnerBySectorIdRepository.Result> {
-    const prismaClient = PrismaHelper.getConnection()
-    const { sectorId } = params
-    const sectorWithOnlyId = await prismaClient.owner.findFirst({
-      where: {
-        sectorId: Number(sectorId)
-      },
-      select: { id: true }
-    })
-    return sectorWithOnlyId !== null
   }
 }

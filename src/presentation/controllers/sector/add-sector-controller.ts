@@ -5,7 +5,7 @@ import { AddSector } from '@/domain/usecases'
 
 export class AddSectorController implements Controller {
   constructor (
-    private readonly saveSector: AddSector,
+    private readonly addSector: AddSector,
     private readonly validation: Validation
   ) {}
 
@@ -15,7 +15,7 @@ export class AddSectorController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const sectorModel = await this.saveSector.add(request)
+      const sectorModel = await this.addSector.add(request)
       if (!sectorModel) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
       }

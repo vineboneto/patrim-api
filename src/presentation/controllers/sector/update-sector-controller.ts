@@ -21,6 +21,7 @@ export class UpdateSectorController implements Controller {
       }
       return ok(sectorModel)
     } catch (error) {
+      console.log(error)
       return serverError(error)
     }
   }

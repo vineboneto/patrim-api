@@ -1,10 +1,10 @@
-import { CheckPatrimonyByFieldRepository, DeleteCategoryRepository } from '@/data/protocols'
+import { CheckDataByFieldRepository, DeleteCategoryRepository } from '@/data/protocols'
 import { DeleteCategory } from '@/domain/usecases'
 
 export class DbDeleteCategory implements DeleteCategory {
   constructor (
     private readonly deleteCategoryRepository: DeleteCategoryRepository,
-    private readonly checkPatrimonyByFieldRepository: CheckPatrimonyByFieldRepository
+    private readonly checkPatrimonyByFieldRepository: CheckDataByFieldRepository
   ) {}
 
   async delete (params: DeleteCategory.Params): Promise<DeleteCategory.Model> {

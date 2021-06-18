@@ -49,8 +49,8 @@ describe('SectorPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return sector on delete success', async () => {
       const sut = makeSut()
-      const { id, name } = await Helper.makeSector()
-      const sectorDeleted = await sut.delete({ id })
+      const { id, name, userId } = await Helper.makeSector()
+      const sectorDeleted = await sut.delete({ id, accountId: userId })
       const searchSectorDeleted = await Helper.findSectorById(id)
       expect(sectorDeleted).toEqual({ id: id, name })
       expect(searchSectorDeleted).toBeFalsy()
@@ -123,24 +123,6 @@ describe('SectorPostgresRepository', () => {
         accountId: faker.datatype.number()
       })
       expect(dataResponse.model).toEqual([])
-    })
-  })
-
-  describe('checkByName()', () => {
-    test('Should return true if sector name exists', async () => {
-      const sut = makeSut()
-      const { userId, name } = await Helper.makeSector()
-      const isValid = await sut.checkByName({ name, accountId: userId })
-      expect(isValid).toBe(true)
-    })
-
-    test('Should return false if sector name does not exists', async () => {
-      const sut = makeSut()
-      const isValid = await sut.checkByName({
-        accountId: faker.datatype.number(),
-        name: faker.name.findName()
-      })
-      expect(isValid).toBe(false)
     })
   })
 })

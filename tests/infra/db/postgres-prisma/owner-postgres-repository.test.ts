@@ -140,21 +140,4 @@ describe('OwnerPostgresRepository', () => {
       expect(searchOwnerDeleted).toBeFalsy()
     })
   })
-
-  describe('checkBySectorId()', () => {
-    test('Should return true if exists patrimony', async () => {
-      const sut = makeSut()
-      const { Sector } = await Helper.makeOwner()
-      const exists = await sut.checkBySectorId({ sectorId: Sector.id })
-      expect(exists).toBe(true)
-    })
-
-    test('Should return false if not exists patrimony', async () => {
-      const sut = makeSut()
-      const exists = await sut.checkBySectorId({
-        sectorId: faker.datatype.number()
-      })
-      expect(exists).toBe(false)
-    })
-  })
 })

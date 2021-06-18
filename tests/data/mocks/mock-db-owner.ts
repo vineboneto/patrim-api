@@ -1,6 +1,5 @@
 import {
   AddOwnerRepository,
-  CheckOwnerBySectorIdRepository,
   DeleteOwnerRepository,
   LoadOwnerByIdRepository,
   LoadOwnersRepository,
@@ -54,16 +53,5 @@ export class DeleteOwnerRepositorySpy implements DeleteOwnerRepository {
   async delete (params: DeleteOwnerRepository.Params): Promise<DeleteOwnerRepository.Model> {
     this.params = params
     return this.model
-  }
-}
-
-export class CheckOwnerBySectorIdRepositorySpy implements CheckOwnerBySectorIdRepository {
-  params: CheckOwnerBySectorIdRepository.Params
-  result = false
-
-  async checkBySectorId (params: CheckOwnerBySectorIdRepository.Params):
-  Promise<CheckOwnerBySectorIdRepository.Result> {
-    this.params = params
-    return this.result
   }
 }

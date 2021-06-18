@@ -1,21 +1,21 @@
 import { DbDeleteSector } from '@/data/usecases'
-import { DeleteSectorRepositorySpy, CheckOwnerBySectorIdRepositorySpy } from '@/tests/data/mocks'
+import { DeleteSectorRepositorySpy, CheckDataByFieldRepositorySpy } from '@/tests/data/mocks'
 import { mockDeleteSectorParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbDeleteSector
   deleteSectorRepositorySpy: DeleteSectorRepositorySpy
-  checkOwnerBySectorIdRepositorySpy: CheckOwnerBySectorIdRepositorySpy
+  checkDataByFieldRepositorySpy: CheckDataByFieldRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const deleteSectorRepositorySpy = new DeleteSectorRepositorySpy()
-  const checkOwnerBySectorIdRepositorySpy = new CheckOwnerBySectorIdRepositorySpy()
-  const sut = new DbDeleteSector(deleteSectorRepositorySpy, checkOwnerBySectorIdRepositorySpy)
+  const checkDataByFieldRepositorySpy = new CheckDataByFieldRepositorySpy()
+  const sut = new DbDeleteSector(deleteSectorRepositorySpy, checkDataByFieldRepositorySpy)
   return {
     sut,
     deleteSectorRepositorySpy,
-    checkOwnerBySectorIdRepositorySpy
+    checkDataByFieldRepositorySpy
   }
 }
 
@@ -24,19 +24,22 @@ describe('DbDeleteSector', () => {
     const { sut, deleteSectorRepositorySpy } = makeSut()
     const params = mockDeleteSectorParams()
     await sut.delete(params)
-    expect(deleteSectorRepositorySpy.params).toEqual(params)
+    expect(deleteSectorRepositorySpy.params).toEqual({
+      id: params.id,
+      accountId: params.accountId
+    })
   })
 
-  test('Should call CheckOwnerBySectorIdRepository with correct values', async () => {
-    const { sut, checkOwnerBySectorIdRepositorySpy } = makeSut()
+  test('Should call CheckDataByFieldRepository with correct values', async () => {
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
     const params = mockDeleteSectorParams()
     await sut.delete(params)
-    expect(checkOwnerBySectorIdRepositorySpy.params).toEqual({ sectorId: params.id })
+    expect(checkDataByFieldRepositorySpy.params).toEqual({ value: params.id, accountId: params.accountId })
   })
 
-  test('Should return null if CheckOwnerBySectorIdRepository return true', async () => {
-    const { sut, checkOwnerBySectorIdRepositorySpy } = makeSut()
-    checkOwnerBySectorIdRepositorySpy.result = true
+  test('Should return null if CheckDataByFieldRepository return true', async () => {
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
+    checkDataByFieldRepositorySpy.result = true
     const result = await sut.delete(mockDeleteSectorParams())
     expect(result).toBeNull()
   })
@@ -54,9 +57,9 @@ describe('DbDeleteSector', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should throws if CheckOwnerBySectorIdRepository throws', async () => {
-    const { sut, checkOwnerBySectorIdRepositorySpy } = makeSut()
-    jest.spyOn(checkOwnerBySectorIdRepositorySpy, 'checkBySectorId').mockRejectedValueOnce(new Error())
+  test('Should throws if CheckDataByFieldRepository throws', async () => {
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
+    jest.spyOn(checkDataByFieldRepositorySpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.delete(mockDeleteSectorParams())
     await expect(promise).rejects.toThrow()
   })

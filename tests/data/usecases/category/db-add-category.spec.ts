@@ -1,21 +1,21 @@
 import { DbAddCategory } from '@/data/usecases'
-import { AddCategoryRepositorySpy, CheckCategoryByNameRepositorySpy } from '@/tests/data/mocks'
+import { AddCategoryRepositorySpy, CheckDataByFieldRepositorySpy } from '@/tests/data/mocks'
 import { mockAddCategoryParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddCategory
-  checkCategoryByNameRepositorySpy: CheckCategoryByNameRepositorySpy
+  checkDataByFieldRepositorySpy: CheckDataByFieldRepositorySpy
   addCategoryRepositorySpy: AddCategoryRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const checkCategoryByNameRepositorySpy = new CheckCategoryByNameRepositorySpy()
+  const checkDataByFieldRepositorySpy = new CheckDataByFieldRepositorySpy()
   const addCategoryRepositorySpy = new AddCategoryRepositorySpy()
-  const sut = new DbAddCategory(addCategoryRepositorySpy, checkCategoryByNameRepositorySpy)
+  const sut = new DbAddCategory(addCategoryRepositorySpy, checkDataByFieldRepositorySpy)
   return {
     sut,
     addCategoryRepositorySpy,
-    checkCategoryByNameRepositorySpy
+    checkDataByFieldRepositorySpy
   }
 }
 
@@ -48,22 +48,25 @@ describe('DbAddCategory', () => {
   })
 
   test('Should call CheckCategoryByNameRepository with correct value', async () => {
-    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
     const params = mockAddCategoryParams()
     await sut.add(params)
-    expect(checkCategoryByNameRepositorySpy.params).toEqual(params)
+    expect(checkDataByFieldRepositorySpy.params).toEqual({
+      accountId: params.accountId,
+      value: params.name
+    })
   })
 
   test('Should return null if CheckCategoryByNameRepository return true', async () => {
-    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
-    checkCategoryByNameRepositorySpy.result = true
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
+    checkDataByFieldRepositorySpy.result = true
     const model = await sut.add(mockAddCategoryParams())
     expect(model).toBe(null)
   })
 
   test('Should throw if CheckCategoryByNameRepository throws', async () => {
-    const { sut, checkCategoryByNameRepositorySpy } = makeSut()
-    jest.spyOn(checkCategoryByNameRepositorySpy, 'checkByName').mockRejectedValueOnce(new Error())
+    const { sut, checkDataByFieldRepositorySpy } = makeSut()
+    jest.spyOn(checkDataByFieldRepositorySpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.add(mockAddCategoryParams())
     await expect(promise).rejects.toThrow()
   })

@@ -1,15 +1,15 @@
 import { DbDeleteCategory } from '@/data/usecases'
-import { DeleteCategoryRepositorySpy, CheckPatrimonyByFieldRepositorySpy } from '@/tests/data/mocks'
+import { DeleteCategoryRepositorySpy, CheckDataByFieldRepositorySpy } from '@/tests/data/mocks'
 import { mockDeleteCategoryParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbDeleteCategory
   deleteCategoryRepositorySpy: DeleteCategoryRepositorySpy
-  checkPatrimonyByFieldRepositorySpy: CheckPatrimonyByFieldRepositorySpy
+  checkPatrimonyByFieldRepositorySpy: CheckDataByFieldRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const checkPatrimonyByFieldRepositorySpy = new CheckPatrimonyByFieldRepositorySpy()
+  const checkPatrimonyByFieldRepositorySpy = new CheckDataByFieldRepositorySpy()
   const deleteCategoryRepositorySpy = new DeleteCategoryRepositorySpy()
   const sut = new DbDeleteCategory(deleteCategoryRepositorySpy, checkPatrimonyByFieldRepositorySpy)
   return {
@@ -27,7 +27,7 @@ describe('DbDeleteCategory', () => {
     expect(deleteCategoryRepositorySpy.params).toEqual(params)
   })
 
-  test('Should call CheckPatrimonyByFieldRepositorySpy with correct values', async () => {
+  test('Should call CheckDataByFieldRepositorySpy with correct values', async () => {
     const { sut, checkPatrimonyByFieldRepositorySpy } = makeSut()
     const params = mockDeleteCategoryParams()
     await sut.delete(params)
@@ -37,7 +37,7 @@ describe('DbDeleteCategory', () => {
     })
   })
 
-  test('Should return null if CheckPatrimonyByFieldRepositorySpy return true', async () => {
+  test('Should return null if CheckDataByFieldRepositorySpy return true', async () => {
     const { sut, checkPatrimonyByFieldRepositorySpy } = makeSut()
     checkPatrimonyByFieldRepositorySpy.result = true
     const result = await sut.delete(mockDeleteCategoryParams())
@@ -57,7 +57,7 @@ describe('DbDeleteCategory', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should throws if CheckPatrimonyByFieldRepositorySpy throws', async () => {
+  test('Should throws if CheckDataByFieldRepositorySpy throws', async () => {
     const { sut, checkPatrimonyByFieldRepositorySpy } = makeSut()
     jest.spyOn(checkPatrimonyByFieldRepositorySpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.delete(mockDeleteCategoryParams())

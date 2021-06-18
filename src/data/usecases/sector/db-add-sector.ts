@@ -1,15 +1,15 @@
 import { AddSector } from '@/domain/usecases'
-import { AddSectorRepository, CheckSectorByNameRepository } from '@/data/protocols'
+import { AddSectorRepository, CheckDataByFieldRepository } from '@/data/protocols'
 
 export class DbAddSector implements AddSector {
   constructor (
     private readonly addSectorRepository: AddSectorRepository,
-    private readonly checkSectorByNameRepository: CheckSectorByNameRepository
+    private readonly checkSectorNameByFieldRepository: CheckDataByFieldRepository
   ) {}
 
   async add (params: AddSector.Params): Promise<AddSector.Model> {
-    const exists = await this.checkSectorByNameRepository.checkByName({
-      name: params.name,
+    const exists = await this.checkSectorNameByFieldRepository.checkByField({
+      value: params.name,
       accountId: params.accountId
     })
     if (!exists) {

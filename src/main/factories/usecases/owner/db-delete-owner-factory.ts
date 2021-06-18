@@ -1,9 +1,9 @@
 import { DbDeleteOwner } from '@/data/usecases'
 import { DeleteOwner } from '@/domain/usecases'
-import { OwnerPostgresRepository, CheckPatrimonyByFieldPostgres } from '@/infra/db/postgres-prisma'
+import { OwnerPostgresRepository, CheckDataByFieldPostgres } from '@/infra/db/postgres-prisma'
 
 export const makeDbDeleteOwner = (): DeleteOwner => {
   const ownerPostgresRepository = new OwnerPostgresRepository()
-  const patrimonyPostgresRepository = new CheckPatrimonyByFieldPostgres('ownerId')
+  const patrimonyPostgresRepository = new CheckDataByFieldPostgres('ownerId', 'patrimony')
   return new DbDeleteOwner(ownerPostgresRepository, patrimonyPostgresRepository)
 }

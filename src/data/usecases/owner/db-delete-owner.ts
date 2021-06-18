@@ -1,10 +1,10 @@
 import { DeleteOwner } from '@/domain/usecases'
-import { CheckPatrimonyByFieldRepository, DeleteOwnerRepository } from '@/data/protocols'
+import { CheckDataByFieldRepository, DeleteOwnerRepository } from '@/data/protocols'
 
 export class DbDeleteOwner implements DeleteOwner {
   constructor (
     private readonly deleteOwnerRepository: DeleteOwnerRepository,
-    private readonly checkPatrimonyByFieldRepository: CheckPatrimonyByFieldRepository
+    private readonly checkPatrimonyByFieldRepository: CheckDataByFieldRepository
   ) {}
 
   async delete (params: DeleteOwner.Params): Promise<DeleteOwner.Model> {
