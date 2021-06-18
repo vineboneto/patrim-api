@@ -1,6 +1,6 @@
 import { UpdatePatrimony } from '@/domain/usecases'
 import {
-  CheckPatrimonyByNumberRepository,
+  CheckPatrimonyByFieldRepository,
   LoadPatrimonyFieldByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
@@ -9,7 +9,7 @@ export class DbUpdatePatrimony implements UpdatePatrimony {
   constructor (
     private readonly updatePatrimonyRepository: UpdatePatrimonyRepository,
     private readonly loadPatrimonyNumberByIdRepository: LoadPatrimonyFieldByIdRepository,
-    private readonly checkPatrimonyByNumberRepository: CheckPatrimonyByNumberRepository
+    private readonly checkPatrimonyByFieldRepository: CheckPatrimonyByFieldRepository
   ) {}
 
   async update (params: UpdatePatrimony.Params): Promise<UpdatePatrimony.Model> {
@@ -18,8 +18,8 @@ export class DbUpdatePatrimony implements UpdatePatrimony {
     }
     const number = await this.loadPatrimonyNumberByIdRepository.loadFieldById(params.id)
     if (number !== params.number) {
-      const exists = await this.checkPatrimonyByNumberRepository.checkByNumber({
-        number: params.number,
+      const exists = await this.checkPatrimonyByFieldRepository.checkByField({
+        value: params.number,
         accountId: params.accountId
       })
       if (exists) {

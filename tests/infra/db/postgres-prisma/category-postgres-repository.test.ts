@@ -136,8 +136,8 @@ describe('CategoryPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return category on delete success', async () => {
       const sut = makeSut()
-      const { id, name } = await Helper.makeCategory()
-      const categoryDeleted = await sut.delete({ id })
+      const { id, name, userId } = await Helper.makeCategory()
+      const categoryDeleted = await sut.delete({ id, accountId: userId })
       const searchCategoryDeleted = await Helper.findCategoryById(id)
       expect(categoryDeleted).toEqual({ id: id, name })
       expect(searchCategoryDeleted).toBeFalsy()

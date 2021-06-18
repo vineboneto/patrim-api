@@ -1,21 +1,21 @@
-import { mockAddPatrimonyParams } from '@/../tests/domain/mocks'
+import { mockAddPatrimonyParams } from '@/tests/domain/mocks'
 import { DbAddPatrimony } from '@/data/usecases'
-import { AddPatrimonyRepositorySpy, CheckPatrimonyByNumberRepositorySpy } from '@/tests/data/mocks'
+import { AddPatrimonyRepositorySpy, CheckPatrimonyByFieldRepositorySpy } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbAddPatrimony
   addPatrimonyRepositorySpy: AddPatrimonyRepositorySpy
-  checkPatrimonyByNumberRepositorySpy: CheckPatrimonyByNumberRepositorySpy
+  checkPatrimonyByFieldRepositorySpy: CheckPatrimonyByFieldRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const addPatrimonyRepositorySpy = new AddPatrimonyRepositorySpy()
-  const checkPatrimonyByNumberRepositorySpy = new CheckPatrimonyByNumberRepositorySpy()
-  const sut = new DbAddPatrimony(addPatrimonyRepositorySpy, checkPatrimonyByNumberRepositorySpy)
+  const checkPatrimonyByFieldRepositorySpy = new CheckPatrimonyByFieldRepositorySpy()
+  const sut = new DbAddPatrimony(addPatrimonyRepositorySpy, checkPatrimonyByFieldRepositorySpy)
   return {
     sut,
     addPatrimonyRepositorySpy,
-    checkPatrimonyByNumberRepositorySpy
+    checkPatrimonyByFieldRepositorySpy
   }
 }
 
@@ -47,32 +47,33 @@ describe('DbAddPatrimony', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call CheckPatrimonyByNumberRepository with correct values', async () => {
-    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
+  test('Should call CheckPatrimonyByFieldRepositorySpy with correct values', async () => {
+    const { sut, checkPatrimonyByFieldRepositorySpy } = makeSut()
     const params = mockAddPatrimonyParams()
     await sut.add(params)
-    expect(checkPatrimonyByNumberRepositorySpy.params.number).toBe(params.number)
+    expect(checkPatrimonyByFieldRepositorySpy.params.value).toBe(params.number)
+    expect(checkPatrimonyByFieldRepositorySpy.params.accountId).toBe(params.accountId)
   })
 
-  test('Should not call CheckPatrimonyByNumberRepository if number is null', async () => {
-    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
+  test('Should not call CheckPatrimonyByFieldRepositorySpy if number is null', async () => {
+    const { sut, checkPatrimonyByFieldRepositorySpy } = makeSut()
     const params = mockAddPatrimonyParams()
     params.number = undefined
     await sut.add(params)
-    expect(checkPatrimonyByNumberRepositorySpy.callsCount).toBe(0)
+    expect(checkPatrimonyByFieldRepositorySpy.callsCount).toBe(0)
   })
 
-  test('Should return null if CheckPatrimonyByNumberRepository return true', async () => {
-    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
-    checkPatrimonyByNumberRepositorySpy.result = true
+  test('Should return null if CheckPatrimonyByFieldRepositorySpy return true', async () => {
+    const { sut, checkPatrimonyByFieldRepositorySpy } = makeSut()
+    checkPatrimonyByFieldRepositorySpy.result = true
     const params = mockAddPatrimonyParams()
     const data = await sut.add(params)
     expect(data).toBe(null)
   })
 
-  test('Should throws CheckPatrimonyByNumberRepository throw', async () => {
-    const { sut, checkPatrimonyByNumberRepositorySpy } = makeSut()
-    jest.spyOn(checkPatrimonyByNumberRepositorySpy, 'checkByNumber').mockRejectedValueOnce(new Error())
+  test('Should throws CheckPatrimonyByFieldRepository throw', async () => {
+    const { sut, checkPatrimonyByFieldRepositorySpy } = makeSut()
+    jest.spyOn(checkPatrimonyByFieldRepositorySpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.add(mockAddPatrimonyParams())
     await expect(promise).rejects.toThrow()
   })

@@ -1,9 +1,9 @@
 import { DbAddPatrimony } from '@/data/usecases'
 import { AddPatrimony } from '@/domain/usecases'
-import { PatrimonyPostgresRepository, AddPatrimonyPostgres } from '@/infra/db/postgres-prisma'
+import { CheckPatrimonyByFieldPostgres, AddPatrimonyPostgres } from '@/infra/db/postgres-prisma'
 
 export const makeDbAddPatrimony = (): AddPatrimony => {
-  const patrimonyPostgreRepository = new PatrimonyPostgresRepository()
+  const checkPatrimonyByFieldPostgres = new CheckPatrimonyByFieldPostgres('number')
   const addPatrimonyPostgres = new AddPatrimonyPostgres()
-  return new DbAddPatrimony(addPatrimonyPostgres, patrimonyPostgreRepository)
+  return new DbAddPatrimony(addPatrimonyPostgres, checkPatrimonyByFieldPostgres)
 }

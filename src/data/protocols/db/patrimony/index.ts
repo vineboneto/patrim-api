@@ -1,7 +1,6 @@
 export * from './load-patrimonies-by-owner-id-repository'
 export * from './add-patrimony-repository'
 export * from './update-patrimony-repository'
-export * from './check-patrimony-by-number-repository'
 export * from './delete-patrimony-repository'
 export * from './load-patrimonies-repository'
 export * from './load-patrimony-by-id-repository'

@@ -130,8 +130,8 @@ describe('OwnerPostgresRepository', () => {
   describe('delete()', () => {
     test('Should return owner on delete success', async () => {
       const sut = makeSut()
-      const { id, name, Sector } = await Helper.makeOwner()
-      const sectorDeleted = await sut.delete({ id })
+      const { id, name, Sector, userId } = await Helper.makeOwner()
+      const sectorDeleted = await sut.delete({ id, accountId: userId })
       const searchOwnerDeleted = await Helper.findOwnerById(id)
       expect(sectorDeleted.id).toBe(id)
       expect(sectorDeleted.name).toBe(name)

@@ -1,16 +1,16 @@
 import { DbDeleteOwner } from '@/data/usecases'
-import { DeleteOwnerRepositorySpy, CheckPatrimonyByFieldByIdRepositorySpy } from '@/tests/data/mocks'
+import { DeleteOwnerRepositorySpy, CheckPatrimonyByFieldRepositorySpy } from '@/tests/data/mocks'
 import { mockDeleteOwnerParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbDeleteOwner
   deleteOwnerRepositorySpy: DeleteOwnerRepositorySpy
-  checkPatrimonyByFieldSpy: CheckPatrimonyByFieldByIdRepositorySpy
+  checkPatrimonyByFieldSpy: CheckPatrimonyByFieldRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const deleteOwnerRepositorySpy = new DeleteOwnerRepositorySpy()
-  const checkPatrimonyByFieldSpy = new CheckPatrimonyByFieldByIdRepositorySpy()
+  const checkPatrimonyByFieldSpy = new CheckPatrimonyByFieldRepositorySpy()
   const sut = new DbDeleteOwner(deleteOwnerRepositorySpy, checkPatrimonyByFieldSpy)
   return {
     sut,
