@@ -1,7 +1,6 @@
-import { makeLogControllerDecorator, makeCheckAccessDataDecorator } from '@/main/factories/decorators'
+import { makeLogControllerDecorator } from '@/main/factories/decorators'
 import { makeDbDeleteCategory } from '@/main/factories/usecases'
-import { makeDeleteCategoryValidation } from '@/main/factories/controllers'
-import { CheckAccessDataDecorator } from '@/main/decorators'
+import { makeDeleteCategoryValidation, makeCheckAccessDataCategory } from '@/main/factories/controllers'
 import { DeleteCategoryController } from '@/presentation/controllers'
 import { Controller } from '@/presentation/protocols'
 
@@ -10,11 +9,5 @@ export const makeDeleteCategoryController = (): Controller => {
     makeDbDeleteCategory(),
     makeDeleteCategoryValidation()
   )
-  const checkAccess = makeCheckAccessDataDecorator(controller, templateDataAccess())
-  return makeLogControllerDecorator(checkAccess)
+  return makeLogControllerDecorator(makeCheckAccessDataCategory(controller))
 }
-
-const templateDataAccess = (): CheckAccessDataDecorator.Template[] => ([{
-  databaseName: 'category',
-  fieldName: 'id'
-}])
