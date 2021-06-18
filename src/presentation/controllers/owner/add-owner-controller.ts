@@ -1,7 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helper'
+import { badRequest, ok, serverError } from '@/presentation/helper'
 import { AddOwner } from '@/domain/usecases'
-import { InvalidParamError } from '@/presentation/errors'
 
 export class AddOwnerController implements Controller {
   constructor (
@@ -17,9 +16,6 @@ export class AddOwnerController implements Controller {
       }
 
       const owner = await this.addOwner.add(request)
-      if (!owner) {
-        return forbidden(new InvalidParamError('sectorId'))
-      }
       return ok(owner)
     } catch (error) {
       return serverError(error)

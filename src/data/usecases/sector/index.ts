@@ -1,6 +1,5 @@
 export * from './db-delete-sector'
 export * from './db-load-sectors'
 export * from './db-add-sector'
-export * from './db-check-sector-by-id'
 export * from './db-update-sector'
 export * from './db-load-sector-by-id'

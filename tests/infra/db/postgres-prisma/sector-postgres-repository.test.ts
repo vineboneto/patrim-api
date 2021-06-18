@@ -143,19 +143,4 @@ describe('SectorPostgresRepository', () => {
       expect(isValid).toBe(false)
     })
   })
-
-  describe('checkById()', () => {
-    test('Should return true on success', async () => {
-      const sut = makeSut()
-      const { id } = await Helper.makeSector()
-      const result = await sut.checkById({ id })
-      expect(result).toBe(true)
-    })
-
-    test('Should return false if sector not exists', async () => {
-      const sut = makeSut()
-      const result = await sut.checkById({ id: faker.datatype.number() })
-      expect(result).toBe(false)
-    })
-  })
 })

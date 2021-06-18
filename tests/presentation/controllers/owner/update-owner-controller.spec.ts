@@ -1,6 +1,6 @@
 import { UpdateOwnerController } from '@/presentation/controllers'
-import { InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest, forbidden, ok } from '@/presentation/helper'
+import { MissingParamError } from '@/presentation/errors'
+import { badRequest, ok } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateOwnerSpy } from '@/tests/domain/mocks'
 
@@ -50,13 +50,6 @@ describe('UpdateOwnerController', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(updateOwnerSpy.params).toEqual(request)
-  })
-
-  test('Should return 403 if UpdateOwner returns null', async () => {
-    const { sut, updateOwnerSpy } = makeSut()
-    updateOwnerSpy.model = null
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('sectorId')))
   })
 
   test('Should return 200 on success', async () => {

@@ -3,7 +3,6 @@ import {
   CheckSectorByNameRepository,
   LoadSectorsRepository,
   DeleteSectorRepository,
-  CheckSectorByIdRepository,
   UpdateSectorRepository,
   LoadSectorNameByIdRepository,
   LoadSectorByIdRepository
@@ -76,15 +75,6 @@ export class CheckSectorByNameRepositorySpy implements CheckSectorByNameReposito
   result = false
 
   async checkByName (params: CheckSectorByNameRepository.Params): Promise<boolean> {
-    this.params = params
-    return this.result
-  }
-}
-
-export class CheckSectorByIdRepositorySpy implements CheckSectorByIdRepository {
-  params: CheckSectorByIdRepository.Params
-  result = true
-  async checkById (params: CheckSectorByIdRepository.Params): Promise<CheckSectorByIdRepository.Result> {
     this.params = params
     return this.result
   }

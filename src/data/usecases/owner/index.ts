@@ -1,5 +1,4 @@
 export * from './db-add-owner'
-export * from './db-check-owner-by-id'
 export * from './db-load-owners'
 export * from './db-delete-owner'
 export * from './db-update-owner'
