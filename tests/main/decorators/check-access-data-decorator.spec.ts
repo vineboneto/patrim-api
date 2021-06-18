@@ -1,5 +1,5 @@
 import { AccessDeniedError } from '@/presentation/errors'
-import { forbidden } from '@/presentation/helper'
+import { forbidden, serverError } from '@/presentation/helper'
 import { CheckAccessDataDecorator } from '@/main/decorators'
 import { ControllerSpy } from '@/tests/main/mocks'
 import { CheckAccessDataRepositorySpy } from '@/tests/data/mocks'
@@ -71,5 +71,12 @@ describe('CheckAccessDataDecorator', () => {
     checkAccessDataRepositorySpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+  })
+
+  test('Should return serverError if CheckAccessDataRepository fails', async () => {
+    const { sut, checkAccessDataRepositorySpy } = makeSut()
+    jest.spyOn(checkAccessDataRepositorySpy, 'checkAccess').mockRejectedValueOnce(new Error())
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
