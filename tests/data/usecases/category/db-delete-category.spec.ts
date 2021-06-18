@@ -1,21 +1,21 @@
 import { DbDeleteCategory } from '@/data/usecases'
-import { DeleteCategoryRepositorySpy, CheckPatrimonyByCategoryIdRepositorySpy } from '@/tests/data/mocks'
+import { DeleteCategoryRepositorySpy, CheckPatrimonyByFieldByIdRepositorySpy } from '@/tests/data/mocks'
 import { mockDeleteCategoryParams } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbDeleteCategory
   deleteCategoryRepositorySpy: DeleteCategoryRepositorySpy
-  checkPatrimonyByCategoryIdRepositorySpy: CheckPatrimonyByCategoryIdRepositorySpy
+  checkPatrimonyByFieldByIdRepositorySpy: CheckPatrimonyByFieldByIdRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const checkPatrimonyByCategoryIdRepositorySpy = new CheckPatrimonyByCategoryIdRepositorySpy()
+  const checkPatrimonyByFieldByIdRepositorySpy = new CheckPatrimonyByFieldByIdRepositorySpy()
   const deleteCategoryRepositorySpy = new DeleteCategoryRepositorySpy()
-  const sut = new DbDeleteCategory(deleteCategoryRepositorySpy, checkPatrimonyByCategoryIdRepositorySpy)
+  const sut = new DbDeleteCategory(deleteCategoryRepositorySpy, checkPatrimonyByFieldByIdRepositorySpy)
   return {
     sut,
     deleteCategoryRepositorySpy,
-    checkPatrimonyByCategoryIdRepositorySpy
+    checkPatrimonyByFieldByIdRepositorySpy
   }
 }
 
@@ -27,18 +27,19 @@ describe('DbDeleteCategory', () => {
     expect(deleteCategoryRepositorySpy.params).toEqual(params)
   })
 
-  test('Should call CheckPatrimonyByCategoryIdRepository with correct values', async () => {
-    const { sut, checkPatrimonyByCategoryIdRepositorySpy } = makeSut()
+  test('Should call CheckPatrimonyByFieldByIdRepositorySpy with correct values', async () => {
+    const { sut, checkPatrimonyByFieldByIdRepositorySpy } = makeSut()
     const params = mockDeleteCategoryParams()
     await sut.delete(params)
-    expect(checkPatrimonyByCategoryIdRepositorySpy.params).toEqual({
-      categoryId: params.id
+    expect(checkPatrimonyByFieldByIdRepositorySpy.params).toEqual({
+      value: params.id,
+      accountId: params.accountId
     })
   })
 
-  test('Should return null if CheckPatrimonyByCategoryIdRepository return true', async () => {
-    const { sut, checkPatrimonyByCategoryIdRepositorySpy } = makeSut()
-    checkPatrimonyByCategoryIdRepositorySpy.result = true
+  test('Should return null if CheckPatrimonyByFieldByIdRepositorySpy return true', async () => {
+    const { sut, checkPatrimonyByFieldByIdRepositorySpy } = makeSut()
+    checkPatrimonyByFieldByIdRepositorySpy.result = true
     const result = await sut.delete(mockDeleteCategoryParams())
     expect(result).toBeNull()
   })
@@ -56,9 +57,9 @@ describe('DbDeleteCategory', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should throws if CheckPatrimonyByCategoryIdRepository throws', async () => {
-    const { sut, checkPatrimonyByCategoryIdRepositorySpy } = makeSut()
-    jest.spyOn(checkPatrimonyByCategoryIdRepositorySpy, 'checkByCategoryId').mockRejectedValueOnce(new Error())
+  test('Should throws if CheckPatrimonyByFieldByIdRepositorySpy throws', async () => {
+    const { sut, checkPatrimonyByFieldByIdRepositorySpy } = makeSut()
+    jest.spyOn(checkPatrimonyByFieldByIdRepositorySpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.delete(mockDeleteCategoryParams())
     await expect(promise).rejects.toThrow()
   })
