@@ -1,21 +1,13 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { Controller, HttpResponse } from '@/presentation/protocols'
+import { ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { LinkedDataError } from '@/presentation/errors'
 import { DeleteOwner } from '@/domain/usecases'
 
 export class DeleteOwnerController implements Controller {
-  constructor (
-    private readonly deleteOwner: DeleteOwner,
-    private readonly validation: Validation
-  ) {}
+  constructor (private readonly deleteOwner: DeleteOwner) {}
 
   async handle (request: DeleteOwnerController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
-      }
-
       const categoryDeleted = await this.deleteOwner.delete({
         id: Number(request.id),
         accountId: request.accountId
