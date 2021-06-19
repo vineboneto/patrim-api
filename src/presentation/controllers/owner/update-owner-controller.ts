@@ -1,19 +1,12 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, ok, serverError } from '@/presentation/helper'
+import { Controller, HttpResponse } from '@/presentation/protocols'
+import { ok, serverError } from '@/presentation/helper'
 import { UpdateOwner } from '@/domain/usecases'
 
 export class UpdateOwnerController implements Controller {
-  constructor (
-    private readonly validation: Validation,
-    private readonly updateOwner: UpdateOwner
-  ) {}
+  constructor (private readonly updateOwner: UpdateOwner) {}
 
   async handle (request: UpdateOwnerController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
-      }
       const owner = await this.updateOwner.update(request)
       return ok(owner)
     } catch (error) {
