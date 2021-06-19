@@ -1,4 +1,5 @@
 import { ValidationRequestDecorator } from '@/main/decorators'
+import { badRequest } from '@/presentation/helper'
 import { ControllerSpy } from '@/tests/main/mocks'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 
@@ -33,5 +34,12 @@ describe('ValidationRequestDecorator', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return 400 if Validation fails', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.result = new Error()
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(badRequest(new Error()))
   })
 })
