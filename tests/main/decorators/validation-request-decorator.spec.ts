@@ -42,4 +42,11 @@ describe('ValidationRequestDecorator', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(badRequest(new Error()))
   })
+
+  test('Should call Controller with correct value', async () => {
+    const { sut, controllerSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(controllerSpy.request).toEqual(request)
+  })
 })
