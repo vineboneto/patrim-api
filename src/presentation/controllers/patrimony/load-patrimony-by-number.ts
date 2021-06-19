@@ -3,9 +3,7 @@ import { noContent, ok, serverError } from '@/presentation/helper'
 import { LoadPatrimonyByNumber } from '@/domain/usecases'
 
 export class LoadPatrimonyByNumberController implements Controller {
-  constructor (
-    private readonly loadPatrimonyByNumber: LoadPatrimonyByNumber
-  ) {}
+  constructor (private readonly loadPatrimonyByNumber: LoadPatrimonyByNumber) {}
 
   async handle (request: LoadPatrimonyByNumberController.Request): Promise<HttpResponse> {
     try {

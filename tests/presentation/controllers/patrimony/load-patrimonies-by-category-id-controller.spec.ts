@@ -1,7 +1,6 @@
 import { LoadPatrimoniesByCategoryIdController } from '@/presentation/controllers'
-import { badRequest, noContent, ok, serverError } from '@/presentation/helper'
+import { noContent, ok, serverError } from '@/presentation/helper'
 import { LoadPatrimoniesByCategoryIdSpy } from '@/tests/domain/mocks'
-import { ValidationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -13,35 +12,18 @@ const mockRequest = (): LoadPatrimoniesByCategoryIdController.Request => ({
 type SutTypes = {
   sut: LoadPatrimoniesByCategoryIdController
   loadPatrimoniesByCategoryIdSpy: LoadPatrimoniesByCategoryIdSpy
-  validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
   const loadPatrimoniesByCategoryIdSpy = new LoadPatrimoniesByCategoryIdSpy()
-  const validationSpy = new ValidationSpy()
-  const sut = new LoadPatrimoniesByCategoryIdController(validationSpy, loadPatrimoniesByCategoryIdSpy)
+  const sut = new LoadPatrimoniesByCategoryIdController(loadPatrimoniesByCategoryIdSpy)
   return {
     sut,
-    loadPatrimoniesByCategoryIdSpy,
-    validationSpy
+    loadPatrimoniesByCategoryIdSpy
   }
 }
 
 describe('LoadPatrimoniesByCategoryIdController', () => {
-  test('Should call Validation with correct values', async () => {
-    const { sut, validationSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(validationSpy.input).toEqual(request)
-  })
-
-  test('Should return 400 if Validation fails', async () => {
-    const { sut, validationSpy } = makeSut()
-    validationSpy.result = new Error()
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(badRequest(new Error()))
-  })
-
   test('Should call LoadPatrimoniesByCategoryId with correct values', async () => {
     const { sut, loadPatrimoniesByCategoryIdSpy } = makeSut()
     const request = mockRequest()

@@ -3,9 +3,7 @@ import { noContent, ok, serverError } from '@/presentation/helper'
 import { LoadPatrimonies } from '@/domain/usecases'
 
 export class LoadPatrimoniesController implements Controller {
-  constructor (
-    private readonly loadPatrimonies: LoadPatrimonies
-  ) {}
+  constructor (private readonly loadPatrimonies: LoadPatrimonies) {}
 
   async handle (request: LoadPatrimoniesController.Request): Promise<HttpResponse> {
     try {

@@ -9,8 +9,8 @@ import {
 
 export const makeDbUpdatePatrimony = (): UpdatePatrimony => {
   const checkPatrimonyByFieldPostgres = new CheckDataByFieldPostgres('number', 'patrimony')
-  const updatePatrimonyPostgres = new UpdatePatrimonyPostgres()
   const loadPatrimonyFieldByIdPostgres = new LoadPatrimonyFieldByIdPostgres('number')
+  const updatePatrimonyPostgres = new UpdatePatrimonyPostgres()
   const dbUpdatePatrimony = new DbUpdatePatrimony(
     updatePatrimonyPostgres,
     loadPatrimonyFieldByIdPostgres,
