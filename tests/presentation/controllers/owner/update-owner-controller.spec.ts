@@ -1,6 +1,6 @@
 import { UpdateOwnerController } from '@/presentation/controllers'
 import { MissingParamError } from '@/presentation/errors'
-import { badRequest, ok } from '@/presentation/helper'
+import { badRequest, ok, serverError } from '@/presentation/helper'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateOwnerSpy } from '@/tests/domain/mocks'
 
@@ -56,5 +56,12 @@ describe('UpdateOwnerController', () => {
     const { sut, updateOwnerSpy } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(ok(updateOwnerSpy.model))
+  })
+
+  test('Should return 500 if UpdateOwner throws', async () => {
+    const { sut, updateOwnerSpy } = makeSut()
+    jest.spyOn(updateOwnerSpy, 'update').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
