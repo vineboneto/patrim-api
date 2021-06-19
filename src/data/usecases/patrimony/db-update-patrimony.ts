@@ -1,14 +1,14 @@
 import { UpdatePatrimony } from '@/domain/usecases'
 import {
   CheckDataByFieldRepository,
-  LoadPatrimonyFieldByIdRepository,
+  LoadDataFieldByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
 
 export class DbUpdatePatrimony implements UpdatePatrimony {
   constructor (
     private readonly updatePatrimonyRepository: UpdatePatrimonyRepository,
-    private readonly loadPatrimonyNumberByIdRepository: LoadPatrimonyFieldByIdRepository,
+    private readonly loadPatrimonyNumberByIdRepository: LoadDataFieldByIdRepository,
     private readonly checkPatrimonyByFieldRepository: CheckDataByFieldRepository
   ) {}
 

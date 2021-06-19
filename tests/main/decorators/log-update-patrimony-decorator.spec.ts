@@ -1,6 +1,6 @@
 import { LogUpdatePatrimonyDecorator } from '@/main/decorators'
 import { LogSwapPatrimonyRepository } from '@/data/protocols'
-import { LoadPatrimonyFieldByIdRepositorySpy } from '@/tests/data/mocks'
+import { LoadDataFieldByIdRepositorySpy } from '@/tests/data/mocks'
 import { UpdatePatrimonySpy, mockUpdatePatrimonyParams } from '@/tests/domain/mocks'
 
 class LogSwapPatrimonyRepositorySpy implements LogSwapPatrimonyRepository {
@@ -15,13 +15,13 @@ class LogSwapPatrimonyRepositorySpy implements LogSwapPatrimonyRepository {
 
 type SutTypes = {
   sut: LogUpdatePatrimonyDecorator
-  loadPatrimonyOwnerIdByIdRepositorySpy: LoadPatrimonyFieldByIdRepositorySpy
+  loadPatrimonyOwnerIdByIdRepositorySpy: LoadDataFieldByIdRepositorySpy
   logSwapPatrimonyRepositorySpy: LogSwapPatrimonyRepositorySpy
   updatePatrimonySpy: UpdatePatrimonySpy
 }
 
 const makeSut = (): SutTypes => {
-  const loadPatrimonyOwnerIdByIdRepositorySpy = new LoadPatrimonyFieldByIdRepositorySpy()
+  const loadPatrimonyOwnerIdByIdRepositorySpy = new LoadDataFieldByIdRepositorySpy()
   const logSwapPatrimonyRepositorySpy = new LogSwapPatrimonyRepositorySpy()
   const updatePatrimonySpy = new UpdatePatrimonySpy()
   const sut = new LogUpdatePatrimonyDecorator(

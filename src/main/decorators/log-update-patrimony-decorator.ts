@@ -1,9 +1,9 @@
 import { UpdatePatrimony } from '@/domain/usecases'
-import { LoadPatrimonyFieldByIdRepository, LogSwapPatrimonyRepository } from '@/data/protocols'
+import { LoadDataFieldByIdRepository, LogSwapPatrimonyRepository } from '@/data/protocols'
 
 export class LogUpdatePatrimonyDecorator implements UpdatePatrimony {
   constructor (
-    private readonly loadPatrimonyOwnerIdByIdRepository: LoadPatrimonyFieldByIdRepository,
+    private readonly loadPatrimonyOwnerIdByIdRepository: LoadDataFieldByIdRepository,
     private readonly logSwapPatrimonyRepository: LogSwapPatrimonyRepository,
     private readonly updatePatrimony: UpdatePatrimony
   ) {}

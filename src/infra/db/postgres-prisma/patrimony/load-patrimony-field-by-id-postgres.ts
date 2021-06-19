@@ -1,19 +1,22 @@
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
-import { LoadPatrimonyFieldByIdRepository } from '@/data/protocols'
+import { LoadDataFieldByIdRepository } from '@/data/protocols'
 
-export class LoadPatrimonyFieldByIdPostgres implements LoadPatrimonyFieldByIdRepository {
-  constructor (private readonly field: string) {}
+export class LoadDataFieldByIdPostgres implements LoadDataFieldByIdRepository {
+  constructor (
+    private readonly fieldName: string,
+    private readonly databaseName: string
+  ) {}
 
   async loadFieldById (id: number): Promise<any> {
     const prismaClient = PrismaHelper.getConnection()
-    const patrimony = await prismaClient.patrimony.findFirst({
+    const patrimony = await prismaClient[this.databaseName].findFirst({
       select: {
-        [this.field]: true
+        [this.fieldName]: true
       },
       where: {
         id: Number(id)
       }
     })
-    return patrimony?.[this.field] ?? null
+    return patrimony?.[this.fieldName] ?? null
   }
 }

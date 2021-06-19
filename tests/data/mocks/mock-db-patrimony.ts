@@ -8,7 +8,7 @@ import {
   LoadPatrimoniesRepository,
   LoadPatrimonyByIdRepository,
   LoadPatrimonyByNumberRepository,
-  LoadPatrimonyFieldByIdRepository,
+  LoadDataFieldByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
 import {
@@ -75,7 +75,7 @@ export class LoadPatrimonyByNumberRepositorySpy implements LoadPatrimonyByNumber
   }
 }
 
-export class LoadPatrimonyFieldByIdRepositorySpy implements LoadPatrimonyFieldByIdRepository {
+export class LoadDataFieldByIdRepositorySpy implements LoadDataFieldByIdRepository {
   id: number
   data: any = mockUpdatePatrimonyParams().number
   async loadFieldById (id: number): Promise<any> {

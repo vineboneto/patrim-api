@@ -4,16 +4,16 @@ import { UpdatePatrimony } from '@/domain/usecases'
 import {
   CheckDataByFieldPostgres,
   UpdatePatrimonyPostgres,
-  LoadPatrimonyFieldByIdPostgres
+  LoadDataFieldByIdPostgres
 } from '@/infra/db/postgres-prisma'
 
 export const makeDbUpdatePatrimony = (): UpdatePatrimony => {
   const checkPatrimonyByFieldPostgres = new CheckDataByFieldPostgres('number', 'patrimony')
-  const loadPatrimonyFieldByIdPostgres = new LoadPatrimonyFieldByIdPostgres('number')
+  const loadPatrimonyNumberByIdPostgres = new LoadDataFieldByIdPostgres('number', 'patrimony')
   const updatePatrimonyPostgres = new UpdatePatrimonyPostgres()
   const dbUpdatePatrimony = new DbUpdatePatrimony(
     updatePatrimonyPostgres,
-    loadPatrimonyFieldByIdPostgres,
+    loadPatrimonyNumberByIdPostgres,
     checkPatrimonyByFieldPostgres
   )
   return makeUpdatePatrimonyDecorator(dbUpdatePatrimony)
