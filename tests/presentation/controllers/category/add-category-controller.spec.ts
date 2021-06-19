@@ -1,7 +1,6 @@
 import { AddCategoryController } from '@/presentation/controllers/'
-import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper'
+import { ok, serverError, unprocessableEntity } from '@/presentation/helper'
 import { AlreadyExistsError } from '@/presentation/errors'
-import { ValidationSpy } from '@/tests/presentation/mocks'
 import { AddCategorySpy } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -13,36 +12,19 @@ const mockRequest = (): AddCategoryController.Request => ({
 
 type SutTypes = {
   addCategorySpy: AddCategorySpy
-  validationSpy: ValidationSpy
   sut: AddCategoryController
 }
 
 const makeSut = (): SutTypes => {
   const addCategorySpy = new AddCategorySpy()
-  const validationSpy = new ValidationSpy()
-  const sut = new AddCategoryController(addCategorySpy, validationSpy)
+  const sut = new AddCategoryController(addCategorySpy)
   return {
     addCategorySpy,
-    validationSpy,
     sut
   }
 }
 
 describe('AddCategoryController', () => {
-  test('Should call Validation with correct values', async () => {
-    const { sut, validationSpy } = makeSut()
-    const request = mockRequest()
-    await sut.handle(request)
-    expect(validationSpy.input).toEqual(request)
-  })
-
-  test('Should return 400 if validation fails', async () => {
-    const { sut, validationSpy } = makeSut()
-    validationSpy.result = new Error()
-    const validation = await sut.handle(mockRequest())
-    expect(validation).toEqual(badRequest(new Error()))
-  })
-
   test('Should call AddCategory with correct values', async () => {
     const { sut, addCategorySpy } = makeSut()
     const request = mockRequest()

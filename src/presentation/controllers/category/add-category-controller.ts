@@ -1,20 +1,15 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, unprocessableEntity, serverError, ok } from '@/presentation/helper/'
+import { Controller, HttpResponse } from '@/presentation/protocols'
+import { unprocessableEntity, serverError, ok } from '@/presentation/helper/'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { AddCategory } from '@/domain/usecases'
 
 export class AddCategoryController implements Controller {
   constructor (
-    private readonly addCategory: AddCategory,
-    private readonly validation: Validation
+    private readonly addCategory: AddCategory
   ) {}
 
   async handle (request: AddCategoryController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
-      }
       const categoryModel = await this.addCategory.add(request)
       if (!categoryModel) {
         return unprocessableEntity(new AlreadyExistsError(request.name))
