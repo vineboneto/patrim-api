@@ -4,6 +4,6 @@ import { CategoryPostgresRepository, CheckDataByFieldPostgres } from '@/infra/db
 
 export const makeDbAddCategory = (): AddCategory => {
   const categoryPostgresRepository = new CategoryPostgresRepository()
-  const checkDataByFieldPostgres = new CheckDataByFieldPostgres('name', 'category')
-  return new DbAddCategory(categoryPostgresRepository, checkDataByFieldPostgres)
+  const checkExistsCategoryByNamePostgres = new CheckDataByFieldPostgres('name', 'category')
+  return new DbAddCategory(categoryPostgresRepository, checkExistsCategoryByNamePostgres)
 }

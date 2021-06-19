@@ -3,7 +3,6 @@ import {
   UpdateCategoryRepository,
   DeleteCategoryRepository,
   LoadCategoriesRepository,
-  LoadCategoryNameByIdRepository,
   LoadCategoryByIdRepository
 } from '@/data/protocols'
 import { PrismaHelper } from '@/infra/db/postgres-prisma'
@@ -12,7 +11,6 @@ export class CategoryPostgresRepository implements
   AddCategoryRepository,
   UpdateCategoryRepository,
   LoadCategoriesRepository,
-  LoadCategoryNameByIdRepository,
   LoadCategoryByIdRepository,
   DeleteCategoryRepository {
   async add (category: AddCategoryRepository.Params): Promise<AddCategoryRepository.Model> {
@@ -89,19 +87,6 @@ export class CategoryPostgresRepository implements
         userId: Number(params.accountId)
       },
       select: this.selectData()
-    })
-    return category
-  }
-
-  async loadNameById (id: number): Promise<LoadCategoryNameByIdRepository.Model> {
-    const prismaClient = PrismaHelper.getConnection()
-    const category = await prismaClient.category.findFirst({
-      where: {
-        id: Number(id)
-      },
-      select: {
-        name: true
-      }
     })
     return category
   }

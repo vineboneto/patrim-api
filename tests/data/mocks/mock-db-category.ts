@@ -3,14 +3,9 @@ import {
   DeleteCategoryRepository,
   LoadCategoriesRepository,
   UpdateCategoryRepository,
-  LoadCategoryNameByIdRepository,
   LoadCategoryByIdRepository
 } from '@/data/protocols'
-import {
-  mockCategoriesModel,
-  mockCategoryModel,
-  mockUpdateCategoryParams
-} from '@/tests/domain/mocks'
+import { mockCategoriesModel, mockCategoryModel } from '@/tests/domain/mocks'
 
 export class AddCategoryRepositorySpy implements AddCategoryRepository {
   params: AddCategoryRepository.Params
@@ -26,15 +21,6 @@ export class UpdateCategoryRepositorySpy implements UpdateCategoryRepository {
   model = mockCategoryModel()
   async update (category: UpdateCategoryRepository.Params): Promise<UpdateCategoryRepository.Model> {
     this.params = category
-    return this.model
-  }
-}
-
-export class LoadCategoryNameByIdRepositorySpy implements LoadCategoryNameByIdRepository {
-  id: number
-  model = { name: mockUpdateCategoryParams().name }
-  async loadNameById (id: number): Promise<LoadCategoryNameByIdRepository.Model> {
-    this.id = id
     return this.model
   }
 }

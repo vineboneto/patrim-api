@@ -67,21 +67,6 @@ describe('CategoryPostgresRepository', () => {
     })
   })
 
-  describe('loadNameById()', () => {
-    test('Should return name category on success', async () => {
-      const sut = makeSut()
-      const { id, name } = await Helper.makeCategory()
-      const categoryName = await sut.loadNameById(id)
-      expect(categoryName).toEqual({ name })
-    })
-
-    test('Should return null on fails', async () => {
-      const sut = makeSut()
-      const categoryName = await sut.loadNameById(faker.datatype.number())
-      expect(categoryName).toBe(null)
-    })
-  })
-
   describe('loadAll()', () => {
     test('Should return all categories if take and skip is NaN', async () => {
       const sut = makeSut()
