@@ -3,14 +3,9 @@ import {
   LoadSectorsRepository,
   DeleteSectorRepository,
   UpdateSectorRepository,
-  LoadSectorNameByIdRepository,
   LoadSectorByIdRepository
 } from '@/data/protocols'
-import {
-  mockSectorModel,
-  mockSectorsModel,
-  mockUpdateCategoryParams
-} from '@/tests/domain/mocks'
+import { mockSectorModel, mockSectorsModel } from '@/tests/domain/mocks'
 
 export class AddSectorRepositorySpy implements AddSectorRepository {
   params: AddSectorRepository.Params
@@ -44,15 +39,6 @@ export class DeleteSectorRepositorySpy implements DeleteSectorRepository {
   params: DeleteSectorRepository.Params
   async delete (params: DeleteSectorRepository.Params): Promise<DeleteSectorRepository.Model> {
     this.params = params
-    return this.model
-  }
-}
-
-export class LoadSectorNameByIdRepositorySpy implements LoadSectorNameByIdRepository {
-  id: number
-  model = { name: mockUpdateCategoryParams().name }
-  async loadNameById (id: number): Promise<LoadSectorNameByIdRepository.Model> {
-    this.id = id
     return this.model
   }
 }

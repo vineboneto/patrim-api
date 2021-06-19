@@ -2,7 +2,6 @@ import {
   AddSectorRepository,
   DeleteSectorRepository,
   LoadSectorByIdRepository,
-  LoadSectorNameByIdRepository,
   LoadSectorsRepository,
   UpdateSectorRepository
 } from '@/data/protocols'
@@ -13,7 +12,6 @@ export class SectorPostgresRepository implements
   UpdateSectorRepository,
   DeleteSectorRepository,
   LoadSectorsRepository,
-  LoadSectorNameByIdRepository,
   LoadSectorByIdRepository {
   async add (sector: AddSectorRepository.Params): Promise<AddSectorRepository.Model> {
     const { name, accountId } = sector
@@ -52,19 +50,6 @@ export class SectorPostgresRepository implements
       select: this.selectData()
     })
     return sectorDeleted
-  }
-
-  async loadNameById (id: number): Promise<LoadSectorNameByIdRepository.Model> {
-    const prismaClient = PrismaHelper.getConnection()
-    const sector = prismaClient.sector.findFirst({
-      where: {
-        id: Number(id)
-      },
-      select: {
-        name: true
-      }
-    })
-    return sector
   }
 
   async loadAll (params: LoadSectorsRepository.Params): Promise<LoadSectorsRepository.Model> {

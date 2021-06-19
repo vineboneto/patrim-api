@@ -4,6 +4,6 @@ import { CheckDataByFieldPostgres, SectorPostgresRepository } from '@/infra/db/p
 
 export const makeDbAddSector = (): AddSector => {
   const sectorPostgresRepository = new SectorPostgresRepository()
-  const checkDataByFieldPostgres = new CheckDataByFieldPostgres('name', 'sector')
-  return new DbAddSector(sectorPostgresRepository, checkDataByFieldPostgres)
+  const checkExistsSectorByNamePostgres = new CheckDataByFieldPostgres('name', 'sector')
+  return new DbAddSector(sectorPostgresRepository, checkExistsSectorByNamePostgres)
 }

@@ -77,22 +77,6 @@ describe('SectorPostgresRepository', () => {
       expect(sector).toBe(null)
     })
   })
-
-  describe('loadNameById()', () => {
-    test('Should return name sector on success', async () => {
-      const sut = makeSut()
-      const { id, name } = await Helper.makeSector()
-      const sectorName = await sut.loadNameById(id)
-      expect(sectorName).toEqual({ name })
-    })
-
-    test('Should return null on fails', async () => {
-      const sut = makeSut()
-      const sectorName = await sut.loadNameById(faker.datatype.number())
-      expect(sectorName).toBe(null)
-    })
-  })
-
   describe('loadAll()', () => {
     test('Should return all sectors if take and skip is NaN', async () => {
       const sut = makeSut()
