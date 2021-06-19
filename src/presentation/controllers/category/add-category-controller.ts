@@ -4,9 +4,7 @@ import { AlreadyExistsError } from '@/presentation/errors'
 import { AddCategory } from '@/domain/usecases'
 
 export class AddCategoryController implements Controller {
-  constructor (
-    private readonly addCategory: AddCategory
-  ) {}
+  constructor (private readonly addCategory: AddCategory) {}
 
   async handle (request: AddCategoryController.Request): Promise<HttpResponse> {
     try {

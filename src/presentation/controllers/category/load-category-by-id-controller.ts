@@ -3,9 +3,7 @@ import { noContent, ok, serverError } from '@/presentation/helper'
 import { LoadCategoryById } from '@/domain/usecases'
 
 export class LoadCategoryByIdController implements Controller {
-  constructor (
-    private readonly loadCategoryById: LoadCategoryById
-  ) {}
+  constructor (private readonly loadCategoryById: LoadCategoryById) {}
 
   async handle (request: LoadCategoryByIdController.Request): Promise<HttpResponse> {
     try {

@@ -4,9 +4,7 @@ import { LinkedDataError } from '@/presentation/errors'
 import { DeleteCategory } from '@/domain/usecases'
 
 export class DeleteCategoryController implements Controller {
-  constructor (
-    private readonly deleteCategory: DeleteCategory
-  ) {}
+  constructor (private readonly deleteCategory: DeleteCategory) {}
 
   async handle (request: DeleteCategoryController.Request): Promise<HttpResponse> {
     try {
