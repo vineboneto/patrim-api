@@ -1,20 +1,12 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, ok, serverError } from '@/presentation/helper'
+import { Controller, HttpResponse } from '@/presentation/protocols'
+import { ok, serverError } from '@/presentation/helper'
 import { AddOwner } from '@/domain/usecases'
 
 export class AddOwnerController implements Controller {
-  constructor (
-    private readonly validation: Validation,
-    private readonly addOwner: AddOwner
-  ) {}
+  constructor (private readonly addOwner: AddOwner) {}
 
   async handle (request: AddOwnerController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
-      }
-
       const owner = await this.addOwner.add(request)
       return ok(owner)
     } catch (error) {
