@@ -1,20 +1,13 @@
-import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, ok, serverError, unprocessableEntity } from '@/presentation/helper/http-helper'
+import { Controller, HttpResponse } from '@/presentation/protocols'
+import { ok, serverError, unprocessableEntity } from '@/presentation/helper/http-helper'
 import { AlreadyExistsError } from '@/presentation/errors'
 import { AddSector } from '@/domain/usecases'
 
 export class AddSectorController implements Controller {
-  constructor (
-    private readonly addSector: AddSector,
-    private readonly validation: Validation
-  ) {}
+  constructor (private readonly addSector: AddSector) {}
 
   async handle (request: AddSectorController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
-      }
       const sectorModel = await this.addSector.add(request)
       if (!sectorModel) {
         return unprocessableEntity(new AlreadyExistsError(request.name))

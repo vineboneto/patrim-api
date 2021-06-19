@@ -3,9 +3,7 @@ import { noContent, ok, serverError } from '@/presentation/helper'
 import { LoadSectors } from '@/domain/usecases'
 
 export class LoadSectorsController implements Controller {
-  constructor (
-    private readonly loadSectors: LoadSectors
-  ) {}
+  constructor (private readonly loadSectors: LoadSectors) {}
 
   async handle (request: LoadSectorsController.Request): Promise<HttpResponse> {
     try {
