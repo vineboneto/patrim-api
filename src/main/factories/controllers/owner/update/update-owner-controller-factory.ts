@@ -7,9 +7,9 @@ import { Controller } from '@/presentation/protocols'
 
 export const makeUpdateOwnerController = (): Controller => {
   const controller = new UpdateOwnerController(makeDbUpdateOwner())
-  const validationRequest = makeValidationRequestDecorator(controller, makeUpdateOwnerValidation())
-  const checkAccess = makeCheckAccessDataDecorator(validationRequest, templateDataAccess())
-  return makeLogControllerDecorator(checkAccess)
+  const checkAccess = makeCheckAccessDataDecorator(controller, templateDataAccess())
+  const validationRequest = makeValidationRequestDecorator(checkAccess, makeUpdateOwnerValidation())
+  return makeLogControllerDecorator(validationRequest)
 }
 
 const templateDataAccess = (): CheckAccessDataDecorator.Template[] => ([{

@@ -11,9 +11,9 @@ import { Controller } from '@/presentation/protocols'
 
 export const makeUpdatePatrimonyController = (): Controller => {
   const controller = new UpdatePatrimonyController(makeDbUpdatePatrimony())
-  const validationRequest = makeValidationRequestDecorator(controller, makeUpdatePatrimonyValidation())
-  const checkAccessData = makeCheckAccessDataDecorator(validationRequest, templateDataAccess())
-  return makeLogControllerDecorator(checkAccessData)
+  const checkAccessData = makeCheckAccessDataDecorator(controller, templateDataAccess())
+  const validationRequest = makeValidationRequestDecorator(checkAccessData, makeUpdatePatrimonyValidation())
+  return makeLogControllerDecorator(validationRequest)
 }
 
 const templateDataAccess = (): CheckAccessDataDecorator.Template[] => ([{

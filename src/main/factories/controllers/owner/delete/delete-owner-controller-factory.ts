@@ -7,9 +7,9 @@ import { Controller } from '@/presentation/protocols'
 
 export const makeDeleteOwnerController = (): Controller => {
   const controller = new DeleteOwnerController(makeDbDeleteOwner())
-  const validationRequest = makeValidationRequestDecorator(controller, makeValidationId())
-  const checkAccess = makeCheckAccessDataDecorator(validationRequest, templateDataAccess())
-  return makeLogControllerDecorator(checkAccess)
+  const checkAccess = makeCheckAccessDataDecorator(controller, templateDataAccess())
+  const validationRequest = makeValidationRequestDecorator(checkAccess, makeValidationId())
+  return makeLogControllerDecorator(validationRequest)
 }
 
 const templateDataAccess = (): CheckAccessDataDecorator.Template[] => ([{

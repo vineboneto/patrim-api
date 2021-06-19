@@ -8,7 +8,15 @@ export class UpdatePatrimonyController implements Controller {
 
   async handle (request: UpdatePatrimonyController.Request): Promise<HttpResponse> {
     try {
-      const patrimonyModel = await this.updatePatrimony.update(request)
+      const patrimonyModel = await this.updatePatrimony.update({
+        id: Number(request.id),
+        number: request?.number,
+        brand: request.brand,
+        description: request?.description,
+        categoryId: Number(request.categoryId),
+        ownerId: Number(request.ownerId),
+        accountId: request.accountId
+      })
       if (!patrimonyModel) {
         return unprocessableEntity(new AlreadyExistsError(request.number))
       }
@@ -20,5 +28,13 @@ export class UpdatePatrimonyController implements Controller {
 }
 
 export namespace UpdatePatrimonyController {
-  export type Request = UpdatePatrimony.Params
+  export type Request = {
+    id: string
+    number?: string
+    brand: string
+    description?: string
+    categoryId: string
+    ownerId: string
+    accountId: number
+  }
 }

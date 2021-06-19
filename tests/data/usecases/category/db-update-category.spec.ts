@@ -16,6 +16,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const updateCategoryRepositorySpy = new UpdateCategoryRepositorySpy()
   const loadDataFieldByIdRepositorySpy = new LoadDataFieldByIdRepositorySpy()
+  loadDataFieldByIdRepositorySpy.data = { name: 'any_name' }
   const checkDataByFieldRepositorySpy = new CheckDataByFieldRepositorySpy()
   const sut = new DbUpdateCategory(
     updateCategoryRepositorySpy,
@@ -48,7 +49,7 @@ describe('DbUpdateCategory', () => {
   test('Should return category on success', async () => {
     const { sut, updateCategoryRepositorySpy, loadDataFieldByIdRepositorySpy } = makeSut()
     const params = mockUpdateCategoryParams()
-    loadDataFieldByIdRepositorySpy.data = 'name'
+    loadDataFieldByIdRepositorySpy.data.name = 'name'
     params.name = 'name'
     const data = await sut.update(params)
     expect(data).toEqual(updateCategoryRepositorySpy.model)
@@ -71,7 +72,7 @@ describe('DbUpdateCategory', () => {
   test('Should return null if LoadDataFieldByIdRepository returns different name', async () => {
     const { sut, loadDataFieldByIdRepositorySpy, checkDataByFieldRepositorySpy } = makeSut()
     checkDataByFieldRepositorySpy.result = true
-    loadDataFieldByIdRepositorySpy.data = 'differentName'
+    loadDataFieldByIdRepositorySpy.data.name = 'differentName'
     const data = await sut.update(mockUpdateCategoryParams())
     expect(data).toBe(null)
   })
@@ -95,7 +96,7 @@ describe('DbUpdateCategory', () => {
 
   test('Should return null if CheckCategoryByNameRepository return true', async () => {
     const { sut, checkDataByFieldRepositorySpy, loadDataFieldByIdRepositorySpy } = makeSut()
-    loadDataFieldByIdRepositorySpy.data = 'differentName'
+    loadDataFieldByIdRepositorySpy.data.name = 'differentName'
     checkDataByFieldRepositorySpy.result = true
     const params = mockUpdateCategoryParams()
     const data = await sut.update(params)
@@ -104,7 +105,7 @@ describe('DbUpdateCategory', () => {
 
   test('Should throws if CheckCategoryByNameRepository throw', async () => {
     const { sut, loadDataFieldByIdRepositorySpy, checkDataByFieldRepositorySpy } = makeSut()
-    loadDataFieldByIdRepositorySpy.data = 'differentName'
+    loadDataFieldByIdRepositorySpy.data.name = 'differentName'
     jest.spyOn(checkDataByFieldRepositorySpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.update(mockUpdateCategoryParams())
     await expect(promise).rejects.toThrow()

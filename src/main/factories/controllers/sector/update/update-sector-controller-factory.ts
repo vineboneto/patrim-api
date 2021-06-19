@@ -6,6 +6,7 @@ import { Controller } from '@/presentation/protocols'
 
 export const makeUpdateSectorController = (): Controller => {
   const controller = new UpdateSectorController(makeDbUpdateSector())
-  const validationRequest = makeValidationRequestDecorator(controller, makeUpdateSectorValidation())
-  return makeLogControllerDecorator(makeCheckAccessDataSector(validationRequest))
+  const accessData = makeCheckAccessDataSector(controller)
+  const validationRequest = makeValidationRequestDecorator(accessData, makeUpdateSectorValidation())
+  return makeLogControllerDecorator(validationRequest)
 }

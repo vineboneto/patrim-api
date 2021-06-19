@@ -16,6 +16,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const updateSectorRepositorySpy = new UpdateSectorRepositorySpy()
   const loadDataFieldByIdRepositorySpy = new LoadDataFieldByIdRepositorySpy()
+  loadDataFieldByIdRepositorySpy.data = { name: 'any_name' }
   const checkDataByFieldRepositorySpy = new CheckDataByFieldRepositorySpy()
   const sut = new DbUpdateSector(
     updateSectorRepositorySpy,
@@ -48,7 +49,7 @@ describe('DbUpdateSector', () => {
   test('Should return sector on success', async () => {
     const { sut, updateSectorRepositorySpy, loadDataFieldByIdRepositorySpy } = makeSut()
     const params = mockUpdateSectorParams()
-    loadDataFieldByIdRepositorySpy.data = 'name'
+    loadDataFieldByIdRepositorySpy.data.name = 'name'
     params.name = 'name'
     const data = await sut.update(params)
     expect(data).toEqual(updateSectorRepositorySpy.model)
@@ -71,7 +72,7 @@ describe('DbUpdateSector', () => {
   test('Should return null if LoadDataFieldByIdRepository returns different name', async () => {
     const { sut, loadDataFieldByIdRepositorySpy, checkDataByFieldRepositorySpy } = makeSut()
     checkDataByFieldRepositorySpy.result = true
-    loadDataFieldByIdRepositorySpy.data = 'differentName'
+    loadDataFieldByIdRepositorySpy.data.name = 'differentName'
     const data = await sut.update(mockUpdateSectorParams())
     expect(data).toBe(null)
   })
@@ -93,7 +94,7 @@ describe('DbUpdateSector', () => {
 
   test('Should return null if CheckSectorByNameRepository return true', async () => {
     const { sut, checkDataByFieldRepositorySpy, loadDataFieldByIdRepositorySpy } = makeSut()
-    loadDataFieldByIdRepositorySpy.data = 'differentName'
+    loadDataFieldByIdRepositorySpy.data.name = 'differentName'
     checkDataByFieldRepositorySpy.result = true
     const params = mockUpdateSectorParams()
     const data = await sut.update(params)
@@ -102,7 +103,7 @@ describe('DbUpdateSector', () => {
 
   test('Should throws if CheckSectorByNameRepository throw', async () => {
     const { sut, loadDataFieldByIdRepositorySpy, checkDataByFieldRepositorySpy } = makeSut()
-    loadDataFieldByIdRepositorySpy.data = 'differentName'
+    loadDataFieldByIdRepositorySpy.data.name = 'differentName'
     jest.spyOn(checkDataByFieldRepositorySpy, 'checkByField').mockRejectedValueOnce(new Error())
     const promise = sut.update(mockUpdateSectorParams())
     await expect(promise).rejects.toThrow()

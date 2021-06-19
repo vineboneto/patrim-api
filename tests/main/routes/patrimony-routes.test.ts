@@ -68,6 +68,21 @@ describe('Patrimony Routes', () => {
         .expect(200)
     })
 
+    test('Should return 400 on update patrimony if invalid categoryId', async () => {
+      const { id, Owner, userId } = await Helper.makePatrimony()
+      const { accessToken } = await makeAccessToken(userId)
+      await request(app)
+        .put(`/api/patrimonies/${id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          number: faker.datatype.number().toString(),
+          brand: faker.random.word(),
+          ownerId: Owner.id,
+          categoryId: 'string'
+        })
+        .expect(400)
+    })
+
     test('Should return 403 on update patrimony of other user', async () => {
       const { accessToken } = await makeAccessToken()
       const { id, Category, Owner } = await Helper.makePatrimony()

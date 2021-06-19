@@ -6,6 +6,6 @@ import { Controller } from '@/presentation/protocols'
 
 export const makeSignUpController = (): Controller => {
   const controller = new SignUpController(makeDbAddAccount(), makeDbAuthentication())
-  const validationSpy = makeValidationRequestDecorator(controller, makeSignUpValidation())
-  return makeLogControllerDecorator(validationSpy)
+  const validationRequest = makeValidationRequestDecorator(controller, makeSignUpValidation())
+  return makeLogControllerDecorator(validationRequest)
 }

@@ -6,13 +6,13 @@ import { UpdatePatrimonySpy } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockRequest = (): UpdatePatrimonyController.Request => ({
-  id: faker.datatype.number(),
+  id: faker.datatype.number().toString(),
   brand: faker.random.word(),
   number: faker.datatype.number().toString(),
   description: faker.random.words(),
-  categoryId: faker.datatype.number(),
+  categoryId: faker.datatype.number().toString(),
   accountId: faker.datatype.number(),
-  ownerId: faker.datatype.number()
+  ownerId: faker.datatype.number().toString()
 })
 
 type SutTypes = {
@@ -34,7 +34,15 @@ describe('UpdatePatrimonyController', () => {
     const { sut, updatePatrimonySpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(updatePatrimonySpy.params).toEqual(request)
+    expect(updatePatrimonySpy.params).toEqual({
+      id: Number(request.id),
+      number: request?.number,
+      brand: request.brand,
+      description: request?.description,
+      categoryId: Number(request.categoryId),
+      ownerId: Number(request.ownerId),
+      accountId: request.accountId
+    })
   })
 
   test('Should return 403 if UpdatePatrimony fails', async () => {

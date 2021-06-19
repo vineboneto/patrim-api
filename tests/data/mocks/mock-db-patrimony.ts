@@ -11,11 +11,7 @@ import {
   LoadDataFieldByIdRepository,
   UpdatePatrimonyRepository
 } from '@/data/protocols'
-import {
-  mockPatrimoniesModel,
-  mockPatrimonyModel,
-  mockUpdatePatrimonyParams
-} from '@/tests/domain/mocks'
+import { mockPatrimoniesModel, mockPatrimonyModel } from '@/tests/domain/mocks'
 
 export class AddPatrimonyRepositorySpy implements AddPatrimonyRepository {
   params: AddPatrimonyRepository.Params
@@ -77,7 +73,8 @@ export class LoadPatrimonyByNumberRepositorySpy implements LoadPatrimonyByNumber
 
 export class LoadDataFieldByIdRepositorySpy implements LoadDataFieldByIdRepository {
   id: number
-  data: any = mockUpdatePatrimonyParams().number
+  data: any
+
   async loadFieldById (id: number): Promise<any> {
     this.id = id
     return this.data

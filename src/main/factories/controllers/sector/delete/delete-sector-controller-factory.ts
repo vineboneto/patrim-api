@@ -7,6 +7,7 @@ import { Controller } from '@/presentation/protocols'
 
 export const makeDeleteSectorController = (): Controller => {
   const controller = new DeleteSectorController(makeDbDeleteSector())
-  const validationRequest = makeValidationRequestDecorator(controller, makeValidationId())
-  return makeLogControllerDecorator(makeCheckAccessDataSector(validationRequest))
+  const accessData = makeCheckAccessDataSector(controller)
+  const validationRequest = makeValidationRequestDecorator(accessData, makeValidationId())
+  return makeLogControllerDecorator(validationRequest)
 }

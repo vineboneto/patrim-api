@@ -9,7 +9,7 @@ export class LoadDataFieldByIdPostgres implements LoadDataFieldByIdRepository {
 
   async loadFieldById (id: number): Promise<any> {
     const prismaClient = PrismaHelper.getConnection()
-    const patrimony = await prismaClient[this.databaseName].findFirst({
+    const data = await prismaClient[this.databaseName].findFirst({
       select: {
         [this.fieldName]: true
       },
@@ -17,6 +17,6 @@ export class LoadDataFieldByIdPostgres implements LoadDataFieldByIdRepository {
         id: Number(id)
       }
     })
-    return patrimony?.[this.fieldName] ?? null
+    return data?.[this.fieldName] ?? null
   }
 }

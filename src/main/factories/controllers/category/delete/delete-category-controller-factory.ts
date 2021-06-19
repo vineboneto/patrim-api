@@ -7,6 +7,7 @@ import { makeValidationId } from '@/main/factories/validation'
 
 export const makeDeleteCategoryController = (): Controller => {
   const controller = new DeleteCategoryController(makeDbDeleteCategory())
-  const validationRequest = makeValidationRequestDecorator(controller, makeValidationId())
-  return makeLogControllerDecorator(makeCheckAccessDataCategory(validationRequest))
+  const checkAccess = makeCheckAccessDataCategory(controller)
+  const validationRequest = makeValidationRequestDecorator(checkAccess, makeValidationId())
+  return makeLogControllerDecorator(validationRequest)
 }
